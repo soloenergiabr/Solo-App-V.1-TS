@@ -21,6 +21,9 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@map("user")
 }
 
 model Client {
@@ -36,18 +39,52 @@ model Client {
   deletedAt DateTime?
 
   inverters Inverter[]
+
+  @@index([email])
+  @@index([cpfCnpj])
+  @@map("client")
 }
 
 model Inverter {
   id String @id @default(dbgenerated("(concat('inverter_', gen_random_uuid()))::TEXT"))
 
-  provider   String
-  providerId String
+  provider          String
+  providerId        String
+  providerApiKey    String?
+  providerApiSecret String?
+  providerUrl       String?
 
   client   Client @relation(fields: [clientId], references: [id])
   clientId String
 
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
+  generationUnits GenerationUnit[]
+
+  @@index([providerId])
+  @@map("inverter")
+}
+
+model GenerationUnit {
+  id String @id @default(dbgenerated("(concat('generation_unit_', gen_random_uuid()))::TEXT"))
+
+  power  Float
+  energy Float
+
+  generationUnitType String @default("real_time")
+
+  timestamp DateTime @default(now())
+
+  inverter   Inverter @relation(fields: [inverterId], references: [id])
+  inverterId String
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  @@index([inverterId])
+  @@index([inverterId, generationUnitType])
+  @@index([inverterId, generationUnitType, timestamp])
+  @@map("generation_unit")
 }

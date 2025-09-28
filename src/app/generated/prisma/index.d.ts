@@ -28,6 +28,11 @@ export type Client = $Result.DefaultSelection<Prisma.$ClientPayload>
  * 
  */
 export type Inverter = $Result.DefaultSelection<Prisma.$InverterPayload>
+/**
+ * Model GenerationUnit
+ * 
+ */
+export type GenerationUnit = $Result.DefaultSelection<Prisma.$GenerationUnitPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -176,6 +181,16 @@ export class PrismaClient<
     * ```
     */
   get inverter(): Prisma.InverterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.generationUnit`: Exposes CRUD operations for the **GenerationUnit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GenerationUnits
+    * const generationUnits = await prisma.generationUnit.findMany()
+    * ```
+    */
+  get generationUnit(): Prisma.GenerationUnitDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -618,7 +633,8 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Client: 'Client',
-    Inverter: 'Inverter'
+    Inverter: 'Inverter',
+    GenerationUnit: 'GenerationUnit'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -637,7 +653,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "inverter"
+      modelProps: "user" | "client" | "inverter" | "generationUnit"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -863,6 +879,80 @@ export namespace Prisma {
           }
         }
       }
+      GenerationUnit: {
+        payload: Prisma.$GenerationUnitPayload<ExtArgs>
+        fields: Prisma.GenerationUnitFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GenerationUnitFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GenerationUnitFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>
+          }
+          findFirst: {
+            args: Prisma.GenerationUnitFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GenerationUnitFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>
+          }
+          findMany: {
+            args: Prisma.GenerationUnitFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>[]
+          }
+          create: {
+            args: Prisma.GenerationUnitCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>
+          }
+          createMany: {
+            args: Prisma.GenerationUnitCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GenerationUnitCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>[]
+          }
+          delete: {
+            args: Prisma.GenerationUnitDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>
+          }
+          update: {
+            args: Prisma.GenerationUnitUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>
+          }
+          deleteMany: {
+            args: Prisma.GenerationUnitDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GenerationUnitUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GenerationUnitUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>[]
+          }
+          upsert: {
+            args: Prisma.GenerationUnitUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationUnitPayload>
+          }
+          aggregate: {
+            args: Prisma.GenerationUnitAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGenerationUnit>
+          }
+          groupBy: {
+            args: Prisma.GenerationUnitGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GenerationUnitGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GenerationUnitCountArgs<ExtArgs>
+            result: $Utils.Optional<GenerationUnitCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -962,6 +1052,7 @@ export namespace Prisma {
     user?: UserOmit
     client?: ClientOmit
     inverter?: InverterOmit
+    generationUnit?: GenerationUnitOmit
   }
 
   /* Types for Logging */
@@ -1065,6 +1156,37 @@ export namespace Prisma {
    */
   export type ClientCountOutputTypeCountInvertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InverterWhereInput
+  }
+
+
+  /**
+   * Count Type InverterCountOutputType
+   */
+
+  export type InverterCountOutputType = {
+    generationUnits: number
+  }
+
+  export type InverterCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    generationUnits?: boolean | InverterCountOutputTypeCountGenerationUnitsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * InverterCountOutputType without action
+   */
+  export type InverterCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InverterCountOutputType
+     */
+    select?: InverterCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * InverterCountOutputType without action
+   */
+  export type InverterCountOutputTypeCountGenerationUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GenerationUnitWhereInput
   }
 
 
@@ -3237,6 +3359,9 @@ export namespace Prisma {
     id: string | null
     provider: string | null
     providerId: string | null
+    providerApiKey: string | null
+    providerApiSecret: string | null
+    providerUrl: string | null
     clientId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3247,6 +3372,9 @@ export namespace Prisma {
     id: string | null
     provider: string | null
     providerId: string | null
+    providerApiKey: string | null
+    providerApiSecret: string | null
+    providerUrl: string | null
     clientId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3257,6 +3385,9 @@ export namespace Prisma {
     id: number
     provider: number
     providerId: number
+    providerApiKey: number
+    providerApiSecret: number
+    providerUrl: number
     clientId: number
     createdAt: number
     updatedAt: number
@@ -3269,6 +3400,9 @@ export namespace Prisma {
     id?: true
     provider?: true
     providerId?: true
+    providerApiKey?: true
+    providerApiSecret?: true
+    providerUrl?: true
     clientId?: true
     createdAt?: true
     updatedAt?: true
@@ -3279,6 +3413,9 @@ export namespace Prisma {
     id?: true
     provider?: true
     providerId?: true
+    providerApiKey?: true
+    providerApiSecret?: true
+    providerUrl?: true
     clientId?: true
     createdAt?: true
     updatedAt?: true
@@ -3289,6 +3426,9 @@ export namespace Prisma {
     id?: true
     provider?: true
     providerId?: true
+    providerApiKey?: true
+    providerApiSecret?: true
+    providerUrl?: true
     clientId?: true
     createdAt?: true
     updatedAt?: true
@@ -3372,6 +3512,9 @@ export namespace Prisma {
     id: string
     provider: string
     providerId: string
+    providerApiKey: string | null
+    providerApiSecret: string | null
+    providerUrl: string | null
     clientId: string
     createdAt: Date
     updatedAt: Date
@@ -3399,17 +3542,25 @@ export namespace Prisma {
     id?: boolean
     provider?: boolean
     providerId?: boolean
+    providerApiKey?: boolean
+    providerApiSecret?: boolean
+    providerUrl?: boolean
     clientId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    generationUnits?: boolean | Inverter$generationUnitsArgs<ExtArgs>
+    _count?: boolean | InverterCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["inverter"]>
 
   export type InverterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     provider?: boolean
     providerId?: boolean
+    providerApiKey?: boolean
+    providerApiSecret?: boolean
+    providerUrl?: boolean
     clientId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3421,6 +3572,9 @@ export namespace Prisma {
     id?: boolean
     provider?: boolean
     providerId?: boolean
+    providerApiKey?: boolean
+    providerApiSecret?: boolean
+    providerUrl?: boolean
     clientId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3432,15 +3586,20 @@ export namespace Prisma {
     id?: boolean
     provider?: boolean
     providerId?: boolean
+    providerApiKey?: boolean
+    providerApiSecret?: boolean
+    providerUrl?: boolean
     clientId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type InverterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "provider" | "providerId" | "clientId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["inverter"]>
+  export type InverterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "provider" | "providerId" | "providerApiKey" | "providerApiSecret" | "providerUrl" | "clientId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["inverter"]>
   export type InverterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    generationUnits?: boolean | Inverter$generationUnitsArgs<ExtArgs>
+    _count?: boolean | InverterCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InverterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -3453,11 +3612,15 @@ export namespace Prisma {
     name: "Inverter"
     objects: {
       client: Prisma.$ClientPayload<ExtArgs>
+      generationUnits: Prisma.$GenerationUnitPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       provider: string
       providerId: string
+      providerApiKey: string | null
+      providerApiSecret: string | null
+      providerUrl: string | null
       clientId: string
       createdAt: Date
       updatedAt: Date
@@ -3857,6 +4020,7 @@ export namespace Prisma {
   export interface Prisma__InverterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    generationUnits<T extends Inverter$generationUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Inverter$generationUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3889,6 +4053,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Inverter", 'String'>
     readonly provider: FieldRef<"Inverter", 'String'>
     readonly providerId: FieldRef<"Inverter", 'String'>
+    readonly providerApiKey: FieldRef<"Inverter", 'String'>
+    readonly providerApiSecret: FieldRef<"Inverter", 'String'>
+    readonly providerUrl: FieldRef<"Inverter", 'String'>
     readonly clientId: FieldRef<"Inverter", 'String'>
     readonly createdAt: FieldRef<"Inverter", 'DateTime'>
     readonly updatedAt: FieldRef<"Inverter", 'DateTime'>
@@ -4289,6 +4456,30 @@ export namespace Prisma {
   }
 
   /**
+   * Inverter.generationUnits
+   */
+  export type Inverter$generationUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    where?: GenerationUnitWhereInput
+    orderBy?: GenerationUnitOrderByWithRelationInput | GenerationUnitOrderByWithRelationInput[]
+    cursor?: GenerationUnitWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GenerationUnitScalarFieldEnum | GenerationUnitScalarFieldEnum[]
+  }
+
+  /**
    * Inverter without action
    */
   export type InverterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4304,6 +4495,1154 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: InverterInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GenerationUnit
+   */
+
+  export type AggregateGenerationUnit = {
+    _count: GenerationUnitCountAggregateOutputType | null
+    _avg: GenerationUnitAvgAggregateOutputType | null
+    _sum: GenerationUnitSumAggregateOutputType | null
+    _min: GenerationUnitMinAggregateOutputType | null
+    _max: GenerationUnitMaxAggregateOutputType | null
+  }
+
+  export type GenerationUnitAvgAggregateOutputType = {
+    power: number | null
+    energy: number | null
+  }
+
+  export type GenerationUnitSumAggregateOutputType = {
+    power: number | null
+    energy: number | null
+  }
+
+  export type GenerationUnitMinAggregateOutputType = {
+    id: string | null
+    power: number | null
+    energy: number | null
+    generationUnitType: string | null
+    timestamp: Date | null
+    inverterId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type GenerationUnitMaxAggregateOutputType = {
+    id: string | null
+    power: number | null
+    energy: number | null
+    generationUnitType: string | null
+    timestamp: Date | null
+    inverterId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type GenerationUnitCountAggregateOutputType = {
+    id: number
+    power: number
+    energy: number
+    generationUnitType: number
+    timestamp: number
+    inverterId: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type GenerationUnitAvgAggregateInputType = {
+    power?: true
+    energy?: true
+  }
+
+  export type GenerationUnitSumAggregateInputType = {
+    power?: true
+    energy?: true
+  }
+
+  export type GenerationUnitMinAggregateInputType = {
+    id?: true
+    power?: true
+    energy?: true
+    generationUnitType?: true
+    timestamp?: true
+    inverterId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type GenerationUnitMaxAggregateInputType = {
+    id?: true
+    power?: true
+    energy?: true
+    generationUnitType?: true
+    timestamp?: true
+    inverterId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type GenerationUnitCountAggregateInputType = {
+    id?: true
+    power?: true
+    energy?: true
+    generationUnitType?: true
+    timestamp?: true
+    inverterId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type GenerationUnitAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GenerationUnit to aggregate.
+     */
+    where?: GenerationUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationUnits to fetch.
+     */
+    orderBy?: GenerationUnitOrderByWithRelationInput | GenerationUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GenerationUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationUnits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GenerationUnits
+    **/
+    _count?: true | GenerationUnitCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GenerationUnitAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GenerationUnitSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GenerationUnitMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GenerationUnitMaxAggregateInputType
+  }
+
+  export type GetGenerationUnitAggregateType<T extends GenerationUnitAggregateArgs> = {
+        [P in keyof T & keyof AggregateGenerationUnit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGenerationUnit[P]>
+      : GetScalarType<T[P], AggregateGenerationUnit[P]>
+  }
+
+
+
+
+  export type GenerationUnitGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GenerationUnitWhereInput
+    orderBy?: GenerationUnitOrderByWithAggregationInput | GenerationUnitOrderByWithAggregationInput[]
+    by: GenerationUnitScalarFieldEnum[] | GenerationUnitScalarFieldEnum
+    having?: GenerationUnitScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GenerationUnitCountAggregateInputType | true
+    _avg?: GenerationUnitAvgAggregateInputType
+    _sum?: GenerationUnitSumAggregateInputType
+    _min?: GenerationUnitMinAggregateInputType
+    _max?: GenerationUnitMaxAggregateInputType
+  }
+
+  export type GenerationUnitGroupByOutputType = {
+    id: string
+    power: number
+    energy: number
+    generationUnitType: string
+    timestamp: Date
+    inverterId: string
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: GenerationUnitCountAggregateOutputType | null
+    _avg: GenerationUnitAvgAggregateOutputType | null
+    _sum: GenerationUnitSumAggregateOutputType | null
+    _min: GenerationUnitMinAggregateOutputType | null
+    _max: GenerationUnitMaxAggregateOutputType | null
+  }
+
+  type GetGenerationUnitGroupByPayload<T extends GenerationUnitGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GenerationUnitGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GenerationUnitGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GenerationUnitGroupByOutputType[P]>
+            : GetScalarType<T[P], GenerationUnitGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GenerationUnitSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    power?: boolean
+    energy?: boolean
+    generationUnitType?: boolean
+    timestamp?: boolean
+    inverterId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    inverter?: boolean | InverterDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["generationUnit"]>
+
+  export type GenerationUnitSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    power?: boolean
+    energy?: boolean
+    generationUnitType?: boolean
+    timestamp?: boolean
+    inverterId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    inverter?: boolean | InverterDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["generationUnit"]>
+
+  export type GenerationUnitSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    power?: boolean
+    energy?: boolean
+    generationUnitType?: boolean
+    timestamp?: boolean
+    inverterId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    inverter?: boolean | InverterDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["generationUnit"]>
+
+  export type GenerationUnitSelectScalar = {
+    id?: boolean
+    power?: boolean
+    energy?: boolean
+    generationUnitType?: boolean
+    timestamp?: boolean
+    inverterId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type GenerationUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "power" | "energy" | "generationUnitType" | "timestamp" | "inverterId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["generationUnit"]>
+  export type GenerationUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inverter?: boolean | InverterDefaultArgs<ExtArgs>
+  }
+  export type GenerationUnitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inverter?: boolean | InverterDefaultArgs<ExtArgs>
+  }
+  export type GenerationUnitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inverter?: boolean | InverterDefaultArgs<ExtArgs>
+  }
+
+  export type $GenerationUnitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GenerationUnit"
+    objects: {
+      inverter: Prisma.$InverterPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      power: number
+      energy: number
+      generationUnitType: string
+      timestamp: Date
+      inverterId: string
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["generationUnit"]>
+    composites: {}
+  }
+
+  type GenerationUnitGetPayload<S extends boolean | null | undefined | GenerationUnitDefaultArgs> = $Result.GetResult<Prisma.$GenerationUnitPayload, S>
+
+  type GenerationUnitCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GenerationUnitFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GenerationUnitCountAggregateInputType | true
+    }
+
+  export interface GenerationUnitDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GenerationUnit'], meta: { name: 'GenerationUnit' } }
+    /**
+     * Find zero or one GenerationUnit that matches the filter.
+     * @param {GenerationUnitFindUniqueArgs} args - Arguments to find a GenerationUnit
+     * @example
+     * // Get one GenerationUnit
+     * const generationUnit = await prisma.generationUnit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GenerationUnitFindUniqueArgs>(args: SelectSubset<T, GenerationUnitFindUniqueArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GenerationUnit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GenerationUnitFindUniqueOrThrowArgs} args - Arguments to find a GenerationUnit
+     * @example
+     * // Get one GenerationUnit
+     * const generationUnit = await prisma.generationUnit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GenerationUnitFindUniqueOrThrowArgs>(args: SelectSubset<T, GenerationUnitFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GenerationUnit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationUnitFindFirstArgs} args - Arguments to find a GenerationUnit
+     * @example
+     * // Get one GenerationUnit
+     * const generationUnit = await prisma.generationUnit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GenerationUnitFindFirstArgs>(args?: SelectSubset<T, GenerationUnitFindFirstArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GenerationUnit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationUnitFindFirstOrThrowArgs} args - Arguments to find a GenerationUnit
+     * @example
+     * // Get one GenerationUnit
+     * const generationUnit = await prisma.generationUnit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GenerationUnitFindFirstOrThrowArgs>(args?: SelectSubset<T, GenerationUnitFindFirstOrThrowArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GenerationUnits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationUnitFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GenerationUnits
+     * const generationUnits = await prisma.generationUnit.findMany()
+     * 
+     * // Get first 10 GenerationUnits
+     * const generationUnits = await prisma.generationUnit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const generationUnitWithIdOnly = await prisma.generationUnit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GenerationUnitFindManyArgs>(args?: SelectSubset<T, GenerationUnitFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GenerationUnit.
+     * @param {GenerationUnitCreateArgs} args - Arguments to create a GenerationUnit.
+     * @example
+     * // Create one GenerationUnit
+     * const GenerationUnit = await prisma.generationUnit.create({
+     *   data: {
+     *     // ... data to create a GenerationUnit
+     *   }
+     * })
+     * 
+     */
+    create<T extends GenerationUnitCreateArgs>(args: SelectSubset<T, GenerationUnitCreateArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GenerationUnits.
+     * @param {GenerationUnitCreateManyArgs} args - Arguments to create many GenerationUnits.
+     * @example
+     * // Create many GenerationUnits
+     * const generationUnit = await prisma.generationUnit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GenerationUnitCreateManyArgs>(args?: SelectSubset<T, GenerationUnitCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GenerationUnits and returns the data saved in the database.
+     * @param {GenerationUnitCreateManyAndReturnArgs} args - Arguments to create many GenerationUnits.
+     * @example
+     * // Create many GenerationUnits
+     * const generationUnit = await prisma.generationUnit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GenerationUnits and only return the `id`
+     * const generationUnitWithIdOnly = await prisma.generationUnit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GenerationUnitCreateManyAndReturnArgs>(args?: SelectSubset<T, GenerationUnitCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GenerationUnit.
+     * @param {GenerationUnitDeleteArgs} args - Arguments to delete one GenerationUnit.
+     * @example
+     * // Delete one GenerationUnit
+     * const GenerationUnit = await prisma.generationUnit.delete({
+     *   where: {
+     *     // ... filter to delete one GenerationUnit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GenerationUnitDeleteArgs>(args: SelectSubset<T, GenerationUnitDeleteArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GenerationUnit.
+     * @param {GenerationUnitUpdateArgs} args - Arguments to update one GenerationUnit.
+     * @example
+     * // Update one GenerationUnit
+     * const generationUnit = await prisma.generationUnit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GenerationUnitUpdateArgs>(args: SelectSubset<T, GenerationUnitUpdateArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GenerationUnits.
+     * @param {GenerationUnitDeleteManyArgs} args - Arguments to filter GenerationUnits to delete.
+     * @example
+     * // Delete a few GenerationUnits
+     * const { count } = await prisma.generationUnit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GenerationUnitDeleteManyArgs>(args?: SelectSubset<T, GenerationUnitDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GenerationUnits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationUnitUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GenerationUnits
+     * const generationUnit = await prisma.generationUnit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GenerationUnitUpdateManyArgs>(args: SelectSubset<T, GenerationUnitUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GenerationUnits and returns the data updated in the database.
+     * @param {GenerationUnitUpdateManyAndReturnArgs} args - Arguments to update many GenerationUnits.
+     * @example
+     * // Update many GenerationUnits
+     * const generationUnit = await prisma.generationUnit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GenerationUnits and only return the `id`
+     * const generationUnitWithIdOnly = await prisma.generationUnit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GenerationUnitUpdateManyAndReturnArgs>(args: SelectSubset<T, GenerationUnitUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GenerationUnit.
+     * @param {GenerationUnitUpsertArgs} args - Arguments to update or create a GenerationUnit.
+     * @example
+     * // Update or create a GenerationUnit
+     * const generationUnit = await prisma.generationUnit.upsert({
+     *   create: {
+     *     // ... data to create a GenerationUnit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GenerationUnit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GenerationUnitUpsertArgs>(args: SelectSubset<T, GenerationUnitUpsertArgs<ExtArgs>>): Prisma__GenerationUnitClient<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GenerationUnits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationUnitCountArgs} args - Arguments to filter GenerationUnits to count.
+     * @example
+     * // Count the number of GenerationUnits
+     * const count = await prisma.generationUnit.count({
+     *   where: {
+     *     // ... the filter for the GenerationUnits we want to count
+     *   }
+     * })
+    **/
+    count<T extends GenerationUnitCountArgs>(
+      args?: Subset<T, GenerationUnitCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GenerationUnitCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GenerationUnit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationUnitAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GenerationUnitAggregateArgs>(args: Subset<T, GenerationUnitAggregateArgs>): Prisma.PrismaPromise<GetGenerationUnitAggregateType<T>>
+
+    /**
+     * Group by GenerationUnit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationUnitGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GenerationUnitGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GenerationUnitGroupByArgs['orderBy'] }
+        : { orderBy?: GenerationUnitGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GenerationUnitGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGenerationUnitGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GenerationUnit model
+   */
+  readonly fields: GenerationUnitFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GenerationUnit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GenerationUnitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    inverter<T extends InverterDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InverterDefaultArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GenerationUnit model
+   */
+  interface GenerationUnitFieldRefs {
+    readonly id: FieldRef<"GenerationUnit", 'String'>
+    readonly power: FieldRef<"GenerationUnit", 'Float'>
+    readonly energy: FieldRef<"GenerationUnit", 'Float'>
+    readonly generationUnitType: FieldRef<"GenerationUnit", 'String'>
+    readonly timestamp: FieldRef<"GenerationUnit", 'DateTime'>
+    readonly inverterId: FieldRef<"GenerationUnit", 'String'>
+    readonly createdAt: FieldRef<"GenerationUnit", 'DateTime'>
+    readonly updatedAt: FieldRef<"GenerationUnit", 'DateTime'>
+    readonly deletedAt: FieldRef<"GenerationUnit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GenerationUnit findUnique
+   */
+  export type GenerationUnitFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationUnit to fetch.
+     */
+    where: GenerationUnitWhereUniqueInput
+  }
+
+  /**
+   * GenerationUnit findUniqueOrThrow
+   */
+  export type GenerationUnitFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationUnit to fetch.
+     */
+    where: GenerationUnitWhereUniqueInput
+  }
+
+  /**
+   * GenerationUnit findFirst
+   */
+  export type GenerationUnitFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationUnit to fetch.
+     */
+    where?: GenerationUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationUnits to fetch.
+     */
+    orderBy?: GenerationUnitOrderByWithRelationInput | GenerationUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GenerationUnits.
+     */
+    cursor?: GenerationUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationUnits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GenerationUnits.
+     */
+    distinct?: GenerationUnitScalarFieldEnum | GenerationUnitScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationUnit findFirstOrThrow
+   */
+  export type GenerationUnitFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationUnit to fetch.
+     */
+    where?: GenerationUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationUnits to fetch.
+     */
+    orderBy?: GenerationUnitOrderByWithRelationInput | GenerationUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GenerationUnits.
+     */
+    cursor?: GenerationUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationUnits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GenerationUnits.
+     */
+    distinct?: GenerationUnitScalarFieldEnum | GenerationUnitScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationUnit findMany
+   */
+  export type GenerationUnitFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationUnits to fetch.
+     */
+    where?: GenerationUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationUnits to fetch.
+     */
+    orderBy?: GenerationUnitOrderByWithRelationInput | GenerationUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GenerationUnits.
+     */
+    cursor?: GenerationUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationUnits.
+     */
+    skip?: number
+    distinct?: GenerationUnitScalarFieldEnum | GenerationUnitScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationUnit create
+   */
+  export type GenerationUnitCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GenerationUnit.
+     */
+    data: XOR<GenerationUnitCreateInput, GenerationUnitUncheckedCreateInput>
+  }
+
+  /**
+   * GenerationUnit createMany
+   */
+  export type GenerationUnitCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GenerationUnits.
+     */
+    data: GenerationUnitCreateManyInput | GenerationUnitCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GenerationUnit createManyAndReturn
+   */
+  export type GenerationUnitCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * The data used to create many GenerationUnits.
+     */
+    data: GenerationUnitCreateManyInput | GenerationUnitCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GenerationUnit update
+   */
+  export type GenerationUnitUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GenerationUnit.
+     */
+    data: XOR<GenerationUnitUpdateInput, GenerationUnitUncheckedUpdateInput>
+    /**
+     * Choose, which GenerationUnit to update.
+     */
+    where: GenerationUnitWhereUniqueInput
+  }
+
+  /**
+   * GenerationUnit updateMany
+   */
+  export type GenerationUnitUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GenerationUnits.
+     */
+    data: XOR<GenerationUnitUpdateManyMutationInput, GenerationUnitUncheckedUpdateManyInput>
+    /**
+     * Filter which GenerationUnits to update
+     */
+    where?: GenerationUnitWhereInput
+    /**
+     * Limit how many GenerationUnits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GenerationUnit updateManyAndReturn
+   */
+  export type GenerationUnitUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * The data used to update GenerationUnits.
+     */
+    data: XOR<GenerationUnitUpdateManyMutationInput, GenerationUnitUncheckedUpdateManyInput>
+    /**
+     * Filter which GenerationUnits to update
+     */
+    where?: GenerationUnitWhereInput
+    /**
+     * Limit how many GenerationUnits to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GenerationUnit upsert
+   */
+  export type GenerationUnitUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GenerationUnit to update in case it exists.
+     */
+    where: GenerationUnitWhereUniqueInput
+    /**
+     * In case the GenerationUnit found by the `where` argument doesn't exist, create a new GenerationUnit with this data.
+     */
+    create: XOR<GenerationUnitCreateInput, GenerationUnitUncheckedCreateInput>
+    /**
+     * In case the GenerationUnit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GenerationUnitUpdateInput, GenerationUnitUncheckedUpdateInput>
+  }
+
+  /**
+   * GenerationUnit delete
+   */
+  export type GenerationUnitDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
+    /**
+     * Filter which GenerationUnit to delete.
+     */
+    where: GenerationUnitWhereUniqueInput
+  }
+
+  /**
+   * GenerationUnit deleteMany
+   */
+  export type GenerationUnitDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GenerationUnits to delete
+     */
+    where?: GenerationUnitWhereInput
+    /**
+     * Limit how many GenerationUnits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GenerationUnit without action
+   */
+  export type GenerationUnitDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationUnit
+     */
+    select?: GenerationUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationUnit
+     */
+    omit?: GenerationUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationUnitInclude<ExtArgs> | null
   }
 
 
@@ -4351,6 +5690,9 @@ export namespace Prisma {
     id: 'id',
     provider: 'provider',
     providerId: 'providerId',
+    providerApiKey: 'providerApiKey',
+    providerApiSecret: 'providerApiSecret',
+    providerUrl: 'providerUrl',
     clientId: 'clientId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -4358,6 +5700,21 @@ export namespace Prisma {
   };
 
   export type InverterScalarFieldEnum = (typeof InverterScalarFieldEnum)[keyof typeof InverterScalarFieldEnum]
+
+
+  export const GenerationUnitScalarFieldEnum: {
+    id: 'id',
+    power: 'power',
+    energy: 'energy',
+    generationUnitType: 'generationUnitType',
+    timestamp: 'timestamp',
+    inverterId: 'inverterId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type GenerationUnitScalarFieldEnum = (typeof GenerationUnitScalarFieldEnum)[keyof typeof GenerationUnitScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4584,22 +5941,30 @@ export namespace Prisma {
     id?: StringFilter<"Inverter"> | string
     provider?: StringFilter<"Inverter"> | string
     providerId?: StringFilter<"Inverter"> | string
+    providerApiKey?: StringNullableFilter<"Inverter"> | string | null
+    providerApiSecret?: StringNullableFilter<"Inverter"> | string | null
+    providerUrl?: StringNullableFilter<"Inverter"> | string | null
     clientId?: StringFilter<"Inverter"> | string
     createdAt?: DateTimeFilter<"Inverter"> | Date | string
     updatedAt?: DateTimeFilter<"Inverter"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    generationUnits?: GenerationUnitListRelationFilter
   }
 
   export type InverterOrderByWithRelationInput = {
     id?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
+    providerApiKey?: SortOrderInput | SortOrder
+    providerApiSecret?: SortOrderInput | SortOrder
+    providerUrl?: SortOrderInput | SortOrder
     clientId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
+    generationUnits?: GenerationUnitOrderByRelationAggregateInput
   }
 
   export type InverterWhereUniqueInput = Prisma.AtLeast<{
@@ -4609,17 +5974,24 @@ export namespace Prisma {
     NOT?: InverterWhereInput | InverterWhereInput[]
     provider?: StringFilter<"Inverter"> | string
     providerId?: StringFilter<"Inverter"> | string
+    providerApiKey?: StringNullableFilter<"Inverter"> | string | null
+    providerApiSecret?: StringNullableFilter<"Inverter"> | string | null
+    providerUrl?: StringNullableFilter<"Inverter"> | string | null
     clientId?: StringFilter<"Inverter"> | string
     createdAt?: DateTimeFilter<"Inverter"> | Date | string
     updatedAt?: DateTimeFilter<"Inverter"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    generationUnits?: GenerationUnitListRelationFilter
   }, "id">
 
   export type InverterOrderByWithAggregationInput = {
     id?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
+    providerApiKey?: SortOrderInput | SortOrder
+    providerApiSecret?: SortOrderInput | SortOrder
+    providerUrl?: SortOrderInput | SortOrder
     clientId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -4636,10 +6008,90 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Inverter"> | string
     provider?: StringWithAggregatesFilter<"Inverter"> | string
     providerId?: StringWithAggregatesFilter<"Inverter"> | string
+    providerApiKey?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    providerApiSecret?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    providerUrl?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
     clientId?: StringWithAggregatesFilter<"Inverter"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Inverter"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Inverter"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Inverter"> | Date | string | null
+  }
+
+  export type GenerationUnitWhereInput = {
+    AND?: GenerationUnitWhereInput | GenerationUnitWhereInput[]
+    OR?: GenerationUnitWhereInput[]
+    NOT?: GenerationUnitWhereInput | GenerationUnitWhereInput[]
+    id?: StringFilter<"GenerationUnit"> | string
+    power?: FloatFilter<"GenerationUnit"> | number
+    energy?: FloatFilter<"GenerationUnit"> | number
+    generationUnitType?: StringFilter<"GenerationUnit"> | string
+    timestamp?: DateTimeFilter<"GenerationUnit"> | Date | string
+    inverterId?: StringFilter<"GenerationUnit"> | string
+    createdAt?: DateTimeFilter<"GenerationUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"GenerationUnit"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"GenerationUnit"> | Date | string | null
+    inverter?: XOR<InverterScalarRelationFilter, InverterWhereInput>
+  }
+
+  export type GenerationUnitOrderByWithRelationInput = {
+    id?: SortOrder
+    power?: SortOrder
+    energy?: SortOrder
+    generationUnitType?: SortOrder
+    timestamp?: SortOrder
+    inverterId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    inverter?: InverterOrderByWithRelationInput
+  }
+
+  export type GenerationUnitWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GenerationUnitWhereInput | GenerationUnitWhereInput[]
+    OR?: GenerationUnitWhereInput[]
+    NOT?: GenerationUnitWhereInput | GenerationUnitWhereInput[]
+    power?: FloatFilter<"GenerationUnit"> | number
+    energy?: FloatFilter<"GenerationUnit"> | number
+    generationUnitType?: StringFilter<"GenerationUnit"> | string
+    timestamp?: DateTimeFilter<"GenerationUnit"> | Date | string
+    inverterId?: StringFilter<"GenerationUnit"> | string
+    createdAt?: DateTimeFilter<"GenerationUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"GenerationUnit"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"GenerationUnit"> | Date | string | null
+    inverter?: XOR<InverterScalarRelationFilter, InverterWhereInput>
+  }, "id">
+
+  export type GenerationUnitOrderByWithAggregationInput = {
+    id?: SortOrder
+    power?: SortOrder
+    energy?: SortOrder
+    generationUnitType?: SortOrder
+    timestamp?: SortOrder
+    inverterId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: GenerationUnitCountOrderByAggregateInput
+    _avg?: GenerationUnitAvgOrderByAggregateInput
+    _max?: GenerationUnitMaxOrderByAggregateInput
+    _min?: GenerationUnitMinOrderByAggregateInput
+    _sum?: GenerationUnitSumOrderByAggregateInput
+  }
+
+  export type GenerationUnitScalarWhereWithAggregatesInput = {
+    AND?: GenerationUnitScalarWhereWithAggregatesInput | GenerationUnitScalarWhereWithAggregatesInput[]
+    OR?: GenerationUnitScalarWhereWithAggregatesInput[]
+    NOT?: GenerationUnitScalarWhereWithAggregatesInput | GenerationUnitScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GenerationUnit"> | string
+    power?: FloatWithAggregatesFilter<"GenerationUnit"> | number
+    energy?: FloatWithAggregatesFilter<"GenerationUnit"> | number
+    generationUnitType?: StringWithAggregatesFilter<"GenerationUnit"> | string
+    timestamp?: DateTimeWithAggregatesFilter<"GenerationUnit"> | Date | string
+    inverterId?: StringWithAggregatesFilter<"GenerationUnit"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"GenerationUnit"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GenerationUnit"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"GenerationUnit"> | Date | string | null
   }
 
   export type UserCreateInput = {
@@ -4790,46 +6242,65 @@ export namespace Prisma {
     id?: string
     provider: string
     providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutInvertersInput
+    generationUnits?: GenerationUnitCreateNestedManyWithoutInverterInput
   }
 
   export type InverterUncheckedCreateInput = {
     id?: string
     provider: string
     providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
     clientId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    generationUnits?: GenerationUnitUncheckedCreateNestedManyWithoutInverterInput
   }
 
   export type InverterUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutInvertersNestedInput
+    generationUnits?: GenerationUnitUpdateManyWithoutInverterNestedInput
   }
 
   export type InverterUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     clientId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generationUnits?: GenerationUnitUncheckedUpdateManyWithoutInverterNestedInput
   }
 
   export type InverterCreateManyInput = {
     id?: string
     provider: string
     providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
     clientId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4840,6 +6311,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4849,7 +6323,93 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GenerationUnitCreateInput = {
+    id?: string
+    power: number
+    energy: number
+    generationUnitType?: string
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverter: InverterCreateNestedOneWithoutGenerationUnitsInput
+  }
+
+  export type GenerationUnitUncheckedCreateInput = {
+    id?: string
+    power: number
+    energy: number
+    generationUnitType?: string
+    timestamp?: Date | string
+    inverterId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type GenerationUnitUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    power?: FloatFieldUpdateOperationsInput | number
+    energy?: FloatFieldUpdateOperationsInput | number
+    generationUnitType?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverter?: InverterUpdateOneRequiredWithoutGenerationUnitsNestedInput
+  }
+
+  export type GenerationUnitUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    power?: FloatFieldUpdateOperationsInput | number
+    energy?: FloatFieldUpdateOperationsInput | number
+    generationUnitType?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    inverterId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GenerationUnitCreateManyInput = {
+    id?: string
+    power: number
+    energy: number
+    generationUnitType?: string
+    timestamp?: Date | string
+    inverterId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type GenerationUnitUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    power?: FloatFieldUpdateOperationsInput | number
+    energy?: FloatFieldUpdateOperationsInput | number
+    generationUnitType?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GenerationUnitUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    power?: FloatFieldUpdateOperationsInput | number
+    energy?: FloatFieldUpdateOperationsInput | number
+    generationUnitType?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    inverterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5086,10 +6646,23 @@ export namespace Prisma {
     isNot?: ClientWhereInput
   }
 
+  export type GenerationUnitListRelationFilter = {
+    every?: GenerationUnitWhereInput
+    some?: GenerationUnitWhereInput
+    none?: GenerationUnitWhereInput
+  }
+
+  export type GenerationUnitOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type InverterCountOrderByAggregateInput = {
     id?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
+    providerApiKey?: SortOrder
+    providerApiSecret?: SortOrder
+    providerUrl?: SortOrder
     clientId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -5100,6 +6673,9 @@ export namespace Prisma {
     id?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
+    providerApiKey?: SortOrder
+    providerApiSecret?: SortOrder
+    providerUrl?: SortOrder
     clientId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -5110,10 +6686,64 @@ export namespace Prisma {
     id?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
+    providerApiKey?: SortOrder
+    providerApiSecret?: SortOrder
+    providerUrl?: SortOrder
     clientId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type InverterScalarRelationFilter = {
+    is?: InverterWhereInput
+    isNot?: InverterWhereInput
+  }
+
+  export type GenerationUnitCountOrderByAggregateInput = {
+    id?: SortOrder
+    power?: SortOrder
+    energy?: SortOrder
+    generationUnitType?: SortOrder
+    timestamp?: SortOrder
+    inverterId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type GenerationUnitAvgOrderByAggregateInput = {
+    power?: SortOrder
+    energy?: SortOrder
+  }
+
+  export type GenerationUnitMaxOrderByAggregateInput = {
+    id?: SortOrder
+    power?: SortOrder
+    energy?: SortOrder
+    generationUnitType?: SortOrder
+    timestamp?: SortOrder
+    inverterId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type GenerationUnitMinOrderByAggregateInput = {
+    id?: SortOrder
+    power?: SortOrder
+    energy?: SortOrder
+    generationUnitType?: SortOrder
+    timestamp?: SortOrder
+    inverterId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type GenerationUnitSumOrderByAggregateInput = {
+    power?: SortOrder
+    energy?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5188,12 +6818,68 @@ export namespace Prisma {
     connect?: ClientWhereUniqueInput
   }
 
+  export type GenerationUnitCreateNestedManyWithoutInverterInput = {
+    create?: XOR<GenerationUnitCreateWithoutInverterInput, GenerationUnitUncheckedCreateWithoutInverterInput> | GenerationUnitCreateWithoutInverterInput[] | GenerationUnitUncheckedCreateWithoutInverterInput[]
+    connectOrCreate?: GenerationUnitCreateOrConnectWithoutInverterInput | GenerationUnitCreateOrConnectWithoutInverterInput[]
+    createMany?: GenerationUnitCreateManyInverterInputEnvelope
+    connect?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+  }
+
+  export type GenerationUnitUncheckedCreateNestedManyWithoutInverterInput = {
+    create?: XOR<GenerationUnitCreateWithoutInverterInput, GenerationUnitUncheckedCreateWithoutInverterInput> | GenerationUnitCreateWithoutInverterInput[] | GenerationUnitUncheckedCreateWithoutInverterInput[]
+    connectOrCreate?: GenerationUnitCreateOrConnectWithoutInverterInput | GenerationUnitCreateOrConnectWithoutInverterInput[]
+    createMany?: GenerationUnitCreateManyInverterInputEnvelope
+    connect?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+  }
+
   export type ClientUpdateOneRequiredWithoutInvertersNestedInput = {
     create?: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
     connectOrCreate?: ClientCreateOrConnectWithoutInvertersInput
     upsert?: ClientUpsertWithoutInvertersInput
     connect?: ClientWhereUniqueInput
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutInvertersInput, ClientUpdateWithoutInvertersInput>, ClientUncheckedUpdateWithoutInvertersInput>
+  }
+
+  export type GenerationUnitUpdateManyWithoutInverterNestedInput = {
+    create?: XOR<GenerationUnitCreateWithoutInverterInput, GenerationUnitUncheckedCreateWithoutInverterInput> | GenerationUnitCreateWithoutInverterInput[] | GenerationUnitUncheckedCreateWithoutInverterInput[]
+    connectOrCreate?: GenerationUnitCreateOrConnectWithoutInverterInput | GenerationUnitCreateOrConnectWithoutInverterInput[]
+    upsert?: GenerationUnitUpsertWithWhereUniqueWithoutInverterInput | GenerationUnitUpsertWithWhereUniqueWithoutInverterInput[]
+    createMany?: GenerationUnitCreateManyInverterInputEnvelope
+    set?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    disconnect?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    delete?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    connect?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    update?: GenerationUnitUpdateWithWhereUniqueWithoutInverterInput | GenerationUnitUpdateWithWhereUniqueWithoutInverterInput[]
+    updateMany?: GenerationUnitUpdateManyWithWhereWithoutInverterInput | GenerationUnitUpdateManyWithWhereWithoutInverterInput[]
+    deleteMany?: GenerationUnitScalarWhereInput | GenerationUnitScalarWhereInput[]
+  }
+
+  export type GenerationUnitUncheckedUpdateManyWithoutInverterNestedInput = {
+    create?: XOR<GenerationUnitCreateWithoutInverterInput, GenerationUnitUncheckedCreateWithoutInverterInput> | GenerationUnitCreateWithoutInverterInput[] | GenerationUnitUncheckedCreateWithoutInverterInput[]
+    connectOrCreate?: GenerationUnitCreateOrConnectWithoutInverterInput | GenerationUnitCreateOrConnectWithoutInverterInput[]
+    upsert?: GenerationUnitUpsertWithWhereUniqueWithoutInverterInput | GenerationUnitUpsertWithWhereUniqueWithoutInverterInput[]
+    createMany?: GenerationUnitCreateManyInverterInputEnvelope
+    set?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    disconnect?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    delete?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    connect?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
+    update?: GenerationUnitUpdateWithWhereUniqueWithoutInverterInput | GenerationUnitUpdateWithWhereUniqueWithoutInverterInput[]
+    updateMany?: GenerationUnitUpdateManyWithWhereWithoutInverterInput | GenerationUnitUpdateManyWithWhereWithoutInverterInput[]
+    deleteMany?: GenerationUnitScalarWhereInput | GenerationUnitScalarWhereInput[]
+  }
+
+  export type InverterCreateNestedOneWithoutGenerationUnitsInput = {
+    create?: XOR<InverterCreateWithoutGenerationUnitsInput, InverterUncheckedCreateWithoutGenerationUnitsInput>
+    connectOrCreate?: InverterCreateOrConnectWithoutGenerationUnitsInput
+    connect?: InverterWhereUniqueInput
+  }
+
+  export type InverterUpdateOneRequiredWithoutGenerationUnitsNestedInput = {
+    create?: XOR<InverterCreateWithoutGenerationUnitsInput, InverterUncheckedCreateWithoutGenerationUnitsInput>
+    connectOrCreate?: InverterCreateOrConnectWithoutGenerationUnitsInput
+    upsert?: InverterUpsertWithoutGenerationUnitsInput
+    connect?: InverterWhereUniqueInput
+    update?: XOR<XOR<InverterUpdateToOneWithWhereWithoutGenerationUnitsInput, InverterUpdateWithoutGenerationUnitsInput>, InverterUncheckedUpdateWithoutGenerationUnitsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -5361,18 +7047,26 @@ export namespace Prisma {
     id?: string
     provider: string
     providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    generationUnits?: GenerationUnitCreateNestedManyWithoutInverterInput
   }
 
   export type InverterUncheckedCreateWithoutClientInput = {
     id?: string
     provider: string
     providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    generationUnits?: GenerationUnitUncheckedCreateNestedManyWithoutInverterInput
   }
 
   export type InverterCreateOrConnectWithoutClientInput = {
@@ -5408,6 +7102,9 @@ export namespace Prisma {
     id?: StringFilter<"Inverter"> | string
     provider?: StringFilter<"Inverter"> | string
     providerId?: StringFilter<"Inverter"> | string
+    providerApiKey?: StringNullableFilter<"Inverter"> | string | null
+    providerApiSecret?: StringNullableFilter<"Inverter"> | string | null
+    providerUrl?: StringNullableFilter<"Inverter"> | string | null
     clientId?: StringFilter<"Inverter"> | string
     createdAt?: DateTimeFilter<"Inverter"> | Date | string
     updatedAt?: DateTimeFilter<"Inverter"> | Date | string
@@ -5439,6 +7136,38 @@ export namespace Prisma {
   export type ClientCreateOrConnectWithoutInvertersInput = {
     where: ClientWhereUniqueInput
     create: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
+  }
+
+  export type GenerationUnitCreateWithoutInverterInput = {
+    id?: string
+    power: number
+    energy: number
+    generationUnitType?: string
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type GenerationUnitUncheckedCreateWithoutInverterInput = {
+    id?: string
+    power: number
+    energy: number
+    generationUnitType?: string
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type GenerationUnitCreateOrConnectWithoutInverterInput = {
+    where: GenerationUnitWhereUniqueInput
+    create: XOR<GenerationUnitCreateWithoutInverterInput, GenerationUnitUncheckedCreateWithoutInverterInput>
+  }
+
+  export type GenerationUnitCreateManyInverterInputEnvelope = {
+    data: GenerationUnitCreateManyInverterInput | GenerationUnitCreateManyInverterInput[]
+    skipDuplicates?: boolean
   }
 
   export type ClientUpsertWithoutInvertersInput = {
@@ -5474,10 +7203,112 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type GenerationUnitUpsertWithWhereUniqueWithoutInverterInput = {
+    where: GenerationUnitWhereUniqueInput
+    update: XOR<GenerationUnitUpdateWithoutInverterInput, GenerationUnitUncheckedUpdateWithoutInverterInput>
+    create: XOR<GenerationUnitCreateWithoutInverterInput, GenerationUnitUncheckedCreateWithoutInverterInput>
+  }
+
+  export type GenerationUnitUpdateWithWhereUniqueWithoutInverterInput = {
+    where: GenerationUnitWhereUniqueInput
+    data: XOR<GenerationUnitUpdateWithoutInverterInput, GenerationUnitUncheckedUpdateWithoutInverterInput>
+  }
+
+  export type GenerationUnitUpdateManyWithWhereWithoutInverterInput = {
+    where: GenerationUnitScalarWhereInput
+    data: XOR<GenerationUnitUpdateManyMutationInput, GenerationUnitUncheckedUpdateManyWithoutInverterInput>
+  }
+
+  export type GenerationUnitScalarWhereInput = {
+    AND?: GenerationUnitScalarWhereInput | GenerationUnitScalarWhereInput[]
+    OR?: GenerationUnitScalarWhereInput[]
+    NOT?: GenerationUnitScalarWhereInput | GenerationUnitScalarWhereInput[]
+    id?: StringFilter<"GenerationUnit"> | string
+    power?: FloatFilter<"GenerationUnit"> | number
+    energy?: FloatFilter<"GenerationUnit"> | number
+    generationUnitType?: StringFilter<"GenerationUnit"> | string
+    timestamp?: DateTimeFilter<"GenerationUnit"> | Date | string
+    inverterId?: StringFilter<"GenerationUnit"> | string
+    createdAt?: DateTimeFilter<"GenerationUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"GenerationUnit"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"GenerationUnit"> | Date | string | null
+  }
+
+  export type InverterCreateWithoutGenerationUnitsInput = {
+    id?: string
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutInvertersInput
+  }
+
+  export type InverterUncheckedCreateWithoutGenerationUnitsInput = {
+    id?: string
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    clientId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InverterCreateOrConnectWithoutGenerationUnitsInput = {
+    where: InverterWhereUniqueInput
+    create: XOR<InverterCreateWithoutGenerationUnitsInput, InverterUncheckedCreateWithoutGenerationUnitsInput>
+  }
+
+  export type InverterUpsertWithoutGenerationUnitsInput = {
+    update: XOR<InverterUpdateWithoutGenerationUnitsInput, InverterUncheckedUpdateWithoutGenerationUnitsInput>
+    create: XOR<InverterCreateWithoutGenerationUnitsInput, InverterUncheckedCreateWithoutGenerationUnitsInput>
+    where?: InverterWhereInput
+  }
+
+  export type InverterUpdateToOneWithWhereWithoutGenerationUnitsInput = {
+    where?: InverterWhereInput
+    data: XOR<InverterUpdateWithoutGenerationUnitsInput, InverterUncheckedUpdateWithoutGenerationUnitsInput>
+  }
+
+  export type InverterUpdateWithoutGenerationUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutInvertersNestedInput
+  }
+
+  export type InverterUncheckedUpdateWithoutGenerationUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type InverterCreateManyClientInput = {
     id?: string
     provider: string
     providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -5487,24 +7318,79 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generationUnits?: GenerationUnitUpdateManyWithoutInverterNestedInput
   }
 
   export type InverterUncheckedUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generationUnits?: GenerationUnitUncheckedUpdateManyWithoutInverterNestedInput
   }
 
   export type InverterUncheckedUpdateManyWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GenerationUnitCreateManyInverterInput = {
+    id?: string
+    power: number
+    energy: number
+    generationUnitType?: string
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type GenerationUnitUpdateWithoutInverterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    power?: FloatFieldUpdateOperationsInput | number
+    energy?: FloatFieldUpdateOperationsInput | number
+    generationUnitType?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GenerationUnitUncheckedUpdateWithoutInverterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    power?: FloatFieldUpdateOperationsInput | number
+    energy?: FloatFieldUpdateOperationsInput | number
+    generationUnitType?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GenerationUnitUncheckedUpdateManyWithoutInverterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    power?: FloatFieldUpdateOperationsInput | number
+    energy?: FloatFieldUpdateOperationsInput | number
+    generationUnitType?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

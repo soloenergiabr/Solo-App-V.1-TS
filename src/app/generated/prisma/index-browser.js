@@ -144,7 +144,22 @@ exports.Prisma.InverterScalarFieldEnum = {
   id: 'id',
   provider: 'provider',
   providerId: 'providerId',
+  providerApiKey: 'providerApiKey',
+  providerApiSecret: 'providerApiSecret',
+  providerUrl: 'providerUrl',
   clientId: 'clientId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.GenerationUnitScalarFieldEnum = {
+  id: 'id',
+  power: 'power',
+  energy: 'energy',
+  generationUnitType: 'generationUnitType',
+  timestamp: 'timestamp',
+  inverterId: 'inverterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -169,7 +184,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   User: 'User',
   Client: 'Client',
-  Inverter: 'Inverter'
+  Inverter: 'Inverter',
+  GenerationUnit: 'GenerationUnit'
 };
 
 /**

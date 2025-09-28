@@ -116,7 +116,22 @@ exports.Prisma.InverterScalarFieldEnum = {
   id: 'id',
   provider: 'provider',
   providerId: 'providerId',
+  providerApiKey: 'providerApiKey',
+  providerApiSecret: 'providerApiSecret',
+  providerUrl: 'providerUrl',
   clientId: 'clientId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.GenerationUnitScalarFieldEnum = {
+  id: 'id',
+  power: 'power',
+  energy: 'energy',
+  generationUnitType: 'generationUnitType',
+  timestamp: 'timestamp',
+  inverterId: 'inverterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -141,7 +156,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   User: 'User',
   Client: 'Client',
-  Inverter: 'Inverter'
+  Inverter: 'Inverter',
+  GenerationUnit: 'GenerationUnit'
 };
 /**
  * Create the Client
@@ -190,13 +206,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  email     String   @unique\n  name      String?\n  password  String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Client {\n  id      String @id @default(dbgenerated(\"(concat('client_', gen_random_uuid()))::TEXT\"))\n  name    String\n  email   String @unique\n  cpfCnpj String @unique\n\n  soloCoinBalance Float @default(0)\n\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  inverters Inverter[]\n}\n\nmodel Inverter {\n  id String @id @default(dbgenerated(\"(concat('inverter_', gen_random_uuid()))::TEXT\"))\n\n  provider   String\n  providerId String\n\n  client   Client @relation(fields: [clientId], references: [id])\n  clientId String\n\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n}\n",
-  "inlineSchemaHash": "556606897dcbd7fa5de7237853025c03ebac4077323f5e00d9bf0e1a1917c9fb",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  email     String   @unique\n  name      String?\n  password  String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([email])\n  @@map(\"user\")\n}\n\nmodel Client {\n  id      String @id @default(dbgenerated(\"(concat('client_', gen_random_uuid()))::TEXT\"))\n  name    String\n  email   String @unique\n  cpfCnpj String @unique\n\n  soloCoinBalance Float @default(0)\n\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  inverters Inverter[]\n\n  @@index([email])\n  @@index([cpfCnpj])\n  @@map(\"client\")\n}\n\nmodel Inverter {\n  id String @id @default(dbgenerated(\"(concat('inverter_', gen_random_uuid()))::TEXT\"))\n\n  provider          String\n  providerId        String\n  providerApiKey    String?\n  providerApiSecret String?\n  providerUrl       String?\n\n  client   Client @relation(fields: [clientId], references: [id])\n  clientId String\n\n  createdAt       DateTime         @default(now())\n  updatedAt       DateTime         @updatedAt\n  deletedAt       DateTime?\n  generationUnits GenerationUnit[]\n\n  @@index([providerId])\n  @@map(\"inverter\")\n}\n\nmodel GenerationUnit {\n  id String @id @default(dbgenerated(\"(concat('generation_unit_', gen_random_uuid()))::TEXT\"))\n\n  power  Float\n  energy Float\n\n  generationUnitType String @default(\"real_time\")\n\n  timestamp DateTime @default(now())\n\n  inverter   Inverter @relation(fields: [inverterId], references: [id])\n  inverterId String\n\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  @@index([inverterId])\n  @@index([inverterId, generationUnitType])\n  @@index([inverterId, generationUnitType, timestamp])\n  @@map(\"generation_unit\")\n}\n",
+  "inlineSchemaHash": "70ec2b2ac73faa677ffc572001a74b7cb6d81ffc1eca045c97eb48035bc6aa11",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Client\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cpfCnpj\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"soloCoinBalance\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"inverters\",\"kind\":\"object\",\"type\":\"Inverter\",\"relationName\":\"ClientToInverter\"}],\"dbName\":null},\"Inverter\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"client\",\"kind\":\"object\",\"type\":\"Client\",\"relationName\":\"ClientToInverter\"},{\"name\":\"clientId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"user\"},\"Client\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cpfCnpj\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"soloCoinBalance\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"inverters\",\"kind\":\"object\",\"type\":\"Inverter\",\"relationName\":\"ClientToInverter\"}],\"dbName\":\"client\"},\"Inverter\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerApiKey\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerApiSecret\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"client\",\"kind\":\"object\",\"type\":\"Client\",\"relationName\":\"ClientToInverter\"},{\"name\":\"clientId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"generationUnits\",\"kind\":\"object\",\"type\":\"GenerationUnit\",\"relationName\":\"GenerationUnitToInverter\"}],\"dbName\":\"inverter\"},\"GenerationUnit\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"power\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"energy\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"generationUnitType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timestamp\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"inverter\",\"kind\":\"object\",\"type\":\"Inverter\",\"relationName\":\"GenerationUnitToInverter\"},{\"name\":\"inverterId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"generation_unit\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
