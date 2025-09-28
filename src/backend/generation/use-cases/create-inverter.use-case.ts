@@ -36,6 +36,10 @@ export class CreateInverterUseCase {
             throw new Error('User does not have permission to create inverters');
         }
 
+        console.log({
+            userContext
+        })
+
         // Criar o inversor
         const inverterId = `inverter_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const inverter = new InverterModel(
@@ -49,7 +53,7 @@ export class CreateInverterUseCase {
             userContext.clientId // Associar ao cliente do usuário
         );
 
-        await this.inverterRepository.create(inverter);
+        // await this.inverterRepository.create(inverter);
 
         return CreateInverterResponseSchema.parse({
             inverterId,

@@ -120,6 +120,10 @@ export class JwtService {
     static createUserContextFromToken(token: string): UserContextModel {
         const payload = this.verifyToken(token);
 
+        console.log({
+            payload
+        });
+
         return new UserContextModel(
             payload.userId,
             payload.email,

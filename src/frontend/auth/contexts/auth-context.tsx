@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useAuth, AuthState, LoginCredentials, RegisterData } from '@/frontend/auth/hooks/useAuth';
+import { AxiosInstance } from 'axios';
 
 interface AuthContextType extends AuthState {
     login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
@@ -9,6 +10,7 @@ interface AuthContextType extends AuthState {
     logout: () => void;
     refreshToken: () => Promise<boolean>;
     checkAuth: () => Promise<void>;
+    axiosInstance: AxiosInstance;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,7 +18,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 interface AuthProviderProps {
     children: ReactNode;
 }
-
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const auth = useAuth();

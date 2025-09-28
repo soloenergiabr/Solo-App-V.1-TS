@@ -48,9 +48,9 @@ export async function POST(request: NextRequest) {
 
         // Tratar erros de autenticação
         if (error instanceof Error) {
-            const isAuthError = error.message.includes('credentials') || 
-                               error.message.includes('disabled');
-            
+            const isAuthError = error.message.includes('credentials') ||
+                error.message.includes('disabled');
+
             return NextResponse.json(
                 {
                     success: false,
