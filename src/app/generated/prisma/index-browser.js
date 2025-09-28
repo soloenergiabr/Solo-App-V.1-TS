@@ -129,6 +129,27 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ClientScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  cpfCnpj: 'cpfCnpj',
+  soloCoinBalance: 'soloCoinBalance',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.InverterScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  providerId: 'providerId',
+  clientId: 'clientId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -146,7 +167,9 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Client: 'Client',
+  Inverter: 'Inverter'
 };
 
 /**

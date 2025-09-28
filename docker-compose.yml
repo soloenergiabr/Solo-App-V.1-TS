@@ -1,0 +1,62 @@
+services:
+  postgres:
+    hostname: db
+    image: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "${DATABASE_PORT}:5432"
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_HOST=${DATABASE_HOST}
+      - POSTGRES_PORT=${DATABASE_PORT}
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nook-saas-template-network
+  redis:
+    image: redis
+    volumes:
+      - redis-data:/data
+    restart: always
+    networks:
+      - nook-saas-template-network
+  minio:
+    image: minio/minio
+    ports:
+      - "${MINIO_PORT}:9000"
+      - "${MINIO_CONSOLE_PORT}:9001"
+    volumes:
+      - minio-data:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+    restart: always
+    networks:
+      - nook-saas-template-network
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"  # SMTP server
+      - "8025:8025"  # Web UI
+    environment:
+      MH_STORAGE: memory
+      MH_CORS_ORIGIN: "*"
+    networks:
+      - nook-saas-template-network
+networks:
+  nook-saas-template-network:
+    driver: bridge
+volumes:
+  redis-data:
+  postgres-data:
+  minio-data:
+

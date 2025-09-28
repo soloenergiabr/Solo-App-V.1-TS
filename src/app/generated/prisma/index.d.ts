@@ -18,6 +18,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Client
+ * 
+ */
+export type Client = $Result.DefaultSelection<Prisma.$ClientPayload>
+/**
+ * Model Inverter
+ * 
+ */
+export type Inverter = $Result.DefaultSelection<Prisma.$InverterPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -146,6 +156,26 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.client`: Exposes CRUD operations for the **Client** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Clients
+    * const clients = await prisma.client.findMany()
+    * ```
+    */
+  get client(): Prisma.ClientDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.inverter`: Exposes CRUD operations for the **Inverter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Inverters
+    * const inverters = await prisma.inverter.findMany()
+    * ```
+    */
+  get inverter(): Prisma.InverterDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -586,7 +616,9 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    User: 'User'
+    User: 'User',
+    Client: 'Client',
+    Inverter: 'Inverter'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -605,7 +637,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user"
+      modelProps: "user" | "client" | "inverter"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -680,6 +712,154 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Client: {
+        payload: Prisma.$ClientPayload<ExtArgs>
+        fields: Prisma.ClientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ClientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ClientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          findFirst: {
+            args: Prisma.ClientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ClientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          findMany: {
+            args: Prisma.ClientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          create: {
+            args: Prisma.ClientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          createMany: {
+            args: Prisma.ClientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ClientCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          delete: {
+            args: Prisma.ClientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          update: {
+            args: Prisma.ClientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          deleteMany: {
+            args: Prisma.ClientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ClientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ClientUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          upsert: {
+            args: Prisma.ClientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          aggregate: {
+            args: Prisma.ClientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateClient>
+          }
+          groupBy: {
+            args: Prisma.ClientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ClientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ClientCountArgs<ExtArgs>
+            result: $Utils.Optional<ClientCountAggregateOutputType> | number
+          }
+        }
+      }
+      Inverter: {
+        payload: Prisma.$InverterPayload<ExtArgs>
+        fields: Prisma.InverterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InverterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InverterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>
+          }
+          findFirst: {
+            args: Prisma.InverterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InverterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>
+          }
+          findMany: {
+            args: Prisma.InverterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>[]
+          }
+          create: {
+            args: Prisma.InverterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>
+          }
+          createMany: {
+            args: Prisma.InverterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InverterCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>[]
+          }
+          delete: {
+            args: Prisma.InverterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>
+          }
+          update: {
+            args: Prisma.InverterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>
+          }
+          deleteMany: {
+            args: Prisma.InverterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InverterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InverterUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>[]
+          }
+          upsert: {
+            args: Prisma.InverterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InverterPayload>
+          }
+          aggregate: {
+            args: Prisma.InverterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInverter>
+          }
+          groupBy: {
+            args: Prisma.InverterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InverterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InverterCountArgs<ExtArgs>
+            result: $Utils.Optional<InverterCountAggregateOutputType> | number
           }
         }
       }
@@ -780,6 +960,8 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    client?: ClientOmit
+    inverter?: InverterOmit
   }
 
   /* Types for Logging */
@@ -854,6 +1036,36 @@ export namespace Prisma {
    * Count Types
    */
 
+
+  /**
+   * Count Type ClientCountOutputType
+   */
+
+  export type ClientCountOutputType = {
+    inverters: number
+  }
+
+  export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inverters?: boolean | ClientCountOutputTypeCountInvertersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClientCountOutputType
+     */
+    select?: ClientCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountInvertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InverterWhereInput
+  }
 
 
   /**
@@ -1869,6 +2081,2233 @@ export namespace Prisma {
 
 
   /**
+   * Model Client
+   */
+
+  export type AggregateClient = {
+    _count: ClientCountAggregateOutputType | null
+    _avg: ClientAvgAggregateOutputType | null
+    _sum: ClientSumAggregateOutputType | null
+    _min: ClientMinAggregateOutputType | null
+    _max: ClientMaxAggregateOutputType | null
+  }
+
+  export type ClientAvgAggregateOutputType = {
+    soloCoinBalance: number | null
+  }
+
+  export type ClientSumAggregateOutputType = {
+    soloCoinBalance: number | null
+  }
+
+  export type ClientMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    cpfCnpj: string | null
+    soloCoinBalance: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ClientMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    cpfCnpj: string | null
+    soloCoinBalance: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ClientCountAggregateOutputType = {
+    id: number
+    name: number
+    email: number
+    cpfCnpj: number
+    soloCoinBalance: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type ClientAvgAggregateInputType = {
+    soloCoinBalance?: true
+  }
+
+  export type ClientSumAggregateInputType = {
+    soloCoinBalance?: true
+  }
+
+  export type ClientMinAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    cpfCnpj?: true
+    soloCoinBalance?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ClientMaxAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    cpfCnpj?: true
+    soloCoinBalance?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ClientCountAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    cpfCnpj?: true
+    soloCoinBalance?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type ClientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Client to aggregate.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Clients
+    **/
+    _count?: true | ClientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ClientAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ClientSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClientMaxAggregateInputType
+  }
+
+  export type GetClientAggregateType<T extends ClientAggregateArgs> = {
+        [P in keyof T & keyof AggregateClient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateClient[P]>
+      : GetScalarType<T[P], AggregateClient[P]>
+  }
+
+
+
+
+  export type ClientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClientWhereInput
+    orderBy?: ClientOrderByWithAggregationInput | ClientOrderByWithAggregationInput[]
+    by: ClientScalarFieldEnum[] | ClientScalarFieldEnum
+    having?: ClientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ClientCountAggregateInputType | true
+    _avg?: ClientAvgAggregateInputType
+    _sum?: ClientSumAggregateInputType
+    _min?: ClientMinAggregateInputType
+    _max?: ClientMaxAggregateInputType
+  }
+
+  export type ClientGroupByOutputType = {
+    id: string
+    name: string
+    email: string
+    cpfCnpj: string
+    soloCoinBalance: number
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: ClientCountAggregateOutputType | null
+    _avg: ClientAvgAggregateOutputType | null
+    _sum: ClientSumAggregateOutputType | null
+    _min: ClientMinAggregateOutputType | null
+    _max: ClientMaxAggregateOutputType | null
+  }
+
+  type GetClientGroupByPayload<T extends ClientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ClientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ClientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ClientGroupByOutputType[P]>
+            : GetScalarType<T[P], ClientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    cpfCnpj?: boolean
+    soloCoinBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    inverters?: boolean | Client$invertersArgs<ExtArgs>
+    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    cpfCnpj?: boolean
+    soloCoinBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    cpfCnpj?: boolean
+    soloCoinBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectScalar = {
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    cpfCnpj?: boolean
+    soloCoinBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "cpfCnpj" | "soloCoinBalance" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["client"]>
+  export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inverters?: boolean | Client$invertersArgs<ExtArgs>
+    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ClientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Client"
+    objects: {
+      inverters: Prisma.$InverterPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      email: string
+      cpfCnpj: string
+      soloCoinBalance: number
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["client"]>
+    composites: {}
+  }
+
+  type ClientGetPayload<S extends boolean | null | undefined | ClientDefaultArgs> = $Result.GetResult<Prisma.$ClientPayload, S>
+
+  type ClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ClientCountAggregateInputType | true
+    }
+
+  export interface ClientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Client'], meta: { name: 'Client' } }
+    /**
+     * Find zero or one Client that matches the filter.
+     * @param {ClientFindUniqueArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ClientFindUniqueArgs>(args: SelectSubset<T, ClientFindUniqueArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Client that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ClientFindUniqueOrThrowArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ClientFindUniqueOrThrowArgs>(args: SelectSubset<T, ClientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Client that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindFirstArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ClientFindFirstArgs>(args?: SelectSubset<T, ClientFindFirstArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Client that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindFirstOrThrowArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ClientFindFirstOrThrowArgs>(args?: SelectSubset<T, ClientFindFirstOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Clients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Clients
+     * const clients = await prisma.client.findMany()
+     * 
+     * // Get first 10 Clients
+     * const clients = await prisma.client.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const clientWithIdOnly = await prisma.client.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ClientFindManyArgs>(args?: SelectSubset<T, ClientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Client.
+     * @param {ClientCreateArgs} args - Arguments to create a Client.
+     * @example
+     * // Create one Client
+     * const Client = await prisma.client.create({
+     *   data: {
+     *     // ... data to create a Client
+     *   }
+     * })
+     * 
+     */
+    create<T extends ClientCreateArgs>(args: SelectSubset<T, ClientCreateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Clients.
+     * @param {ClientCreateManyArgs} args - Arguments to create many Clients.
+     * @example
+     * // Create many Clients
+     * const client = await prisma.client.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ClientCreateManyArgs>(args?: SelectSubset<T, ClientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Clients and returns the data saved in the database.
+     * @param {ClientCreateManyAndReturnArgs} args - Arguments to create many Clients.
+     * @example
+     * // Create many Clients
+     * const client = await prisma.client.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Clients and only return the `id`
+     * const clientWithIdOnly = await prisma.client.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ClientCreateManyAndReturnArgs>(args?: SelectSubset<T, ClientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Client.
+     * @param {ClientDeleteArgs} args - Arguments to delete one Client.
+     * @example
+     * // Delete one Client
+     * const Client = await prisma.client.delete({
+     *   where: {
+     *     // ... filter to delete one Client
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ClientDeleteArgs>(args: SelectSubset<T, ClientDeleteArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Client.
+     * @param {ClientUpdateArgs} args - Arguments to update one Client.
+     * @example
+     * // Update one Client
+     * const client = await prisma.client.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ClientUpdateArgs>(args: SelectSubset<T, ClientUpdateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Clients.
+     * @param {ClientDeleteManyArgs} args - Arguments to filter Clients to delete.
+     * @example
+     * // Delete a few Clients
+     * const { count } = await prisma.client.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ClientDeleteManyArgs>(args?: SelectSubset<T, ClientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Clients
+     * const client = await prisma.client.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ClientUpdateManyArgs>(args: SelectSubset<T, ClientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Clients and returns the data updated in the database.
+     * @param {ClientUpdateManyAndReturnArgs} args - Arguments to update many Clients.
+     * @example
+     * // Update many Clients
+     * const client = await prisma.client.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Clients and only return the `id`
+     * const clientWithIdOnly = await prisma.client.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ClientUpdateManyAndReturnArgs>(args: SelectSubset<T, ClientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Client.
+     * @param {ClientUpsertArgs} args - Arguments to update or create a Client.
+     * @example
+     * // Update or create a Client
+     * const client = await prisma.client.upsert({
+     *   create: {
+     *     // ... data to create a Client
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Client we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ClientUpsertArgs>(args: SelectSubset<T, ClientUpsertArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientCountArgs} args - Arguments to filter Clients to count.
+     * @example
+     * // Count the number of Clients
+     * const count = await prisma.client.count({
+     *   where: {
+     *     // ... the filter for the Clients we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClientCountArgs>(
+      args?: Subset<T, ClientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ClientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Client.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClientAggregateArgs>(args: Subset<T, ClientAggregateArgs>): Prisma.PrismaPromise<GetClientAggregateType<T>>
+
+    /**
+     * Group by Client.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ClientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ClientGroupByArgs['orderBy'] }
+        : { orderBy?: ClientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ClientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Client model
+   */
+  readonly fields: ClientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Client.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    inverters<T extends Client$invertersArgs<ExtArgs> = {}>(args?: Subset<T, Client$invertersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Client model
+   */
+  interface ClientFieldRefs {
+    readonly id: FieldRef<"Client", 'String'>
+    readonly name: FieldRef<"Client", 'String'>
+    readonly email: FieldRef<"Client", 'String'>
+    readonly cpfCnpj: FieldRef<"Client", 'String'>
+    readonly soloCoinBalance: FieldRef<"Client", 'Float'>
+    readonly createdAt: FieldRef<"Client", 'DateTime'>
+    readonly updatedAt: FieldRef<"Client", 'DateTime'>
+    readonly deletedAt: FieldRef<"Client", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Client findUnique
+   */
+  export type ClientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client findUniqueOrThrow
+   */
+  export type ClientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client findFirst
+   */
+  export type ClientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     */
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client findFirstOrThrow
+   */
+  export type ClientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     */
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client findMany
+   */
+  export type ClientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Clients to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client create
+   */
+  export type ClientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Client.
+     */
+    data: XOR<ClientCreateInput, ClientUncheckedCreateInput>
+  }
+
+  /**
+   * Client createMany
+   */
+  export type ClientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Clients.
+     */
+    data: ClientCreateManyInput | ClientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Client createManyAndReturn
+   */
+  export type ClientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * The data used to create many Clients.
+     */
+    data: ClientCreateManyInput | ClientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Client update
+   */
+  export type ClientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Client.
+     */
+    data: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
+    /**
+     * Choose, which Client to update.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client updateMany
+   */
+  export type ClientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Clients.
+     */
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
+    /**
+     * Filter which Clients to update
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Client updateManyAndReturn
+   */
+  export type ClientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * The data used to update Clients.
+     */
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
+    /**
+     * Filter which Clients to update
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Client upsert
+   */
+  export type ClientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Client to update in case it exists.
+     */
+    where: ClientWhereUniqueInput
+    /**
+     * In case the Client found by the `where` argument doesn't exist, create a new Client with this data.
+     */
+    create: XOR<ClientCreateInput, ClientUncheckedCreateInput>
+    /**
+     * In case the Client was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
+  }
+
+  /**
+   * Client delete
+   */
+  export type ClientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter which Client to delete.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client deleteMany
+   */
+  export type ClientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Clients to delete
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Client.inverters
+   */
+  export type Client$invertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    where?: InverterWhereInput
+    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
+    cursor?: InverterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InverterScalarFieldEnum | InverterScalarFieldEnum[]
+  }
+
+  /**
+   * Client without action
+   */
+  export type ClientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Inverter
+   */
+
+  export type AggregateInverter = {
+    _count: InverterCountAggregateOutputType | null
+    _min: InverterMinAggregateOutputType | null
+    _max: InverterMaxAggregateOutputType | null
+  }
+
+  export type InverterMinAggregateOutputType = {
+    id: string | null
+    provider: string | null
+    providerId: string | null
+    clientId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type InverterMaxAggregateOutputType = {
+    id: string | null
+    provider: string | null
+    providerId: string | null
+    clientId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type InverterCountAggregateOutputType = {
+    id: number
+    provider: number
+    providerId: number
+    clientId: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type InverterMinAggregateInputType = {
+    id?: true
+    provider?: true
+    providerId?: true
+    clientId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type InverterMaxAggregateInputType = {
+    id?: true
+    provider?: true
+    providerId?: true
+    clientId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type InverterCountAggregateInputType = {
+    id?: true
+    provider?: true
+    providerId?: true
+    clientId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type InverterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Inverter to aggregate.
+     */
+    where?: InverterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Inverters to fetch.
+     */
+    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InverterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Inverters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Inverters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Inverters
+    **/
+    _count?: true | InverterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InverterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InverterMaxAggregateInputType
+  }
+
+  export type GetInverterAggregateType<T extends InverterAggregateArgs> = {
+        [P in keyof T & keyof AggregateInverter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInverter[P]>
+      : GetScalarType<T[P], AggregateInverter[P]>
+  }
+
+
+
+
+  export type InverterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InverterWhereInput
+    orderBy?: InverterOrderByWithAggregationInput | InverterOrderByWithAggregationInput[]
+    by: InverterScalarFieldEnum[] | InverterScalarFieldEnum
+    having?: InverterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InverterCountAggregateInputType | true
+    _min?: InverterMinAggregateInputType
+    _max?: InverterMaxAggregateInputType
+  }
+
+  export type InverterGroupByOutputType = {
+    id: string
+    provider: string
+    providerId: string
+    clientId: string
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: InverterCountAggregateOutputType | null
+    _min: InverterMinAggregateOutputType | null
+    _max: InverterMaxAggregateOutputType | null
+  }
+
+  type GetInverterGroupByPayload<T extends InverterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InverterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InverterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InverterGroupByOutputType[P]>
+            : GetScalarType<T[P], InverterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InverterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    provider?: boolean
+    providerId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inverter"]>
+
+  export type InverterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    provider?: boolean
+    providerId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inverter"]>
+
+  export type InverterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    provider?: boolean
+    providerId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inverter"]>
+
+  export type InverterSelectScalar = {
+    id?: boolean
+    provider?: boolean
+    providerId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type InverterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "provider" | "providerId" | "clientId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["inverter"]>
+  export type InverterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type InverterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type InverterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+
+  export type $InverterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Inverter"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      provider: string
+      providerId: string
+      clientId: string
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["inverter"]>
+    composites: {}
+  }
+
+  type InverterGetPayload<S extends boolean | null | undefined | InverterDefaultArgs> = $Result.GetResult<Prisma.$InverterPayload, S>
+
+  type InverterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InverterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InverterCountAggregateInputType | true
+    }
+
+  export interface InverterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Inverter'], meta: { name: 'Inverter' } }
+    /**
+     * Find zero or one Inverter that matches the filter.
+     * @param {InverterFindUniqueArgs} args - Arguments to find a Inverter
+     * @example
+     * // Get one Inverter
+     * const inverter = await prisma.inverter.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InverterFindUniqueArgs>(args: SelectSubset<T, InverterFindUniqueArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Inverter that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InverterFindUniqueOrThrowArgs} args - Arguments to find a Inverter
+     * @example
+     * // Get one Inverter
+     * const inverter = await prisma.inverter.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InverterFindUniqueOrThrowArgs>(args: SelectSubset<T, InverterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Inverter that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InverterFindFirstArgs} args - Arguments to find a Inverter
+     * @example
+     * // Get one Inverter
+     * const inverter = await prisma.inverter.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InverterFindFirstArgs>(args?: SelectSubset<T, InverterFindFirstArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Inverter that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InverterFindFirstOrThrowArgs} args - Arguments to find a Inverter
+     * @example
+     * // Get one Inverter
+     * const inverter = await prisma.inverter.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InverterFindFirstOrThrowArgs>(args?: SelectSubset<T, InverterFindFirstOrThrowArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Inverters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InverterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Inverters
+     * const inverters = await prisma.inverter.findMany()
+     * 
+     * // Get first 10 Inverters
+     * const inverters = await prisma.inverter.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const inverterWithIdOnly = await prisma.inverter.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InverterFindManyArgs>(args?: SelectSubset<T, InverterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Inverter.
+     * @param {InverterCreateArgs} args - Arguments to create a Inverter.
+     * @example
+     * // Create one Inverter
+     * const Inverter = await prisma.inverter.create({
+     *   data: {
+     *     // ... data to create a Inverter
+     *   }
+     * })
+     * 
+     */
+    create<T extends InverterCreateArgs>(args: SelectSubset<T, InverterCreateArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Inverters.
+     * @param {InverterCreateManyArgs} args - Arguments to create many Inverters.
+     * @example
+     * // Create many Inverters
+     * const inverter = await prisma.inverter.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InverterCreateManyArgs>(args?: SelectSubset<T, InverterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Inverters and returns the data saved in the database.
+     * @param {InverterCreateManyAndReturnArgs} args - Arguments to create many Inverters.
+     * @example
+     * // Create many Inverters
+     * const inverter = await prisma.inverter.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Inverters and only return the `id`
+     * const inverterWithIdOnly = await prisma.inverter.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InverterCreateManyAndReturnArgs>(args?: SelectSubset<T, InverterCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Inverter.
+     * @param {InverterDeleteArgs} args - Arguments to delete one Inverter.
+     * @example
+     * // Delete one Inverter
+     * const Inverter = await prisma.inverter.delete({
+     *   where: {
+     *     // ... filter to delete one Inverter
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InverterDeleteArgs>(args: SelectSubset<T, InverterDeleteArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Inverter.
+     * @param {InverterUpdateArgs} args - Arguments to update one Inverter.
+     * @example
+     * // Update one Inverter
+     * const inverter = await prisma.inverter.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InverterUpdateArgs>(args: SelectSubset<T, InverterUpdateArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Inverters.
+     * @param {InverterDeleteManyArgs} args - Arguments to filter Inverters to delete.
+     * @example
+     * // Delete a few Inverters
+     * const { count } = await prisma.inverter.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InverterDeleteManyArgs>(args?: SelectSubset<T, InverterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Inverters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InverterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Inverters
+     * const inverter = await prisma.inverter.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InverterUpdateManyArgs>(args: SelectSubset<T, InverterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Inverters and returns the data updated in the database.
+     * @param {InverterUpdateManyAndReturnArgs} args - Arguments to update many Inverters.
+     * @example
+     * // Update many Inverters
+     * const inverter = await prisma.inverter.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Inverters and only return the `id`
+     * const inverterWithIdOnly = await prisma.inverter.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InverterUpdateManyAndReturnArgs>(args: SelectSubset<T, InverterUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Inverter.
+     * @param {InverterUpsertArgs} args - Arguments to update or create a Inverter.
+     * @example
+     * // Update or create a Inverter
+     * const inverter = await prisma.inverter.upsert({
+     *   create: {
+     *     // ... data to create a Inverter
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Inverter we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InverterUpsertArgs>(args: SelectSubset<T, InverterUpsertArgs<ExtArgs>>): Prisma__InverterClient<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Inverters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InverterCountArgs} args - Arguments to filter Inverters to count.
+     * @example
+     * // Count the number of Inverters
+     * const count = await prisma.inverter.count({
+     *   where: {
+     *     // ... the filter for the Inverters we want to count
+     *   }
+     * })
+    **/
+    count<T extends InverterCountArgs>(
+      args?: Subset<T, InverterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InverterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Inverter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InverterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InverterAggregateArgs>(args: Subset<T, InverterAggregateArgs>): Prisma.PrismaPromise<GetInverterAggregateType<T>>
+
+    /**
+     * Group by Inverter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InverterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InverterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InverterGroupByArgs['orderBy'] }
+        : { orderBy?: InverterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InverterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInverterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Inverter model
+   */
+  readonly fields: InverterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Inverter.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InverterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Inverter model
+   */
+  interface InverterFieldRefs {
+    readonly id: FieldRef<"Inverter", 'String'>
+    readonly provider: FieldRef<"Inverter", 'String'>
+    readonly providerId: FieldRef<"Inverter", 'String'>
+    readonly clientId: FieldRef<"Inverter", 'String'>
+    readonly createdAt: FieldRef<"Inverter", 'DateTime'>
+    readonly updatedAt: FieldRef<"Inverter", 'DateTime'>
+    readonly deletedAt: FieldRef<"Inverter", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Inverter findUnique
+   */
+  export type InverterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * Filter, which Inverter to fetch.
+     */
+    where: InverterWhereUniqueInput
+  }
+
+  /**
+   * Inverter findUniqueOrThrow
+   */
+  export type InverterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * Filter, which Inverter to fetch.
+     */
+    where: InverterWhereUniqueInput
+  }
+
+  /**
+   * Inverter findFirst
+   */
+  export type InverterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * Filter, which Inverter to fetch.
+     */
+    where?: InverterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Inverters to fetch.
+     */
+    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Inverters.
+     */
+    cursor?: InverterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Inverters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Inverters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Inverters.
+     */
+    distinct?: InverterScalarFieldEnum | InverterScalarFieldEnum[]
+  }
+
+  /**
+   * Inverter findFirstOrThrow
+   */
+  export type InverterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * Filter, which Inverter to fetch.
+     */
+    where?: InverterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Inverters to fetch.
+     */
+    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Inverters.
+     */
+    cursor?: InverterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Inverters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Inverters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Inverters.
+     */
+    distinct?: InverterScalarFieldEnum | InverterScalarFieldEnum[]
+  }
+
+  /**
+   * Inverter findMany
+   */
+  export type InverterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * Filter, which Inverters to fetch.
+     */
+    where?: InverterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Inverters to fetch.
+     */
+    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Inverters.
+     */
+    cursor?: InverterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Inverters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Inverters.
+     */
+    skip?: number
+    distinct?: InverterScalarFieldEnum | InverterScalarFieldEnum[]
+  }
+
+  /**
+   * Inverter create
+   */
+  export type InverterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Inverter.
+     */
+    data: XOR<InverterCreateInput, InverterUncheckedCreateInput>
+  }
+
+  /**
+   * Inverter createMany
+   */
+  export type InverterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Inverters.
+     */
+    data: InverterCreateManyInput | InverterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Inverter createManyAndReturn
+   */
+  export type InverterCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * The data used to create many Inverters.
+     */
+    data: InverterCreateManyInput | InverterCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Inverter update
+   */
+  export type InverterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Inverter.
+     */
+    data: XOR<InverterUpdateInput, InverterUncheckedUpdateInput>
+    /**
+     * Choose, which Inverter to update.
+     */
+    where: InverterWhereUniqueInput
+  }
+
+  /**
+   * Inverter updateMany
+   */
+  export type InverterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Inverters.
+     */
+    data: XOR<InverterUpdateManyMutationInput, InverterUncheckedUpdateManyInput>
+    /**
+     * Filter which Inverters to update
+     */
+    where?: InverterWhereInput
+    /**
+     * Limit how many Inverters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Inverter updateManyAndReturn
+   */
+  export type InverterUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * The data used to update Inverters.
+     */
+    data: XOR<InverterUpdateManyMutationInput, InverterUncheckedUpdateManyInput>
+    /**
+     * Filter which Inverters to update
+     */
+    where?: InverterWhereInput
+    /**
+     * Limit how many Inverters to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Inverter upsert
+   */
+  export type InverterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Inverter to update in case it exists.
+     */
+    where: InverterWhereUniqueInput
+    /**
+     * In case the Inverter found by the `where` argument doesn't exist, create a new Inverter with this data.
+     */
+    create: XOR<InverterCreateInput, InverterUncheckedCreateInput>
+    /**
+     * In case the Inverter was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InverterUpdateInput, InverterUncheckedUpdateInput>
+  }
+
+  /**
+   * Inverter delete
+   */
+  export type InverterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    /**
+     * Filter which Inverter to delete.
+     */
+    where: InverterWhereUniqueInput
+  }
+
+  /**
+   * Inverter deleteMany
+   */
+  export type InverterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Inverters to delete
+     */
+    where?: InverterWhereInput
+    /**
+     * Limit how many Inverters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Inverter without action
+   */
+  export type InverterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -1892,6 +4331,33 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const ClientScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+    cpfCnpj: 'cpfCnpj',
+    soloCoinBalance: 'soloCoinBalance',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+  export const InverterScalarFieldEnum: {
+    id: 'id',
+    provider: 'provider',
+    providerId: 'providerId',
+    clientId: 'clientId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type InverterScalarFieldEnum = (typeof InverterScalarFieldEnum)[keyof typeof InverterScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -1948,6 +4414,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -2025,6 +4505,143 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
+  export type ClientWhereInput = {
+    AND?: ClientWhereInput | ClientWhereInput[]
+    OR?: ClientWhereInput[]
+    NOT?: ClientWhereInput | ClientWhereInput[]
+    id?: StringFilter<"Client"> | string
+    name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
+    cpfCnpj?: StringFilter<"Client"> | string
+    soloCoinBalance?: FloatFilter<"Client"> | number
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Client"> | Date | string | null
+    inverters?: InverterListRelationFilter
+  }
+
+  export type ClientOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    cpfCnpj?: SortOrder
+    soloCoinBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    inverters?: InverterOrderByRelationAggregateInput
+  }
+
+  export type ClientWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    cpfCnpj?: string
+    AND?: ClientWhereInput | ClientWhereInput[]
+    OR?: ClientWhereInput[]
+    NOT?: ClientWhereInput | ClientWhereInput[]
+    name?: StringFilter<"Client"> | string
+    soloCoinBalance?: FloatFilter<"Client"> | number
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Client"> | Date | string | null
+    inverters?: InverterListRelationFilter
+  }, "id" | "email" | "cpfCnpj">
+
+  export type ClientOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    cpfCnpj?: SortOrder
+    soloCoinBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: ClientCountOrderByAggregateInput
+    _avg?: ClientAvgOrderByAggregateInput
+    _max?: ClientMaxOrderByAggregateInput
+    _min?: ClientMinOrderByAggregateInput
+    _sum?: ClientSumOrderByAggregateInput
+  }
+
+  export type ClientScalarWhereWithAggregatesInput = {
+    AND?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
+    OR?: ClientScalarWhereWithAggregatesInput[]
+    NOT?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Client"> | string
+    name?: StringWithAggregatesFilter<"Client"> | string
+    email?: StringWithAggregatesFilter<"Client"> | string
+    cpfCnpj?: StringWithAggregatesFilter<"Client"> | string
+    soloCoinBalance?: FloatWithAggregatesFilter<"Client"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Client"> | Date | string | null
+  }
+
+  export type InverterWhereInput = {
+    AND?: InverterWhereInput | InverterWhereInput[]
+    OR?: InverterWhereInput[]
+    NOT?: InverterWhereInput | InverterWhereInput[]
+    id?: StringFilter<"Inverter"> | string
+    provider?: StringFilter<"Inverter"> | string
+    providerId?: StringFilter<"Inverter"> | string
+    clientId?: StringFilter<"Inverter"> | string
+    createdAt?: DateTimeFilter<"Inverter"> | Date | string
+    updatedAt?: DateTimeFilter<"Inverter"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }
+
+  export type InverterOrderByWithRelationInput = {
+    id?: SortOrder
+    provider?: SortOrder
+    providerId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+  }
+
+  export type InverterWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: InverterWhereInput | InverterWhereInput[]
+    OR?: InverterWhereInput[]
+    NOT?: InverterWhereInput | InverterWhereInput[]
+    provider?: StringFilter<"Inverter"> | string
+    providerId?: StringFilter<"Inverter"> | string
+    clientId?: StringFilter<"Inverter"> | string
+    createdAt?: DateTimeFilter<"Inverter"> | Date | string
+    updatedAt?: DateTimeFilter<"Inverter"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }, "id">
+
+  export type InverterOrderByWithAggregationInput = {
+    id?: SortOrder
+    provider?: SortOrder
+    providerId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: InverterCountOrderByAggregateInput
+    _max?: InverterMaxOrderByAggregateInput
+    _min?: InverterMinOrderByAggregateInput
+  }
+
+  export type InverterScalarWhereWithAggregatesInput = {
+    AND?: InverterScalarWhereWithAggregatesInput | InverterScalarWhereWithAggregatesInput[]
+    OR?: InverterScalarWhereWithAggregatesInput[]
+    NOT?: InverterScalarWhereWithAggregatesInput | InverterScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Inverter"> | string
+    provider?: StringWithAggregatesFilter<"Inverter"> | string
+    providerId?: StringWithAggregatesFilter<"Inverter"> | string
+    clientId?: StringWithAggregatesFilter<"Inverter"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Inverter"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Inverter"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Inverter"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -2086,6 +4703,156 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClientCreateInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    soloCoinBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    soloCoinBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientCreateManyInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    soloCoinBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ClientUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ClientUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterCreateInput = {
+    id?: string
+    provider: string
+    providerId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutInvertersInput
+  }
+
+  export type InverterUncheckedCreateInput = {
+    id?: string
+    provider: string
+    providerId: string
+    clientId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InverterUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutInvertersNestedInput
+  }
+
+  export type InverterUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterCreateManyInput = {
+    id?: string
+    provider: string
+    providerId: string
+    clientId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InverterUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -2211,6 +4978,144 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type InverterListRelationFilter = {
+    every?: InverterWhereInput
+    some?: InverterWhereInput
+    none?: InverterWhereInput
+  }
+
+  export type InverterOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ClientCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    cpfCnpj?: SortOrder
+    soloCoinBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ClientAvgOrderByAggregateInput = {
+    soloCoinBalance?: SortOrder
+  }
+
+  export type ClientMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    cpfCnpj?: SortOrder
+    soloCoinBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ClientMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    cpfCnpj?: SortOrder
+    soloCoinBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ClientSumOrderByAggregateInput = {
+    soloCoinBalance?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type ClientScalarRelationFilter = {
+    is?: ClientWhereInput
+    isNot?: ClientWhereInput
+  }
+
+  export type InverterCountOrderByAggregateInput = {
+    id?: SortOrder
+    provider?: SortOrder
+    providerId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type InverterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    provider?: SortOrder
+    providerId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type InverterMinOrderByAggregateInput = {
+    id?: SortOrder
+    provider?: SortOrder
+    providerId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2221,6 +5126,74 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type InverterCreateNestedManyWithoutClientInput = {
+    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
+    createMany?: InverterCreateManyClientInputEnvelope
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+  }
+
+  export type InverterUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
+    createMany?: InverterCreateManyClientInputEnvelope
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type InverterUpdateManyWithoutClientNestedInput = {
+    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
+    upsert?: InverterUpsertWithWhereUniqueWithoutClientInput | InverterUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: InverterCreateManyClientInputEnvelope
+    set?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    disconnect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    delete?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    update?: InverterUpdateWithWhereUniqueWithoutClientInput | InverterUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: InverterUpdateManyWithWhereWithoutClientInput | InverterUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: InverterScalarWhereInput | InverterScalarWhereInput[]
+  }
+
+  export type InverterUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
+    upsert?: InverterUpsertWithWhereUniqueWithoutClientInput | InverterUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: InverterCreateManyClientInputEnvelope
+    set?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    disconnect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    delete?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    update?: InverterUpdateWithWhereUniqueWithoutClientInput | InverterUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: InverterUpdateManyWithWhereWithoutClientInput | InverterUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: InverterScalarWhereInput | InverterScalarWhereInput[]
+  }
+
+  export type ClientCreateNestedOneWithoutInvertersInput = {
+    create?: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutInvertersInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type ClientUpdateOneRequiredWithoutInvertersNestedInput = {
+    create?: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutInvertersInput
+    upsert?: ClientUpsertWithoutInvertersInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutInvertersInput, ClientUpdateWithoutInvertersInput>, ClientUncheckedUpdateWithoutInvertersInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2330,6 +5303,211 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type InverterCreateWithoutClientInput = {
+    id?: string
+    provider: string
+    providerId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InverterUncheckedCreateWithoutClientInput = {
+    id?: string
+    provider: string
+    providerId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InverterCreateOrConnectWithoutClientInput = {
+    where: InverterWhereUniqueInput
+    create: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput>
+  }
+
+  export type InverterCreateManyClientInputEnvelope = {
+    data: InverterCreateManyClientInput | InverterCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InverterUpsertWithWhereUniqueWithoutClientInput = {
+    where: InverterWhereUniqueInput
+    update: XOR<InverterUpdateWithoutClientInput, InverterUncheckedUpdateWithoutClientInput>
+    create: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput>
+  }
+
+  export type InverterUpdateWithWhereUniqueWithoutClientInput = {
+    where: InverterWhereUniqueInput
+    data: XOR<InverterUpdateWithoutClientInput, InverterUncheckedUpdateWithoutClientInput>
+  }
+
+  export type InverterUpdateManyWithWhereWithoutClientInput = {
+    where: InverterScalarWhereInput
+    data: XOR<InverterUpdateManyMutationInput, InverterUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type InverterScalarWhereInput = {
+    AND?: InverterScalarWhereInput | InverterScalarWhereInput[]
+    OR?: InverterScalarWhereInput[]
+    NOT?: InverterScalarWhereInput | InverterScalarWhereInput[]
+    id?: StringFilter<"Inverter"> | string
+    provider?: StringFilter<"Inverter"> | string
+    providerId?: StringFilter<"Inverter"> | string
+    clientId?: StringFilter<"Inverter"> | string
+    createdAt?: DateTimeFilter<"Inverter"> | Date | string
+    updatedAt?: DateTimeFilter<"Inverter"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+  }
+
+  export type ClientCreateWithoutInvertersInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    soloCoinBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ClientUncheckedCreateWithoutInvertersInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    soloCoinBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ClientCreateOrConnectWithoutInvertersInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
+  }
+
+  export type ClientUpsertWithoutInvertersInput = {
+    update: XOR<ClientUpdateWithoutInvertersInput, ClientUncheckedUpdateWithoutInvertersInput>
+    create: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutInvertersInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutInvertersInput, ClientUncheckedUpdateWithoutInvertersInput>
+  }
+
+  export type ClientUpdateWithoutInvertersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ClientUncheckedUpdateWithoutInvertersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterCreateManyClientInput = {
+    id?: string
+    provider: string
+    providerId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InverterUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

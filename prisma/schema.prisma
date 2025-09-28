@@ -22,3 +22,32 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Client {
+  id      String @id @default(dbgenerated("(concat('client_', gen_random_uuid()))::TEXT"))
+  name    String
+  email   String @unique
+  cpfCnpj String @unique
+
+  soloCoinBalance Float @default(0)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  inverters Inverter[]
+}
+
+model Inverter {
+  id String @id @default(dbgenerated("(concat('inverter_', gen_random_uuid()))::TEXT"))
+
+  provider   String
+  providerId String
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
