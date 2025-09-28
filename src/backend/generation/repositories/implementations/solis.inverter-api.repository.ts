@@ -4,19 +4,19 @@ import { InverterApiRepository } from "../inverter-api.repository"
 export class SolisInverterApiRepository extends InverterApiRepository {
     constructor(data: InverterModel) { super(data) }
 
-    getRealTimePower(): Promise<void> {
-        throw new Error('Method not implemented.')
+    getRealTimeGeneration(): Promise<{ power: number, energy: number }> {
+        return Promise.resolve({ power: 1, energy: 1 })
     }
-    getGenerationByDay(): Promise<void> {
-        throw new Error('Method not implemented.')
+    getGenerationByDay(): Promise<number> {
+        return Promise.resolve(1)
     }
-    getGenerationByMonth(): Promise<void> {
-        throw new Error('Method not implemented.')
+    getGenerationByMonth(): Promise<number> {
+        return Promise.resolve(1)
     }
-    getGenerationByYear(): Promise<void> {
-        throw new Error('Method not implemented.')
+    getGenerationByYear(): Promise<number> {
+        return Promise.resolve(1)
     }
-    getGenerationByInterval(): Promise<void> {
-        throw new Error('Method not implemented.')
+    getGenerationByInterval(): Promise<number> {
+        return Promise.resolve(1)
     }
 }

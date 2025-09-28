@@ -2,9 +2,9 @@ import { InverterModel } from "../models/inverter.model"
 export abstract class InverterApiRepository {
     constructor(protected data: InverterModel) { }
 
-    abstract getRealTimePower(): Promise<void>
-    abstract getGenerationByDay(): Promise<void>
-    abstract getGenerationByMonth(): Promise<void>
-    abstract getGenerationByYear(): Promise<void>
-    abstract getGenerationByInterval(): Promise<void>
+    abstract getRealTimeGeneration(): Promise<{ power: number, energy: number }>
+    abstract getGenerationByDay(): Promise<number>
+    abstract getGenerationByMonth(): Promise<number>
+    abstract getGenerationByYear(): Promise<number>
+    abstract getGenerationByInterval(): Promise<number>
 }
