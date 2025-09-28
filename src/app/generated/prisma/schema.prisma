@@ -15,14 +15,20 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  password    String
+  roles       String[] @default(["user"])
+  permissions String[] @default(["read_inverters", "create_inverter", "read_generation_data", "create_generation_unit"])
+  clientId    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([email])
+  @@index([clientId])
+  @@index([email, isActive])
   @@map("user")
 }
 

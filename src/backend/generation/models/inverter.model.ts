@@ -6,6 +6,7 @@ export class InverterModel {
         public providerId: string,
         public providerApiKey?: string,
         public providerApiSecret?: string,
-        public providerUrl?: string
+        public providerUrl?: string,
+        public clientId?: string
     ) { }
 }
