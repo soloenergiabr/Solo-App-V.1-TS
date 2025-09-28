@@ -59,7 +59,8 @@ export class PrismaInverterRepository implements InverterRepository {
             inverter.providerId,
             inverter.providerApiKey || undefined,
             inverter.providerApiSecret || undefined,
-            inverter.providerUrl || undefined
+            inverter.providerUrl || undefined,
+            inverter.clientId || undefined
         );
     }
 
@@ -128,7 +129,8 @@ export class PrismaInverterRepository implements InverterRepository {
             inverter.providerId,
             inverter.providerApiKey || undefined,
             inverter.providerApiSecret || undefined,
-            inverter.providerUrl || undefined
+            inverter.providerUrl || undefined,
+            inverter.clientId || undefined
         ));
     }
 }

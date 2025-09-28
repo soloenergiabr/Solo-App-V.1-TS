@@ -38,7 +38,7 @@ export function useAuthContext() {
 }
 
 // HOC para proteger rotas
-export function withAuth<P extends object>(Component: React.ComponentType<P>) {
+export function withAuth<P extends object>(Component: React.ComponentType<P>, roles?: string[], permissions?: string[]) {
     return function AuthenticatedComponent(props: P) {
         const { isAuthenticated, isLoading } = useAuthContext();
 
@@ -46,6 +46,51 @@ export function withAuth<P extends object>(Component: React.ComponentType<P>) {
             return (
                 <div className="flex items-center justify-center min-h-screen">
                     <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+                </div>
+            );
+        }
+
+        const hasRole = usePermissions().hasAnyRole;
+        const hasPermission = usePermissions().hasAnyPermission;
+
+        if (roles && !hasRole(roles)) {
+            return (
+                <div className="flex items-center justify-center min-h-screen">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                            Acesso Negado
+                        </h1>
+                        <p className="text-gray-600 mb-4">
+                            Você não tem permissão para acessar esta página.
+                        </p>
+                        <a
+                            href="/login"
+                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                        >
+                            Fazer Login
+                        </a>
+                    </div>
+                </div>
+            );
+        }
+
+        if (permissions && !hasPermission(permissions)) {
+            return (
+                <div className="flex items-center justify-center min-h-screen">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                            Acesso Negado
+                        </h1>
+                        <p className="text-gray-600 mb-4">
+                            Você não tem permissão para acessar esta página.
+                        </p>
+                        <a
+                            href="/login"
+                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                        >
+                            Fazer Login
+                        </a>
+                    </div>
                 </div>
             );
         }
@@ -77,7 +122,7 @@ export function withAuth<P extends object>(Component: React.ComponentType<P>) {
 
 // Hook para verificar permissões
 export function usePermissions() {
-    const { user } = useAuthContext();
+    const { user, isLoading } = useAuthContext();
 
     const hasPermission = (permission: string): boolean => {
         return user?.permissions.includes(permission) || false;
@@ -102,5 +147,6 @@ export function usePermissions() {
         hasAnyPermission,
         permissions: user?.permissions || [],
         roles: user?.roles || [],
+        isLoading,
     };
 }

@@ -6,7 +6,7 @@ import { UserContext } from '@/backend/auth/models/user-context.model';
 // Request Schema (optional filters)
 export const GetInvertersRequestSchema = z.object({
     provider: z.string().optional(),
-    organizationId: z.string().optional(),
+    clientId: z.string().optional(),
 }).optional();
 
 // Response Schema
@@ -57,11 +57,11 @@ export class GetInvertersUseCase {
             );
         }
 
-        if (request?.organizationId) {
+        if (request?.clientId) {
             // Only allow filtering by client if user has permission
-            if (userContext.hasRole('admin') || userContext.clientId === request.organizationId) {
+            if (userContext.hasRole('admin') || userContext.clientId === request.clientId) {
                 filteredInverters = filteredInverters.filter(
-                    inverter => inverter.clientId === request.organizationId
+                    inverter => inverter.clientId === request.clientId
                 );
             }
         }
