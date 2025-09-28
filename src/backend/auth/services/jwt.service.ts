@@ -17,9 +17,6 @@ export class JwtService {
     private static readonly JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
     private static readonly REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
 
-    /**
-     * Gera um token JWT para um usuário
-     */
     static generateToken(userContext: UserContextModel): string {
         const payload: JwtPayload = {
             userId: userContext.userId,
@@ -37,9 +34,6 @@ export class JwtService {
         } as jwt.SignOptions);
     }
 
-    /**
-     * Gera um refresh token
-     */
     static generateRefreshToken(userId: string): string {
         return jwt.sign(
             { userId, type: 'refresh' },
@@ -52,9 +46,6 @@ export class JwtService {
         );
     }
 
-    /**
-     * Verifica e decodifica um token JWT
-     */
     static verifyToken(token: string): JwtPayload {
         try {
             const decoded = jwt.verify(token, this.JWT_SECRET, {
@@ -74,9 +65,6 @@ export class JwtService {
         }
     }
 
-    /**
-     * Verifica um refresh token
-     */
     static verifyRefreshToken(token: string): { userId: string } {
         try {
             const decoded = jwt.verify(token, this.JWT_SECRET, {
@@ -100,29 +88,15 @@ export class JwtService {
         }
     }
 
-    /**
-     * Extrai token do header Authorization
-     */
     static extractTokenFromHeader(authHeader: string | null): string {
-        console.log({
-            authHeader
-        });
-
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             throw new Error('No valid authorization token provided');
         }
         return authHeader.substring(7); // Remove 'Bearer '
     }
 
-    /**
-     * Cria UserContext a partir de um token JWT
-     */
     static createUserContextFromToken(token: string): UserContextModel {
         const payload = this.verifyToken(token);
-
-        console.log({
-            payload
-        });
 
         return new UserContextModel(
             payload.userId,
@@ -135,9 +109,6 @@ export class JwtService {
         );
     }
 
-    /**
-     * Gera tokens de acesso e refresh
-     */
     static generateTokenPair(userContext: UserContextModel): {
         accessToken: string;
         refreshToken: string;
@@ -150,9 +121,6 @@ export class JwtService {
         };
     }
 
-    /**
-     * Verifica se um token está próximo do vencimento (últimos 15 minutos)
-     */
     static isTokenNearExpiry(token: string): boolean {
         try {
             const decoded = jwt.decode(token) as JwtPayload;

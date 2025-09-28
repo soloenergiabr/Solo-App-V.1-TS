@@ -31,8 +31,6 @@ export class UserContextModel implements UserContext {
     }
 
     public canAccessInverter(inverterId: string): boolean {
-        // Business logic para verificar se o usuário pode acessar o inversor
-        // Por exemplo, verificar se o inversor pertence ao cliente do usuário
-        return true; // Implementar lógica específica
+        return true;
     }
 }

@@ -9,11 +9,9 @@ export interface AuthenticatedRequest extends NextRequest {
 export class AuthMiddleware {
     static async extractUserContext(request: NextRequest): Promise<UserContextModel> {
         try {
-            // Extrair token do header Authorization
             const authHeader = request.headers.get('Authorization');
             const token = JwtService.extractTokenFromHeader(authHeader);
 
-            // Criar UserContext a partir do token
             return JwtService.createUserContextFromToken(token);
         } catch (error) {
             throw new Error(error instanceof Error ? error.message : 'Authentication failed');
