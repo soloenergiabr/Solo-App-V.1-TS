@@ -131,6 +131,10 @@ export class GenerationService {
     }
 
     async syncAllInvertersData(userContext: UserContext): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[] }> {
+        if (!userContext.hasRole("master")) {
+            throw new Error("Unauthorized");
+        }
+
         const inverters = await this.getInverters(userContext);
         const results: SyncInverterGenerationDataResponse[] = [];
         const errors: any[] = [];
