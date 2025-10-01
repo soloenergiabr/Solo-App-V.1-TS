@@ -11,3 +11,4 @@ export * from './get-generation-units-by-inverter-id.use-case';
 export * from './calculate-total-energy-generated.use-case';
 export * from './get-latest-generation-data.use-case';
 export * from './sync-inverter-generation-data.use-case';
+export * from './get-dashboard-analytics.use-case';

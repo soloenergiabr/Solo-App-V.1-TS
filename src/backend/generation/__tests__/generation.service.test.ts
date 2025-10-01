@@ -62,7 +62,7 @@ describe('GenerationService', () => {
 
     describe('getCompleteInverterAnalytics', () => {
         it('should return complete analytics for an inverter', async () => {
-            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
+            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'mock', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
             const mockUnits = [
                 new GenerationUnitModel({
                     id: 'unit1',
@@ -84,7 +84,7 @@ describe('GenerationService', () => {
             await generationUnitRepository.create(mockUnits[0]);
             await generationUnitRepository.create(mockUnits[1]);
 
-            const result = await service.getCompleteInverterAnalytics('inv1', mockUserContext);
+            const result = await service.getCompleteInverterAnalytics({ inverterId: 'inv1', userContext: mockUserContext });
 
             expect(result).toHaveProperty('inverter');
             expect(result).toHaveProperty('generationUnits');
@@ -92,10 +92,13 @@ describe('GenerationService', () => {
             expect(result).toHaveProperty('latestData');
             expect(result).toHaveProperty('summary');
 
-            expect(result.inverter.id).toBe('inv1');
-            expect(result.generationUnits).toHaveLength(2);
-            expect(result.totalEnergy).toBe(2350); // 1200 + 1150
-            expect(result.summary.totalUnits).toBe(2);
+            // Type guard para analytics de um único inversor
+            if ('inverter' in result) {
+                expect(result.inverter.id).toBe('inv1');
+                expect(result.generationUnits).toHaveLength(2);
+                expect(result.totalEnergy).toBe(2350); // 1200 + 1150
+                expect(result.summary.totalUnits).toBe(2);
+            }
         });
 
         it('should handle date range filtering', async () => {
@@ -115,18 +118,66 @@ describe('GenerationService', () => {
             const startDate = '2024-01-01T00:00:00Z';
             const endDate = '2024-01-31T23:59:59Z';
 
-            const result = await service.getCompleteInverterAnalytics('inv1', mockUserContext, startDate, endDate);
+            const result = await service.getCompleteInverterAnalytics({ inverterId: 'inv1', userContext: mockUserContext, startDate, endDate });
 
             expect(result.summary.period.startDate).toBe(startDate);
             expect(result.summary.period.endDate).toBe(endDate);
+        });
+
+        it('should return analytics for all client inverters when inverterId is not provided', async () => {
+            const mockInverter1 = new InverterModel('inv1', 'Inverter 1', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
+            const mockInverter2 = new InverterModel('inv2', 'Inverter 2', 'growatt', 'GRO1', undefined, undefined, undefined, mockUserContext.clientId);
+            
+            const mockUnits1 = [
+                new GenerationUnitModel({
+                    id: 'unit1',
+                    power: 5000,
+                    energy: 1200,
+                    generationUnitType: 'real_time',
+                    inverterId: 'inv1',
+                }),
+            ];
+
+            const mockUnits2 = [
+                new GenerationUnitModel({
+                    id: 'unit2',
+                    power: 3000,
+                    energy: 800,
+                    generationUnitType: 'real_time',
+                    inverterId: 'inv2',
+                }),
+            ];
+
+            await inverterRepository.create(mockInverter1);
+            await inverterRepository.create(mockInverter2);
+            await generationUnitRepository.create(mockUnits1[0]);
+            await generationUnitRepository.create(mockUnits2[0]);
+
+            const result = await service.getCompleteInverterAnalytics({ userContext: mockUserContext });
+
+            expect(result).toHaveProperty('inverters');
+            expect(result).toHaveProperty('totalEnergy');
+            expect(result).toHaveProperty('totalPower');
+            expect(result).toHaveProperty('summary');
+            expect(result).toHaveProperty('byInverter');
+
+            // Type guard para analytics de todos os inversores
+            if ('inverters' in result) {
+                expect(result.inverters).toHaveLength(2);
+                expect(result.totalEnergy).toBe(2000); // 1200 + 800
+                expect(result.totalPower).toBe(8000); // 5000 + 3000
+                expect(result.summary.totalInverters).toBe(2);
+                expect(result.summary.totalUnits).toBe(2);
+                expect(result.byInverter).toHaveLength(2);
+            }
         });
     });
 
     describe('syncAllInvertersData', () => {
         it('should sync data for all inverters', async () => {
             const mockInverters = [
-                new InverterModel('inv1', 'Inverter 1', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId),
-                new InverterModel('inv2', 'Inverter 2', 'solplanet', 'SP2', undefined, undefined, undefined, mockUserContext.clientId),
+                new InverterModel('inv1', 'Inverter 1', 'mock', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId),
+                new InverterModel('inv2', 'Inverter 2', 'mock', 'SP2', undefined, undefined, undefined, mockUserContext.clientId),
             ];
 
             await inverterRepository.create(mockInverters[0]);

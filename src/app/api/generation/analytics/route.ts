@@ -20,32 +20,25 @@ export async function GET(request: NextRequest) {
         const userContext = await AuthMiddleware.requireAuth(request);
 
         const { searchParams } = new URL(request.url);
-        const inverterId = searchParams.get('inverterId');
-        const startDate = searchParams.get('startDate');
-        const endDate = searchParams.get('endDate');
+        const inverterId = searchParams.get('inverterId') || undefined;
+        const startDate = searchParams.get('startDate') || undefined;
+        const endDate = searchParams.get('endDate') || undefined;
 
-        if (!inverterId) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Missing required parameter',
-                    message: 'inverterId is required',
-                },
-                { status: 400 }
-            );
-        }
-
-        // Use the convenience method for complete analytics
-        const analytics = await generationService.getCompleteInverterAnalytics(
+        // Se inverterId não for fornecido, retorna analytics de todos os inversores do cliente
+        // Se inverterId for fornecido, retorna analytics apenas daquele inversor
+        const analytics = await generationService.getCompleteInverterAnalytics({
             inverterId,
             userContext,
-            startDate || undefined,
-            endDate || undefined
-        );
+            startDate,
+            endDate
+        });
 
         return NextResponse.json({
             success: true,
             data: analytics,
+            message: inverterId
+                ? `Analytics for inverter ${inverterId}`
+                : `Analytics for all inverters of client ${userContext.clientId}`,
         });
 
     } catch (error) {

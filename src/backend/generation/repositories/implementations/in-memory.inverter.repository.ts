@@ -27,4 +27,7 @@ export class InMemoryInverterRepository implements InverterRepository {
         this.inverters[index] = inverter
         return Promise.resolve()
     }
+    findByClientId(clientId: string): Promise<InverterModel[]> {
+        return Promise.resolve(this.inverters.filter(inverter => inverter.clientId === clientId))
+    }
 }

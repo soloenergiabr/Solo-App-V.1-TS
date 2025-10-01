@@ -42,6 +42,12 @@ import type {
     SyncInverterGenerationDataRequest,
     SyncInverterGenerationDataResponse
 } from "../use-cases/sync-inverter-generation-data.use-case";
+
+import type {
+    GetDashboardAnalyticsRequest,
+    GetDashboardAnalyticsResponse
+} from "../use-cases/get-dashboard-analytics.use-case";
+
 import { UserContext } from "@/backend/auth/models/user-context.model";
 
 /**
@@ -98,8 +104,17 @@ export class GenerationService {
         return await this.generationAnalyticsService.getLatestGenerationData(request, userContext);
     }
 
+    async getDashboardAnalytics(request: GetDashboardAnalyticsRequest, userContext: UserContext): Promise<GetDashboardAnalyticsResponse> {
+        return await this.generationAnalyticsService.getDashboardAnalytics(request, userContext);
+    }
+
     // Convenience methods for complex operations
-    async getCompleteInverterAnalytics(inverterId: string, userContext: UserContext, startDate?: string, endDate?: string) {
+    async getCompleteInverterAnalytics({ inverterId, userContext, startDate, endDate }: { inverterId?: string, userContext: UserContext, startDate?: string, endDate?: string }) {
+        // Se inverterId não for fornecido, buscar analytics de todos os inversores do cliente
+        if (!inverterId) {
+            return await this.getCompleteClientAnalytics({ userContext, startDate, endDate });
+        }
+
         const [inverter, generationUnits, totalEnergy, latestData] = await Promise.all([
             this.getInverterById({ inverterId }, userContext),
             this.getGenerationUnitsByInverterId({
@@ -130,10 +145,96 @@ export class GenerationService {
         };
     }
 
-    async syncAllInvertersData(userContext: UserContext): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[] }> {
-        if (!userContext.hasRole("master")) {
-            throw new Error("Unauthorized");
+    // Analytics consolidados de todos os inversores do cliente
+    async getCompleteClientAnalytics({ userContext, startDate, endDate }: { userContext: UserContext, startDate?: string, endDate?: string }) {
+        // Buscar todos os inversores do cliente
+        const invertersResponse = await this.getInverters(userContext);
+        const inverters = invertersResponse.inverters;
+
+        if (inverters.length === 0) {
+            return {
+                inverters: [],
+                totalEnergy: 0,
+                totalPower: 0,
+                summary: {
+                    totalInverters: 0,
+                    totalUnits: 0,
+                    period: {
+                        startDate: startDate || 'all time',
+                        endDate: endDate || 'all time'
+                    }
+                },
+                byInverter: []
+            };
         }
+
+        // Buscar analytics de cada inversor em paralelo
+        const inverterAnalytics = await Promise.all(
+            inverters.map(async (inverter) => {
+                try {
+                    const [generationUnits, totalEnergy, latestData] = await Promise.all([
+                        this.getGenerationUnitsByInverterId({
+                            inverterId: inverter.id,
+                            startDate,
+                            endDate
+                        }, userContext),
+                        this.calculateTotalEnergyGenerated({
+                            inverterId: inverter.id,
+                            startDate,
+                            endDate
+                        }, userContext),
+                        this.getLatestGenerationData({ inverterId: inverter.id }, userContext)
+                    ]);
+
+                    return {
+                        inverter,
+                        generationUnits: generationUnits.generationUnits,
+                        totalEnergy: totalEnergy.totalEnergy,
+                        latestData: latestData.latestData,
+                        unitsCount: generationUnits.count
+                    };
+                } catch (error) {
+                    console.error(`Error fetching analytics for inverter ${inverter.id}:`, error);
+                    return {
+                        inverter,
+                        generationUnits: [],
+                        totalEnergy: 0,
+                        latestData: null,
+                        unitsCount: 0,
+                        error: error instanceof Error ? error.message : 'Unknown error'
+                    };
+                }
+            })
+        );
+
+        // Calcular totais consolidados
+        const totalEnergy = inverterAnalytics.reduce((sum, analytics) => sum + analytics.totalEnergy, 0);
+        const totalPower = inverterAnalytics.reduce((sum, analytics) => {
+            const latestPower = analytics.latestData?.power || 0;
+            return sum + latestPower;
+        }, 0);
+        const totalUnits = inverterAnalytics.reduce((sum, analytics) => sum + analytics.unitsCount, 0);
+
+        return {
+            inverters,
+            totalEnergy,
+            totalPower,
+            summary: {
+                totalInverters: inverters.length,
+                totalUnits,
+                period: {
+                    startDate: startDate || 'all time',
+                    endDate: endDate || 'all time'
+                }
+            },
+            byInverter: inverterAnalytics
+        };
+    }
+
+    async syncAllInvertersData(userContext: UserContext): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[] }> {
+        // if (!userContext.hasRole("master")) {
+        //     throw new Error("Unauthorized");
+        // }
 
         const inverters = await this.getInverters(userContext);
         const results: SyncInverterGenerationDataResponse[] = [];

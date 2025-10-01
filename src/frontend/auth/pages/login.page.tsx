@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/frontend/auth/contexts/auth-context';
+import { Button } from '@/components/ui/button';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -87,13 +88,13 @@ export function LoginPage() {
                     </div>
 
                     <div>
-                        <button
+                        <Button
                             type="submit"
                             disabled={isLoading}
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className='w-full'
                         >
                             {isLoading ? 'Entrando...' : 'Entrar'}
-                        </button>
+                        </Button>
                     </div>
 
                     <div className="text-center">

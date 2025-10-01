@@ -5,6 +5,7 @@ import { GetLatestGenerationDataUseCase, GetLatestGenerationDataRequest, GetLate
 import { GetGenerationUnitsByInverterIdUseCase, GetGenerationUnitsByInverterIdRequest, GetGenerationUnitsByInverterIdResponse } from "../use-cases/get-generation-units-by-inverter-id.use-case";
 import { SyncInverterGenerationDataUseCase, SyncInverterGenerationDataRequest, SyncInverterGenerationDataResponse } from "../use-cases/sync-inverter-generation-data.use-case";
 import { CreateGenerationUnitUseCase, CreateGenerationUnitRequest, CreateGenerationUnitResponse } from "../use-cases/create-generation-unit.use-case";
+import { GetDashboardAnalyticsUseCase, GetDashboardAnalyticsRequest, GetDashboardAnalyticsResponse } from "../use-cases/get-dashboard-analytics.use-case";
 import { UserContext } from '@/backend/auth/models/user-context.model';
 
 export class GenerationAnalyticsService {
@@ -13,6 +14,7 @@ export class GenerationAnalyticsService {
     private getGenerationUnitsByInverterIdUseCase: GetGenerationUnitsByInverterIdUseCase;
     private syncInverterGenerationDataUseCase: SyncInverterGenerationDataUseCase;
     private createGenerationUnitUseCase: CreateGenerationUnitUseCase;
+    private getDashboardAnalyticsUseCase: GetDashboardAnalyticsUseCase;
 
     constructor(
         private inverterRepository: InverterRepository,
@@ -38,6 +40,10 @@ export class GenerationAnalyticsService {
             inverterRepository,
             generationUnitRepository
         );
+        this.getDashboardAnalyticsUseCase = new GetDashboardAnalyticsUseCase(
+            inverterRepository,
+            generationUnitRepository
+        );
     }
 
     async calculateTotalEnergyGenerated(request: CalculateTotalEnergyGeneratedRequest, userContext: UserContext): Promise<CalculateTotalEnergyGeneratedResponse> {
@@ -58,5 +64,9 @@ export class GenerationAnalyticsService {
 
     async createGenerationUnit(request: CreateGenerationUnitRequest, userContext: UserContext): Promise<CreateGenerationUnitResponse> {
         return await this.createGenerationUnitUseCase.execute(request, userContext);
+    }
+
+    async getDashboardAnalytics(request: GetDashboardAnalyticsRequest, userContext: UserContext): Promise<GetDashboardAnalyticsResponse> {
+        return await this.getDashboardAnalyticsUseCase.execute(userContext, request);
     }
 }

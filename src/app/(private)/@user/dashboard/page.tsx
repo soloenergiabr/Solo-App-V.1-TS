@@ -1,198 +1,174 @@
 'use client';
 
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
-import { useAuthContext } from '@/frontend/auth/contexts/auth-context';
-import { useInverters } from '@/frontend/generation/hooks/useInverters';
-import { useState } from 'react';
+import { useGenerationDashboard } from '@/frontend/generation/hooks/use-generation-dashboard';
+import { OverviewCards } from '@/frontend/generation/components/dashboard/overview-cards';
+import { TimeSeriesChart } from '@/frontend/generation/components/dashboard/time-series-chart';
+import { TypeDistributionChart } from '@/frontend/generation/components/dashboard/type-distribution-chart';
+import { InvertersTable } from '@/frontend/generation/components/dashboard/inverters-table';
+import { InvertersComparisonChart } from '@/frontend/generation/components/dashboard/inverters-comparison-chart';
+import { DashboardFiltersComponent } from '@/frontend/generation/components/dashboard/dashboard-filters';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AlertCircle, BarChart3 } from "lucide-react";
 
-function DashboardPage() {
-    const { user, logout } = useAuthContext();
-    const { inverters, isLoading, error, createInverter } = useInverters();
-    const [showCreateForm, setShowCreateForm] = useState(false);
-    const [newInverter, setNewInverter] = useState({
-        provider: 'solis',
-        providerId: '',
-        providerApiKey: '',
-    });
+function GenerationDashboardPage() {
+    const {
+        analytics,
+        isLoading,
+        error,
+        filters,
+        updateFilters,
+        refetch,
+        goToPreviousPeriod,
+        goToNextPeriod,
+        goToToday,
+        getCurrentPeriodLabel,
+    } = useGenerationDashboard();
 
-    const handleCreateInverter = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const result = await createInverter(newInverter);
-
-        if (result.success) {
-            setShowCreateForm(false);
-            setNewInverter({ provider: 'solis', providerId: '', providerApiKey: '' });
-        }
-    };
+    if (error) {
+        return (
+            <div className="container mx-auto p-6">
+                <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Erro ao carregar dashboard</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            </div>
+        );
+    }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto p-6 space-y-6">
             {/* Header */}
-            <header className="bg-white shadow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+                        <BarChart3 className="h-8 w-8" />
+                        Dashboard de Geração
+                    </h1>
+                    <p className="text-muted-foreground mt-1">
+                        Monitore a performance dos seus inversores em tempo real
+                    </p>
+                </div>
+            </div>
+
+            {/* Filtros */}
+            <DashboardFiltersComponent
+                filters={filters}
+                currentPeriodLabel={getCurrentPeriodLabel()}
+                onUpdateFilters={updateFilters}
+                onPreviousPeriod={goToPreviousPeriod}
+                onNextPeriod={goToNextPeriod}
+                onToday={goToToday}
+                onRefresh={refetch}
+                isLoading={isLoading}
+            />
+
+            {/* Loading State */}
+            {isLoading && !analytics ? (
+                <div className="space-y-6">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                        {[...Array(4)].map((_, i) => (
+                            <Skeleton key={i} className="h-32" />
+                        ))}
+                    </div>
+                    <Skeleton className="h-[400px]" />
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <Skeleton className="h-[400px]" />
+                        <Skeleton className="h-[400px]" />
+                    </div>
+                </div>
+            ) : analytics ? (
+                <>
+                    {/* Overview Cards */}
+                    <OverviewCards 
+                        analytics={analytics} 
+                        isRealTime={filters.generationUnitType === 'real_time'}
+                    />
+
+                    {/* Time Series Chart */}
+                    <TimeSeriesChart analytics={analytics} />
+
+                    {/* Charts Grid */}
+                    <div className="grid gap-4 md:grid-cols-2">
+                        {/* Comparison Card */}
+                        {analytics.comparison && (
+                            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-lg p-6 border">
+                                <h3 className="text-lg font-semibold mb-4">Comparação com Período Anterior</h3>
+                                <div className="space-y-4">
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">Energia</p>
+                                        <div className="flex items-baseline gap-2 mt-1">
+                                            <span className="text-2xl font-bold">
+                                                {analytics.comparison.percentageChange?.energy.toFixed(1)}%
+                                            </span>
+                                            <span className={`text-sm font-medium ${(analytics.comparison.percentageChange?.energy || 0) >= 0
+                                                ? 'text-green-600'
+                                                : 'text-red-600'
+                                                }`}>
+                                                {(analytics.comparison.percentageChange?.energy || 0) >= 0 ? '↑' : '↓'}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            Período anterior: {analytics.comparison.previousPeriod?.totalEnergy.toFixed(2)} kWh
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">Potência</p>
+                                        <div className="flex items-baseline gap-2 mt-1">
+                                            <span className="text-2xl font-bold">
+                                                {analytics.comparison.percentageChange?.power.toFixed(1)}%
+                                            </span>
+                                            <span className={`text-sm font-medium ${(analytics.comparison.percentageChange?.power || 0) >= 0
+                                                ? 'text-green-600'
+                                                : 'text-red-600'
+                                                }`}>
+                                                {(analytics.comparison.percentageChange?.power || 0) >= 0 ? '↑' : '↓'}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            Período anterior: {analytics.comparison.previousPeriod?.totalPower.toFixed(2)} W
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Inverters Comparison Chart */}
+                    {analytics.byInverter.length > 1 && (
+                        <InvertersComparisonChart analytics={analytics} />
+                    )}
+
+                    {/* Inverters Table */}
+                    <InvertersTable analytics={analytics} />
+
+                    {/* Summary Footer */}
+                    <div className="flex items-center justify-between text-sm text-muted-foreground border-t pt-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">
-                                Solo Energy Dashboard
-                            </h1>
-                            <p className="text-gray-600">
-                                Bem-vindo, {user?.name}!
-                            </p>
-                        </div>
-                        <button
-                            onClick={logout}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
-                        >
-                            Logout
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            {/* Main Content */}
-            <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="px-4 py-6 sm:px-0">
-                    {/* User Info Card */}
-                    <div className="bg-white overflow-hidden shadow rounded-lg mb-6">
-                        <div className="px-4 py-5 sm:p-6">
-                            <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                Informações do Usuário
-                            </h3>
-                            <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Email:</span>
-                                    <p className="text-sm text-gray-900">{user?.email}</p>
-                                </div>
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Roles:</span>
-                                    <p className="text-sm text-gray-900">{user?.roles.join(', ')}</p>
-                                </div>
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Client ID:</span>
-                                    <p className="text-sm text-gray-900">{user?.clientId || 'N/A'}</p>
-                                </div>
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Permissões:</span>
-                                    <p className="text-sm text-gray-900">{user?.permissions.join(', ')}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Inverters Section */}
-                    <div className="bg-white overflow-hidden shadow rounded-lg">
-                        <div className="px-4 py-5 sm:p-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                    Seus Inversores
-                                </h3>
-                                <button
-                                    onClick={() => setShowCreateForm(!showCreateForm)}
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-                                >
-                                    {showCreateForm ? 'Cancelar' : 'Adicionar Inversor'}
-                                </button>
-                            </div>
-
-                            {/* Create Form */}
-                            {showCreateForm && (
-                                <form onSubmit={handleCreateInverter} className="mb-6 p-4 bg-gray-50 rounded-md">
-                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                Provider
-                                            </label>
-                                            <select
-                                                value={newInverter.provider}
-                                                onChange={(e) => setNewInverter(prev => ({ ...prev, provider: e.target.value }))}
-                                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                            >
-                                                <option value="solis">Solis</option>
-                                                <option value="growatt">Growatt</option>
-                                                <option value="solplanet">SolPlanet</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                Provider ID
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={newInverter.providerId}
-                                                onChange={(e) => setNewInverter(prev => ({ ...prev, providerId: e.target.value }))}
-                                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                API Key
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={newInverter.providerApiKey}
-                                                onChange={(e) => setNewInverter(prev => ({ ...prev, providerApiKey: e.target.value }))}
-                                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="mt-4">
-                                        <button
-                                            type="submit"
-                                            disabled={isLoading}
-                                            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors disabled:opacity-50"
-                                        >
-                                            {isLoading ? 'Criando...' : 'Criar Inversor'}
-                                        </button>
-                                    </div>
-                                </form>
-                            )}
-
-                            {/* Error Display */}
-                            {error && (
-                                <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                                    {error}
-                                </div>
-                            )}
-
-                            {/* Loading State */}
-                            {isLoading && (
-                                <div className="flex justify-center py-4">
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                                </div>
-                            )}
-
-                            {/* Inverters List */}
-                            {!isLoading && (
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                    {inverters.length === 0 ? (
-                                        <div className="col-span-full text-center py-8 text-gray-500">
-                                            Nenhum inversor encontrado. Adicione seu primeiro inversor!
-                                        </div>
-                                    ) : (
-                                        inverters.map((inverter) => (
-                                            <div key={inverter.id} className="border border-gray-200 rounded-lg p-4">
-                                                <h4 className="font-medium text-gray-900 mb-2">
-                                                    {inverter.provider.toUpperCase()}
-                                                </h4>
-                                                <p className="text-sm text-gray-600 mb-1">
-                                                    <span className="font-medium">ID:</span> {inverter.providerId}
-                                                </p>
-                                                <p className="text-sm text-gray-600 mb-1">
-                                                    <span className="font-medium">Criado:</span>{' '}
-                                                    {new Date(inverter.createdAt).toLocaleDateString('pt-BR')}
-                                                </p>
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
+                            {analytics.filters.appliedFilters > 0 && (
+                                <span>
+                                    {analytics.filters.appliedFilters} filtro(s) aplicado(s)
+                                </span>
                             )}
                         </div>
+                        <div>
+                            Última atualização: {new Date().toLocaleString('pt-BR')}
+                        </div>
                     </div>
-                </div>
-            </main>
+                </>
+            ) : (
+                <Alert>
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Nenhum dado disponível</AlertTitle>
+                    <AlertDescription>
+                        Não há dados de geração para exibir no momento.
+                    </AlertDescription>
+                </Alert>
+            )}
         </div>
     );
 }
 
-export default withAuth(DashboardPage);
+export default withAuth(GenerationDashboardPage);
