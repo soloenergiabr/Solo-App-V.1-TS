@@ -159,11 +159,12 @@ export class AuthService {
     }
 
     async validateToken(token: string): Promise<UserContextModel> {
-        try {
-            return JwtService.createUserContextFromToken(token);
-        } catch (error) {
-            throw new Error('Invalid token');
+        const userContext = JwtService.createUserContextFromToken(token);
+        const user = await this.userRepository.findById(userContext.userId);
+        if (!user || !user.isActive) {
+            throw new Error('User not found or inactive');
         }
+        return userContext;
     }
 
     async logout(token: string): Promise<{ message: string }> {

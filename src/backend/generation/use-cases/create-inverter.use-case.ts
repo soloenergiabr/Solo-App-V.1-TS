@@ -49,7 +49,7 @@ export class CreateInverterUseCase {
             userContext.clientId // Associar ao cliente do usuário
         );
 
-        // await this.inverterRepository.create(inverter);
+        await this.inverterRepository.create(inverter);
 
         return CreateInverterResponseSchema.parse({
             inverterId,

@@ -54,24 +54,13 @@ export class CalculateTotalEnergyGeneratedUseCase {
         let generationUnits: GenerationUnitModel[];
 
         if (validatedRequest.startDate && validatedRequest.endDate) {
-            // Date range query
-            if ('findByInverterIdAndDateRange' in this.generationUnitRepository) {
-                generationUnits = await (this.generationUnitRepository as any).findByInverterIdAndDateRange(
-                    validatedRequest.inverterId,
-                    new Date(validatedRequest.startDate),
-                    new Date(validatedRequest.endDate)
-                );
-            } else {
-                // Fallback: filter in memory
-                const allUnits = await this.generationUnitRepository.findByInverterId(validatedRequest.inverterId);
-                const startDate = new Date(validatedRequest.startDate);
-                const endDate = new Date(validatedRequest.endDate);
-                generationUnits = allUnits.filter(unit =>
-                    unit.timestamp >= startDate && unit.timestamp <= endDate
-                );
-            }
+            const allUnits = await this.generationUnitRepository.findByInverterId(validatedRequest.inverterId);
+            const startDate = new Date(validatedRequest.startDate);
+            const endDate = new Date(validatedRequest.endDate);
+            generationUnits = allUnits.filter(unit =>
+                unit.timestamp >= startDate && unit.timestamp <= endDate
+            );
         } else {
-            // Get all generation units for the inverter
             generationUnits = await this.generationUnitRepository.findByInverterId(validatedRequest.inverterId);
         }
 

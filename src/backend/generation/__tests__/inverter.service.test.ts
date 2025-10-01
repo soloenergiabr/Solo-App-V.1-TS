@@ -4,21 +4,22 @@ import { InverterRepository } from '../repositories/inverter.repository';
 import { InverterModel } from '../models/inverter.model';
 import { UserContextModel } from '@/backend/auth/models/user-context.model';
 import { ZodError } from 'zod';
+import { InMemoryInverterRepository } from '../repositories/implementations/in-memory.inverter.repository';
 
 // Mock the repository
-const mockInverterRepository: InverterRepository = {
-    create: vi.fn(),
-    find: vi.fn(),
-    findById: vi.fn(),
-    update: vi.fn(),
-};
+
 
 describe('InverterService', () => {
     let inverterService: InverterService;
     let mockUserContext: UserContextModel;
-
+    let inverterRepository: InverterRepository;
     beforeEach(() => {
-        inverterService = new InverterService(mockInverterRepository);
+        inverterRepository = new InMemoryInverterRepository();
+        vi.spyOn(inverterRepository, 'create');
+        vi.spyOn(inverterRepository, 'find');
+        vi.spyOn(inverterRepository, 'findById');
+
+        inverterService = new InverterService(inverterRepository);
         mockUserContext = new UserContextModel(
             'user123',
             'test@example.com',
@@ -39,13 +40,12 @@ describe('InverterService', () => {
                 providerApiKey: 'key123',
             };
 
-            vi.mocked(mockInverterRepository.create).mockResolvedValue();
 
             const result = await inverterService.createInverter(request, mockUserContext);
 
             expect(result).toHaveProperty('inverterId');
             expect(typeof result.inverterId).toBe('string');
-            expect(mockInverterRepository.create).toHaveBeenCalledOnce();
+            expect(inverterRepository.create).toHaveBeenCalledOnce();
         });
 
         it('should validate required fields', async () => {
@@ -77,12 +77,11 @@ describe('InverterService', () => {
                 providerUrl: 'https://api.solis.com',
             };
 
-            vi.mocked(mockInverterRepository.create).mockResolvedValue();
 
             const result = await inverterService.createInverter(request, mockUserContext);
 
             expect(result).toHaveProperty('inverterId');
-            expect(mockInverterRepository.create).toHaveBeenCalledOnce();
+            expect(inverterRepository.create).toHaveBeenCalledOnce();
         });
     });
 
@@ -93,7 +92,8 @@ describe('InverterService', () => {
                 new InverterModel('inv2', 'Inverter 2', 'solplanet', 'SP2', undefined, undefined, undefined, mockUserContext.clientId),
             ];
 
-            vi.mocked(mockInverterRepository.find).mockResolvedValue(mockInverters);
+            await inverterRepository.create(mockInverters[0]);
+            await inverterRepository.create(mockInverters[1]);
 
             const result = await inverterService.getInverters(mockUserContext);
 
@@ -104,23 +104,22 @@ describe('InverterService', () => {
                 provider: 'solis' as const,
                 providerId: 'SOL1',
             });
-            expect(mockInverterRepository.find).toHaveBeenCalledOnce();
+            expect(inverterRepository.find).toHaveBeenCalledOnce();
         });
 
         it('should return empty list when no inverters exist', async () => {
-            vi.mocked(mockInverterRepository.find).mockResolvedValue([]);
-
             const result = await inverterService.getInverters(mockUserContext);
 
             expect(result.inverters).toHaveLength(0);
-            expect(mockInverterRepository.find).toHaveBeenCalledOnce();
+            expect(inverterRepository.find).toHaveBeenCalledOnce();
         });
     });
 
     describe('getInverterById', () => {
         it('should return inverter by id', async () => {
-            const mockInverter = new InverterModel('inv1', 'Inverter 1', 'solis', 'SOL1');
-            vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverter);
+            const mockInverter = new InverterModel('inv1', 'Inverter 1', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
+
+            await inverterRepository.create(mockInverter);
 
             const result = await inverterService.getInverterById({ inverterId: 'inv1' }, mockUserContext);
 
@@ -130,7 +129,7 @@ describe('InverterService', () => {
                 provider: 'solis' as const,
                 providerId: 'SOL1',
             });
-            expect(mockInverterRepository.findById).toHaveBeenCalledWith('inv1');
+            expect(inverterRepository.findById).toHaveBeenCalledWith('inv1');
         });
 
         it('should validate inverterId is provided', async () => {
@@ -140,10 +139,6 @@ describe('InverterService', () => {
         });
 
         it('should throw error when inverter not found', async () => {
-            vi.mocked(mockInverterRepository.findById).mockRejectedValue(
-                new Error('Inverter not found')
-            );
-
             await expect(
                 inverterService.getInverterById({ inverterId: 'nonexistent' }, mockUserContext)
             ).rejects.toThrow('Inverter not found');

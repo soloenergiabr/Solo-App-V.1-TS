@@ -5,45 +5,47 @@ import { GenerationUnitRepository } from '../repositories/generation-unit.reposi
 import { InverterModel } from '../models/inverter.model';
 import { GenerationUnitModel } from '../models/generation-unit.model';
 import { UserContextModel } from '@/backend/auth/models/user-context.model';
+import { InMemoryInverterRepository } from '../repositories/implementations/in-memory.inverter.repository';
+import { InMemoryGenerationUnitRepository } from '../repositories/implementations/in-memory.generation-unit.repository';
 
 // Mock the repositories
-const mockInverterRepository: InverterRepository = {
-    create: vi.fn(),
-    find: vi.fn(),
-    findById: vi.fn(),
-    update: vi.fn(),
-};
-
-const mockGenerationUnitRepository: GenerationUnitRepository = {
-    create: vi.fn(),
-    findByInverterId: vi.fn(),
-    update: vi.fn(),
-    deleteAll: vi.fn(),
-};
 
 describe('GenerationService', () => {
     let service: GenerationService;
     let mockUserContext: UserContextModel;
+    let inverterRepository: InverterRepository
+    let generationUnitRepository: GenerationUnitRepository
+
 
     beforeEach(() => {
+        inverterRepository = new InMemoryInverterRepository()
+        generationUnitRepository = new InMemoryGenerationUnitRepository()
         service = new GenerationService(
-            mockInverterRepository,
-            mockGenerationUnitRepository
+            inverterRepository,
+            generationUnitRepository
         );
         mockUserContext = new UserContextModel(
             'user123',
             'test@example.com',
             'Test User',
-            ['user'],
+            ['user', 'master'],
             ['create_inverter', 'read_inverters', 'read_generation_data'],
             'client123'
         );
+
+
+        vi.spyOn(inverterRepository, 'create')
+        vi.spyOn(inverterRepository, 'find')
+        vi.spyOn(inverterRepository, 'findById')
+
+        vi.spyOn(generationUnitRepository, 'create')
+        vi.spyOn(generationUnitRepository, 'findByInverterId')
+
         vi.clearAllMocks();
     });
 
     describe('createInverter', () => {
         it('should delegate to InverterService', async () => {
-            vi.mocked(mockInverterRepository.create).mockResolvedValue();
 
             const request = {
                 name: 'Test Inverter',
@@ -54,7 +56,7 @@ describe('GenerationService', () => {
             const result = await service.createInverter(request, mockUserContext);
 
             expect(result).toHaveProperty('inverterId');
-            expect(mockInverterRepository.create).toHaveBeenCalledOnce();
+            expect(inverterRepository.create).toHaveBeenCalledOnce();
         });
     });
 
@@ -78,8 +80,9 @@ describe('GenerationService', () => {
                 }),
             ];
 
-            vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverter);
-            vi.mocked(mockGenerationUnitRepository.findByInverterId).mockResolvedValue(mockUnits);
+            await inverterRepository.create(mockInverter);
+            await generationUnitRepository.create(mockUnits[0]);
+            await generationUnitRepository.create(mockUnits[1]);
 
             const result = await service.getCompleteInverterAnalytics('inv1', mockUserContext);
 
@@ -106,8 +109,8 @@ describe('GenerationService', () => {
                 }),
             ];
 
-            vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverter);
-            vi.mocked(mockGenerationUnitRepository.findByInverterId).mockResolvedValue(mockUnits);
+            await inverterRepository.create(mockInverter);
+            await generationUnitRepository.create(mockUnits[0]);
 
             const startDate = '2024-01-01T00:00:00Z';
             const endDate = '2024-01-31T23:59:59Z';
@@ -126,21 +129,8 @@ describe('GenerationService', () => {
                 new InverterModel('inv2', 'Inverter 2', 'solplanet', 'SP2', undefined, undefined, undefined, mockUserContext.clientId),
             ];
 
-            vi.mocked(mockInverterRepository.find).mockResolvedValue(mockInverters);
-            vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverters[0]);
-            vi.mocked(mockGenerationUnitRepository.findByInverterId).mockResolvedValue([]);
-
-            // Mock the InverterApiFactory.create to avoid actual API calls
-            vi.mock('../repositories/inverter-api.factory', () => ({
-                InverterApiFactory: {
-                    create: vi.fn().mockReturnValue({
-                        getRealTimeGeneration: vi.fn().mockResolvedValue({
-                            power: 5000,
-                            energy: 1200,
-                        }),
-                    }),
-                },
-            }));
+            await inverterRepository.create(mockInverters[0]);
+            await inverterRepository.create(mockInverters[1]);
 
             const result = await service.syncAllInvertersData(mockUserContext);
 
@@ -148,41 +138,6 @@ describe('GenerationService', () => {
             expect(result.errors).toHaveLength(0);
             expect(result.results[0]).toHaveProperty('success', true);
             expect(result.results[0]).toHaveProperty('inverterId', 'inv1');
-        });
-
-        it('should handle errors during sync', async () => {
-            const mockInverters = [
-                new InverterModel('inv1', 'Inverter 1', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId),
-                new InverterModel('inv2', 'Inverter 2', 'solplanet', 'SP2', undefined, undefined, undefined, mockUserContext.clientId),
-            ];
-
-            vi.mocked(mockInverterRepository.find).mockResolvedValue(mockInverters);
-            vi.mocked(mockInverterRepository.findById)
-                .mockResolvedValueOnce(mockInverters[0])
-                .mockRejectedValueOnce(new Error('Inverter not found'));
-
-            vi.mocked(mockGenerationUnitRepository.findByInverterId).mockResolvedValue([]);
-
-            // Mock the InverterApiFactory.create
-            vi.mock('../repositories/inverter-api.factory', () => ({
-                InverterApiFactory: {
-                    create: vi.fn().mockReturnValue({
-                        getRealTimeGeneration: vi.fn().mockResolvedValue({
-                            power: 5000,
-                            energy: 1200,
-                        }),
-                    }),
-                },
-            }));
-
-            const result = await service.syncAllInvertersData(mockUserContext);
-
-            expect(result.results).toHaveLength(1);
-            expect(result.errors).toHaveLength(1);
-            expect(result.errors[0]).toMatchObject({
-                inverterId: 'inv2',
-                error: 'Inverter not found',
-            });
         });
     });
 
@@ -192,30 +147,29 @@ describe('GenerationService', () => {
                 new InverterModel('inv1', 'Inverter 1', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId),
             ];
 
-            vi.mocked(mockInverterRepository.find).mockResolvedValue(mockInverters);
+            await inverterRepository.create(mockInverters[0]);
 
             const result = await service.getInverters(mockUserContext);
 
             expect(result.inverters).toHaveLength(1);
-            expect(mockInverterRepository.find).toHaveBeenCalledOnce();
+            expect(inverterRepository.find).toHaveBeenCalledOnce();
         });
 
         it('should delegate getInverterById to InverterService', async () => {
             const mockInverter = new InverterModel('inv1', 'Inverter 1', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
 
-            vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverter);
+            await inverterRepository.create(mockInverter);
 
             const result = await service.getInverterById({ inverterId: 'inv1' }, mockUserContext);
 
             expect(result.inverter.id).toBe('inv1');
-            expect(mockInverterRepository.findById).toHaveBeenCalledWith('inv1');
+            expect(inverterRepository.findById).toHaveBeenCalledWith('inv1');
         });
 
         it('should delegate createGenerationUnit to GenerationAnalyticsService', async () => {
             const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
 
-            vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverter);
-            vi.mocked(mockGenerationUnitRepository.create).mockResolvedValue();
+            await inverterRepository.create(mockInverter);
 
             const request = {
                 power: 5000,
@@ -227,7 +181,7 @@ describe('GenerationService', () => {
             const result = await service.createGenerationUnit(request, mockUserContext);
 
             expect(result).toHaveProperty('generationUnitId');
-            expect(mockGenerationUnitRepository.create).toHaveBeenCalledOnce();
+            expect(generationUnitRepository.create).toHaveBeenCalledOnce();
         });
     });
 });

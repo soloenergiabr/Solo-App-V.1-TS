@@ -169,7 +169,7 @@ describe('GenerationAnalyticsService', () => {
 
     describe('calculateTotalEnergyGenerated', () => {
         it('should calculate total energy for an inverter', async () => {
-            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1');
+            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
             const mockUnits = [
                 new GenerationUnitModel({
                     power: 5000,
@@ -198,7 +198,7 @@ describe('GenerationAnalyticsService', () => {
         });
 
         it('should return zero for inverter with no generation units', async () => {
-            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1');
+            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
 
             vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverter);
             vi.mocked(mockGenerationUnitRepository.findByInverterId).mockResolvedValue([]);
@@ -214,7 +214,7 @@ describe('GenerationAnalyticsService', () => {
 
     describe('getLatestGenerationData', () => {
         it('should return latest generation data', async () => {
-            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1');
+            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
             const now = new Date();
             const earlier = new Date(now.getTime() - 60000); // 1 minute earlier
 
@@ -252,7 +252,7 @@ describe('GenerationAnalyticsService', () => {
         });
 
         it('should return null when no generation data exists', async () => {
-            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1');
+            const mockInverter = new InverterModel('inv1', 'Test Inverter', 'solis', 'SOL1', undefined, undefined, undefined, mockUserContext.clientId);
 
             vi.mocked(mockInverterRepository.findById).mockResolvedValue(mockInverter);
             vi.mocked(mockGenerationUnitRepository.findByInverterId).mockResolvedValue([]);

@@ -56,7 +56,7 @@ export class JwtService {
             return decoded;
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
-                throw new Error('Token expired');
+                throw new Error('Token has expired');
             }
             if (error instanceof jwt.JsonWebTokenError) {
                 throw new Error('Invalid token');

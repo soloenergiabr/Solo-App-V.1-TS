@@ -23,10 +23,18 @@ export class UserContextModel implements UserContext {
     ) { }
 
     public hasRole(role: string): boolean {
+        if (!this.roles) {
+            return false;
+        }
+
         return this.roles.includes(role);
     }
 
     public hasPermission(permission: string): boolean {
+        if (!this.permissions) {
+            return false;
+        }
+
         return this.permissions.includes(permission);
     }
 

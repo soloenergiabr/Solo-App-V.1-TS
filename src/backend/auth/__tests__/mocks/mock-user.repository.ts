@@ -44,4 +44,16 @@ export class MockUserRepository implements UserRepository {
     getUserCount(): number {
         return this.users.length;
     }
+
+    async update(user: Partial<User>): Promise<User> {
+        const index = this.users.findIndex(u => u.id === user.id);
+        if (index === -1) {
+            throw new Error('User not found');
+        }
+        this.users[index] = {
+            ...this.users[index],
+            ...user,
+        };
+        return this.users[index];
+    }
 }
