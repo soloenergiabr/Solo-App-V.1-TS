@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, beforeAll } from 'vitest'
+import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest'
 import { InverterApiRepository } from '../repositories/inverter-api.repository';
 import { InverterApiFactory } from '../repositories/inverter-api.factory';
 import { SyncInverterGenerationDataUseCase } from '../use-cases/sync-inverter-generation-data.use-case';
@@ -41,8 +41,24 @@ describe('Sync Inverter Generation Data Use Case', () => {
 
     it('should sync inverter generation data', async () => {
         const syncInverterGenerationDataUseCase = new SyncInverterGenerationDataUseCase(inverterRepository, generationUnitRepository)
+
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date('2025-10-02T03:00:00.000Z'));
+
         await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
         await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(4)
+
+        vi.setSystemTime(new Date('2025-10-02T04:00:00.000Z'));
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(5)
+
+        vi.setSystemTime(new Date('2025-10-02T05:00:00.000Z'));
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(6)
+
+        vi.setSystemTime(new Date('2025-11-02T06:00:00.000Z'));
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(9)
     })
 
     it('should sync inverter generation data if already has day generation', async () => {

@@ -3,7 +3,7 @@
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
 import { useGenerationDashboard } from '@/frontend/generation/hooks/use-generation-dashboard';
 import { OverviewCards } from '@/frontend/generation/components/dashboard/overview-cards';
-import { TimeSeriesChart } from '@/frontend/generation/components/dashboard/time-series-chart';
+import { AdaptiveChart } from '@/frontend/generation/components/dashboard/adaptive-chart';
 import { TypeDistributionChart } from '@/frontend/generation/components/dashboard/type-distribution-chart';
 import { InvertersTable } from '@/frontend/generation/components/dashboard/inverters-table';
 import { InvertersComparisonChart } from '@/frontend/generation/components/dashboard/inverters-comparison-chart';
@@ -82,13 +82,16 @@ function GenerationDashboardPage() {
             ) : analytics ? (
                 <>
                     {/* Overview Cards */}
-                    <OverviewCards 
-                        analytics={analytics} 
+                    <OverviewCards
+                        analytics={analytics}
                         isRealTime={filters.generationUnitType === 'real_time'}
                     />
 
-                    {/* Time Series Chart */}
-                    <TimeSeriesChart analytics={analytics} />
+                    {/* Adaptive Chart - Muda entre Line e Bar baseado no tipo */}
+                    <AdaptiveChart
+                        analytics={analytics}
+                        viewType={filters.generationUnitType}
+                    />
 
                     {/* Charts Grid */}
                     <div className="grid gap-4 md:grid-cols-2">

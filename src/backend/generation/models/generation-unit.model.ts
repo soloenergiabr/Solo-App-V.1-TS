@@ -12,12 +12,13 @@ export class GenerationUnitModel {
 
 
     constructor(
-        { id, power, energy, generationUnitType, inverterId }: {
+        { id, power, energy, generationUnitType, inverterId, timestamp }: {
             id?: string,
             power: number,
             energy: number,
             generationUnitType: GenerationUnitType,
-            inverterId: string
+            inverterId: string,
+            timestamp?: Date
         }
     ) {
         this.id = id ?? `generation_unit_${uuid()}`
@@ -25,6 +26,6 @@ export class GenerationUnitModel {
         this.energy = energy
         this.generationUnitType = generationUnitType
         this.inverterId = inverterId
-        this.timestamp = new Date()
+        this.timestamp = timestamp || new Date()
     }
 }

@@ -147,8 +147,9 @@ export class GetDashboardAnalyticsUseCase {
 
         // Calcular métricas gerais
         const totalEnergy = allUnits.reduce((sum, unit) => sum + unit.energy, 0);
-        const totalPower = allUnits.reduce((sum, unit) => sum + unit.power, 0);
         const averageEnergy = allUnits.length > 0 ? totalEnergy / allUnits.length : 0;
+        const currentPower = allUnits[allUnits.length - 1]?.power || 0;
+        const totalPower = currentPower;
         const averagePower = allUnits.length > 0 ? totalPower / allUnits.length : 0;
 
         const peakPowerUnit = allUnits.reduce((max, unit) =>
@@ -159,26 +160,89 @@ export class GetDashboardAnalyticsUseCase {
         // Calcular inversores ativos (com dados no período)
         const activeInverterIds = new Set(allUnits.map(unit => unit.inverterId));
 
-        // Criar série temporal agregada
-        const timeSeriesMap = new Map<string, { energy: number; power: number; inverters: Set<string> }>();
+        // Criar série temporal baseada no tipo
+        let timeSeries: Array<{ timestamp: string; energy: number; power: number; inverterCount: number }>;
 
-        allUnits.forEach(unit => {
-            const timeKey = unit.timestamp.toISOString();
-            const existing = timeSeriesMap.get(timeKey) || { energy: 0, power: 0, inverters: new Set() };
-            existing.energy += unit.energy;
-            existing.power += unit.power;
-            existing.inverters.add(unit.inverterId);
-            timeSeriesMap.set(timeKey, existing);
-        });
+        if (request?.generationUnitType === 'real_time') {
+            // Para real_time: Retornar TODOS os pontos sem agregar
+            // Cada registro é um ponto no gráfico
+            timeSeries = allUnits
+                .map(unit => ({
+                    timestamp: unit.timestamp.toISOString(),
+                    energy: unit.energy,
+                    power: unit.power,
+                    inverterCount: 1, // Cada unit é de um inversor
+                }))
+                .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+        } else if (request?.generationUnitType === 'day') {
+            // Para day: Agregar por HORA (não por timestamp exato)
+            const timeSeriesMap = new Map<string, { energy: number; power: number; inverters: Set<string>; timestamp: Date }>();
 
-        const timeSeries = Array.from(timeSeriesMap.entries())
-            .map(([timestamp, data]) => ({
-                timestamp,
-                energy: data.energy,
-                power: data.power,
-                inverterCount: data.inverters.size,
-            }))
-            .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+            allUnits.forEach(unit => {
+                const date = new Date(unit.timestamp);
+                // Agregar por hora: YYYY-MM-DD HH:00:00
+                const hourKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:00:00`;
+
+                const existing = timeSeriesMap.get(hourKey) || {
+                    energy: 0,
+                    power: 0,
+                    inverters: new Set(),
+                    timestamp: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0, 0)
+                };
+                existing.energy += unit.energy;
+                existing.power += unit.power;
+                existing.inverters.add(unit.inverterId);
+                timeSeriesMap.set(hourKey, existing);
+            });
+
+            timeSeries = Array.from(timeSeriesMap.entries())
+                .map(([_, data]) => ({
+                    timestamp: data.timestamp.toISOString(),
+                    energy: data.energy,
+                    power: data.power,
+                    inverterCount: data.inverters.size,
+                }))
+                .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+        } else {
+            // Para month e year: Agregar por dia ou mês
+            const timeSeriesMap = new Map<string, { energy: number; power: number; inverters: Set<string>; timestamp: Date }>();
+
+            allUnits.forEach(unit => {
+                const date = new Date(unit.timestamp);
+                let timeKey: string;
+                let aggregatedTimestamp: Date;
+
+                if (request?.generationUnitType === 'month') {
+                    // Agregar por dia
+                    timeKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                    aggregatedTimestamp = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+                } else {
+                    // year: Agregar por mês
+                    timeKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                    aggregatedTimestamp = new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0);
+                }
+
+                const existing = timeSeriesMap.get(timeKey) || {
+                    energy: 0,
+                    power: 0,
+                    inverters: new Set(),
+                    timestamp: aggregatedTimestamp
+                };
+                existing.energy += unit.energy;
+                existing.power += unit.power;
+                existing.inverters.add(unit.inverterId);
+                timeSeriesMap.set(timeKey, existing);
+            });
+
+            timeSeries = Array.from(timeSeriesMap.entries())
+                .map(([timeKey, data]) => ({
+                    timestamp: data.timestamp.toISOString(),
+                    energy: data.energy,
+                    power: data.power,
+                    inverterCount: data.inverters.size,
+                }))
+                .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+        }
 
         // Calcular métricas por inversor
         const byInverter = targetInverterIds.map(inverterId => {

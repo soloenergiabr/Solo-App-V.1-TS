@@ -14,9 +14,7 @@ export class PrismaInverterRepository implements InverterRepository {
                 providerApiKey: inverter.providerApiKey,
                 providerApiSecret: inverter.providerApiSecret,
                 providerUrl: inverter.providerUrl,
-                // Note: clientId needs to be provided when creating inverter
-                // This might need to be adjusted based on your business logic
-                clientId: "client_default", // This should come from the inverter model or be passed separately
+                clientId: inverter.clientId || "",
             },
         });
     }

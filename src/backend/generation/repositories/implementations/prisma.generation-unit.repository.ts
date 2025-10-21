@@ -35,6 +35,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             energy: unit.energy,
             generationUnitType: unit.generationUnitType as GenerationUnitType,
             inverterId: unit.inverterId,
+            timestamp: unit.timestamp,
         }));
     }
 
@@ -97,6 +98,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             energy: unit.energy,
             generationUnitType: unit.generationUnitType as GenerationUnitType,
             inverterId: unit.inverterId,
+            timestamp: unit.timestamp,
         }));
     }
 
@@ -125,6 +127,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             energy: unit.energy,
             generationUnitType: unit.generationUnitType as GenerationUnitType,
             inverterId: unit.inverterId,
+            timestamp: unit.timestamp,
         }));
     }
 

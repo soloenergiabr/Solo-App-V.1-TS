@@ -35,76 +35,116 @@ export class SyncInverterGenerationDataUseCase {
 
         let unitsCreated = 0;
         let unitsUpdated = 0;
-        const inverter = await this.inverterRepository.findById(validatedRequest.inverterId)
 
-        const inverterApiRepository = InverterApiFactory.create(inverter)
+        // Buscar inversor
+        const inverter = await this.inverterRepository.findById(validatedRequest.inverterId);
+        if (!inverter) {
+            throw new Error(`Inverter with ID ${validatedRequest.inverterId} not found`);
+        }
 
-        const { power, energy } = await inverterApiRepository.getRealTimeGeneration()
+        // Verificar permissões de acesso ao inversor
+        if (!userContext.canAccessInverter(inverter.id)) {
+            throw new Error('User does not have permission to access this inverter');
+        }
 
-        const generations = await this.generationUnitRepository.findByInverterId(validatedRequest.inverterId);
+        // Buscar dados em tempo real da API do inversor
+        const inverterApiRepository = InverterApiFactory.create(inverter);
+        const { power, energy } = await inverterApiRepository.getRealTimeGeneration();
 
-        const hasTodayGeneration = generations.find(generation => generation.generationUnitType === 'day' && generation.timestamp.toDateString() === new Date().toDateString())
+        // Buscar todas as generation units existentes do inversor
+        const existingGenerations = await this.generationUnitRepository.findByInverterId(validatedRequest.inverterId);
 
-        if (!hasTodayGeneration) {
-            const generationUnit = new GenerationUnitModel({
+        const now = new Date();
+
+        // 1. TEMPO REAL - Sempre cria um novo registro
+        const realTimeUnit = new GenerationUnitModel({
+            power,
+            energy,
+            generationUnitType: 'real_time',
+            inverterId: inverter.id
+        });
+        await this.generationUnitRepository.create(realTimeUnit);
+        unitsCreated++;
+
+        // 2. DIÁRIO - Cria se não existir hoje, atualiza se já existir
+        const todayGeneration = existingGenerations.find(gen =>
+            gen.generationUnitType === 'day' &&
+            this.isSameDay(gen.timestamp, now)
+        );
+
+        if (!todayGeneration) {
+            const dayUnit = new GenerationUnitModel({
                 power,
                 energy,
                 generationUnitType: 'day',
                 inverterId: inverter.id
-            })
-            await this.generationUnitRepository.create(generationUnit)
-            unitsCreated++
-        }
-        else {
-            const generationUnit = new GenerationUnitModel({
-                id: hasTodayGeneration.id,
+            });
+            await this.generationUnitRepository.create(dayUnit);
+            unitsCreated++;
+        } else {
+            const updatedDayUnit = new GenerationUnitModel({
+                id: todayGeneration.id,
                 power,
                 energy,
                 generationUnitType: 'day',
                 inverterId: inverter.id
-            })
-
-            await this.generationUnitRepository.update(generationUnit)
-            unitsUpdated++
+            });
+            await this.generationUnitRepository.update(updatedDayUnit);
+            unitsUpdated++;
         }
 
-        const hasThisMonthGeneration = generations.some(generation => generation.generationUnitType === 'month' && generation.timestamp.getMonth() === new Date().getMonth() && generation.timestamp.getFullYear() === new Date().getFullYear())
+        // 3. MENSAL - Cria se não existir este mês, atualiza se já existir
+        const thisMonthGeneration = existingGenerations.find(gen =>
+            gen.generationUnitType === 'month' &&
+            this.isSameMonth(gen.timestamp, now)
+        );
 
-        if (!hasThisMonthGeneration) {
-            const generationUnit = new GenerationUnitModel({
+        if (!thisMonthGeneration) {
+            const monthUnit = new GenerationUnitModel({
                 power,
                 energy,
                 generationUnitType: 'month',
                 inverterId: inverter.id
-            })
-            await this.generationUnitRepository.create(generationUnit)
-            unitsCreated++
+            });
+            await this.generationUnitRepository.create(monthUnit);
+            unitsCreated++;
+        } else {
+            const updatedMonthUnit = new GenerationUnitModel({
+                id: thisMonthGeneration.id,
+                power,
+                energy,
+                generationUnitType: 'month',
+                inverterId: inverter.id
+            });
+            await this.generationUnitRepository.update(updatedMonthUnit);
+            unitsUpdated++;
         }
 
-        const hasThisYearGeneration = generations.some(generation => generation.generationUnitType === 'year' && generation.timestamp.getFullYear() === new Date().getFullYear())
+        // 4. ANUAL - Cria se não existir este ano, atualiza se já existir
+        const thisYearGeneration = existingGenerations.find(gen =>
+            gen.generationUnitType === 'year' &&
+            this.isSameYear(gen.timestamp, now)
+        );
 
-        if (!hasThisYearGeneration) {
-            const generationUnit = new GenerationUnitModel({
+        if (!thisYearGeneration) {
+            const yearUnit = new GenerationUnitModel({
                 power,
                 energy,
                 generationUnitType: 'year',
                 inverterId: inverter.id
-            })
-            await this.generationUnitRepository.create(generationUnit)
-            unitsCreated++
-        }
-
-        const hasThisMinuteRealTimeGeneration = generations.some(generation => generation.generationUnitType === 'real_time' && generation.timestamp.toDateString() === new Date().toDateString() && generation.timestamp.getHours() === new Date().getHours() && generation.timestamp.getMinutes() === new Date().getMinutes())
-
-        if (!hasThisMinuteRealTimeGeneration) {
-            const generationUnit = new GenerationUnitModel({
+            });
+            await this.generationUnitRepository.create(yearUnit);
+            unitsCreated++;
+        } else {
+            const updatedYearUnit = new GenerationUnitModel({
+                id: thisYearGeneration.id,
                 power,
                 energy,
-                generationUnitType: 'real_time',
+                generationUnitType: 'year',
                 inverterId: inverter.id
-            })
-            await this.generationUnitRepository.create(generationUnit)
-            unitsCreated++
+            });
+            await this.generationUnitRepository.update(updatedYearUnit);
+            unitsUpdated++;
         }
 
         return SyncInverterGenerationDataResponseSchema.parse({
@@ -113,6 +153,22 @@ export class SyncInverterGenerationDataUseCase {
             unitsCreated,
             unitsUpdated,
             message: `Successfully synced data for inverter ${inverter.id}. Created ${unitsCreated} units, updated ${unitsUpdated} units.`
-        })
+        });
+    }
+
+    // Métodos auxiliares para comparação de datas
+    private isSameDay(date1: Date, date2: Date): boolean {
+        return date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getDate() === date2.getDate();
+    }
+
+    private isSameMonth(date1: Date, date2: Date): boolean {
+        return date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth();
+    }
+
+    private isSameYear(date1: Date, date2: Date): boolean {
+        return date1.getFullYear() === date2.getFullYear();
     }
 }
