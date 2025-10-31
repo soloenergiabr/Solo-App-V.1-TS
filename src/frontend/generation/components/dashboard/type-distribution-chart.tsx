@@ -9,10 +9,10 @@ interface TypeDistributionChartProps {
 }
 
 const COLORS = {
-    real_time: 'hsl(var(--chart-1))',
-    day: 'hsl(var(--chart-2))',
-    month: 'hsl(var(--chart-3))',
-    year: 'hsl(var(--chart-4))',
+    real_time: 'var(--chart-1)',
+    day: 'var(--chart-2)',
+    month: 'var(--chart-3)',
+    year: 'var(--chart-4)',
 };
 
 const TYPE_LABELS = {

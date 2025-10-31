@@ -64,21 +64,21 @@ export function InvertersComparisonChart({ analytics }: InvertersComparisonChart
                             <Bar 
                                 yAxisId="left"
                                 dataKey="energia" 
-                                fill="hsl(var(--chart-1))" 
+                                fill="var(--chart-1)" 
                                 name="Energia Total (kWh)"
                                 radius={[4, 4, 0, 0]}
                             />
                             <Bar 
                                 yAxisId="right"
                                 dataKey="potenciaPico" 
-                                fill="hsl(var(--chart-2))" 
+                                fill="var(--chart-2)" 
                                 name="Potência Pico (W)"
                                 radius={[4, 4, 0, 0]}
                             />
                             <Bar 
                                 yAxisId="right"
                                 dataKey="potenciaMedia" 
-                                fill="hsl(var(--chart-3))" 
+                                fill="var(--chart-3)" 
                                 name="Potência Média (W)"
                                 radius={[4, 4, 0, 0]}
                             />

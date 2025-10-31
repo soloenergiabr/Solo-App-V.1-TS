@@ -1,9 +1,9 @@
 "use client"
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Home, Inbox, Calendar, Search, Settings, UserIcon } from "lucide-react"
+import { Home, UserIcon } from "lucide-react"
 import Link from "next/link"
 
 const items = [
@@ -25,23 +25,21 @@ export function AppSidebar() {
 
     if (isMobile) {
         return (
-            <footer className="fixed bottom-0 left-0 right-0">
-                <div className="flex items-center justify-between p-4">
-                    <Link href="#">
-                        <Home />
-                    </Link>
-                    <Link href="#">
-                        <Inbox />
-                    </Link>
-                    <Link href="#">
-                        <Calendar />
-                    </Link>
-                    <Link href="#">
-                        <Search />
-                    </Link>
-                    <Link href="#">
-                        <Settings />
-                    </Link>
+            <footer className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <div className="flex items-center justify-around px-4 py-2 safe-area-inset-bottom">
+                    {items.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                            <Link 
+                                key={item.url}
+                                href={item.url}
+                                className="flex flex-col items-center justify-center gap-1 min-w-[64px] py-2 px-3 rounded-lg transition-colors hover:bg-accent"
+                            >
+                                <Icon className="h-5 w-5" />
+                                <span className="text-[10px] font-medium">{item.title}</span>
+                            </Link>
+                        );
+                    })}
                 </div>
             </footer>
         )
