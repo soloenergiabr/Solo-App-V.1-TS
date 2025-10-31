@@ -15,13 +15,13 @@ const inverterService = new InverterService(
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         // Extrair contexto do usuário
         const userContext = await AuthMiddleware.requireAuth(request);
 
-        const { id } = params;
 
         const result = await inverterService.getInverterById({ inverterId: id }, userContext);
 
@@ -62,7 +62,7 @@ export async function GET(
                 {
                     success: false,
                     error: 'Inverter not found',
-                    message: `Inverter with id ${params.id} not found`,
+                    message: `Inverter with id ${id} not found`,
                 },
                 { status: 404 }
             );
@@ -81,10 +81,10 @@ export async function GET(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const { id } = params;
+        const { id } = await params;
         const body = await request.json();
 
         // Note: For now, we'll return a not implemented response

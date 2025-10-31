@@ -1,18 +1,19 @@
+# Docker Compose para produção
 services:
   postgres:
     hostname: db
     image: postgres:16-alpine
-    container_name: solo-energy-postgres
+    container_name: solo-energy-postgres-prod
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: always
     ports:
-      - "${DATABASE_PORT:-6001}:5432"
+      - "${DATABASE_PORT:-5432}:5432"
     environment:
       - POSTGRES_DB=${DATABASE_NAME:-solo-energia}
       - POSTGRES_USER=${DATABASE_USER:-postgres}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD:-postgres}
-      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -23,12 +24,13 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: solo-energy-redis
+    container_name: solo-energy-redis-prod
     volumes:
       - redis-data:/data
     restart: always
     ports:
       - "6379:6379"
+    command: redis-server --appendonly yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -39,7 +41,7 @@ services:
 
   minio:
     image: minio/minio
-    container_name: solo-energy-minio
+    container_name: solo-energy-minio-prod
     ports:
       - "${MINIO_PORT:-9000}:9000"
       - "${MINIO_CONSOLE_PORT:-9001}:9001"
@@ -58,50 +60,36 @@ services:
     networks:
       - nook-saas-template-network
 
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: solo-energy-mailhog
-    ports:
-      - "1025:1025"  # SMTP server
-      - "8025:8025"  # Web UI
-    environment:
-      MH_STORAGE: memory
-      MH_CORS_ORIGIN: "*"
-    networks:
-      - nook-saas-template-network
-
   app:
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    container_name: solo-energy-app
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    container_name: solo-energy-app-prod
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
     environment:
       # Database
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/solo-energia
-      - DATABASE_NAME=solo-energia
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
+      - DATABASE_URL=postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@postgres:5432/${DATABASE_NAME}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_PORT=5432
       - DATABASE_HOST=postgres
       
       # Auth
-      - JWT_SECRET=${JWT_SECRET:-secret}
+      - JWT_SECRET=${JWT_SECRET}
       
       # Next
-      - NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
       
       # Redis
       - REDIS_URL=redis://redis:6379
       
       # Email
-      - SMTP_HOST=${SMTP_HOST:-mailhog}
-      - SMTP_PORT=${SMTP_PORT:-1025}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM}
@@ -114,12 +102,12 @@ services:
       
       # API
       - API_BASE_URL=http://app:3000
-      - API_RATE_LIMIT_WINDOW_MS=${API_RATE_LIMIT_WINDOW_MS:-60000}
-      - API_RATE_LIMIT_MAX_REQUESTS=${API_RATE_LIMIT_MAX_REQUESTS:-100}
+      - API_RATE_LIMIT_WINDOW_MS=${API_RATE_LIMIT_WINDOW_MS}
+      - API_RATE_LIMIT_MAX_REQUESTS=${API_RATE_LIMIT_MAX_REQUESTS}
       - API_SECRET_KEY=${API_SECRET_KEY}
       
       # Payment
-      - PAYMENT_PROVIDER=${PAYMENT_PROVIDER:-stripe}
+      - PAYMENT_PROVIDER=${PAYMENT_PROVIDER}
       - NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
@@ -130,20 +118,20 @@ services:
       - MINIO_ENDPOINT=minio
       - MINIO_PORT=9000
       - MINIO_CONSOLE_PORT=9001
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
-      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME:-uploads}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
       - MINIO_USE_SSL=false
       
       # Jobs
-      - JOB_CONCURRENCY=${JOB_CONCURRENCY:-5}
-      - JOB_MAX_ATTEMPTS=${JOB_MAX_ATTEMPTS:-3}
-      - JOB_DEFAULT_TIMEOUT=${JOB_DEFAULT_TIMEOUT:-30000}
-      - JOB_CLEANUP_INTERVAL=${JOB_CLEANUP_INTERVAL:-3600000}
-      - JOB_ENABLE_METRICS=${JOB_ENABLE_METRICS:-true}
+      - JOB_CONCURRENCY=${JOB_CONCURRENCY}
+      - JOB_MAX_ATTEMPTS=${JOB_MAX_ATTEMPTS}
+      - JOB_DEFAULT_TIMEOUT=${JOB_DEFAULT_TIMEOUT}
+      - JOB_CLEANUP_INTERVAL=${JOB_CLEANUP_INTERVAL}
+      - JOB_ENABLE_METRICS=${JOB_ENABLE_METRICS}
       
       # Node
-      - NODE_ENV=development
+      - NODE_ENV=production
     depends_on:
       postgres:
         condition: service_healthy
@@ -151,14 +139,15 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-    restart: unless-stopped
+    restart: always
     networks:
       - nook-saas-template-network
+
 networks:
   nook-saas-template-network:
     driver: bridge
+
 volumes:
   redis-data:
   postgres-data:
   minio-data:
-

@@ -9,6 +9,6 @@ export async function GET() {
 }
 
 export async function POST() {
-    const user = await prisma.user.create({ data: { name: "Mateus" } });
+    const user = await prisma.user.create({ data: { name: "Mateus", email: "mateus@nook.com", password: "123456" } });
     return NextResponse.json({ user });
 }

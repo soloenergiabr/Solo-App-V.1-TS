@@ -1,0 +1,31 @@
+# Dockerfile para desenvolvimento
+FROM node:20-alpine
+
+# Instalar dependências necessárias incluindo netcat para healthcheck
+RUN apk add --no-cache libc6-compat netcat-openbsd
+
+WORKDIR /app
+
+# Copiar arquivos de dependências
+COPY package.json package-lock.json* ./
+
+# Instalar todas as dependências (incluindo dev)
+RUN npm install
+
+# Copiar o resto dos arquivos
+COPY . .
+
+# Gerar Prisma Client
+RUN npx prisma generate
+
+# Copiar e dar permissão ao script de entrypoint
+COPY scripts/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 3000
+
+# Usar entrypoint para inicialização
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# Comando para desenvolvimento
+CMD ["npm", "run", "dev"]
