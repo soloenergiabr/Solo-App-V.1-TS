@@ -67,8 +67,6 @@ services:
       args:
         - NODE_ENV=production
     container_name: solo-energy-app-prod
-    ports:
-      - "3000:3000"
     environment:
       # Database
       - DATABASE_URL=postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@postgres:5432/${DATABASE_NAME}
