@@ -19,7 +19,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - nook-saas-template-network
+      - solo-energy-network
 
   redis:
     image: redis:7-alpine
@@ -35,7 +35,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - nook-saas-template-network
+      - solo-energy-network
 
   minio:
     image: minio/minio
@@ -56,7 +56,7 @@ services:
       timeout: 20s
       retries: 3
     networks:
-      - nook-saas-template-network
+      - solo-energy-network
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -68,94 +68,94 @@ services:
       MH_STORAGE: memory
       MH_CORS_ORIGIN: "*"
     networks:
-      - nook-saas-template-network
+      - solo-energy-network
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    container_name: solo-energy-app
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
-    environment:
-      # Database
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/solo-energia
-      - DATABASE_NAME=solo-energia
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
-      - DATABASE_PORT=5432
-      - DATABASE_HOST=postgres
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   container_name: solo-energy-app
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
+  #     - /app/.next
+  #   environment:
+  #     # Database
+  #     - DATABASE_URL=postgres://postgres:postgres@postgres:5432/solo-energia
+  #     - DATABASE_NAME=solo-energia
+  #     - DATABASE_USER=postgres
+  #     - DATABASE_PASSWORD=postgres
+  #     - DATABASE_PORT=5432
+  #     - DATABASE_HOST=postgres
       
-      # Auth
-      - JWT_SECRET=${JWT_SECRET:-secret}
+  #     # Auth
+  #     - JWT_SECRET=${JWT_SECRET:-secret}
       
-      # Next
-      - NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
+  #     # Next
+  #     - NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
       
-      # Redis
-      - REDIS_URL=redis://redis:6379
+  #     # Redis
+  #     - REDIS_URL=redis://redis:6379
       
-      # Email
-      - SMTP_HOST=${SMTP_HOST:-mailhog}
-      - SMTP_PORT=${SMTP_PORT:-1025}
-      - SMTP_USER=${SMTP_USER}
-      - SMTP_PASS=${SMTP_PASS}
-      - SMTP_FROM=${SMTP_FROM}
+  #     # Email
+  #     - SMTP_HOST=${SMTP_HOST:-mailhog}
+  #     - SMTP_PORT=${SMTP_PORT:-1025}
+  #     - SMTP_USER=${SMTP_USER}
+  #     - SMTP_PASS=${SMTP_PASS}
+  #     - SMTP_FROM=${SMTP_FROM}
       
-      # WhatsApp
-      - WHATSAPP_PROVIDER=${WHATSAPP_PROVIDER}
-      - WHATSAPP_EVOLUTION_URL=${WHATSAPP_EVOLUTION_URL}
-      - WHATSAPP_EVOLUTION_API_KEY=${WHATSAPP_EVOLUTION_API_KEY}
-      - WHATSAPP_EVOLUTION_INSTANCE=${WHATSAPP_EVOLUTION_INSTANCE}
+  #     # WhatsApp
+  #     - WHATSAPP_PROVIDER=${WHATSAPP_PROVIDER}
+  #     - WHATSAPP_EVOLUTION_URL=${WHATSAPP_EVOLUTION_URL}
+  #     - WHATSAPP_EVOLUTION_API_KEY=${WHATSAPP_EVOLUTION_API_KEY}
+  #     - WHATSAPP_EVOLUTION_INSTANCE=${WHATSAPP_EVOLUTION_INSTANCE}
       
-      # API
-      - API_BASE_URL=http://app:3000
-      - API_RATE_LIMIT_WINDOW_MS=${API_RATE_LIMIT_WINDOW_MS:-60000}
-      - API_RATE_LIMIT_MAX_REQUESTS=${API_RATE_LIMIT_MAX_REQUESTS:-100}
-      - API_SECRET_KEY=${API_SECRET_KEY}
+  #     # API
+  #     - API_BASE_URL=http://app:3000
+  #     - API_RATE_LIMIT_WINDOW_MS=${API_RATE_LIMIT_WINDOW_MS:-60000}
+  #     - API_RATE_LIMIT_MAX_REQUESTS=${API_RATE_LIMIT_MAX_REQUESTS:-100}
+  #     - API_SECRET_KEY=${API_SECRET_KEY}
       
-      # Payment
-      - PAYMENT_PROVIDER=${PAYMENT_PROVIDER:-stripe}
-      - NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
-      - STRIPE_FREE_PRICE_ID=${STRIPE_FREE_PRICE_ID}
-      - STRIPE_PRO_PRICE_ID=${STRIPE_PRO_PRICE_ID}
+  #     # Payment
+  #     - PAYMENT_PROVIDER=${PAYMENT_PROVIDER:-stripe}
+  #     - NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}
+  #     - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+  #     - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+  #     - STRIPE_FREE_PRICE_ID=${STRIPE_FREE_PRICE_ID}
+  #     - STRIPE_PRO_PRICE_ID=${STRIPE_PRO_PRICE_ID}
       
-      # MinIO
-      - MINIO_ENDPOINT=minio
-      - MINIO_PORT=9000
-      - MINIO_CONSOLE_PORT=9001
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
-      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME:-uploads}
-      - MINIO_USE_SSL=false
+  #     # MinIO
+  #     - MINIO_ENDPOINT=minio
+  #     - MINIO_PORT=9000
+  #     - MINIO_CONSOLE_PORT=9001
+  #     - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
+  #     - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
+  #     - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME:-uploads}
+  #     - MINIO_USE_SSL=false
       
-      # Jobs
-      - JOB_CONCURRENCY=${JOB_CONCURRENCY:-5}
-      - JOB_MAX_ATTEMPTS=${JOB_MAX_ATTEMPTS:-3}
-      - JOB_DEFAULT_TIMEOUT=${JOB_DEFAULT_TIMEOUT:-30000}
-      - JOB_CLEANUP_INTERVAL=${JOB_CLEANUP_INTERVAL:-3600000}
-      - JOB_ENABLE_METRICS=${JOB_ENABLE_METRICS:-true}
+  #     # Jobs
+  #     - JOB_CONCURRENCY=${JOB_CONCURRENCY:-5}
+  #     - JOB_MAX_ATTEMPTS=${JOB_MAX_ATTEMPTS:-3}
+  #     - JOB_DEFAULT_TIMEOUT=${JOB_DEFAULT_TIMEOUT:-30000}
+  #     - JOB_CLEANUP_INTERVAL=${JOB_CLEANUP_INTERVAL:-3600000}
+  #     - JOB_ENABLE_METRICS=${JOB_ENABLE_METRICS:-true}
       
-      # Node
-      - NODE_ENV=development
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - nook-saas-template-network
+  #     # Node
+  #     - NODE_ENV=development
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #     minio:
+  #       condition: service_healthy
+  #   restart: unless-stopped
+  #   networks:
+  #     - nook-saas-template-network
 networks:
-  nook-saas-template-network:
+  solo-energy-network:
     driver: bridge
 volumes:
   redis-data:

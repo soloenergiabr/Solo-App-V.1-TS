@@ -7,15 +7,21 @@ import prisma from '@/lib/prisma';
 
 // Schema de validação para registro
 const RegisterRequestSchema = z.object({
-    email: z.string().email('Invalid email format'),
-    password: z.string().min(8, 'Password must be at least 8 characters long'),
     name: z.string().min(2, 'Name must be at least 2 characters long'),
-    clientId: z.string().optional(),
+    email: z.string().email('Invalid email format'),
+    cpfCnpj: z.string().min(11, 'CPF/CNPJ is required'),
+    phone: z.string().optional(),
+    address: z.string().optional(),
+    avgEnergyCost: z.number().optional(),
+    enelInvoiceFile: z.string().optional(),
+    indicationCode: z.string().optional(),
+}).refine(data => data.avgEnergyCost || data.enelInvoiceFile, {
+    message: 'Either average energy cost or ENEL invoice must be provided',
 });
 
 // Criar instância do repositório e service
 const userRepository = new PrismaUserRepository(prisma);
-const authService = new AuthService(userRepository);
+const authService = new AuthService(userRepository, prisma);
 
 const registerRoute = async (request: NextRequest): Promise<NextResponse> => {
     const body = await request.json();
@@ -29,7 +35,7 @@ const registerRoute = async (request: NextRequest): Promise<NextResponse> => {
     return NextResponse.json({
         success: true,
         message: result.message,
-        data: result.user,
+        data: result.client,
     }, { status: 201 });
 };
 

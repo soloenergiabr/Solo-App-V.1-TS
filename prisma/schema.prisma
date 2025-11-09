@@ -14,6 +14,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ClientStatus {
+  lead
+  client
+  inactive
+}
+
+enum IndicationStatus {
+  pending
+  approved
+  rejected
+}
+
+enum TransactionType {
+  indication_reward
+  offer_redemption
+  withdrawal
+}
+
 model User {
   id          String   @id @default(cuid())
   email       String   @unique
@@ -26,6 +44,8 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  client Client? @relation(fields: [clientId], references: [id])
+
   @@index([email])
   @@index([clientId])
   @@index([email, isActive])
@@ -33,18 +53,28 @@ model User {
 }
 
 model Client {
-  id      String @id @default(dbgenerated("(concat('client_', gen_random_uuid()))::TEXT"))
-  name    String
-  email   String @unique
-  cpfCnpj String @unique
+  id             String  @id @default(dbgenerated("(concat('client_', gen_random_uuid()))::TEXT"))
+  name           String
+  email          String  @unique
+  cpfCnpj        String  @unique
+  phone          String?
+  address        String?
+  avgEnergyCost  Float?
+  enelInvoiceFile String?
 
-  soloCoinBalance Float @default(0)
+  soloCoinBalance Float        @default(0)
+  indicationCode  String       @unique
+  status          ClientStatus @default(lead)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  inverters Inverter[]
+  inverters             Inverter[]
+  users                 User[]
+  indicationsAsReferrer Indication[]  @relation("Referrer")
+  indicationsAsReferred Indication[]  @relation("Referred")
+  transactions          Transaction[]
 
   @@index([email])
   @@index([cpfCnpj])
@@ -93,4 +123,80 @@ model GenerationUnit {
   @@index([inverterId, generationUnitType])
   @@index([inverterId, generationUnitType, timestamp])
   @@map("generation_unit")
+}
+
+model Indication {
+  id String @id @default(dbgenerated("(concat('indication_', gen_random_uuid()))::TEXT"))
+
+  referrer   Client @relation("Referrer", fields: [referrerId], references: [id])
+  referrerId String
+
+  referred   Client @relation("Referred", fields: [referredId], references: [id])
+  referredId String
+
+  status IndicationStatus @default(pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([referrerId])
+  @@index([referredId])
+  @@map("indication")
+}
+
+model Offer {
+  id String @id @default(dbgenerated("(concat('offer_', gen_random_uuid()))::TEXT"))
+
+  title       String
+  description String
+  partner     String
+  cost        Float
+
+  discount String?
+  imageUrl String?
+
+  validFrom DateTime?
+  validTo   DateTime?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("offer")
+}
+
+model FAQ {
+  id String @id @default(dbgenerated("(concat('faq_', gen_random_uuid()))::TEXT"))
+
+  question String
+  answer   String
+  category String?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faq")
+}
+
+model Transaction {
+  id String @id @default(dbgenerated("(concat('transaction_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
+
+  type        TransactionType
+  amount      Float // positive for credits, negative for debits
+  description String?
+
+  offerId      String? // for offer redemptions
+  indicationId String? // for indication rewards
+
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+  @@index([clientId, type])
+  @@map("transaction")
 }

@@ -81,21 +81,6 @@ async function main() {
     console.log('⚠️  IMPORTANTE: Altere a senha após o primeiro login!');
     console.log('');
 
-    // Criar cliente de exemplo (opcional)
-    const exampleClient = await prisma.client.create({
-        data: {
-            name: 'Cliente Exemplo',
-            email: 'cliente@exemplo.com',
-            cpfCnpj: '12345678901',
-            soloCoinBalance: 1000,
-        },
-    });
-
-    console.log('✅ Cliente de exemplo criado!');
-    console.log('   Nome:', exampleClient.name);
-    console.log('   ID:', exampleClient.id);
-    console.log('');
-
     console.log('🎉 Seed concluído com sucesso!');
 }
 

@@ -3,25 +3,52 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Home, UserIcon } from "lucide-react"
+import { DollarSign, HelpCircleIcon, Home, UserIcon } from "lucide-react"
 import Link from "next/link"
 
-const items = [
+const masterItems = [
+    {
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: Home,
+    },
+    {
+        title: "Clientes",
+        url: "/clients",
+        icon: DollarSign,
+    },
+]
+
+const userItems = [
     {
         title: "Minha geração",
         url: "/dashboard",
         icon: Home,
     },
     {
-        title: "Meu perfil",
-        url: "/profile",
-        icon: UserIcon,
+        title: "Economia",
+        url: "/dashboard/economy",
+        icon: DollarSign,
+    },
+    {
+        title: "Clube Solo",
+        url: "/club",
+        icon: DollarSign,
+    },
+    {
+        title: "Suporte",
+        url: "/support",
+        icon: HelpCircleIcon,
     },
 ]
 
 export function AppSidebar() {
     const { user } = useAuthContext();
     const isMobile = useIsMobile();
+
+    const isMaster = user?.roles.includes("master");
+
+    const items = isMaster ? masterItems : userItems;
 
     if (isMobile) {
         return (
@@ -30,7 +57,7 @@ export function AppSidebar() {
                     {items.map((item) => {
                         const Icon = item.icon;
                         return (
-                            <Link 
+                            <Link
                                 key={item.url}
                                 href={item.url}
                                 className="flex flex-col items-center justify-center gap-1 min-w-[64px] py-2 px-3 rounded-lg transition-colors hover:bg-accent"

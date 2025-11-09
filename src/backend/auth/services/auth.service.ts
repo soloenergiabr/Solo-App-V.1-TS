@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { UserContextModel } from '../models/user-context.model';
 import { JwtService } from './jwt.service';
 import { UserRepository } from '../repositories/user.repository';
+import { PrismaClient } from '@/app/generated/prisma';
 
 export interface LoginRequest {
     email: string;
@@ -23,24 +24,28 @@ export interface LoginResponse {
 }
 
 export interface RegisterRequest {
-    email: string;
-    password: string;
     name: string;
-    clientId?: string;
+    email: string;
+    cpfCnpj: string;
+    phone?: string;
+    address?: string;
+    avgEnergyCost?: number;
+    enelInvoiceFile?: string;
+    indicationCode?: string;
 }
 
 export interface RegisterResponse {
-    user: {
+    client: {
         id: string;
-        email: string;
         name: string;
+        email: string;
     };
     message: string;
 }
 
 
 export class AuthService {
-    constructor(private userRepository: UserRepository) { }
+    constructor(private userRepository: UserRepository, private prisma: PrismaClient) { }
 
     async login(request: LoginRequest): Promise<LoginResponse> {
         const { email, password } = request;
@@ -87,45 +92,71 @@ export class AuthService {
     }
 
     async register(request: RegisterRequest): Promise<RegisterResponse> {
-        const { email, password, name, clientId } = request;
+        const { name, email, cpfCnpj, phone, address, avgEnergyCost, enelInvoiceFile, indicationCode } = request;
 
-        const existingUser = await this.userRepository.findByEmail(email);
-        if (existingUser) {
-            throw new Error('User already exists');
+        // Validate that at least one of avgEnergyCost or enelInvoiceFile is provided
+        if (!avgEnergyCost && !enelInvoiceFile) {
+            throw new Error('Either average energy cost or ENEL invoice must be provided');
         }
 
-        if (password.length < 8) {
-            throw new Error('Password must be at least 8 characters long');
+        const existingClient = await this.prisma.client.findUnique({
+            where: { email },
+        });
+        if (existingClient) {
+            throw new Error('Client with this email already exists');
         }
 
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const existingCpfCnpj = await this.prisma.client.findUnique({
+            where: { cpfCnpj },
+        });
+        if (existingCpfCnpj) {
+            throw new Error('Client with this CPF/CNPJ already exists');
+        }
 
-        const defaultRoles = ['user'];
-        const defaultPermissions = [
-            'read_inverters',
-            'create_inverter',
-            'read_generation_data',
-            'create_generation_unit'
-        ];
+        // Generate unique indication code
+        let clientIndicationCode: string;
+        do {
+            clientIndicationCode = Math.random().toString(36).substring(2, 15);
+        } while (await this.prisma.client.findUnique({ where: { indicationCode: clientIndicationCode } }));
 
-        // Criar usuário
-        const newUser = await this.userRepository.create({
-            email,
-            password: hashedPassword,
-            name,
-            roles: defaultRoles,
-            permissions: defaultPermissions,
-            clientId,
-            isActive: true,
+        // Create client
+        const newClient = await this.prisma.client.create({
+            data: {
+                name,
+                email,
+                cpfCnpj,
+                phone,
+                address,
+                avgEnergyCost,
+                enelInvoiceFile,
+                indicationCode: clientIndicationCode,
+                status: 'lead',
+            },
         });
 
+        // Handle indication if provided
+        if (indicationCode) {
+            const referrer = await this.prisma.client.findUnique({
+                where: { indicationCode },
+            });
+            if (referrer) {
+                await this.prisma.indication.create({
+                    data: {
+                        referrerId: referrer.id,
+                        referredId: newClient.id,
+                        status: 'pending',
+                    },
+                });
+            }
+        }
+
         return {
-            user: {
-                id: newUser.id,
-                email: newUser.email,
-                name: newUser.name,
+            client: {
+                id: newClient.id,
+                name: newClient.name,
+                email: newClient.email,
             },
-            message: 'User registered successfully',
+            message: 'Cadastro realizado com sucesso! Entraremos em contato após análise.',
         };
     }
 

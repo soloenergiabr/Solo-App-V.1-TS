@@ -3,6 +3,7 @@
 import { LoadingPage } from "@/components/ui/loading";
 import { AppLayout } from "@/frontend/app-layout";
 import { usePermissions } from "@/frontend/auth/contexts/auth-context";
+import { redirect } from "next/navigation";
 
 export default function PrivateLayout({ master, user, children }: { master: React.ReactNode, user: React.ReactNode, children: React.ReactNode }) {
     const { hasRole, isLoading } = usePermissions();
@@ -19,5 +20,5 @@ export default function PrivateLayout({ master, user, children }: { master: Reac
         return <AppLayout>{user}</AppLayout>;
     }
 
-    return children;
+    return redirect("/login");
 }

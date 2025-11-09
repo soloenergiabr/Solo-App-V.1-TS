@@ -3,10 +3,12 @@
 export function PageLayout({ children }: { children: React.ReactNode }) {
     return (
         <div>
-            <header>
+            {/* <header>
                 <h1>Dashboard</h1>
-            </header>
-            {children}
+            </header> */}
+            <main className="p-4">
+                {children}
+            </main>
         </div>
     )
 }

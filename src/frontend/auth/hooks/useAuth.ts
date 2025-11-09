@@ -25,10 +25,14 @@ export interface LoginCredentials {
 }
 
 export interface RegisterData {
-    email: string;
-    password: string;
     name: string;
-    clientId?: string;
+    email: string;
+    cpfCnpj: string;
+    phone?: string;
+    address?: string;
+    avgEnergyCost?: number;
+    enelInvoiceFile?: string;
+    indicationCode?: string;
 }
 
 // Criar instância do axios
