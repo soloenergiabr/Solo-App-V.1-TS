@@ -1,1 +1,1 @@
-export { ClubDashboard } from './ClubDashboard';
+export { ClubDashboard } from './club-dashboard';
