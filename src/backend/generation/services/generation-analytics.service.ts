@@ -58,8 +58,8 @@ export class GenerationAnalyticsService {
         return await this.getGenerationUnitsByInverterIdUseCase.execute(request, userContext);
     }
 
-    async syncInverterGenerationData(request: SyncInverterGenerationDataRequest, userContext: UserContext): Promise<SyncInverterGenerationDataResponse> {
-        return await this.syncInverterGenerationDataUseCase.execute(request, userContext);
+    async syncInverterGenerationData(request: SyncInverterGenerationDataRequest): Promise<SyncInverterGenerationDataResponse> {
+        return await this.syncInverterGenerationDataUseCase.execute(request);
     }
 
     async createGenerationUnit(request: CreateGenerationUnitRequest, userContext: UserContext): Promise<CreateGenerationUnitResponse> {

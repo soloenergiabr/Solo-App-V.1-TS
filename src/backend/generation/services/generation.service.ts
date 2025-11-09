@@ -59,8 +59,8 @@ export class GenerationService {
     private generationAnalyticsService: GenerationAnalyticsService;
 
     constructor(
-        inverterRepository: InverterRepository,
-        generationUnitRepository: GenerationUnitRepository
+        private inverterRepository: InverterRepository,
+        private generationUnitRepository: GenerationUnitRepository
     ) {
         this.inverterService = new InverterService(inverterRepository);
         this.generationAnalyticsService = new GenerationAnalyticsService(
@@ -92,8 +92,8 @@ export class GenerationService {
     }
 
     // Business logic operations - delegate to GenerationAnalyticsService
-    async syncInverterData(request: SyncInverterGenerationDataRequest, userContext: UserContext): Promise<SyncInverterGenerationDataResponse> {
-        return await this.generationAnalyticsService.syncInverterGenerationData(request, userContext);
+    async syncInverterData(request: SyncInverterGenerationDataRequest): Promise<SyncInverterGenerationDataResponse> {
+        return await this.generationAnalyticsService.syncInverterGenerationData(request);
     }
 
     async calculateTotalEnergyGenerated(request: CalculateTotalEnergyGeneratedRequest, userContext: UserContext): Promise<CalculateTotalEnergyGeneratedResponse> {
@@ -231,18 +231,14 @@ export class GenerationService {
         };
     }
 
-    async syncAllInvertersData(userContext: UserContext): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[] }> {
-        // if (!userContext.hasRole("master")) {
-        //     throw new Error("Unauthorized");
-        // }
-
-        const inverters = await this.getInverters(userContext);
+    async syncAllInvertersData(): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[] }> {
+        const inverters = await this.inverterRepository.find();
         const results: SyncInverterGenerationDataResponse[] = [];
         const errors: any[] = [];
 
-        for (const inverter of inverters.inverters) {
+        for (const inverter of inverters) {
             try {
-                const result = await this.syncInverterData({ inverterId: inverter.id }, userContext);
+                const result = await this.syncInverterData({ inverterId: inverter.id });
                 results.push(result);
             } catch (error) {
                 errors.push({

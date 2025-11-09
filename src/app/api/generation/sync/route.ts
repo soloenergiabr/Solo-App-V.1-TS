@@ -12,9 +12,8 @@ const generationService = new GenerationService(
 )
 
 const syncAllInvertersData = async (req: NextRequest) => {
-    const userContext = await AuthMiddleware.requireAuth(req)
 
-    const result = await generationService.syncAllInvertersData(userContext)
+    const result = await generationService.syncAllInvertersData()
 
     return NextResponse.json(result)
 }

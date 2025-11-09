@@ -29,7 +29,7 @@ export class SyncInverterGenerationDataUseCase {
         private generationUnitRepository: GenerationUnitRepository
     ) { }
 
-    async execute(request: SyncInverterGenerationDataRequest, userContext: UserContext): Promise<SyncInverterGenerationDataResponse> {
+    async execute(request: SyncInverterGenerationDataRequest): Promise<SyncInverterGenerationDataResponse> {
         // Validate input
         const validatedRequest = SyncInverterGenerationDataRequestSchema.parse(request);
 
@@ -40,11 +40,6 @@ export class SyncInverterGenerationDataUseCase {
         const inverter = await this.inverterRepository.findById(validatedRequest.inverterId);
         if (!inverter) {
             throw new Error(`Inverter with ID ${validatedRequest.inverterId} not found`);
-        }
-
-        // Verificar permissões de acesso ao inversor
-        if (!userContext.canAccessInverter(inverter.id)) {
-            throw new Error('User does not have permission to access this inverter');
         }
 
         // Buscar dados em tempo real da API do inversor
