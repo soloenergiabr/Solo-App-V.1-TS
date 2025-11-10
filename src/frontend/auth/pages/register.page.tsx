@@ -154,13 +154,13 @@ export function RegisterPage() {
         switch (currentStep) {
             case 1:
                 return (
-                    <div className="text-center space-y-6">
+                    <div className="text-left space-y-6">
                         <div className="w-20 h-20 mx-auto bg-primary/20 rounded-full flex items-center justify-center">
                             <Sun className="w-10 h-10 text-primary" />
                         </div>
                         <div>
-                            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Energia Solar Inteligente</h3>
-                            <p className="text-white/90 text-base sm:text-lg leading-relaxed">
+                            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 text-left">Energia Solar Inteligente</h3>
+                            <p className="text-white/90 text-base sm:text-lg leading-relaxed text-left">
                                 Transforme sua energia solar em economia real. Monitore sua produção,
                                 otimize seu consumo e maximize seus ganhos com tecnologia de ponta.
                             </p>
@@ -168,18 +168,18 @@ export function RegisterPage() {
                         <div className="grid grid-cols-2 gap-4 mt-8">
                             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
                                 <Zap className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                                <p className="text-white text-sm">Monitoramento em Tempo Real</p>
+                                <p className="text-white text-sm text-center">Monitoramento em Tempo Real</p>
                             </div>
                             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
                                 <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                                <p className="text-white text-sm">Economia Garantida</p>
+                                <p className="text-white text-sm text-center">Economia Garantida</p>
                             </div>
                         </div>
                     </div>
                 );
             case 2:
                 return (
-                    <div className="space-y-4">
+                    <div className="text-left space-y-4">
                         <div>
                             <Label htmlFor="name" className="text-white/90">Nome Completo</Label>
                             <Input
@@ -223,7 +223,7 @@ export function RegisterPage() {
                 );
             case 3:
                 return (
-                    <div className="space-y-4">
+                    <div className="text-left space-y-4">
                         <div>
                             <Label htmlFor="phone" className="text-white/90">Telefone</Label>
                             <Input
@@ -252,7 +252,7 @@ export function RegisterPage() {
                 );
             case 4:
                 return (
-                    <div className="space-y-4">
+                    <div className="text-left space-y-4">
                         <div>
                             <Label htmlFor="avgEnergyCost" className="text-white/90">Custo Médio de Energia (R$/mês)</Label>
                             <Input
@@ -304,7 +304,7 @@ export function RegisterPage() {
                             Em breve nossa equipe entrará em contato para análise do seu perfil.
                         </p>
                         <Button onClick={handleWhatsAppContact} className="w-full">
-                            📱 Entrar em Contato pelo WhatsApp
+                            Entrar em Contato pelo WhatsApp
                         </Button>
                     </CardContent>
                 </Card>
@@ -346,7 +346,7 @@ export function RegisterPage() {
                     </div>
 
                     {/* Step Content */}
-                    <div className="text-center mb-6 sm:mb-8">
+                    <div className="text-left mb-6 sm:mb-8">
                         <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{steps[currentStep - 1].title}</h2>
                         <p className="text-white/90 text-sm sm:text-base">{steps[currentStep - 1].description}</p>
                         <p className="text-white/70 text-xs sm:text-sm mt-2">{steps[currentStep - 1].content}</p>
@@ -403,7 +403,7 @@ export function RegisterPage() {
                 {indicationCode && (
                     <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 text-center">
                         <p className="text-white/90 text-sm">
-                            🎉 Você foi indicado! Código: <span className="font-bold text-primary">{indicationCode}</span>
+                            Você foi indicado! Código: <span className="font-bold text-primary">{indicationCode}</span>
                         </p>
                     </div>
                 )}
