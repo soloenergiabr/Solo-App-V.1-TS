@@ -1,69 +1,63 @@
 "use client"
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { Sidebar, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { DollarSign, HelpCircleIcon, Home, UserIcon } from "lucide-react"
+import { DollarSign, HelpCircleIcon, Home } from "lucide-react"
 import Link from "next/link"
 
-const masterItems = [
+const adminSections: SidebarSection[] = [
     {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: Home,
-    },
-    {
-        title: "Clientes",
-        url: "/clients",
-        icon: DollarSign,
+        title: 'Principal',
+        items: [
+            { label: 'Dashboard', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
+            { label: 'Clientes', href: '/clients', icon: <DollarSign className="w-5 h-5" /> },
+        ],
     },
 ]
 
-const userItems = [
+const vendedorSections: SidebarSection[] = [
     {
-        title: "Minha geração",
-        url: "/dashboard",
-        icon: Home,
-    },
-    {
-        title: "Economia",
-        url: "/dashboard/economy",
-        icon: DollarSign,
-    },
-    {
-        title: "Clube Solo",
-        url: "/club",
-        icon: DollarSign,
-    },
-    {
-        title: "Suporte",
-        url: "/support",
-        icon: HelpCircleIcon,
+        title: 'Principal',
+        items: [
+            { label: 'Minha geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
+            { label: 'Economia', href: '/dashboard', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Clube Solo', href: '/club', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Suporte', href: '/support', icon: <HelpCircleIcon className="w-5 h-5" /> },
+        ],
     },
 ]
 
 export function AppSidebar() {
-    const { user } = useAuthContext();
+    const { user, logout } = useAuthContext();
     const isMobile = useIsMobile();
 
     const isMaster = user?.roles.includes("master");
+    const role = isMaster ? 'admin' : 'vendedor';
 
-    const items = isMaster ? masterItems : userItems;
+    const sectionsMapper = {
+        admin: adminSections,
+        vendedor: vendedorSections,
+    }
+
+    const sections = sectionsMapper[role as keyof typeof sectionsMapper] || vendedorSections;
+    const mobileItems = sections[0].items;
 
     if (isMobile) {
         return (
             <footer className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="flex items-center justify-around px-4 py-2 safe-area-inset-bottom">
-                    {items.map((item) => {
-                        const Icon = item.icon;
+                    {mobileItems.map((item) => {
                         return (
                             <Link
-                                key={item.url}
-                                href={item.url}
+                                key={item.href}
+                                href={item.href}
                                 className="flex flex-col items-center justify-center gap-1 min-w-[64px] py-2 px-3 rounded-lg transition-colors hover:bg-accent"
                             >
-                                <Icon className="h-5 w-5" />
-                                <span className="text-[10px] font-medium">{item.title}</span>
+                                <div className="h-5 w-5">
+                                    {item.icon}
+                                </div>
+                                <span className="text-[10px] font-medium">{item.label}</span>
                             </Link>
                         );
                     })}
@@ -73,33 +67,11 @@ export function AppSidebar() {
     }
 
     return (
-        <Sidebar>
-            {/* <SidebarHeader>
-                <SidebarGroup />
-                {user && (
-                    <h1>{user.name}</h1>
-                )}
-            </SidebarHeader> */}
-            <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupLabel>Geral</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <Link href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-            </SidebarContent>
-            <SidebarFooter />
-        </Sidebar>
+        <Sidebar
+            sections={sections}
+            type="sidebar"
+            user={{ name: user?.name || 'User', role: role === 'admin' ? 'Admin' : 'Vendedor' }}
+            onLogout={logout}
+        />
     )
 }

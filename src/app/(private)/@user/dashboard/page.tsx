@@ -10,6 +10,7 @@ import { InvertersComparisonChart } from '@/frontend/generation/components/dashb
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle } from "lucide-react";
+import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 
 function GenerationDashboardPage() {
     const {
@@ -38,14 +39,14 @@ function GenerationDashboardPage() {
     }
 
     return (
-        <div className="flex flex-col h-full">
-            {/* Header - Compacto */}
-            <div className="px-4 py-3 border-b">
-                <h1 className="text-xl font-bold">
-                    Dashboard de Geração
-                </h1>
-            </div>
-
+        <PageLayout
+            header={
+                <PageHeader
+                    title="Dashboard de Geração"
+                    subtitle='Acompanhe em tempo real a geração de energia dos seu sistema'
+                />
+            }
+        >
             {/* Content - Scrollable */}
             <div className="flex-1 overflow-y-auto">
                 <div className="p-4 space-y-4">
@@ -110,7 +111,7 @@ function GenerationDashboardPage() {
                     )}
                 </div>
             </div>
-        </div>
+        </PageLayout>
     );
 }
 

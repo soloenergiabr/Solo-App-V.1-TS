@@ -5,11 +5,13 @@ import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { useIndications } from './useIndications';
 import { useClubBalance } from './useClubBalance';
 import { useClubTransactions } from './useClubTransactions';
+import { useRefererLink } from './useRefererLink';
 
 // Re-export types
 export type { Indication } from './useIndications';
 export type { ClubBalance } from './useClubBalance';
 export type { ClubTransaction } from './useClubTransactions';
+export type { RefererLinkState } from './useRefererLink';
 
 // Request types for actions
 export interface RedeemOfferRequest {
@@ -24,6 +26,7 @@ export function useClub() {
     const indicationsAsReferred = useIndications('as_referred');
     const balance = useClubBalance();
     const transactions = useClubTransactions();
+    const refererLink = useRefererLink();
 
     // Resgatar oferta
     const redeemOffer = useCallback(async (offerData: RedeemOfferRequest) => {
@@ -71,6 +74,9 @@ export function useClub() {
 
         // Transações
         transactions,
+
+        // Link de indicação
+        refererLink,
 
         // Ações
         redeemOffer,

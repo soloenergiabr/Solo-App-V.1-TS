@@ -4,6 +4,7 @@ import { useClub } from '../hooks';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ClientRefererLink } from './client-referer-link';
 import { LoadingPage } from '@/components/ui/loading';
 
 export function ClubDashboard() {
@@ -20,6 +21,8 @@ export function ClubDashboard() {
 
     return (
         <div className="space-y-6">
+            {/* Link de Indicação */}
+
             {/* Saldo */}
             <div>
                 <CardTitle>Saldo Solo Coins</CardTitle>
@@ -31,6 +34,7 @@ export function ClubDashboard() {
                     <p className="text-sm text-red-600 mt-2">{balance.error}</p>
                 )}
             </div>
+            <ClientRefererLink />
 
             <div className="w-full">
                 {/* Indicações como Referrer */}
@@ -69,6 +73,8 @@ export function ClubDashboard() {
                         {indicationsAsReferrer.error && (
                             <p className="text-sm text-red-600 mt-2">{indicationsAsReferrer.error}</p>
                         )}
+
+
                     </CardContent>
                 </Card>
             </div>
