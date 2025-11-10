@@ -100,19 +100,22 @@ export function useGenerationDashboard() {
                 endDate: endOfDay(new Date()).toISOString(),
             };
         } else if (type === 'day') {
-            return {
-                startDate: startOfDay(date).toISOString(),
-                endDate: endOfDay(date).toISOString(),
-            };
-        } else if (type === 'month') {
+            // Diário: mostra todos os dias do mês selecionado
             return {
                 startDate: startOfMonth(date).toISOString(),
                 endDate: endOfMonth(date).toISOString(),
             };
-        } else if (type === 'year') {
+        } else if (type === 'month') {
+            // Mensal: mostra todos os meses do ano selecionado
             return {
                 startDate: startOfYear(date).toISOString(),
                 endDate: endOfYear(date).toISOString(),
+            };
+        } else if (type === 'year') {
+            // Anual: busca todos os dados disponíveis para agregar por ano
+            return {
+                startDate: undefined,
+                endDate: undefined,
             };
         }
         return { startDate: undefined, endDate: undefined };
@@ -181,11 +184,14 @@ export function useGenerationDashboard() {
             let newDate: Date;
 
             if (prev.generationUnitType === 'day') {
-                newDate = addDays(currentDate, -1);
-            } else if (prev.generationUnitType === 'month') {
+                // Diário: navega por meses
                 newDate = addMonths(currentDate, -1);
-            } else if (prev.generationUnitType === 'year') {
+            } else if (prev.generationUnitType === 'month') {
+                // Mensal: navega por anos
                 newDate = addYears(currentDate, -1);
+            } else if (prev.generationUnitType === 'year') {
+                // Anual: não tem navegação de período
+                newDate = currentDate;
             } else {
                 newDate = currentDate;
             }
@@ -200,11 +206,14 @@ export function useGenerationDashboard() {
             let newDate: Date;
 
             if (prev.generationUnitType === 'day') {
-                newDate = addDays(currentDate, 1);
-            } else if (prev.generationUnitType === 'month') {
+                // Diário: navega por meses
                 newDate = addMonths(currentDate, 1);
-            } else if (prev.generationUnitType === 'year') {
+            } else if (prev.generationUnitType === 'month') {
+                // Mensal: navega por anos
                 newDate = addYears(currentDate, 1);
+            } else if (prev.generationUnitType === 'year') {
+                // Anual: não tem navegação de período
+                newDate = currentDate;
             } else {
                 newDate = currentDate;
             }
@@ -229,11 +238,14 @@ export function useGenerationDashboard() {
         if (type === 'real_time') {
             return 'Tempo Real - Hoje';
         } else if (type === 'day') {
-            return format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
-        } else if (type === 'month') {
+            // Diário: mostra o mês selecionado
             return format(date, "MMMM 'de' yyyy", { locale: ptBR });
+        } else if (type === 'month') {
+            // Mensal: mostra o ano selecionado
+            return format(date, "yyyy", { locale: ptBR });
         } else if (type === 'year') {
-            return format(date, "yyyy");
+            // Anual: mostra "Todos os Anos"
+            return 'Todos os Anos';
         }
         return '';
     }, [filters]);

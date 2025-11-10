@@ -28,11 +28,12 @@ export function PeriodTabs({
     isLoading,
 }: PeriodTabsProps) {
     const isHistorical = filters.generationUnitType !== 'real_time';
+    const hasNavigation = isHistorical && filters.generationUnitType !== 'year';
 
     return (
         <div className="space-y-3">
             <div className="flex items-center gap-2">
-                {isHistorical && (
+                {isHistorical && filters.generationUnitType !== 'year' && (
                     <Button
                         variant="outline"
                         size="sm"
@@ -86,7 +87,7 @@ export function PeriodTabs({
             {/* Navegação de Período */}
             <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                    {isHistorical && (
+                    {hasNavigation && (
                         <>
                             <Button
                                 variant="outline"
@@ -107,7 +108,7 @@ export function PeriodTabs({
                 </div>
 
 
-                {isHistorical && (
+                {hasNavigation && (
                     <>
 
                         <Button

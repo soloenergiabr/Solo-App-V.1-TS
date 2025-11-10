@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { DashboardAnalytics, DashboardFilters } from "../../hooks/use-generation-dashboard";
-import { format } from 'date-fns';
+import { format, getDaysInMonth, startOfMonth, addDays, getYear, startOfYear, addMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 interface AdaptiveChartProps {
@@ -14,49 +14,169 @@ interface AdaptiveChartProps {
 export function AdaptiveChart({ analytics, viewType }: AdaptiveChartProps) {
     const { timeSeries } = analytics;
 
-    // Formatar dados baseado no tipo de visualização
-    const formatTimestamp = (timestamp: string) => {
-        const date = new Date(timestamp);
-
-        if (viewType === 'real_time' || viewType === 'day') {
-            // Mostrar hora:minuto
-            return format(date, 'HH:mm', { locale: ptBR });
-        } else if (viewType === 'month') {
-            // Mostrar dia do mês
-            return format(date, 'dd/MM', { locale: ptBR });
-        } else {
-            // year: Mostrar mês
-            return format(date, 'MMM', { locale: ptBR });
+    // Helper para preencher dados faltantes
+    const fillMissingData = () => {
+        if (viewType === 'real_time') {
+            // Tempo real: mantém apenas os dados existentes
+            return timeSeries.map(point => ({
+                timestamp: format(new Date(point.timestamp), 'HH:mm', { locale: ptBR }),
+                fullTimestamp: point.timestamp,
+                energia: point.energy,
+                potencia: point.power,
+                inversores: point.inverterCount,
+            }));
         }
+
+        if (viewType === 'day') {
+            // Diário (por mês): Mostra todos os dias do mês
+            if (timeSeries.length === 0) return [];
+
+            const firstDate = new Date(timeSeries[0].timestamp);
+            const daysInMonth = getDaysInMonth(firstDate);
+            const monthStart = startOfMonth(firstDate);
+
+            // Criar mapa de dados existentes por dia
+            const dataMap = new Map<string, typeof timeSeries[0]>();
+            timeSeries.forEach(point => {
+                const dayKey = format(new Date(point.timestamp), 'yyyy-MM-dd');
+                if (!dataMap.has(dayKey)) {
+                    dataMap.set(dayKey, point);
+                } else {
+                    // Agregar se houver múltiplos pontos no mesmo dia
+                    const existing = dataMap.get(dayKey)!;
+                    dataMap.set(dayKey, {
+                        ...existing,
+                        energy: existing.energy + point.energy,
+                        power: Math.max(existing.power, point.power),
+                    });
+                }
+            });
+
+            // Criar array com todos os dias do mês
+            const allDays = [];
+            for (let i = 0; i < daysInMonth; i++) {
+                const currentDay = addDays(monthStart, i);
+                const dayKey = format(currentDay, 'yyyy-MM-dd');
+                const data = dataMap.get(dayKey);
+
+                allDays.push({
+                    timestamp: format(currentDay, 'dd', { locale: ptBR }),
+                    fullTimestamp: currentDay.toISOString(),
+                    energia: data?.energy || 0,
+                    potencia: data?.power || 0,
+                    inversores: data?.inverterCount || 0,
+                });
+            }
+
+            return allDays;
+        }
+
+        if (viewType === 'month') {
+            // Mensal (por ano): Mostra todos os meses do ano
+            if (timeSeries.length === 0) return [];
+
+            const firstDate = new Date(timeSeries[0].timestamp);
+            const year = getYear(firstDate);
+            const yearStart = startOfYear(firstDate);
+
+            // Criar mapa de dados existentes por mês
+            const dataMap = new Map<string, typeof timeSeries[0]>();
+            timeSeries.forEach(point => {
+                const monthKey = format(new Date(point.timestamp), 'yyyy-MM');
+                if (!dataMap.has(monthKey)) {
+                    dataMap.set(monthKey, point);
+                } else {
+                    // Agregar se houver múltiplos pontos no mesmo mês
+                    const existing = dataMap.get(monthKey)!;
+                    dataMap.set(monthKey, {
+                        ...existing,
+                        energy: existing.energy + point.energy,
+                        power: Math.max(existing.power, point.power),
+                    });
+                }
+            });
+
+            // Criar array com todos os meses do ano
+            const allMonths = [];
+            for (let i = 0; i < 12; i++) {
+                const currentMonth = addMonths(yearStart, i);
+                const monthKey = format(currentMonth, 'yyyy-MM');
+                const data = dataMap.get(monthKey);
+
+                allMonths.push({
+                    timestamp: format(currentMonth, 'MMM', { locale: ptBR }),
+                    fullTimestamp: currentMonth.toISOString(),
+                    energia: data?.energy || 0,
+                    potencia: data?.power || 0,
+                    inversores: data?.inverterCount || 0,
+                });
+            }
+
+            return allMonths;
+        }
+
+        if (viewType === 'year') {
+            // Anual: Mostra apenas os anos que têm dados (agregado)
+            const yearMap = new Map<number, { energy: number; power: number; count: number; timestamp: string }>();
+
+            timeSeries.forEach(point => {
+                const year = getYear(new Date(point.timestamp));
+                if (!yearMap.has(year)) {
+                    yearMap.set(year, {
+                        energy: point.energy,
+                        power: point.power,
+                        count: 1,
+                        timestamp: point.timestamp,
+                    });
+                } else {
+                    const existing = yearMap.get(year)!;
+                    yearMap.set(year, {
+                        energy: existing.energy + point.energy,
+                        power: Math.max(existing.power, point.power),
+                        count: existing.count + 1,
+                        timestamp: existing.timestamp,
+                    });
+                }
+            });
+
+            // Converter para array e ordenar por ano
+            return Array.from(yearMap.entries())
+                .sort((a, b) => a[0] - b[0])
+                .map(([year, data]) => ({
+                    timestamp: year.toString(),
+                    fullTimestamp: data.timestamp,
+                    energia: data.energy,
+                    potencia: data.power,
+                    inversores: 0,
+                }));
+        }
+
+        return [];
     };
 
-    const chartData = timeSeries.map(point => ({
-        timestamp: formatTimestamp(point.timestamp),
-        fullTimestamp: point.timestamp,
-        energia: point.energy,
-        potencia: point.power,
-        inversores: point.inverterCount,
-    }));
+    const chartData = fillMissingData();
 
     const getTitle = () => {
         if (viewType === 'real_time') return 'Geração em Tempo Real';
-        if (viewType === 'day') return 'Geração do Dia';
-        if (viewType === 'month') return 'Geração do Mês';
-        return 'Geração do Ano';
+        if (viewType === 'day') return 'Geração Diária do Mês';
+        if (viewType === 'month') return 'Geração Mensal do Ano';
+        return 'Geração Anual';
     };
 
     const getDescription = () => {
-        if (viewType === 'real_time' || viewType === 'day') {
-            return 'Evolução hora a hora da geração de energia';
+        if (viewType === 'real_time') {
+            return 'Evolução em tempo real da geração de energia';
+        } else if (viewType === 'day') {
+            return 'Geração de cada dia do mês selecionado';
         } else if (viewType === 'month') {
-            return 'Geração diária do mês';
+            return 'Geração de cada mês do ano selecionado';
         }
-        return 'Geração mensal do ano';
+        return 'Geração agregada por ano';
     };
 
-    // Para real_time e day: Line Chart
-    // Para month e year: Bar Chart
-    const useBarChart = viewType === 'month' || viewType === 'year';
+    // Para real_time: Line Chart (Area)
+    // Para day, month, year: Bar Chart
+    const useBarChart = viewType === 'day' || viewType === 'month' || viewType === 'year';
 
     return (
         <>
@@ -76,9 +196,9 @@ export function AdaptiveChart({ analytics, viewType }: AdaptiveChartProps) {
                             <XAxis
                                 dataKey="timestamp"
                                 className="text-xs"
-                                angle={viewType === 'month' ? -45 : 0}
-                                textAnchor={viewType === 'month' ? 'end' : 'middle'}
-                                height={viewType === 'month' ? 80 : 50}
+                                angle={viewType === 'day' ? -45 : 0}
+                                textAnchor={viewType === 'day' ? 'end' : 'middle'}
+                                height={viewType === 'day' ? 80 : 50}
                             />
                             <YAxis
                                 yAxisId="left"
