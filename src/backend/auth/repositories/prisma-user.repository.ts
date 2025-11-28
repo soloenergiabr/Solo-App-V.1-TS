@@ -74,25 +74,28 @@ export class PrismaUserRepository implements UserRepository {
         };
     }
 
-    async update(user: User): Promise<User> {
+    async update(user: Partial<User>): Promise<User> {
+        if (!user.id) throw new Error('User ID is required for update');
+
         const updatedUser = await this.prisma.user.update({
             where: { id: user.id },
             data: {
+                name: user.name,
                 email: user.email,
                 password: user.password,
-                name: user.name,
-                roles: user.roles,
-                permissions: user.permissions,
+                roles: user.roles, // Assuming 'roles' from original model
+                permissions: user.permissions, // Assuming 'permissions' from original model
                 clientId: user.clientId,
                 isActive: user.isActive,
+                updatedAt: new Date(),
             },
         });
 
         return {
             id: updatedUser.id,
+            name: updatedUser.name,
             email: updatedUser.email,
             password: updatedUser.password,
-            name: updatedUser.name,
             roles: updatedUser.roles,
             permissions: updatedUser.permissions,
             clientId: updatedUser.clientId || undefined,
@@ -100,5 +103,24 @@ export class PrismaUserRepository implements UserRepository {
             createdAt: updatedUser.createdAt,
             updatedAt: updatedUser.updatedAt,
         };
+    }
+
+    async findAll(): Promise<User[]> {
+        const users = await this.prisma.user.findMany({
+            orderBy: { createdAt: 'desc' },
+        });
+
+        return users.map((user: any) => ({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            roles: user.roles,
+            permissions: user.permissions,
+            clientId: user.clientId || undefined,
+            isActive: user.isActive,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+        }));
     }
 }

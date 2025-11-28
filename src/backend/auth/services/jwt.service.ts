@@ -14,8 +14,8 @@ export interface JwtPayload {
 
 export class JwtService {
     private static readonly JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production';
-    private static readonly JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
-    private static readonly REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
+    private static readonly JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30d';
+    private static readonly REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '30d';
 
     static generateToken(userContext: UserContextModel): string {
         const payload: JwtPayload = {

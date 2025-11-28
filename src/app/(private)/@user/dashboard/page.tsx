@@ -24,7 +24,7 @@ function GenerationDashboardPage() {
         goToNextPeriod,
         goToToday,
         getCurrentPeriodLabel,
-    } = useGenerationDashboard();
+    } = useGenerationDashboard({});
 
     if (error) {
         return (

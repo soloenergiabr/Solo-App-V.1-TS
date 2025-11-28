@@ -81,7 +81,7 @@ export interface DashboardAnalytics {
     };
 }
 
-export function useGenerationDashboard() {
+export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     const api = useAuthenticatedApi();
     const [analytics, setAnalytics] = useState<DashboardAnalytics | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -149,6 +149,9 @@ export function useGenerationDashboard() {
             }
             if (dateRange.endDate) {
                 params.append('endDate', dateRange.endDate);
+            }
+            if (clientId) {
+                params.append('clientId', clientId);
             }
 
             const response = await api.get(`/generation/dashboard?${params.toString()}`);

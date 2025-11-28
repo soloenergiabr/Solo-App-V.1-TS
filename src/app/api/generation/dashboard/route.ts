@@ -22,6 +22,7 @@ const getDashboardRoute = async (request: NextRequest): Promise<NextResponse> =>
     const inverterIdsParam = searchParams.get('inverterIds');
     const startDate = searchParams.get('startDate') || undefined;
     const endDate = searchParams.get('endDate') || undefined;
+    const clientId = searchParams.get('clientId') || undefined;
 
     // Parse inverterIds (pode ser uma string separada por vírgulas)
     const inverterIds = inverterIdsParam
@@ -34,6 +35,7 @@ const getDashboardRoute = async (request: NextRequest): Promise<NextResponse> =>
             inverterIds,
             startDate,
             endDate,
+            clientId,
         },
         userContext
     );

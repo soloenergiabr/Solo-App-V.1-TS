@@ -12,3 +12,4 @@ export * from './calculate-total-energy-generated.use-case';
 export * from './get-latest-generation-data.use-case';
 export * from './sync-inverter-generation-data.use-case';
 export * from './get-dashboard-analytics.use-case';
+export * from './list-provider-plants.use-case';

@@ -10,6 +10,7 @@ export const GetDashboardAnalyticsRequestSchema = z.object({
     inverterIds: z.array(z.string()).optional(),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
+    clientId: z.string().optional(),
 });
 
 // Response Schema
@@ -104,17 +105,23 @@ export class GetDashboardAnalyticsUseCase {
             throw new Error('User does not have permission to read generation data');
         }
 
-        // Buscar todos os inversores do cliente
+        let clientId = undefined;
+
+        if (userContext.hasRole("master") && request?.clientId) {
+            clientId = request.clientId;
+        } else {
+            clientId = userContext.clientId;
+        }
+
         const allInverters = await this.inverterRepository.find();
         const clientInverters = allInverters.filter(
-            inv => !userContext.clientId || inv.clientId === userContext.clientId
+            inv => !clientId || inv.clientId === clientId
         );
 
         if (clientInverters.length === 0) {
             return this.createEmptyResponse(request);
         }
 
-        // Determinar quais inversores filtrar
         const targetInverterIds = request?.inverterIds && request.inverterIds.length > 0
             ? request.inverterIds.filter(id => clientInverters.some(inv => inv.id === id))
             : clientInverters.map(inv => inv.id);
@@ -122,8 +129,6 @@ export class GetDashboardAnalyticsUseCase {
         if (targetInverterIds.length === 0) {
             return this.createEmptyResponse(request);
         }
-
-        // Buscar generation units de todos os inversores selecionados
         const allUnitsPromises = targetInverterIds.map(inverterId =>
             this.generationUnitRepository.findByInverterId(inverterId)
         );
@@ -145,7 +150,6 @@ export class GetDashboardAnalyticsUseCase {
             allUnits = allUnits.filter(unit => new Date(unit.timestamp) <= endDate);
         }
 
-        // Calcular métricas gerais
         const totalEnergy = allUnits.reduce((sum, unit) => sum + unit.energy, 0);
         const averageEnergy = allUnits.length > 0 ? totalEnergy / allUnits.length : 0;
         const currentPower = allUnits[allUnits.length - 1]?.power || 0;
@@ -157,10 +161,8 @@ export class GetDashboardAnalyticsUseCase {
             allUnits[0] || { power: 0, timestamp: new Date() }
         );
 
-        // Calcular inversores ativos (com dados no período)
         const activeInverterIds = new Set(allUnits.map(unit => unit.inverterId));
 
-        // Criar série temporal baseada no tipo
         let timeSeries: Array<{ timestamp: string; energy: number; power: number; inverterCount: number }>;
 
         if (request?.generationUnitType === 'real_time') {

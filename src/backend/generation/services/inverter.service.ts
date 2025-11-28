@@ -3,11 +3,13 @@ import { CreateInverterUseCase, CreateInverterRequest, CreateInverterResponse } 
 import { GetInvertersUseCase, GetInvertersRequest, GetInvertersResponse } from "../use-cases/get-inverters.use-case";
 import { GetInverterByIdUseCase, GetInverterByIdRequest, GetInverterByIdResponse } from "../use-cases/get-inverter-by-id.use-case";
 import { UserContext } from '@/backend/auth/models/user-context.model';
+import { ListProviderPlantsUseCase, ListProviderPlantsRequest, ListProviderPlantsResponse } from "../use-cases/list-provider-plants.use-case";
 
 export class InverterService {
     private createInverterUseCase: CreateInverterUseCase;
     private getInvertersUseCase: GetInvertersUseCase;
     private getInverterByIdUseCase: GetInverterByIdUseCase;
+    private listProviderPlantsUseCase: ListProviderPlantsUseCase;
 
     constructor(
         private inverterRepository: InverterRepository
@@ -15,6 +17,7 @@ export class InverterService {
         this.createInverterUseCase = new CreateInverterUseCase(inverterRepository);
         this.getInvertersUseCase = new GetInvertersUseCase(inverterRepository);
         this.getInverterByIdUseCase = new GetInverterByIdUseCase(inverterRepository);
+        this.listProviderPlantsUseCase = new ListProviderPlantsUseCase();
     }
 
     async createInverter(
@@ -33,5 +36,11 @@ export class InverterService {
         userContext: UserContext
     ): Promise<GetInverterByIdResponse> {
         return await this.getInverterByIdUseCase.execute(request, userContext);
+    }
+
+    async listProviderPlants(
+        request: ListProviderPlantsRequest,
+    ): Promise<ListProviderPlantsResponse> {
+        return this.listProviderPlantsUseCase.execute(request);
     }
 }

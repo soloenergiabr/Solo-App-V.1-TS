@@ -1,14 +1,15 @@
-"use client"
+'use client';
 
-import { withAuth } from "@/frontend/auth/contexts/auth-context";
+import { PageLayout } from '@/components/ui/page-layout';
+import { ClientsTable } from '@/frontend/admin/components/clients-table';
+import { withAuth } from '@/frontend/auth/contexts/auth-context';
 
-export function Clients() {
+function ClientsPage() {
     return (
-        <div>
-            <h1>Clients</h1>
-        </div>
+        <PageLayout>
+            <ClientsTable />
+        </PageLayout>
     );
 }
 
-
-export default withAuth(Clients, ['master']);
+export default withAuth(ClientsPage, ['master']);

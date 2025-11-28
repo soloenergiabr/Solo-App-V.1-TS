@@ -13,7 +13,7 @@ const LoginRequestSchema = z.object({
 
 // Criar instância do repositório e service
 const userRepository = new PrismaUserRepository(prisma);
-const authService = new AuthService(userRepository);
+const authService = new AuthService(userRepository, prisma);
 
 const loginRoute = async (request: NextRequest): Promise<NextResponse> => {
     const body = await request.json();

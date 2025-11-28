@@ -1,4 +1,5 @@
 import { InverterModel } from "../../models/inverter.model"
+import { ProviderPlant } from "../../models/provider-plant.model"
 import { InverterApiRepository } from "../inverter-api.repository"
 
 export class MockInverterApiRepository extends InverterApiRepository {
@@ -24,5 +25,9 @@ export class MockInverterApiRepository extends InverterApiRepository {
     }
     getGenerationByInterval(): Promise<number> {
         return Promise.resolve(this.generationByInterval)
+    }
+
+    listPlants(): Promise<ProviderPlant[]> {
+        return Promise.resolve([])
     }
 }

@@ -7,17 +7,13 @@ import { withHandle } from '@/app/api/api-utils';
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { clubService } from '@/backend/club/services';
 
 // Schema de validação para resgate de oferta
 const RedeemOfferRequestSchema = z.object({
     offerId: z.string().min(1, 'Offer ID is required'),
 });
 
-// Criar instância do service
-const indicationRepository = new PrismaIndicationRepository(prisma);
-const transactionRepository = new PrismaTransactionRepository(prisma);
-const offerRepository = new PrismaOfferRepository(prisma);
-const clubService = new ClubService(indicationRepository, transactionRepository);
 
 const redeemOfferRoute = async (request: NextRequest): Promise<NextResponse> => {
     const body = await request.json();
@@ -28,7 +24,7 @@ const redeemOfferRoute = async (request: NextRequest): Promise<NextResponse> => 
     const userContext = await AuthMiddleware.extractUserContext(request);
 
     // Verificar se oferta existe e está ativa
-    const offer = await offerRepository.findById(validatedRequest.offerId);
+    const offer = await clubService.getOfferById(validatedRequest.offerId);
     if (!offer) {
         return NextResponse.json({
             success: false,
@@ -77,7 +73,7 @@ const redeemOfferRoute = async (request: NextRequest): Promise<NextResponse> => 
         offerId: offer.id,
     });
 
-    await transactionRepository.create(transaction);
+    await clubService.transactionService.createTransaction(transaction);
 
     // Retornar sucesso
     return NextResponse.json({

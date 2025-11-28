@@ -6,16 +6,12 @@ import { withHandle } from '@/app/api/api-utils';
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { clubService } from '@/backend/club/services';
 
 // Schema de validação para buscar indicações
 const GetIndicationsRequestSchema = z.object({
     type: z.enum(['as_referrer', 'as_referred']).optional().default('as_referrer'),
 });
-
-// Criar instância do service
-const indicationRepository = new PrismaIndicationRepository(prisma);
-const transactionRepository = new PrismaTransactionRepository(prisma);
-const clubService = new ClubService(indicationRepository, transactionRepository);
 
 const getIndicationsRoute = async (request: NextRequest): Promise<NextResponse> => {
     const { searchParams } = new URL(request.url);

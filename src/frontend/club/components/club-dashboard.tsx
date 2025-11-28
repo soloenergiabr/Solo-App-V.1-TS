@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ClientRefererLink } from './client-referer-link';
+import { OffersList } from './offers-list';
 import { LoadingPage } from '@/components/ui/loading';
 
 export function ClubDashboard() {
@@ -34,7 +35,8 @@ export function ClubDashboard() {
                     <p className="text-sm text-red-600 mt-2">{balance.error}</p>
                 )}
             </div>
-            <ClientRefererLink />
+
+            <OffersList />
 
             <div className="w-full">
                 {/* Indicações como Referrer */}
@@ -78,6 +80,9 @@ export function ClubDashboard() {
                     </CardContent>
                 </Card>
             </div>
+
+            <ClientRefererLink />
+
 
             {/* Transações Recentes */}
             <Card>

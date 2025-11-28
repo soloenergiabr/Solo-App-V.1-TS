@@ -5,4 +5,5 @@ export interface UserRepository {
     create(user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User>;
     findById(id: string): Promise<User | null>;
     update(user: Partial<User>): Promise<User>;
+    findAll(): Promise<User[]>;
 }

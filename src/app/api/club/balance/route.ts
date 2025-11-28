@@ -5,11 +5,8 @@ import { PrismaTransactionRepository } from '@/backend/club/repositories/impleme
 import { withHandle } from '@/app/api/api-utils';
 import prisma from '@/lib/prisma';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
-
-// Criar instância do service
-const indicationRepository = new PrismaIndicationRepository(prisma);
-const transactionRepository = new PrismaTransactionRepository(prisma);
-const clubService = new ClubService(indicationRepository, transactionRepository);
+import { PrismaOfferRepository } from '@/backend/club/repositories/implementations/prisma.offer.repository';
+import { clubService } from '@/backend/club/services';
 
 const getBalanceRoute = async (request: NextRequest): Promise<NextResponse> => {
     const userContext = await AuthMiddleware.extractUserContext(request);

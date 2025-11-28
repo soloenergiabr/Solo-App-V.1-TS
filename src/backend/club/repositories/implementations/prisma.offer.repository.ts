@@ -5,8 +5,8 @@ import { OfferRepository } from "../offer.repository";
 export class PrismaOfferRepository implements OfferRepository {
     constructor(private prisma: PrismaClient) { }
 
-    async create(offer: OfferModel): Promise<void> {
-        await this.prisma.offer.create({
+    async create(offer: OfferModel): Promise<OfferModel> {
+        const createdOffer = await this.prisma.offer.create({
             data: {
                 id: offer.id,
                 title: offer.title,
@@ -21,6 +21,21 @@ export class PrismaOfferRepository implements OfferRepository {
                 createdAt: offer.createdAt,
                 updatedAt: offer.updatedAt,
             },
+        });
+
+        return new OfferModel({
+            id: createdOffer.id,
+            title: createdOffer.title,
+            description: createdOffer.description,
+            partner: createdOffer.partner,
+            cost: createdOffer.cost,
+            discount: createdOffer.discount || undefined,
+            imageUrl: createdOffer.imageUrl || undefined,
+            validFrom: createdOffer.validFrom || undefined,
+            validTo: createdOffer.validTo || undefined,
+            isActive: createdOffer.isActive,
+            createdAt: createdOffer.createdAt,
+            updatedAt: createdOffer.updatedAt,
         });
     }
 
