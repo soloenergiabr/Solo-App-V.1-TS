@@ -23,7 +23,7 @@ COPY . .
 RUN npm i pnpm -g
 
 # Gerar Prisma Client (não precisa de DATABASE_URL)
-RUN pnpx prisma generate
+RUN pnpm run db:generate
 
 # Build do Next.js
 ENV NEXT_TELEMETRY_DISABLED=1
