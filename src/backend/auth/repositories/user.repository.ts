@@ -6,4 +6,5 @@ export interface UserRepository {
     findById(id: string): Promise<User | null>;
     update(user: Partial<User>): Promise<User>;
     findAll(): Promise<User[]>;
+    findByResetToken(token: string): Promise<User | null>;
 }

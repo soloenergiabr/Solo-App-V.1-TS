@@ -1,36 +1,44 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuthContext } from '@/frontend/auth/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-export function LoginPage() {
+export function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    const { login } = useAuthContext();
-    const router = useRouter();
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        setError('');
+        setMessage('');
+        setMessageType(null);
 
         try {
-            const result = await login({ email, password });
+            const response = await fetch('/api/auth/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
 
-            if (result.success) {
-                router.push('/dashboard');
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessageType('success');
+                setMessage(data.message || 'If the email exists, a recovery link has been sent.');
+                setEmail(''); // Limpar o campo
             } else {
-                setError(result.error || 'Login failed');
+                setMessageType('error');
+                setMessage(data.message || 'An error occurred. Please try again.');
             }
         } catch (error) {
-            setError('An unexpected error occurred');
+            setMessageType('error');
+            setMessage('An unexpected error occurred. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -47,17 +55,20 @@ export function LoginPage() {
             <div className="max-w-md w-full space-y-8 relative z-10 bg-white/20 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/30">
                 <div className="rounded-2xl p-4">
                     <h2 className="text-center text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
-                        Solo Energy
+                        Recuperação de Senha
                     </h2>
                     <p className="mt-2 text-center text-sm text-white/90 drop-shadow-sm">
-                        Entre na sua conta para gerenciar seus inversores
+                        Digite seu e-mail para receber o link de redefinição
                     </p>
                 </div>
 
                 <form className="space-y-6" onSubmit={handleSubmit}>
-                    {error && (
-                        <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-red-100 px-4 py-3 rounded-lg drop-shadow-sm">
-                            {error}
+                    {message && (
+                        <div className={`${messageType === 'success'
+                                ? 'bg-green-500/20 border-green-400/30 text-green-100'
+                                : 'bg-red-500/20 border-red-400/30 text-red-100'
+                            } backdrop-blur-sm border px-4 py-3 rounded-lg drop-shadow-sm`}>
+                            {message}
                         </div>
                     )}
 
@@ -77,22 +88,6 @@ export function LoginPage() {
                                 className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 focus:border-white/50"
                             />
                         </div>
-
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-white/90 drop-shadow-sm">
-                                Senha
-                            </label>
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Sua senha"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 focus:border-white/50"
-                            />
-                        </div>
                     </div>
 
                     <div>
@@ -101,25 +96,16 @@ export function LoginPage() {
                             disabled={isLoading}
                             className='w-full h-12 sm:h-10 bg-primary hover:bg-primary/90 text-primary-foreground text-base sm:text-sm font-medium'
                         >
-                            {isLoading ? 'Entrando...' : 'Entrar'}
+                            {isLoading ? 'Enviando...' : 'Enviar Link'}
                         </Button>
                     </div>
 
                     <div className="text-center">
-                        <Link
-                            href="/forgot-password"
-                            className="text-sm text-white/80 hover:text-white transition-colors underline underline-offset-4"
-                        >
-                            Recuperar senha
-                        </Link>
-                    </div>
-
-                    <div className="text-center">
                         <p className="text-sm text-white/80 drop-shadow-sm">
-                            Não tem uma conta?{' '}
-                            <a href="/register" className="font-medium text-white hover:text-white/80 transition-colors underline underline-offset-4">
-                                Registre-se aqui
-                            </a>
+                            Lembrou sua senha?{' '}
+                            <Link href="/login" className="font-medium text-white hover:text-white/80 transition-colors underline underline-offset-4">
+                                Voltar para Login
+                            </Link>
                         </p>
                     </div>
                 </form>

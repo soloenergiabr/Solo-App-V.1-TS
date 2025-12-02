@@ -21,6 +21,8 @@ export class PrismaUserRepository implements UserRepository {
             permissions: user.permissions,
             clientId: user.clientId || undefined,
             isActive: user.isActive,
+            resetPasswordToken: user.resetPasswordToken || undefined,
+            resetPasswordExpires: user.resetPasswordExpires || undefined,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         };
@@ -42,6 +44,8 @@ export class PrismaUserRepository implements UserRepository {
             permissions: user.permissions,
             clientId: user.clientId || undefined,
             isActive: user.isActive,
+            resetPasswordToken: user.resetPasswordToken || undefined,
+            resetPasswordExpires: user.resetPasswordExpires || undefined,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         };
@@ -69,6 +73,8 @@ export class PrismaUserRepository implements UserRepository {
             permissions: user.permissions,
             clientId: user.clientId || undefined,
             isActive: user.isActive,
+            resetPasswordToken: user.resetPasswordToken || undefined,
+            resetPasswordExpires: user.resetPasswordExpires || undefined,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         };
@@ -87,6 +93,8 @@ export class PrismaUserRepository implements UserRepository {
                 permissions: user.permissions, // Assuming 'permissions' from original model
                 clientId: user.clientId,
                 isActive: user.isActive,
+                resetPasswordToken: user.resetPasswordToken,
+                resetPasswordExpires: user.resetPasswordExpires,
                 updatedAt: new Date(),
             },
         });
@@ -100,6 +108,8 @@ export class PrismaUserRepository implements UserRepository {
             permissions: updatedUser.permissions,
             clientId: updatedUser.clientId || undefined,
             isActive: updatedUser.isActive,
+            resetPasswordToken: updatedUser.resetPasswordToken || undefined,
+            resetPasswordExpires: updatedUser.resetPasswordExpires || undefined,
             createdAt: updatedUser.createdAt,
             updatedAt: updatedUser.updatedAt,
         };
@@ -119,8 +129,33 @@ export class PrismaUserRepository implements UserRepository {
             permissions: user.permissions,
             clientId: user.clientId || undefined,
             isActive: user.isActive,
+            resetPasswordToken: user.resetPasswordToken || undefined,
+            resetPasswordExpires: user.resetPasswordExpires || undefined,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         }));
+    }
+
+    async findByResetToken(token: string): Promise<User | null> {
+        const user = await this.prisma.user.findUnique({
+            where: { resetPasswordToken: token },
+        });
+
+        if (!user) return null;
+
+        return {
+            id: user.id,
+            email: user.email,
+            password: user.password,
+            name: user.name,
+            roles: user.roles,
+            permissions: user.permissions,
+            clientId: user.clientId || undefined,
+            isActive: user.isActive,
+            resetPasswordToken: user.resetPasswordToken || undefined,
+            resetPasswordExpires: user.resetPasswordExpires || undefined,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+        };
     }
 }
