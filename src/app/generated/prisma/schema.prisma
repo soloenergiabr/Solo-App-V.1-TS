@@ -30,6 +30,7 @@ enum TransactionType {
   indication_reward
   offer_redemption
   withdrawal
+  manual_adjustment
 }
 
 model User {

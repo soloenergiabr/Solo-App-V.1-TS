@@ -16,33 +16,33 @@ const manualTransactionSchema = z.object({
     description: z.string().min(1, 'Description is required'),
 });
 
-export async function POST(request: NextRequest) {
-    try {
-        // Verify authentication and master role
-        const userContext = await AuthMiddleware.extractUserContext(request);
-        // TODO: Explicit master role check
+import { withHandle } from '@/app/api/api-utils';
 
-        const body = await request.json();
-        const validatedData = manualTransactionSchema.parse(body);
+// ... (imports)
 
-        const transaction = new TransactionModel({
-            clientId: validatedData.clientId,
-            type: "indication_reward",
-            amount: validatedData.amount,
-            description: validatedData.description,
-        });
+// ... (instantiations)
 
-        await transactionService.createTransaction(transaction);
+const createManualTransaction = async (request: NextRequest) => {
+    // Verify authentication and master role
+    const userContext = await AuthMiddleware.extractUserContext(request);
+    // TODO: Explicit master role check
 
-        return NextResponse.json({
-            success: true,
-            message: 'Transaction created successfully',
-        });
-    } catch (error: any) {
-        console.error('Error creating manual transaction:', error);
-        return NextResponse.json(
-            { success: false, message: error.message || 'Failed to create transaction' },
-            { status: error instanceof z.ZodError ? 400 : 500 }
-        );
-    }
-}
+    const body = await request.json();
+    const validatedData = manualTransactionSchema.parse(body);
+
+    const transaction = new TransactionModel({
+        clientId: validatedData.clientId,
+        type: 'manual_adjustment', // Corrected type
+        amount: validatedData.amount,
+        description: validatedData.description,
+    });
+
+    await transactionService.createTransaction(transaction);
+
+    return NextResponse.json({
+        success: true,
+        message: 'Transaction created successfully',
+    });
+};
+
+export const POST = withHandle(createManualTransaction);

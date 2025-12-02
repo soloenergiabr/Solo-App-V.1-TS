@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
+import { EditClientDialog } from './edit-client-dialog';
+import { DeleteClientDialog } from './delete-client-dialog';
 import { Loader2, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -20,8 +22,9 @@ interface Client {
     id: string;
     name: string;
     email: string;
-    isActive: boolean;
+    status: string;
     createdAt: string;
+    phone?: string;
 }
 
 export function ClientsTable() {
@@ -30,28 +33,41 @@ export function ClientsTable() {
     const [clients, setClients] = useState<Client[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchClients = async () => {
-            if (!api.isAuthenticated) return;
+    const fetchClients = async () => {
+        if (!api.isAuthenticated) return;
 
-            try {
-                setIsLoading(true);
-                const response = await api.get('/admin/clients');
-                if (response.data.success) {
-                    setClients(response.data.data);
-                } else {
-                    toast.error(response.data.message || 'Erro ao buscar clientes');
-                }
-            } catch (error: any) {
-                console.error('Error fetching clients:', error);
-                toast.error('Erro ao carregar lista de clientes');
-            } finally {
-                setIsLoading(false);
+        try {
+            setIsLoading(true);
+            const response = await api.get('/admin/clients');
+            if (response.data.success) {
+                setClients(response.data.data);
+            } else {
+                toast.error(response.data.message || 'Erro ao buscar clientes');
             }
-        };
+        } catch (error: any) {
+            console.error('Error fetching clients:', error);
+            toast.error('Erro ao carregar lista de clientes');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchClients();
     }, []);
+
+    const getStatusBadge = (status: string) => {
+        switch (status) {
+            case 'client':
+                return <Badge variant="default">Cliente</Badge>;
+            case 'lead':
+                return <Badge variant="secondary">Lead</Badge>;
+            case 'inactive':
+                return <Badge variant="destructive">Inativo</Badge>;
+            default:
+                return <Badge variant="outline">{status}</Badge>;
+        }
+    };
 
     if (isLoading) {
         return (
@@ -86,22 +102,31 @@ export function ClientsTable() {
                                 <TableCell className="font-medium">{client.name}</TableCell>
                                 <TableCell>{client.email}</TableCell>
                                 <TableCell>
-                                    <Badge variant={client.isActive ? 'default' : 'secondary'}>
-                                        {client.isActive ? 'Ativo' : 'Inativo'}
-                                    </Badge>
+                                    {getStatusBadge(client.status)}
                                 </TableCell>
                                 <TableCell>
                                     {new Date(client.createdAt).toLocaleDateString('pt-BR')}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => router.push(`/clients/${client.id}`)}
-                                        title="Ver Detalhes"
-                                    >
-                                        <Eye className="h-4 w-4" />
-                                    </Button>
+                                    <div className="flex justify-end gap-2">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => router.push(`/clients/${client.id}`)}
+                                            title="Ver Detalhes"
+                                        >
+                                            <Eye className="h-4 w-4" />
+                                        </Button>
+                                        <EditClientDialog
+                                            client={client}
+                                            onSuccess={fetchClients}
+                                        />
+                                        <DeleteClientDialog
+                                            clientId={client.id}
+                                            clientName={client.name}
+                                            onSuccess={fetchClients}
+                                        />
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))

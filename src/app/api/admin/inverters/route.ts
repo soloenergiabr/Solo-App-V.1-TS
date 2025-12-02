@@ -19,38 +19,38 @@ const createInverterSchema = z.object({
     providerUrl: z.string().optional(),
 });
 
-export async function POST(request: NextRequest) {
-    try {
-        // Verify authentication and master role
-        const userContext = await AuthMiddleware.extractUserContext(request);
-        // TODO: Explicit master role check
+import { withHandle } from '@/app/api/api-utils';
 
-        const body = await request.json();
-        const validatedData = createInverterSchema.parse(body);
+// ... (imports)
 
-        const inverter = new InverterModel(
-            uuid(),
-            validatedData.name,
-            validatedData.provider,
-            validatedData.providerId,
-            validatedData.providerApiKey,
-            validatedData.providerApiSecret,
-            validatedData.providerUrl,
-            validatedData.clientId
-        );
+// ... (instantiations)
 
-        await inverterRepository.create(inverter);
+const createInverter = async (request: NextRequest) => {
+    // Verify authentication and master role
+    const userContext = await AuthMiddleware.extractUserContext(request);
+    // TODO: Explicit master role check
 
-        return NextResponse.json({
-            success: true,
-            message: 'Inverter registered successfully',
-            data: inverter,
-        });
-    } catch (error: any) {
-        console.error('Error registering inverter:', error);
-        return NextResponse.json(
-            { success: false, message: error.message || 'Failed to register inverter' },
-            { status: error instanceof z.ZodError ? 400 : 500 }
-        );
-    }
-}
+    const body = await request.json();
+    const validatedData = createInverterSchema.parse(body);
+
+    const inverter = new InverterModel(
+        uuid(),
+        validatedData.name,
+        validatedData.provider,
+        validatedData.providerId,
+        validatedData.providerApiKey,
+        validatedData.providerApiSecret,
+        validatedData.providerUrl,
+        validatedData.clientId
+    );
+
+    await inverterRepository.create(inverter);
+
+    return NextResponse.json({
+        success: true,
+        message: 'Inverter registered successfully',
+        data: inverter,
+    });
+};
+
+export const POST = withHandle(createInverter);

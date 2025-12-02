@@ -111,6 +111,16 @@ export class PrismaClientRepository implements ClientRepository {
         });
     }
 
+    async delete(id: string): Promise<void> {
+        await this.prisma.client.update({
+            where: { id },
+            data: {
+                deletedAt: new Date(),
+                status: 'inactive', // Optionally set status to inactive
+            },
+        });
+    }
+
     async findAll(): Promise<ClientModel[]> {
         const clients = await this.prisma.client.findMany({
             orderBy: { createdAt: 'desc' },

@@ -80,7 +80,7 @@ export function ManualTransactionDialog({ clientId, onSuccess }: ManualTransacti
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button size={"sm"}>
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Nova Transação
                 </Button>

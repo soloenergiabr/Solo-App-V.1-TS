@@ -30,6 +30,7 @@ enum TransactionType {
   indication_reward
   offer_redemption
   withdrawal
+  manual_adjustment
 }
 
 model User {
@@ -53,13 +54,13 @@ model User {
 }
 
 model Client {
-  id             String  @id @default(dbgenerated("(concat('client_', gen_random_uuid()))::TEXT"))
-  name           String
-  email          String  @unique
-  cpfCnpj        String  @unique
-  phone          String?
-  address        String?
-  avgEnergyCost  Float?
+  id              String  @id @default(dbgenerated("(concat('client_', gen_random_uuid()))::TEXT"))
+  name            String
+  email           String  @unique
+  cpfCnpj         String  @unique
+  phone           String?
+  address         String?
+  avgEnergyCost   Float?
   enelInvoiceFile String?
 
   soloCoinBalance Float        @default(0)

@@ -1,4 +1,4 @@
-import { ClientModel } from "../../auth/models/client.model"
+import { ClientModel } from "../models/client.model"
 
 export interface ClientRepository {
     create(client: ClientModel): Promise<void>
@@ -6,5 +6,6 @@ export interface ClientRepository {
     findByEmail(email: string): Promise<ClientModel | null>
     findByIndicationCode(indicationCode: string): Promise<ClientModel | null>
     update(client: ClientModel): Promise<void>
+    delete(id: string): Promise<void>
     findAll(): Promise<ClientModel[]>
 }

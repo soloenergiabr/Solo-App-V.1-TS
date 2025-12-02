@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { PrismaUserRepository } from '@/backend/auth/repositories/prisma-user.repository';
 import { PrismaTransactionRepository } from '@/backend/club/repositories/implementations/prisma.transaction.repository';
@@ -20,46 +21,87 @@ const inverterRepository = new PrismaInverterRepository(prisma);
 // Instantiate services
 const clubService = new ClubService(indicationRepository, transactionRepository, offerRepository);
 
-export async function GET(
+const getClientDetails = async (
     request: NextRequest,
     { params }: { params: { id: string } }
-) {
-    try {
-        // Verify authentication and master role
-        const userContext = await AuthMiddleware.extractUserContext(request);
-        // TODO: Explicit master role check if not handled by middleware/layout
+) => {
+    const userContext = await AuthMiddleware.extractUserContext(request);
+    // TODO: Explicit master role check
 
-        const clientId = params.id;
+    const clientId = params.id;
 
-        // Fetch data in parallel
-        const [client, user, balance, inverters] = await Promise.all([
-            clientRepository.findById(clientId),
-            userRepository.findById(clientId),
-            clubService.getClientBalance({ clientId } as any), // Constructing minimal UserContext
-            inverterRepository.findByClientId(clientId),
-        ]);
+    const [client, balance, inverters] = await Promise.all([
+        clientRepository.findById(clientId),
+        clubService.getClientBalance({ clientId } as any),
+        inverterRepository.findByClientId(clientId),
+    ]);
 
-        if (!client) {
-            return NextResponse.json(
-                { success: false, message: 'Cliente não encontrado' },
-                { status: 404 }
-            );
-        }
-
-        return NextResponse.json({
-            success: true,
-            data: {
-                client,
-                user,
-                balance,
-                inverters,
-            },
-        });
-    } catch (error: any) {
-        console.error('Error fetching client details:', error);
-        return NextResponse.json(
-            { success: false, message: error.message || 'Failed to fetch client details' },
-            { status: 500 }
-        );
+    if (!client) {
+        throw new Error('Cliente não encontrado');
     }
-}
+
+    return NextResponse.json({
+        success: true,
+        data: {
+            client,
+            balance,
+            inverters,
+        },
+    });
+};
+
+const updateClient = async (
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) => {
+    const userContext = await AuthMiddleware.extractUserContext(request);
+    // TODO: Explicit master role check
+
+    const clientId = params.id;
+    const body = await request.json();
+
+    const existingClient = await clientRepository.findById(clientId);
+    if (!existingClient) {
+        throw new Error('Cliente não encontrado');
+    }
+
+    // Update fields
+    existingClient.name = body.name || existingClient.name;
+    existingClient.email = body.email || existingClient.email;
+    existingClient.phone = body.phone || existingClient.phone;
+    existingClient.status = body.status || existingClient.status;
+
+    await clientRepository.update(existingClient);
+
+    return NextResponse.json({
+        success: true,
+        message: 'Cliente atualizado com sucesso',
+        data: existingClient,
+    });
+};
+
+const deleteClient = async (
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) => {
+    const userContext = await AuthMiddleware.extractUserContext(request);
+    // TODO: Explicit master role check
+
+    const clientId = params.id;
+
+    const existingClient = await clientRepository.findById(clientId);
+    if (!existingClient) {
+        throw new Error('Cliente não encontrado');
+    }
+
+    await clientRepository.delete(clientId);
+
+    return NextResponse.json({
+        success: true,
+        message: 'Cliente removido com sucesso',
+    });
+};
+
+export const GET = withHandle(getClientDetails);
+export const PUT = withHandle(updateClient);
+export const DELETE = withHandle(deleteClient);

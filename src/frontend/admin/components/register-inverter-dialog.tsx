@@ -98,7 +98,7 @@ export function RegisterInverterDialog({ clientId, onSuccess }: RegisterInverter
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" size={"sm"}>
                     <Plus className="mr-2 h-4 w-4" />
                     Registrar Inversor
                 </Button>
