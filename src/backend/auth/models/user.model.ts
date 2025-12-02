@@ -7,6 +7,8 @@ export interface User {
     permissions: string[];
     clientId?: string;
     isActive: boolean;
+    resetPasswordToken?: string;
+    resetPasswordExpires?: Date;
     createdAt: Date;
     updatedAt: Date;
 }
