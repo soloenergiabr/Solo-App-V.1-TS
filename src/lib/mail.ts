@@ -6,8 +6,6 @@ interface SendMailParams {
     html: string;
 }
 
-// Configure transporter using environment variables
-// Works with MailHog (dev) or real SMTP services (production)
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'localhost',
     port: parseInt(process.env.SMTP_PORT || '1025'),

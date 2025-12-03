@@ -25,6 +25,7 @@ interface Client {
     status: string;
     createdAt: string;
     phone?: string;
+    cpfCnpj: string;
 }
 
 export function ClientsTable() {
@@ -124,6 +125,8 @@ export function ClientsTable() {
                                         <DeleteClientDialog
                                             clientId={client.id}
                                             clientName={client.name}
+                                            clientStatus={client.status}
+                                            clientCpf={client.cpfCnpj}
                                             onSuccess={fetchClients}
                                         />
                                     </div>

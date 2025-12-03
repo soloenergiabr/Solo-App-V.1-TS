@@ -82,24 +82,33 @@ const updateClient = async (
 
 const deleteClient = async (
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) => {
     const userContext = await AuthMiddleware.extractUserContext(request);
     // TODO: Explicit master role check
 
-    const clientId = params.id;
+    const clientId = (await params).id;
 
     const existingClient = await clientRepository.findById(clientId);
     if (!existingClient) {
         throw new Error('Cliente não encontrado');
     }
 
-    await clientRepository.delete(clientId);
-
-    return NextResponse.json({
-        success: true,
-        message: 'Cliente removido com sucesso',
-    });
+    if (existingClient.status === 'inactive') {
+        // If already inactive, perform hard delete
+        await clientRepository.hardDelete(clientId);
+        return NextResponse.json({
+            success: true,
+            message: 'Cliente excluído permanentemente',
+        });
+    } else {
+        // If active, perform soft delete (deactivate)
+        await clientRepository.delete(clientId);
+        return NextResponse.json({
+            success: true,
+            message: 'Cliente desativado com sucesso',
+        });
+    }
 };
 
 export const GET = withHandle(getClientDetails);

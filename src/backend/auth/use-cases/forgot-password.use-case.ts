@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { UserRepository } from '../repositories/user.repository';
 import { sendMail } from '@/lib/mail';
+import { config } from '@/config';
 
 interface ForgotPasswordInput {
   email: string;
@@ -10,30 +11,24 @@ export class ForgotPasswordUseCase {
   constructor(private userRepository: UserRepository) { }
 
   async execute({ email }: ForgotPasswordInput): Promise<void> {
-    // Passo 1: Buscar o usuário pelo email
     const user = await this.userRepository.findByEmail(email);
 
-    // Passo 2: Verificar se o usuário existe
     if (!user) {
       throw new Error('User not found');
     }
 
-    // Passo 3: Gerar token aleatório seguro
     const resetPasswordToken = crypto.randomBytes(32).toString('hex');
 
-    // Passo 4: Calcular expiração (Agora + 1 hora)
     const resetPasswordExpires = new Date();
     resetPasswordExpires.setHours(resetPasswordExpires.getHours() + 1);
 
-    // Passo 5: Atualizar o usuário no banco
     await this.userRepository.update({
       id: user.id,
       resetPasswordToken,
       resetPasswordExpires,
     });
 
-    // Passo 6: Enviar o e-mail com o link de recuperação
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = config.base_url;
     const resetLink = `${baseUrl}/reset-password?token=${resetPasswordToken}`;
 
     const htmlContent = `

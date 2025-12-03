@@ -116,8 +116,14 @@ export class PrismaClientRepository implements ClientRepository {
             where: { id },
             data: {
                 deletedAt: new Date(),
-                status: 'inactive', // Optionally set status to inactive
+                status: 'inactive',
             },
+        });
+    }
+
+    async hardDelete(id: string): Promise<void> {
+        await this.prisma.client.delete({
+            where: { id },
         });
     }
 

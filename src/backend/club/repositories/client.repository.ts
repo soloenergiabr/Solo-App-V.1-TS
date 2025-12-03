@@ -7,5 +7,6 @@ export interface ClientRepository {
     findByIndicationCode(indicationCode: string): Promise<ClientModel | null>
     update(client: ClientModel): Promise<void>
     delete(id: string): Promise<void>
+    hardDelete(id: string): Promise<void>
     findAll(): Promise<ClientModel[]>
 }

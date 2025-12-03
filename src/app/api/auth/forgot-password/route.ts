@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
         const validation = forgotPasswordSchema.safeParse(body);
         if (!validation.success) {
             return NextResponse.json(
-                { success: false, message: 'Invalid email format', errors: validation.error.errors },
+                { success: false, message: 'Invalid email format', errors: validation.error.issues },
                 { status: 400 }
             );
         }

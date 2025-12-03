@@ -34,20 +34,20 @@ enum TransactionType {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  name        String
-  password    String
-  roles       String[] @default(["user"])
-  permissions String[] @default(["read_inverters", "create_inverter", "read_generation_data", "create_generation_unit"])
-  clientId    String?
-  isActive    Boolean  @default(true)
+  id                   String    @id @default(cuid())
+  email                String    @unique
+  name                 String
+  password             String
+  roles                String[]  @default(["user"])
+  permissions          String[]  @default(["read_inverters", "create_inverter", "read_generation_data", "create_generation_unit"])
+  clientId             String?
+  isActive             Boolean   @default(true)
   resetPasswordToken   String?   @unique
   resetPasswordExpires DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
-  client Client? @relation(fields: [clientId], references: [id])
+  client Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   @@index([email])
   @@index([clientId])
@@ -93,7 +93,7 @@ model Inverter {
   providerApiSecret String?
   providerUrl       String?
 
-  client   Client @relation(fields: [clientId], references: [id])
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
 
   createdAt       DateTime         @default(now())
@@ -115,7 +115,7 @@ model GenerationUnit {
 
   timestamp DateTime @default(now())
 
-  inverter   Inverter @relation(fields: [inverterId], references: [id])
+  inverter   Inverter @relation(fields: [inverterId], references: [id], onDelete: Cascade)
   inverterId String
 
   createdAt DateTime  @default(now())
@@ -131,10 +131,10 @@ model GenerationUnit {
 model Indication {
   id String @id @default(dbgenerated("(concat('indication_', gen_random_uuid()))::TEXT"))
 
-  referrer   Client @relation("Referrer", fields: [referrerId], references: [id])
+  referrer   Client @relation("Referrer", fields: [referrerId], references: [id], onDelete: Cascade)
   referrerId String
 
-  referred   Client @relation("Referred", fields: [referredId], references: [id])
+  referred   Client @relation("Referred", fields: [referredId], references: [id], onDelete: Cascade)
   referredId String
 
   status IndicationStatus @default(pending)
@@ -187,7 +187,7 @@ model FAQ {
 model Transaction {
   id String @id @default(dbgenerated("(concat('transaction_', gen_random_uuid()))::TEXT"))
 
-  client   Client @relation(fields: [clientId], references: [id])
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
 
   type        TransactionType

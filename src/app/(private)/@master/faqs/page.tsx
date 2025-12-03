@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { PageLayout } from '@/components/ui/page-layout';
-import { ClientsTable } from '@/frontend/admin/components/clients-table';
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
-import { CreateClientDialog } from '@/frontend/admin/components/create-client-dialog';
+import { FAQsTable } from '@/frontend/admin/components/faqs-table';
+import { FAQDialog } from '@/frontend/admin/components/faq-dialog';
 
-function ClientsPage() {
+function FAQsPage() {
     const [refreshKey, setRefreshKey] = useState(0);
 
-    const handleClientCreated = () => {
+    const handleFAQCreated = () => {
         setRefreshKey(prev => prev + 1);
     };
 
@@ -17,14 +17,14 @@ function ClientsPage() {
         <PageLayout
             header={
                 <div className="flex flex-row w-full justify-between items-center">
-                    <h1 className="text-2xl font-bold">Clientes</h1>
-                    <CreateClientDialog onSuccess={handleClientCreated} />
+                    <h1 className="text-2xl font-bold">Gerenciar FAQs</h1>
+                    <FAQDialog onSuccess={handleFAQCreated} />
                 </div>
             }
         >
-            <ClientsTable key={refreshKey} />
+            <FAQsTable key={refreshKey} />
         </PageLayout>
     );
 }
 
-export default withAuth(ClientsPage, ['master']);
+export default withAuth(FAQsPage, ['master']);

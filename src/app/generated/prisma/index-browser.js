@@ -129,6 +129,8 @@ exports.Prisma.UserScalarFieldEnum = {
   permissions: 'permissions',
   clientId: 'clientId',
   isActive: 'isActive',
+  resetPasswordToken: 'resetPasswordToken',
+  resetPasswordExpires: 'resetPasswordExpires',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
