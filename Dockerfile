@@ -45,13 +45,13 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copiar node_modules completo (necessário para prisma e tsx)
-COPY --from=base /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copiar arquivos necessários
-COPY --from=base /app/public ./public
-COPY --from=base /app/.next/standalone ./
-COPY --from=base /app/.next/static ./.next/static
-COPY --from=base /app/prisma ./prisma
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/prisma ./prisma
 COPY --from=base /app/package.json ./package.json
 
 # Copiar script de entrypoint

@@ -3,6 +3,7 @@ import { UserContextModel } from '../models/user-context.model';
 import { JwtService } from './jwt.service';
 import { UserRepository } from '../repositories/user.repository';
 import { PrismaClient } from '@/app/generated/prisma';
+import { eventBus, EventType } from '@/backend/shared/event-bus';
 
 export interface LoginRequest {
     email: string;
@@ -134,7 +135,6 @@ export class AuthService {
             },
         });
 
-        // Handle indication if provided
         if (indicationCode) {
             const referrer = await this.prisma.client.findUnique({
                 where: { indicationCode },
@@ -146,6 +146,16 @@ export class AuthService {
                         referredId: newClient.id,
                         status: 'pending',
                     },
+                });
+
+                eventBus.emit(EventType.INDICATION_CREATED, {
+                    name: newClient.name,
+                    phone: newClient.phone || '',
+                    email: newClient.email,
+                    description: 'Comercial +3000kwh', // TODO: Adjust based on logic if needed
+                    whoReferring: referrer.name,
+                    phoneWhoReferring: referrer.phone || '',
+                    idLeadSoloApp: newClient.id,
                 });
             }
         }

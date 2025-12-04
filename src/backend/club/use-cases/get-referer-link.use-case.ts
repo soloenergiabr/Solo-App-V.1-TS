@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ClientRepository } from "../repositories/client.repository";
 import { UserContext } from '@/backend/auth/models/user-context.model';
+import { config } from "@/config";
 
 
 export const GetRefererLinkResponseSchema = z.object({
@@ -28,7 +29,7 @@ export class GetRefererLinkUseCase {
         }
 
         // Gerar link de indicação
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        const baseUrl = config.base_url || 'http://localhost:3000';
         const refererLink = `${baseUrl}/register?indication=${client.indicationCode}`;
 
         return GetRefererLinkResponseSchema.parse({
