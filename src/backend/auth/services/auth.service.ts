@@ -152,7 +152,7 @@ export class AuthService {
                     name: newClient.name,
                     phone: newClient.phone || '',
                     email: newClient.email,
-                    description: 'Comercial +3000kwh', // TODO: Adjust based on logic if needed
+                    description: `${avgEnergyCost ? `Consumo médio de energia: R$ ${avgEnergyCost}` : ''}`,
                     whoReferring: referrer.name,
                     phoneWhoReferring: referrer.phone || '',
                     idLeadSoloApp: newClient.id,

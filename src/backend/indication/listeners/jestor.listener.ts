@@ -1,10 +1,15 @@
 import { IndicationCreatedPayload } from '@/backend/shared/event-bus';
+import { config } from '@/config';
 
-const JESTOR_WEBHOOK_URL = 'https://mateussmaia.api.jestor.com/webhook/ZjNkNDE0NGZlOTY2YzE5ee4dccd038MTc2Mjk1MDI4OTdlYjA2';
 
 export const onIndicationCreatedToJestor = async (payload: IndicationCreatedPayload) => {
     try {
-        const response = await fetch(JESTOR_WEBHOOK_URL, {
+        if (!config.jestor_create_lead_webhook_url) {
+            console.error('Jestor webhook URL is not configured');
+            return;
+        }
+
+        const response = await fetch(config.jestor_create_lead_webhook_url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
