@@ -17,6 +17,7 @@ export interface Indication {
         email: string;
     };
     status: string;
+    projectValue?: number;
     createdAt: string;
     updatedAt: string;
 }

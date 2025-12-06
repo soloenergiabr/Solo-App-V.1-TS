@@ -139,6 +139,9 @@ model Indication {
 
   status IndicationStatus @default(pending)
 
+  jestorId     String? @unique
+  projectValue Float?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -182,6 +182,8 @@ exports.Prisma.IndicationScalarFieldEnum = {
   referrerId: 'referrerId',
   referredId: 'referredId',
   status: 'status',
+  jestorId: 'jestorId',
+  projectValue: 'projectValue',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

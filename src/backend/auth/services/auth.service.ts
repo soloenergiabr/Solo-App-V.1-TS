@@ -4,6 +4,7 @@ import { JwtService } from './jwt.service';
 import { UserRepository } from '../repositories/user.repository';
 import { PrismaClient } from '@/app/generated/prisma';
 import { eventBus, EventType } from '@/backend/shared/event-bus';
+import { JestorService } from '../../integrations/jestor/jestor.service';
 
 export interface LoginRequest {
     email: string;
@@ -46,7 +47,11 @@ export interface RegisterResponse {
 
 
 export class AuthService {
-    constructor(private userRepository: UserRepository, private prisma: PrismaClient) { }
+    private jestorService: JestorService;
+
+    constructor(private userRepository: UserRepository, private prisma: PrismaClient) {
+        this.jestorService = new JestorService();
+    }
 
     async login(request: LoginRequest): Promise<LoginResponse> {
         const { email, password } = request;
@@ -139,8 +144,9 @@ export class AuthService {
             const referrer = await this.prisma.client.findUnique({
                 where: { indicationCode },
             });
+            console.log(`[AuthService] Indication code: ${indicationCode}, Referrer found: ${!!referrer}`);
             if (referrer) {
-                await this.prisma.indication.create({
+                const indication = await this.prisma.indication.create({
                     data: {
                         referrerId: referrer.id,
                         referredId: newClient.id,
@@ -148,6 +154,7 @@ export class AuthService {
                     },
                 });
 
+                // Emit event for other listeners
                 eventBus.emit(EventType.INDICATION_CREATED, {
                     name: newClient.name,
                     phone: newClient.phone || '',
@@ -157,6 +164,20 @@ export class AuthService {
                     phoneWhoReferring: referrer.phone || '',
                     idLeadSoloApp: newClient.id,
                 });
+
+                // Trigger Jestor Webhook
+                console.log('[AuthService] Calling JestorService.createLead...');
+                await this.jestorService.createLead({
+                    name: newClient.name,
+                    phone: newClient.phone || '',
+                    email: newClient.email,
+                    description: `Custo Médio: R$ ${newClient.avgEnergyCost?.toFixed(2) || 'N/A'}`,
+                    who_referring: referrer.name,
+                    phone_who_referring: referrer.phone || '',
+                    id_lead_soloapp: indication.id
+                });
+            } else {
+                console.warn(`[AuthService] Referrer not found for code: ${indicationCode}`);
             }
         }
 

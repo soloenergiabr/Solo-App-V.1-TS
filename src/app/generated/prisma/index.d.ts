@@ -6443,8 +6443,18 @@ export namespace Prisma {
 
   export type AggregateIndication = {
     _count: IndicationCountAggregateOutputType | null
+    _avg: IndicationAvgAggregateOutputType | null
+    _sum: IndicationSumAggregateOutputType | null
     _min: IndicationMinAggregateOutputType | null
     _max: IndicationMaxAggregateOutputType | null
+  }
+
+  export type IndicationAvgAggregateOutputType = {
+    projectValue: number | null
+  }
+
+  export type IndicationSumAggregateOutputType = {
+    projectValue: number | null
   }
 
   export type IndicationMinAggregateOutputType = {
@@ -6452,6 +6462,8 @@ export namespace Prisma {
     referrerId: string | null
     referredId: string | null
     status: $Enums.IndicationStatus | null
+    jestorId: string | null
+    projectValue: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6461,6 +6473,8 @@ export namespace Prisma {
     referrerId: string | null
     referredId: string | null
     status: $Enums.IndicationStatus | null
+    jestorId: string | null
+    projectValue: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6470,17 +6484,29 @@ export namespace Prisma {
     referrerId: number
     referredId: number
     status: number
+    jestorId: number
+    projectValue: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type IndicationAvgAggregateInputType = {
+    projectValue?: true
+  }
+
+  export type IndicationSumAggregateInputType = {
+    projectValue?: true
+  }
+
   export type IndicationMinAggregateInputType = {
     id?: true
     referrerId?: true
     referredId?: true
     status?: true
+    jestorId?: true
+    projectValue?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6490,6 +6516,8 @@ export namespace Prisma {
     referrerId?: true
     referredId?: true
     status?: true
+    jestorId?: true
+    projectValue?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6499,6 +6527,8 @@ export namespace Prisma {
     referrerId?: true
     referredId?: true
     status?: true
+    jestorId?: true
+    projectValue?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6542,6 +6572,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: IndicationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IndicationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: IndicationMinAggregateInputType
@@ -6572,6 +6614,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: IndicationCountAggregateInputType | true
+    _avg?: IndicationAvgAggregateInputType
+    _sum?: IndicationSumAggregateInputType
     _min?: IndicationMinAggregateInputType
     _max?: IndicationMaxAggregateInputType
   }
@@ -6581,9 +6625,13 @@ export namespace Prisma {
     referrerId: string
     referredId: string
     status: $Enums.IndicationStatus
+    jestorId: string | null
+    projectValue: number | null
     createdAt: Date
     updatedAt: Date
     _count: IndicationCountAggregateOutputType | null
+    _avg: IndicationAvgAggregateOutputType | null
+    _sum: IndicationSumAggregateOutputType | null
     _min: IndicationMinAggregateOutputType | null
     _max: IndicationMaxAggregateOutputType | null
   }
@@ -6607,6 +6655,8 @@ export namespace Prisma {
     referrerId?: boolean
     referredId?: boolean
     status?: boolean
+    jestorId?: boolean
+    projectValue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     referrer?: boolean | ClientDefaultArgs<ExtArgs>
@@ -6618,6 +6668,8 @@ export namespace Prisma {
     referrerId?: boolean
     referredId?: boolean
     status?: boolean
+    jestorId?: boolean
+    projectValue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     referrer?: boolean | ClientDefaultArgs<ExtArgs>
@@ -6629,6 +6681,8 @@ export namespace Prisma {
     referrerId?: boolean
     referredId?: boolean
     status?: boolean
+    jestorId?: boolean
+    projectValue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     referrer?: boolean | ClientDefaultArgs<ExtArgs>
@@ -6640,11 +6694,13 @@ export namespace Prisma {
     referrerId?: boolean
     referredId?: boolean
     status?: boolean
+    jestorId?: boolean
+    projectValue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type IndicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referrerId" | "referredId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["indication"]>
+  export type IndicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referrerId" | "referredId" | "status" | "jestorId" | "projectValue" | "createdAt" | "updatedAt", ExtArgs["result"]["indication"]>
   export type IndicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     referrer?: boolean | ClientDefaultArgs<ExtArgs>
     referred?: boolean | ClientDefaultArgs<ExtArgs>
@@ -6669,6 +6725,8 @@ export namespace Prisma {
       referrerId: string
       referredId: string
       status: $Enums.IndicationStatus
+      jestorId: string | null
+      projectValue: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["indication"]>
@@ -7100,6 +7158,8 @@ export namespace Prisma {
     readonly referrerId: FieldRef<"Indication", 'String'>
     readonly referredId: FieldRef<"Indication", 'String'>
     readonly status: FieldRef<"Indication", 'IndicationStatus'>
+    readonly jestorId: FieldRef<"Indication", 'String'>
+    readonly projectValue: FieldRef<"Indication", 'Float'>
     readonly createdAt: FieldRef<"Indication", 'DateTime'>
     readonly updatedAt: FieldRef<"Indication", 'DateTime'>
   }
@@ -10876,6 +10936,8 @@ export namespace Prisma {
     referrerId: 'referrerId',
     referredId: 'referredId',
     status: 'status',
+    jestorId: 'jestorId',
+    projectValue: 'projectValue',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -11437,6 +11499,8 @@ export namespace Prisma {
     referrerId?: StringFilter<"Indication"> | string
     referredId?: StringFilter<"Indication"> | string
     status?: EnumIndicationStatusFilter<"Indication"> | $Enums.IndicationStatus
+    jestorId?: StringNullableFilter<"Indication"> | string | null
+    projectValue?: FloatNullableFilter<"Indication"> | number | null
     createdAt?: DateTimeFilter<"Indication"> | Date | string
     updatedAt?: DateTimeFilter<"Indication"> | Date | string
     referrer?: XOR<ClientScalarRelationFilter, ClientWhereInput>
@@ -11448,6 +11512,8 @@ export namespace Prisma {
     referrerId?: SortOrder
     referredId?: SortOrder
     status?: SortOrder
+    jestorId?: SortOrderInput | SortOrder
+    projectValue?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     referrer?: ClientOrderByWithRelationInput
@@ -11456,28 +11522,34 @@ export namespace Prisma {
 
   export type IndicationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    jestorId?: string
     AND?: IndicationWhereInput | IndicationWhereInput[]
     OR?: IndicationWhereInput[]
     NOT?: IndicationWhereInput | IndicationWhereInput[]
     referrerId?: StringFilter<"Indication"> | string
     referredId?: StringFilter<"Indication"> | string
     status?: EnumIndicationStatusFilter<"Indication"> | $Enums.IndicationStatus
+    projectValue?: FloatNullableFilter<"Indication"> | number | null
     createdAt?: DateTimeFilter<"Indication"> | Date | string
     updatedAt?: DateTimeFilter<"Indication"> | Date | string
     referrer?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     referred?: XOR<ClientScalarRelationFilter, ClientWhereInput>
-  }, "id">
+  }, "id" | "jestorId">
 
   export type IndicationOrderByWithAggregationInput = {
     id?: SortOrder
     referrerId?: SortOrder
     referredId?: SortOrder
     status?: SortOrder
+    jestorId?: SortOrderInput | SortOrder
+    projectValue?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: IndicationCountOrderByAggregateInput
+    _avg?: IndicationAvgOrderByAggregateInput
     _max?: IndicationMaxOrderByAggregateInput
     _min?: IndicationMinOrderByAggregateInput
+    _sum?: IndicationSumOrderByAggregateInput
   }
 
   export type IndicationScalarWhereWithAggregatesInput = {
@@ -11488,6 +11560,8 @@ export namespace Prisma {
     referrerId?: StringWithAggregatesFilter<"Indication"> | string
     referredId?: StringWithAggregatesFilter<"Indication"> | string
     status?: EnumIndicationStatusWithAggregatesFilter<"Indication"> | $Enums.IndicationStatus
+    jestorId?: StringNullableWithAggregatesFilter<"Indication"> | string | null
+    projectValue?: FloatNullableWithAggregatesFilter<"Indication"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Indication"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Indication"> | Date | string
   }
@@ -12138,6 +12212,8 @@ export namespace Prisma {
   export type IndicationCreateInput = {
     id?: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     referrer: ClientCreateNestedOneWithoutIndicationsAsReferrerInput
@@ -12149,6 +12225,8 @@ export namespace Prisma {
     referrerId: string
     referredId: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12156,6 +12234,8 @@ export namespace Prisma {
   export type IndicationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     referrer?: ClientUpdateOneRequiredWithoutIndicationsAsReferrerNestedInput
@@ -12167,6 +12247,8 @@ export namespace Prisma {
     referrerId?: StringFieldUpdateOperationsInput | string
     referredId?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12176,6 +12258,8 @@ export namespace Prisma {
     referrerId: string
     referredId: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12183,6 +12267,8 @@ export namespace Prisma {
   export type IndicationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12192,6 +12278,8 @@ export namespace Prisma {
     referrerId?: StringFieldUpdateOperationsInput | string
     referredId?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12924,8 +13012,14 @@ export namespace Prisma {
     referrerId?: SortOrder
     referredId?: SortOrder
     status?: SortOrder
+    jestorId?: SortOrder
+    projectValue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type IndicationAvgOrderByAggregateInput = {
+    projectValue?: SortOrder
   }
 
   export type IndicationMaxOrderByAggregateInput = {
@@ -12933,6 +13027,8 @@ export namespace Prisma {
     referrerId?: SortOrder
     referredId?: SortOrder
     status?: SortOrder
+    jestorId?: SortOrder
+    projectValue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -12942,8 +13038,14 @@ export namespace Prisma {
     referrerId?: SortOrder
     referredId?: SortOrder
     status?: SortOrder
+    jestorId?: SortOrder
+    projectValue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type IndicationSumOrderByAggregateInput = {
+    projectValue?: SortOrder
   }
 
   export type EnumIndicationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -13930,6 +14032,8 @@ export namespace Prisma {
   export type IndicationCreateWithoutReferrerInput = {
     id?: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     referred: ClientCreateNestedOneWithoutIndicationsAsReferredInput
@@ -13939,6 +14043,8 @@ export namespace Prisma {
     id?: string
     referredId: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13956,6 +14062,8 @@ export namespace Prisma {
   export type IndicationCreateWithoutReferredInput = {
     id?: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     referrer: ClientCreateNestedOneWithoutIndicationsAsReferrerInput
@@ -13965,6 +14073,8 @@ export namespace Prisma {
     id?: string
     referrerId: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14099,6 +14209,8 @@ export namespace Prisma {
     referrerId?: StringFilter<"Indication"> | string
     referredId?: StringFilter<"Indication"> | string
     status?: EnumIndicationStatusFilter<"Indication"> | $Enums.IndicationStatus
+    jestorId?: StringNullableFilter<"Indication"> | string | null
+    projectValue?: FloatNullableFilter<"Indication"> | number | null
     createdAt?: DateTimeFilter<"Indication"> | Date | string
     updatedAt?: DateTimeFilter<"Indication"> | Date | string
   }
@@ -14710,6 +14822,8 @@ export namespace Prisma {
     id?: string
     referredId: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14718,6 +14832,8 @@ export namespace Prisma {
     id?: string
     referrerId: string
     status?: $Enums.IndicationStatus
+    jestorId?: string | null
+    projectValue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14815,6 +14931,8 @@ export namespace Prisma {
   export type IndicationUpdateWithoutReferrerInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     referred?: ClientUpdateOneRequiredWithoutIndicationsAsReferredNestedInput
@@ -14824,6 +14942,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     referredId?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14832,6 +14952,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     referredId?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14839,6 +14961,8 @@ export namespace Prisma {
   export type IndicationUpdateWithoutReferredInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     referrer?: ClientUpdateOneRequiredWithoutIndicationsAsReferrerNestedInput
@@ -14848,6 +14972,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     referrerId?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14856,6 +14982,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     referrerId?: StringFieldUpdateOperationsInput | string
     status?: EnumIndicationStatusFieldUpdateOperationsInput | $Enums.IndicationStatus
+    jestorId?: NullableStringFieldUpdateOperationsInput | string | null
+    projectValue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

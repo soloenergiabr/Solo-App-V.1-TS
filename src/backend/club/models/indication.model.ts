@@ -13,15 +13,19 @@ export class IndicationModel {
     status: IndicationStatus
     createdAt: Date
     updatedAt: Date
+    jestorId?: string
+    projectValue?: number
 
     constructor(
-        { id, referrerId, referrer, referredId, referred, status, createdAt, updatedAt }: {
+        { id, referrerId, referrer, referredId, referred, status, jestorId, projectValue, createdAt, updatedAt }: {
             id?: string,
             referrerId: string,
             referrer?: ClientModel,
             referredId: string,
             referred?: ClientModel,
             status: IndicationStatus,
+            jestorId?: string,
+            projectValue?: number,
             createdAt?: Date,
             updatedAt?: Date
         }
@@ -32,6 +36,8 @@ export class IndicationModel {
         this.referredId = referredId
         this.referred = referred
         this.status = status
+        this.jestorId = jestorId
+        this.projectValue = projectValue
         this.createdAt = createdAt ?? new Date()
         this.updatedAt = updatedAt ?? new Date()
     }

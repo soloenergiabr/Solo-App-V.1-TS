@@ -1,6 +1,8 @@
 import { TransactionType } from "@/app/generated/prisma"
 import { uuid } from "@/lib/uuid"
 
+export { TransactionType }
+
 
 export class TransactionModel {
     id: string

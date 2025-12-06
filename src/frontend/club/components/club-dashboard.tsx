@@ -52,7 +52,7 @@ export function ClubDashboard() {
                             <div className="space-y-2">
                                 {indicationsAsReferrer.indications.slice(0, 5).map((indication) => (
                                     <div key={indication.id} className="flex justify-between items-center">
-                                        <div>
+                                        <div className="flex-1">
                                             <p className="font-medium">
                                                 {indication.referred?.name || 'Cliente'}
                                             </p>
@@ -60,9 +60,25 @@ export function ClubDashboard() {
                                                 {new Date(indication.createdAt).toLocaleDateString()}
                                             </p>
                                         </div>
-                                        <Badge variant={indication.status === 'approved' ? 'default' : 'secondary'}>
-                                            {indication.status}
-                                        </Badge>
+                                        <div className="flex items-center">
+                                            <div className="w-24 text-right mr-3">
+                                                {indication.status === 'approved' && indication.projectValue && (
+                                                    <span className="text-sm font-bold text-green-600">
+                                                        +{new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(indication.projectValue * 0.05)} SC
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="w-28">
+                                                <Badge
+                                                    className={`${indication.status === 'approved'
+                                                        ? 'bg-green-500 hover:bg-green-600'
+                                                        : 'bg-blue-500 hover:bg-blue-600'
+                                                        }`}
+                                                >
+                                                    {indication.status === 'approved' ? 'Ganho' : 'Em andamento'}
+                                                </Badge>
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
                                 {indicationsAsReferrer.indications.length > 5 && (
