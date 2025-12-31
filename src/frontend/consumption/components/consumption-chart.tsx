@@ -106,9 +106,18 @@ export function ConsumptionChart({ data, periodLabel }: ConsumptionChartProps) {
                                 borderRadius: '6px',
                             }}
                             formatter={(value: number, name: string) => {
-                                if (name === 'consumption') return [value.toFixed(2) + ' kWh', 'Consumo'];
-                                if (name === 'injected') return [value.toFixed(2) + ' kWh', 'Injetado'];
-                                if (name === 'savings') return ['R$ ' + value.toFixed(2), 'Economia'];
+                                if (name === 'Economia') {
+                                    return [
+                                        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value),
+                                        name
+                                    ];
+                                }
+                                if (name === 'Consumo' || name === 'Injetado') {
+                                    return [
+                                        new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(value) + ' kWh',
+                                        name
+                                    ];
+                                }
                                 return [value, name];
                             }}
                         />

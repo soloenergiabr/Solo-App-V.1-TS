@@ -23,13 +23,6 @@ export function SavingsCard({ totalSavings, lastMonthSavings }: SavingsCardProps
             icon: TrendingUp,
             color: "text-green-500",
         },
-        // Placeholder for future metrics to fill the grid like CompactMetrics
-        {
-            label: "Energia Compensada",
-            value: "--- kWh", // Placeholder
-            icon: Zap,
-            color: "text-blue-500",
-        }
     ];
 
     return (
