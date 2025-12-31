@@ -33,21 +33,21 @@ export class GenerationDIContainer implements DIContainer {
 // Singleton instance for the application
 let containerInstance: DIContainer | null = null;
 
-export const initializeDIContainer = (repositoryType: RepositoryType = 'prisma', prisma?: PrismaClient): DIContainer => {
+export const initializeGenerationDIContainer = (repositoryType: RepositoryType = 'prisma', prisma?: PrismaClient): DIContainer => {
     if (!containerInstance) {
         containerInstance = new GenerationDIContainer(repositoryType, prisma);
     }
     return containerInstance;
 };
 
-export const getDIContainer = (): DIContainer => {
+export const getGenerationDIContainer = (): DIContainer => {
     if (!containerInstance) {
-        throw new Error('DI Container not initialized. Call initializeDIContainer() first.');
+        throw new Error('Generation DI Container not initialized. Call initializeGenerationDIContainer() first.');
     }
     return containerInstance;
 };
 
-export const resetDIContainer = (): void => {
+export const resetGenerationDIContainer = (): void => {
     containerInstance = null;
     RepositoryFactoryProvider.reset();
 };

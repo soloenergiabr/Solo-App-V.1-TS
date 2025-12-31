@@ -53,6 +53,11 @@ export type FAQ = $Result.DefaultSelection<Prisma.$FAQPayload>
  * 
  */
 export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
+/**
+ * Model Consumption
+ * 
+ */
+export type Consumption = $Result.DefaultSelection<Prisma.$ConsumptionPayload>
 
 /**
  * Enums
@@ -296,6 +301,16 @@ export class PrismaClient<
     * ```
     */
   get transaction(): Prisma.TransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.consumption`: Exposes CRUD operations for the **Consumption** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Consumptions
+    * const consumptions = await prisma.consumption.findMany()
+    * ```
+    */
+  get consumption(): Prisma.ConsumptionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -743,7 +758,8 @@ export namespace Prisma {
     Indication: 'Indication',
     Offer: 'Offer',
     FAQ: 'FAQ',
-    Transaction: 'Transaction'
+    Transaction: 'Transaction',
+    Consumption: 'Consumption'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -762,7 +778,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "inverter" | "generationUnit" | "indication" | "offer" | "fAQ" | "transaction"
+      modelProps: "user" | "client" | "inverter" | "generationUnit" | "indication" | "offer" | "fAQ" | "transaction" | "consumption"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1358,6 +1374,80 @@ export namespace Prisma {
           }
         }
       }
+      Consumption: {
+        payload: Prisma.$ConsumptionPayload<ExtArgs>
+        fields: Prisma.ConsumptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConsumptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConsumptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>
+          }
+          findFirst: {
+            args: Prisma.ConsumptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConsumptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>
+          }
+          findMany: {
+            args: Prisma.ConsumptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>[]
+          }
+          create: {
+            args: Prisma.ConsumptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>
+          }
+          createMany: {
+            args: Prisma.ConsumptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConsumptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>[]
+          }
+          delete: {
+            args: Prisma.ConsumptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>
+          }
+          update: {
+            args: Prisma.ConsumptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConsumptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConsumptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConsumptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConsumptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumptionPayload>
+          }
+          aggregate: {
+            args: Prisma.ConsumptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConsumption>
+          }
+          groupBy: {
+            args: Prisma.ConsumptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConsumptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConsumptionCountArgs<ExtArgs>
+            result: $Utils.Optional<ConsumptionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1462,6 +1552,7 @@ export namespace Prisma {
     offer?: OfferOmit
     fAQ?: FAQOmit
     transaction?: TransactionOmit
+    consumption?: ConsumptionOmit
   }
 
   /* Types for Logging */
@@ -1544,6 +1635,7 @@ export namespace Prisma {
   export type ClientCountOutputType = {
     inverters: number
     users: number
+    consumptions: number
     indicationsAsReferrer: number
     indicationsAsReferred: number
     transactions: number
@@ -1552,6 +1644,7 @@ export namespace Prisma {
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     inverters?: boolean | ClientCountOutputTypeCountInvertersArgs
     users?: boolean | ClientCountOutputTypeCountUsersArgs
+    consumptions?: boolean | ClientCountOutputTypeCountConsumptionsArgs
     indicationsAsReferrer?: boolean | ClientCountOutputTypeCountIndicationsAsReferrerArgs
     indicationsAsReferred?: boolean | ClientCountOutputTypeCountIndicationsAsReferredArgs
     transactions?: boolean | ClientCountOutputTypeCountTransactionsArgs
@@ -1580,6 +1673,13 @@ export namespace Prisma {
    */
   export type ClientCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountConsumptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsumptionWhereInput
   }
 
   /**
@@ -3075,6 +3175,7 @@ export namespace Prisma {
     deletedAt?: boolean
     inverters?: boolean | Client$invertersArgs<ExtArgs>
     users?: boolean | Client$usersArgs<ExtArgs>
+    consumptions?: boolean | Client$consumptionsArgs<ExtArgs>
     indicationsAsReferrer?: boolean | Client$indicationsAsReferrerArgs<ExtArgs>
     indicationsAsReferred?: boolean | Client$indicationsAsReferredArgs<ExtArgs>
     transactions?: boolean | Client$transactionsArgs<ExtArgs>
@@ -3136,6 +3237,7 @@ export namespace Prisma {
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     inverters?: boolean | Client$invertersArgs<ExtArgs>
     users?: boolean | Client$usersArgs<ExtArgs>
+    consumptions?: boolean | Client$consumptionsArgs<ExtArgs>
     indicationsAsReferrer?: boolean | Client$indicationsAsReferrerArgs<ExtArgs>
     indicationsAsReferred?: boolean | Client$indicationsAsReferredArgs<ExtArgs>
     transactions?: boolean | Client$transactionsArgs<ExtArgs>
@@ -3149,6 +3251,7 @@ export namespace Prisma {
     objects: {
       inverters: Prisma.$InverterPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
+      consumptions: Prisma.$ConsumptionPayload<ExtArgs>[]
       indicationsAsReferrer: Prisma.$IndicationPayload<ExtArgs>[]
       indicationsAsReferred: Prisma.$IndicationPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
@@ -3564,6 +3667,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     inverters<T extends Client$invertersArgs<ExtArgs> = {}>(args?: Subset<T, Client$invertersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Client$usersArgs<ExtArgs> = {}>(args?: Subset<T, Client$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    consumptions<T extends Client$consumptionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$consumptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     indicationsAsReferrer<T extends Client$indicationsAsReferrerArgs<ExtArgs> = {}>(args?: Subset<T, Client$indicationsAsReferrerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     indicationsAsReferred<T extends Client$indicationsAsReferredArgs<ExtArgs> = {}>(args?: Subset<T, Client$indicationsAsReferredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends Client$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4043,6 +4147,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Client.consumptions
+   */
+  export type Client$consumptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    where?: ConsumptionWhereInput
+    orderBy?: ConsumptionOrderByWithRelationInput | ConsumptionOrderByWithRelationInput[]
+    cursor?: ConsumptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConsumptionScalarFieldEnum | ConsumptionScalarFieldEnum[]
   }
 
   /**
@@ -10849,6 +10977,1162 @@ export namespace Prisma {
 
 
   /**
+   * Model Consumption
+   */
+
+  export type AggregateConsumption = {
+    _count: ConsumptionCountAggregateOutputType | null
+    _avg: ConsumptionAvgAggregateOutputType | null
+    _sum: ConsumptionSumAggregateOutputType | null
+    _min: ConsumptionMinAggregateOutputType | null
+    _max: ConsumptionMaxAggregateOutputType | null
+  }
+
+  export type ConsumptionAvgAggregateOutputType = {
+    consumptionKwh: number | null
+    injectedEnergyKwh: number | null
+    tariffPerKwh: number | null
+    totalBillValue: number | null
+  }
+
+  export type ConsumptionSumAggregateOutputType = {
+    consumptionKwh: number | null
+    injectedEnergyKwh: number | null
+    tariffPerKwh: number | null
+    totalBillValue: number | null
+  }
+
+  export type ConsumptionMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    competenceDate: Date | null
+    consumptionKwh: number | null
+    injectedEnergyKwh: number | null
+    tariffPerKwh: number | null
+    totalBillValue: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConsumptionMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    competenceDate: Date | null
+    consumptionKwh: number | null
+    injectedEnergyKwh: number | null
+    tariffPerKwh: number | null
+    totalBillValue: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConsumptionCountAggregateOutputType = {
+    id: number
+    clientId: number
+    competenceDate: number
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ConsumptionAvgAggregateInputType = {
+    consumptionKwh?: true
+    injectedEnergyKwh?: true
+    tariffPerKwh?: true
+    totalBillValue?: true
+  }
+
+  export type ConsumptionSumAggregateInputType = {
+    consumptionKwh?: true
+    injectedEnergyKwh?: true
+    tariffPerKwh?: true
+    totalBillValue?: true
+  }
+
+  export type ConsumptionMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    competenceDate?: true
+    consumptionKwh?: true
+    injectedEnergyKwh?: true
+    tariffPerKwh?: true
+    totalBillValue?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConsumptionMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    competenceDate?: true
+    consumptionKwh?: true
+    injectedEnergyKwh?: true
+    tariffPerKwh?: true
+    totalBillValue?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConsumptionCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    competenceDate?: true
+    consumptionKwh?: true
+    injectedEnergyKwh?: true
+    tariffPerKwh?: true
+    totalBillValue?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ConsumptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Consumption to aggregate.
+     */
+    where?: ConsumptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Consumptions to fetch.
+     */
+    orderBy?: ConsumptionOrderByWithRelationInput | ConsumptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConsumptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Consumptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Consumptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Consumptions
+    **/
+    _count?: true | ConsumptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ConsumptionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ConsumptionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConsumptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConsumptionMaxAggregateInputType
+  }
+
+  export type GetConsumptionAggregateType<T extends ConsumptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateConsumption]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConsumption[P]>
+      : GetScalarType<T[P], AggregateConsumption[P]>
+  }
+
+
+
+
+  export type ConsumptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsumptionWhereInput
+    orderBy?: ConsumptionOrderByWithAggregationInput | ConsumptionOrderByWithAggregationInput[]
+    by: ConsumptionScalarFieldEnum[] | ConsumptionScalarFieldEnum
+    having?: ConsumptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConsumptionCountAggregateInputType | true
+    _avg?: ConsumptionAvgAggregateInputType
+    _sum?: ConsumptionSumAggregateInputType
+    _min?: ConsumptionMinAggregateInputType
+    _max?: ConsumptionMaxAggregateInputType
+  }
+
+  export type ConsumptionGroupByOutputType = {
+    id: string
+    clientId: string
+    competenceDate: Date
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ConsumptionCountAggregateOutputType | null
+    _avg: ConsumptionAvgAggregateOutputType | null
+    _sum: ConsumptionSumAggregateOutputType | null
+    _min: ConsumptionMinAggregateOutputType | null
+    _max: ConsumptionMaxAggregateOutputType | null
+  }
+
+  type GetConsumptionGroupByPayload<T extends ConsumptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConsumptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConsumptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConsumptionGroupByOutputType[P]>
+            : GetScalarType<T[P], ConsumptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConsumptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    competenceDate?: boolean
+    consumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    tariffPerKwh?: boolean
+    totalBillValue?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consumption"]>
+
+  export type ConsumptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    competenceDate?: boolean
+    consumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    tariffPerKwh?: boolean
+    totalBillValue?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consumption"]>
+
+  export type ConsumptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    competenceDate?: boolean
+    consumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    tariffPerKwh?: boolean
+    totalBillValue?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consumption"]>
+
+  export type ConsumptionSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    competenceDate?: boolean
+    consumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    tariffPerKwh?: boolean
+    totalBillValue?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ConsumptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "competenceDate" | "consumptionKwh" | "injectedEnergyKwh" | "tariffPerKwh" | "totalBillValue" | "createdAt" | "updatedAt", ExtArgs["result"]["consumption"]>
+  export type ConsumptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type ConsumptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type ConsumptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+
+  export type $ConsumptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Consumption"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      competenceDate: Date
+      consumptionKwh: number
+      injectedEnergyKwh: number
+      tariffPerKwh: number
+      totalBillValue: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["consumption"]>
+    composites: {}
+  }
+
+  type ConsumptionGetPayload<S extends boolean | null | undefined | ConsumptionDefaultArgs> = $Result.GetResult<Prisma.$ConsumptionPayload, S>
+
+  type ConsumptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConsumptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConsumptionCountAggregateInputType | true
+    }
+
+  export interface ConsumptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Consumption'], meta: { name: 'Consumption' } }
+    /**
+     * Find zero or one Consumption that matches the filter.
+     * @param {ConsumptionFindUniqueArgs} args - Arguments to find a Consumption
+     * @example
+     * // Get one Consumption
+     * const consumption = await prisma.consumption.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConsumptionFindUniqueArgs>(args: SelectSubset<T, ConsumptionFindUniqueArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Consumption that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConsumptionFindUniqueOrThrowArgs} args - Arguments to find a Consumption
+     * @example
+     * // Get one Consumption
+     * const consumption = await prisma.consumption.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConsumptionFindUniqueOrThrowArgs>(args: SelectSubset<T, ConsumptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Consumption that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumptionFindFirstArgs} args - Arguments to find a Consumption
+     * @example
+     * // Get one Consumption
+     * const consumption = await prisma.consumption.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConsumptionFindFirstArgs>(args?: SelectSubset<T, ConsumptionFindFirstArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Consumption that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumptionFindFirstOrThrowArgs} args - Arguments to find a Consumption
+     * @example
+     * // Get one Consumption
+     * const consumption = await prisma.consumption.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConsumptionFindFirstOrThrowArgs>(args?: SelectSubset<T, ConsumptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Consumptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Consumptions
+     * const consumptions = await prisma.consumption.findMany()
+     * 
+     * // Get first 10 Consumptions
+     * const consumptions = await prisma.consumption.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const consumptionWithIdOnly = await prisma.consumption.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConsumptionFindManyArgs>(args?: SelectSubset<T, ConsumptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Consumption.
+     * @param {ConsumptionCreateArgs} args - Arguments to create a Consumption.
+     * @example
+     * // Create one Consumption
+     * const Consumption = await prisma.consumption.create({
+     *   data: {
+     *     // ... data to create a Consumption
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConsumptionCreateArgs>(args: SelectSubset<T, ConsumptionCreateArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Consumptions.
+     * @param {ConsumptionCreateManyArgs} args - Arguments to create many Consumptions.
+     * @example
+     * // Create many Consumptions
+     * const consumption = await prisma.consumption.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConsumptionCreateManyArgs>(args?: SelectSubset<T, ConsumptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Consumptions and returns the data saved in the database.
+     * @param {ConsumptionCreateManyAndReturnArgs} args - Arguments to create many Consumptions.
+     * @example
+     * // Create many Consumptions
+     * const consumption = await prisma.consumption.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Consumptions and only return the `id`
+     * const consumptionWithIdOnly = await prisma.consumption.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConsumptionCreateManyAndReturnArgs>(args?: SelectSubset<T, ConsumptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Consumption.
+     * @param {ConsumptionDeleteArgs} args - Arguments to delete one Consumption.
+     * @example
+     * // Delete one Consumption
+     * const Consumption = await prisma.consumption.delete({
+     *   where: {
+     *     // ... filter to delete one Consumption
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConsumptionDeleteArgs>(args: SelectSubset<T, ConsumptionDeleteArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Consumption.
+     * @param {ConsumptionUpdateArgs} args - Arguments to update one Consumption.
+     * @example
+     * // Update one Consumption
+     * const consumption = await prisma.consumption.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConsumptionUpdateArgs>(args: SelectSubset<T, ConsumptionUpdateArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Consumptions.
+     * @param {ConsumptionDeleteManyArgs} args - Arguments to filter Consumptions to delete.
+     * @example
+     * // Delete a few Consumptions
+     * const { count } = await prisma.consumption.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConsumptionDeleteManyArgs>(args?: SelectSubset<T, ConsumptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Consumptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Consumptions
+     * const consumption = await prisma.consumption.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConsumptionUpdateManyArgs>(args: SelectSubset<T, ConsumptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Consumptions and returns the data updated in the database.
+     * @param {ConsumptionUpdateManyAndReturnArgs} args - Arguments to update many Consumptions.
+     * @example
+     * // Update many Consumptions
+     * const consumption = await prisma.consumption.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Consumptions and only return the `id`
+     * const consumptionWithIdOnly = await prisma.consumption.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConsumptionUpdateManyAndReturnArgs>(args: SelectSubset<T, ConsumptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Consumption.
+     * @param {ConsumptionUpsertArgs} args - Arguments to update or create a Consumption.
+     * @example
+     * // Update or create a Consumption
+     * const consumption = await prisma.consumption.upsert({
+     *   create: {
+     *     // ... data to create a Consumption
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Consumption we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConsumptionUpsertArgs>(args: SelectSubset<T, ConsumptionUpsertArgs<ExtArgs>>): Prisma__ConsumptionClient<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Consumptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumptionCountArgs} args - Arguments to filter Consumptions to count.
+     * @example
+     * // Count the number of Consumptions
+     * const count = await prisma.consumption.count({
+     *   where: {
+     *     // ... the filter for the Consumptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConsumptionCountArgs>(
+      args?: Subset<T, ConsumptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConsumptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Consumption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConsumptionAggregateArgs>(args: Subset<T, ConsumptionAggregateArgs>): Prisma.PrismaPromise<GetConsumptionAggregateType<T>>
+
+    /**
+     * Group by Consumption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConsumptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConsumptionGroupByArgs['orderBy'] }
+        : { orderBy?: ConsumptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConsumptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConsumptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Consumption model
+   */
+  readonly fields: ConsumptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Consumption.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConsumptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Consumption model
+   */
+  interface ConsumptionFieldRefs {
+    readonly id: FieldRef<"Consumption", 'String'>
+    readonly clientId: FieldRef<"Consumption", 'String'>
+    readonly competenceDate: FieldRef<"Consumption", 'DateTime'>
+    readonly consumptionKwh: FieldRef<"Consumption", 'Float'>
+    readonly injectedEnergyKwh: FieldRef<"Consumption", 'Float'>
+    readonly tariffPerKwh: FieldRef<"Consumption", 'Float'>
+    readonly totalBillValue: FieldRef<"Consumption", 'Float'>
+    readonly createdAt: FieldRef<"Consumption", 'DateTime'>
+    readonly updatedAt: FieldRef<"Consumption", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Consumption findUnique
+   */
+  export type ConsumptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Consumption to fetch.
+     */
+    where: ConsumptionWhereUniqueInput
+  }
+
+  /**
+   * Consumption findUniqueOrThrow
+   */
+  export type ConsumptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Consumption to fetch.
+     */
+    where: ConsumptionWhereUniqueInput
+  }
+
+  /**
+   * Consumption findFirst
+   */
+  export type ConsumptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Consumption to fetch.
+     */
+    where?: ConsumptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Consumptions to fetch.
+     */
+    orderBy?: ConsumptionOrderByWithRelationInput | ConsumptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Consumptions.
+     */
+    cursor?: ConsumptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Consumptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Consumptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Consumptions.
+     */
+    distinct?: ConsumptionScalarFieldEnum | ConsumptionScalarFieldEnum[]
+  }
+
+  /**
+   * Consumption findFirstOrThrow
+   */
+  export type ConsumptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Consumption to fetch.
+     */
+    where?: ConsumptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Consumptions to fetch.
+     */
+    orderBy?: ConsumptionOrderByWithRelationInput | ConsumptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Consumptions.
+     */
+    cursor?: ConsumptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Consumptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Consumptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Consumptions.
+     */
+    distinct?: ConsumptionScalarFieldEnum | ConsumptionScalarFieldEnum[]
+  }
+
+  /**
+   * Consumption findMany
+   */
+  export type ConsumptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Consumptions to fetch.
+     */
+    where?: ConsumptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Consumptions to fetch.
+     */
+    orderBy?: ConsumptionOrderByWithRelationInput | ConsumptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Consumptions.
+     */
+    cursor?: ConsumptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Consumptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Consumptions.
+     */
+    skip?: number
+    distinct?: ConsumptionScalarFieldEnum | ConsumptionScalarFieldEnum[]
+  }
+
+  /**
+   * Consumption create
+   */
+  export type ConsumptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Consumption.
+     */
+    data: XOR<ConsumptionCreateInput, ConsumptionUncheckedCreateInput>
+  }
+
+  /**
+   * Consumption createMany
+   */
+  export type ConsumptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Consumptions.
+     */
+    data: ConsumptionCreateManyInput | ConsumptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Consumption createManyAndReturn
+   */
+  export type ConsumptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Consumptions.
+     */
+    data: ConsumptionCreateManyInput | ConsumptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Consumption update
+   */
+  export type ConsumptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Consumption.
+     */
+    data: XOR<ConsumptionUpdateInput, ConsumptionUncheckedUpdateInput>
+    /**
+     * Choose, which Consumption to update.
+     */
+    where: ConsumptionWhereUniqueInput
+  }
+
+  /**
+   * Consumption updateMany
+   */
+  export type ConsumptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Consumptions.
+     */
+    data: XOR<ConsumptionUpdateManyMutationInput, ConsumptionUncheckedUpdateManyInput>
+    /**
+     * Filter which Consumptions to update
+     */
+    where?: ConsumptionWhereInput
+    /**
+     * Limit how many Consumptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Consumption updateManyAndReturn
+   */
+  export type ConsumptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * The data used to update Consumptions.
+     */
+    data: XOR<ConsumptionUpdateManyMutationInput, ConsumptionUncheckedUpdateManyInput>
+    /**
+     * Filter which Consumptions to update
+     */
+    where?: ConsumptionWhereInput
+    /**
+     * Limit how many Consumptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Consumption upsert
+   */
+  export type ConsumptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Consumption to update in case it exists.
+     */
+    where: ConsumptionWhereUniqueInput
+    /**
+     * In case the Consumption found by the `where` argument doesn't exist, create a new Consumption with this data.
+     */
+    create: XOR<ConsumptionCreateInput, ConsumptionUncheckedCreateInput>
+    /**
+     * In case the Consumption was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConsumptionUpdateInput, ConsumptionUncheckedUpdateInput>
+  }
+
+  /**
+   * Consumption delete
+   */
+  export type ConsumptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+    /**
+     * Filter which Consumption to delete.
+     */
+    where: ConsumptionWhereUniqueInput
+  }
+
+  /**
+   * Consumption deleteMany
+   */
+  export type ConsumptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Consumptions to delete
+     */
+    where?: ConsumptionWhereInput
+    /**
+     * Limit how many Consumptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Consumption without action
+   */
+  export type ConsumptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consumption
+     */
+    select?: ConsumptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consumption
+     */
+    omit?: ConsumptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumptionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10988,6 +12272,21 @@ export namespace Prisma {
   };
 
   export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+  export const ConsumptionScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    competenceDate: 'competenceDate',
+    consumptionKwh: 'consumptionKwh',
+    injectedEnergyKwh: 'injectedEnergyKwh',
+    tariffPerKwh: 'tariffPerKwh',
+    totalBillValue: 'totalBillValue',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ConsumptionScalarFieldEnum = (typeof ConsumptionScalarFieldEnum)[keyof typeof ConsumptionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11237,6 +12536,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Client"> | Date | string | null
     inverters?: InverterListRelationFilter
     users?: UserListRelationFilter
+    consumptions?: ConsumptionListRelationFilter
     indicationsAsReferrer?: IndicationListRelationFilter
     indicationsAsReferred?: IndicationListRelationFilter
     transactions?: TransactionListRelationFilter
@@ -11259,6 +12559,7 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     inverters?: InverterOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
+    consumptions?: ConsumptionOrderByRelationAggregateInput
     indicationsAsReferrer?: IndicationOrderByRelationAggregateInput
     indicationsAsReferred?: IndicationOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
@@ -11284,6 +12585,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Client"> | Date | string | null
     inverters?: InverterListRelationFilter
     users?: UserListRelationFilter
+    consumptions?: ConsumptionListRelationFilter
     indicationsAsReferrer?: IndicationListRelationFilter
     indicationsAsReferred?: IndicationListRelationFilter
     transactions?: TransactionListRelationFilter
@@ -11789,6 +13091,84 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   }
 
+  export type ConsumptionWhereInput = {
+    AND?: ConsumptionWhereInput | ConsumptionWhereInput[]
+    OR?: ConsumptionWhereInput[]
+    NOT?: ConsumptionWhereInput | ConsumptionWhereInput[]
+    id?: StringFilter<"Consumption"> | string
+    clientId?: StringFilter<"Consumption"> | string
+    competenceDate?: DateTimeFilter<"Consumption"> | Date | string
+    consumptionKwh?: FloatFilter<"Consumption"> | number
+    injectedEnergyKwh?: FloatFilter<"Consumption"> | number
+    tariffPerKwh?: FloatFilter<"Consumption"> | number
+    totalBillValue?: FloatFilter<"Consumption"> | number
+    createdAt?: DateTimeFilter<"Consumption"> | Date | string
+    updatedAt?: DateTimeFilter<"Consumption"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }
+
+  export type ConsumptionOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    competenceDate?: SortOrder
+    consumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    tariffPerKwh?: SortOrder
+    totalBillValue?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    client?: ClientOrderByWithRelationInput
+  }
+
+  export type ConsumptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    clientId_competenceDate?: ConsumptionClientIdCompetenceDateCompoundUniqueInput
+    AND?: ConsumptionWhereInput | ConsumptionWhereInput[]
+    OR?: ConsumptionWhereInput[]
+    NOT?: ConsumptionWhereInput | ConsumptionWhereInput[]
+    clientId?: StringFilter<"Consumption"> | string
+    competenceDate?: DateTimeFilter<"Consumption"> | Date | string
+    consumptionKwh?: FloatFilter<"Consumption"> | number
+    injectedEnergyKwh?: FloatFilter<"Consumption"> | number
+    tariffPerKwh?: FloatFilter<"Consumption"> | number
+    totalBillValue?: FloatFilter<"Consumption"> | number
+    createdAt?: DateTimeFilter<"Consumption"> | Date | string
+    updatedAt?: DateTimeFilter<"Consumption"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }, "id" | "clientId_competenceDate">
+
+  export type ConsumptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    competenceDate?: SortOrder
+    consumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    tariffPerKwh?: SortOrder
+    totalBillValue?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ConsumptionCountOrderByAggregateInput
+    _avg?: ConsumptionAvgOrderByAggregateInput
+    _max?: ConsumptionMaxOrderByAggregateInput
+    _min?: ConsumptionMinOrderByAggregateInput
+    _sum?: ConsumptionSumOrderByAggregateInput
+  }
+
+  export type ConsumptionScalarWhereWithAggregatesInput = {
+    AND?: ConsumptionScalarWhereWithAggregatesInput | ConsumptionScalarWhereWithAggregatesInput[]
+    OR?: ConsumptionScalarWhereWithAggregatesInput[]
+    NOT?: ConsumptionScalarWhereWithAggregatesInput | ConsumptionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Consumption"> | string
+    clientId?: StringWithAggregatesFilter<"Consumption"> | string
+    competenceDate?: DateTimeWithAggregatesFilter<"Consumption"> | Date | string
+    consumptionKwh?: FloatWithAggregatesFilter<"Consumption"> | number
+    injectedEnergyKwh?: FloatWithAggregatesFilter<"Consumption"> | number
+    tariffPerKwh?: FloatWithAggregatesFilter<"Consumption"> | number
+    totalBillValue?: FloatWithAggregatesFilter<"Consumption"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Consumption"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Consumption"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -11910,6 +13290,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
@@ -11932,6 +13313,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
@@ -11954,6 +13336,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
@@ -11976,6 +13359,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
@@ -12535,6 +13919,89 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ConsumptionCreateInput = {
+    id?: string
+    competenceDate: Date | string
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutConsumptionsInput
+  }
+
+  export type ConsumptionUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    competenceDate: Date | string
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConsumptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumptionKwh?: FloatFieldUpdateOperationsInput | number
+    injectedEnergyKwh?: FloatFieldUpdateOperationsInput | number
+    tariffPerKwh?: FloatFieldUpdateOperationsInput | number
+    totalBillValue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutConsumptionsNestedInput
+  }
+
+  export type ConsumptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumptionKwh?: FloatFieldUpdateOperationsInput | number
+    injectedEnergyKwh?: FloatFieldUpdateOperationsInput | number
+    tariffPerKwh?: FloatFieldUpdateOperationsInput | number
+    totalBillValue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsumptionCreateManyInput = {
+    id?: string
+    clientId: string
+    competenceDate: Date | string
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConsumptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumptionKwh?: FloatFieldUpdateOperationsInput | number
+    injectedEnergyKwh?: FloatFieldUpdateOperationsInput | number
+    tariffPerKwh?: FloatFieldUpdateOperationsInput | number
+    totalBillValue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsumptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumptionKwh?: FloatFieldUpdateOperationsInput | number
+    injectedEnergyKwh?: FloatFieldUpdateOperationsInput | number
+    tariffPerKwh?: FloatFieldUpdateOperationsInput | number
+    totalBillValue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -12764,6 +14231,12 @@ export namespace Prisma {
     none?: UserWhereInput
   }
 
+  export type ConsumptionListRelationFilter = {
+    every?: ConsumptionWhereInput
+    some?: ConsumptionWhereInput
+    none?: ConsumptionWhereInput
+  }
+
   export type IndicationListRelationFilter = {
     every?: IndicationWhereInput
     some?: IndicationWhereInput
@@ -12781,6 +14254,10 @@ export namespace Prisma {
   }
 
   export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConsumptionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13199,6 +14676,61 @@ export namespace Prisma {
     _max?: NestedEnumTransactionTypeFilter<$PrismaModel>
   }
 
+  export type ConsumptionClientIdCompetenceDateCompoundUniqueInput = {
+    clientId: string
+    competenceDate: Date | string
+  }
+
+  export type ConsumptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    competenceDate?: SortOrder
+    consumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    tariffPerKwh?: SortOrder
+    totalBillValue?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConsumptionAvgOrderByAggregateInput = {
+    consumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    tariffPerKwh?: SortOrder
+    totalBillValue?: SortOrder
+  }
+
+  export type ConsumptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    competenceDate?: SortOrder
+    consumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    tariffPerKwh?: SortOrder
+    totalBillValue?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConsumptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    competenceDate?: SortOrder
+    consumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    tariffPerKwh?: SortOrder
+    totalBillValue?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConsumptionSumOrderByAggregateInput = {
+    consumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    tariffPerKwh?: SortOrder
+    totalBillValue?: SortOrder
+  }
+
   export type UserCreaterolesInput = {
     set: string[]
   }
@@ -13267,6 +14799,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type ConsumptionCreateNestedManyWithoutClientInput = {
+    create?: XOR<ConsumptionCreateWithoutClientInput, ConsumptionUncheckedCreateWithoutClientInput> | ConsumptionCreateWithoutClientInput[] | ConsumptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumptionCreateOrConnectWithoutClientInput | ConsumptionCreateOrConnectWithoutClientInput[]
+    createMany?: ConsumptionCreateManyClientInputEnvelope
+    connect?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+  }
+
   export type IndicationCreateNestedManyWithoutReferrerInput = {
     create?: XOR<IndicationCreateWithoutReferrerInput, IndicationUncheckedCreateWithoutReferrerInput> | IndicationCreateWithoutReferrerInput[] | IndicationUncheckedCreateWithoutReferrerInput[]
     connectOrCreate?: IndicationCreateOrConnectWithoutReferrerInput | IndicationCreateOrConnectWithoutReferrerInput[]
@@ -13300,6 +14839,13 @@ export namespace Prisma {
     connectOrCreate?: UserCreateOrConnectWithoutClientInput | UserCreateOrConnectWithoutClientInput[]
     createMany?: UserCreateManyClientInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type ConsumptionUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<ConsumptionCreateWithoutClientInput, ConsumptionUncheckedCreateWithoutClientInput> | ConsumptionCreateWithoutClientInput[] | ConsumptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumptionCreateOrConnectWithoutClientInput | ConsumptionCreateOrConnectWithoutClientInput[]
+    createMany?: ConsumptionCreateManyClientInputEnvelope
+    connect?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
   }
 
   export type IndicationUncheckedCreateNestedManyWithoutReferrerInput = {
@@ -13371,6 +14917,20 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type ConsumptionUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ConsumptionCreateWithoutClientInput, ConsumptionUncheckedCreateWithoutClientInput> | ConsumptionCreateWithoutClientInput[] | ConsumptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumptionCreateOrConnectWithoutClientInput | ConsumptionCreateOrConnectWithoutClientInput[]
+    upsert?: ConsumptionUpsertWithWhereUniqueWithoutClientInput | ConsumptionUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ConsumptionCreateManyClientInputEnvelope
+    set?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    disconnect?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    delete?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    connect?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    update?: ConsumptionUpdateWithWhereUniqueWithoutClientInput | ConsumptionUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ConsumptionUpdateManyWithWhereWithoutClientInput | ConsumptionUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ConsumptionScalarWhereInput | ConsumptionScalarWhereInput[]
+  }
+
   export type IndicationUpdateManyWithoutReferrerNestedInput = {
     create?: XOR<IndicationCreateWithoutReferrerInput, IndicationUncheckedCreateWithoutReferrerInput> | IndicationCreateWithoutReferrerInput[] | IndicationUncheckedCreateWithoutReferrerInput[]
     connectOrCreate?: IndicationCreateOrConnectWithoutReferrerInput | IndicationCreateOrConnectWithoutReferrerInput[]
@@ -13439,6 +14999,20 @@ export namespace Prisma {
     update?: UserUpdateWithWhereUniqueWithoutClientInput | UserUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: UserUpdateManyWithWhereWithoutClientInput | UserUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type ConsumptionUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ConsumptionCreateWithoutClientInput, ConsumptionUncheckedCreateWithoutClientInput> | ConsumptionCreateWithoutClientInput[] | ConsumptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumptionCreateOrConnectWithoutClientInput | ConsumptionCreateOrConnectWithoutClientInput[]
+    upsert?: ConsumptionUpsertWithWhereUniqueWithoutClientInput | ConsumptionUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ConsumptionCreateManyClientInputEnvelope
+    set?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    disconnect?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    delete?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    connect?: ConsumptionWhereUniqueInput | ConsumptionWhereUniqueInput[]
+    update?: ConsumptionUpdateWithWhereUniqueWithoutClientInput | ConsumptionUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ConsumptionUpdateManyWithWhereWithoutClientInput | ConsumptionUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ConsumptionScalarWhereInput | ConsumptionScalarWhereInput[]
   }
 
   export type IndicationUncheckedUpdateManyWithoutReferrerNestedInput = {
@@ -13601,6 +15175,20 @@ export namespace Prisma {
     upsert?: ClientUpsertWithoutTransactionsInput
     connect?: ClientWhereUniqueInput
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutTransactionsInput, ClientUpdateWithoutTransactionsInput>, ClientUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type ClientCreateNestedOneWithoutConsumptionsInput = {
+    create?: XOR<ClientCreateWithoutConsumptionsInput, ClientUncheckedCreateWithoutConsumptionsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutConsumptionsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type ClientUpdateOneRequiredWithoutConsumptionsNestedInput = {
+    create?: XOR<ClientCreateWithoutConsumptionsInput, ClientUncheckedCreateWithoutConsumptionsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutConsumptionsInput
+    upsert?: ClientUpsertWithoutConsumptionsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutConsumptionsInput, ClientUpdateWithoutConsumptionsInput>, ClientUncheckedUpdateWithoutConsumptionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -13871,6 +15459,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     inverters?: InverterCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
@@ -13892,6 +15481,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
@@ -13929,6 +15519,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
@@ -13950,6 +15541,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
@@ -14026,6 +15618,38 @@ export namespace Prisma {
 
   export type UserCreateManyClientInputEnvelope = {
     data: UserCreateManyClientInput | UserCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ConsumptionCreateWithoutClientInput = {
+    id?: string
+    competenceDate: Date | string
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConsumptionUncheckedCreateWithoutClientInput = {
+    id?: string
+    competenceDate: Date | string
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConsumptionCreateOrConnectWithoutClientInput = {
+    where: ConsumptionWhereUniqueInput
+    create: XOR<ConsumptionCreateWithoutClientInput, ConsumptionUncheckedCreateWithoutClientInput>
+  }
+
+  export type ConsumptionCreateManyClientInputEnvelope = {
+    data: ConsumptionCreateManyClientInput | ConsumptionCreateManyClientInput[]
     skipDuplicates?: boolean
   }
 
@@ -14185,6 +15809,37 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
 
+  export type ConsumptionUpsertWithWhereUniqueWithoutClientInput = {
+    where: ConsumptionWhereUniqueInput
+    update: XOR<ConsumptionUpdateWithoutClientInput, ConsumptionUncheckedUpdateWithoutClientInput>
+    create: XOR<ConsumptionCreateWithoutClientInput, ConsumptionUncheckedCreateWithoutClientInput>
+  }
+
+  export type ConsumptionUpdateWithWhereUniqueWithoutClientInput = {
+    where: ConsumptionWhereUniqueInput
+    data: XOR<ConsumptionUpdateWithoutClientInput, ConsumptionUncheckedUpdateWithoutClientInput>
+  }
+
+  export type ConsumptionUpdateManyWithWhereWithoutClientInput = {
+    where: ConsumptionScalarWhereInput
+    data: XOR<ConsumptionUpdateManyMutationInput, ConsumptionUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type ConsumptionScalarWhereInput = {
+    AND?: ConsumptionScalarWhereInput | ConsumptionScalarWhereInput[]
+    OR?: ConsumptionScalarWhereInput[]
+    NOT?: ConsumptionScalarWhereInput | ConsumptionScalarWhereInput[]
+    id?: StringFilter<"Consumption"> | string
+    clientId?: StringFilter<"Consumption"> | string
+    competenceDate?: DateTimeFilter<"Consumption"> | Date | string
+    consumptionKwh?: FloatFilter<"Consumption"> | number
+    injectedEnergyKwh?: FloatFilter<"Consumption"> | number
+    tariffPerKwh?: FloatFilter<"Consumption"> | number
+    totalBillValue?: FloatFilter<"Consumption"> | number
+    createdAt?: DateTimeFilter<"Consumption"> | Date | string
+    updatedAt?: DateTimeFilter<"Consumption"> | Date | string
+  }
+
   export type IndicationUpsertWithWhereUniqueWithoutReferrerInput = {
     where: IndicationWhereUniqueInput
     update: XOR<IndicationUpdateWithoutReferrerInput, IndicationUncheckedUpdateWithoutReferrerInput>
@@ -14277,6 +15932,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
@@ -14298,6 +15954,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
@@ -14367,6 +16024,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
@@ -14388,6 +16046,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
@@ -14509,6 +16168,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
   }
@@ -14530,6 +16190,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
   }
@@ -14556,6 +16217,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
   }
@@ -14577,6 +16239,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
   }
@@ -14614,6 +16277,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
   }
@@ -14635,6 +16299,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -14667,6 +16332,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
   }
@@ -14688,6 +16354,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -14709,6 +16376,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
   }
@@ -14730,6 +16398,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
   }
@@ -14767,6 +16436,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
   }
@@ -14788,8 +16458,113 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+  }
+
+  export type ClientCreateWithoutConsumptionsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    users?: UserCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutConsumptionsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutConsumptionsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutConsumptionsInput, ClientUncheckedCreateWithoutConsumptionsInput>
+  }
+
+  export type ClientUpsertWithoutConsumptionsInput = {
+    update: XOR<ClientUpdateWithoutConsumptionsInput, ClientUncheckedUpdateWithoutConsumptionsInput>
+    create: XOR<ClientCreateWithoutConsumptionsInput, ClientUncheckedCreateWithoutConsumptionsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutConsumptionsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutConsumptionsInput, ClientUncheckedUpdateWithoutConsumptionsInput>
+  }
+
+  export type ClientUpdateWithoutConsumptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    users?: UserUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutConsumptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type InverterCreateManyClientInput = {
@@ -14814,6 +16589,17 @@ export namespace Prisma {
     isActive?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConsumptionCreateManyClientInput = {
+    id?: string
+    competenceDate: Date | string
+    consumptionKwh: number
+    injectedEnergyKwh: number
+    tariffPerKwh: number
+    totalBillValue: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14924,6 +16710,39 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsumptionUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumptionKwh?: FloatFieldUpdateOperationsInput | number
+    injectedEnergyKwh?: FloatFieldUpdateOperationsInput | number
+    tariffPerKwh?: FloatFieldUpdateOperationsInput | number
+    totalBillValue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsumptionUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumptionKwh?: FloatFieldUpdateOperationsInput | number
+    injectedEnergyKwh?: FloatFieldUpdateOperationsInput | number
+    tariffPerKwh?: FloatFieldUpdateOperationsInput | number
+    totalBillValue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsumptionUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumptionKwh?: FloatFieldUpdateOperationsInput | number
+    injectedEnergyKwh?: FloatFieldUpdateOperationsInput | number
+    tariffPerKwh?: FloatFieldUpdateOperationsInput | number
+    totalBillValue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -75,6 +75,7 @@ model Client {
 
   inverters             Inverter[]
   users                 User[]
+  consumptions          Consumption[]
   indicationsAsReferrer Indication[]  @relation("Referrer")
   indicationsAsReferred Indication[]  @relation("Referred")
   transactions          Transaction[]
@@ -139,7 +140,7 @@ model Indication {
 
   status IndicationStatus @default(pending)
 
-  jestorId     String?   @unique
+  jestorId     String? @unique
   projectValue Float?
 
   createdAt DateTime @default(now())
@@ -205,4 +206,28 @@ model Transaction {
   @@index([clientId])
   @@index([clientId, type])
   @@map("transaction")
+}
+
+model Consumption {
+  id String @id @default(dbgenerated("(concat('consumption_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  competenceDate DateTime // The month/year this consumption refers to (e.g., 2023-10-01)
+
+  consumptionKwh    Float // Consumo de energia da rede (kWh)
+  injectedEnergyKwh Float // Energia injetada (kWh)
+  tariffPerKwh      Float // Tarifa da concessionária (R$/kWh)
+  totalBillValue    Float // Valor final da fatura (R$)
+
+  // Optional breakdown or calculated fields if needed later
+  // For now, storing the core values for savings calculation
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([clientId, competenceDate]) // One consumption record per client per month
+  @@index([clientId])
+  @@map("consumption")
 }

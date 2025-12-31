@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
+import { initializeGenerationDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
 import { GenerationAnalyticsService } from '@/backend/generation/services/generation-analytics.service';
 import { CreateGenerationUnitRequestSchema } from '@/backend/generation/use-cases/create-generation-unit.use-case';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
@@ -7,7 +7,7 @@ import { ZodError } from 'zod';
 import prisma from '@/lib/prisma';
 
 // Initialize DI Container
-const container = initializeDIContainer('prisma', prisma);
+const container = initializeGenerationDIContainer('prisma', prisma);
 
 // Create service instance
 const generationAnalyticsService = new GenerationAnalyticsService(
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Tratar erros de autenticação/autorização
-        if (error instanceof Error && 
+        if (error instanceof Error &&
             (error.message.includes('token') || error.message.includes('permission') || error.message.includes('access'))) {
             return NextResponse.json(
                 {
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Tratar erros de autenticação/autorização
-        if (error instanceof Error && 
+        if (error instanceof Error &&
             (error.message.includes('token') || error.message.includes('permission') || error.message.includes('access'))) {
             return NextResponse.json(
                 {

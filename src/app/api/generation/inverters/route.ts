@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
+import { initializeGenerationDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
 import { InverterService } from '@/backend/generation/services/inverter.service';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { withHandle } from '@/app/api/api-utils';
@@ -7,7 +7,7 @@ import { ZodError } from 'zod';
 import prisma from '@/lib/prisma';
 import { CreateInverterRequestSchema } from '@/backend/generation/use-cases';
 
-const container = initializeDIContainer('prisma', prisma);
+const container = initializeGenerationDIContainer('prisma', prisma);
 
 const inverterService = new InverterService(container.getInverterRepository());
 

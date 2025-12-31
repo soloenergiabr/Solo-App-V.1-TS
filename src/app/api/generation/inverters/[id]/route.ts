@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
+import { initializeGenerationDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
 import { InverterService } from '@/backend/generation/services/inverter.service';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { ZodError } from 'zod';
 import prisma from '@/lib/prisma';
 
 // Initialize DI Container
-const container = initializeDIContainer('prisma', prisma);
+const container = initializeGenerationDIContainer('prisma', prisma);
 
 // Create service instance
 const inverterService = new InverterService(

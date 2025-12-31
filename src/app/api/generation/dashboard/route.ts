@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
+import { initializeGenerationDIContainer } from '@/backend/generation/infrastructure/dependency-injection.container';
 import { GenerationService } from '@/backend/generation/services/generation.service';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { withHandle } from '@/app/api/api-utils';
 import prisma from '@/lib/prisma';
 
-const container = initializeDIContainer('prisma', prisma);
+const container = initializeGenerationDIContainer('prisma', prisma);
 
 const generationService = new GenerationService(
     container.getInverterRepository(),

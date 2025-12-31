@@ -23,7 +23,7 @@ const vendedorSections: SidebarSection[] = [
         title: 'Principal',
         items: [
             { label: 'Minha geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
-            { label: 'Economia', href: '/dashboard', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Economia', href: '/economy-dashboard', icon: <DollarSign className="w-5 h-5" /> },
             { label: 'Clube Solo', href: '/club', icon: <DollarSign className="w-5 h-5" /> },
             { label: 'Suporte', href: '/support', icon: <HelpCircleIcon className="w-5 h-5" /> },
         ],

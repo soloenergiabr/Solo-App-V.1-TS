@@ -224,6 +224,18 @@ exports.Prisma.TransactionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ConsumptionScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  competenceDate: 'competenceDate',
+  consumptionKwh: 'consumptionKwh',
+  injectedEnergyKwh: 'injectedEnergyKwh',
+  tariffPerKwh: 'tariffPerKwh',
+  totalBillValue: 'totalBillValue',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -265,7 +277,8 @@ exports.Prisma.ModelName = {
   Indication: 'Indication',
   Offer: 'Offer',
   FAQ: 'FAQ',
-  Transaction: 'Transaction'
+  Transaction: 'Transaction',
+  Consumption: 'Consumption'
 };
 
 /**
