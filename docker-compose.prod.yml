@@ -15,7 +15,7 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,7 +32,7 @@ services:
       - "6379:6379"
     command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -53,7 +53,7 @@ services:
     command: server /data --console-address ":9001"
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s
       timeout: 20s
       retries: 3
@@ -77,35 +77,35 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_PORT=5432
       - DATABASE_HOST=postgres
-      
+
       # Auth
       - JWT_SECRET=${JWT_SECRET}
-      
+
       # Next
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-      
+
       # Redis
       - REDIS_URL=redis://redis:6379
-      
+
       # Email
       - SMTP_HOST=${SMTP_HOST}
       - SMTP_PORT=${SMTP_PORT}
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM}
-      
+
       # WhatsApp
       - WHATSAPP_PROVIDER=${WHATSAPP_PROVIDER}
       - WHATSAPP_EVOLUTION_URL=${WHATSAPP_EVOLUTION_URL}
       - WHATSAPP_EVOLUTION_API_KEY=${WHATSAPP_EVOLUTION_API_KEY}
       - WHATSAPP_EVOLUTION_INSTANCE=${WHATSAPP_EVOLUTION_INSTANCE}
-      
+
       # API
       - API_BASE_URL=http://app:3000
       - API_RATE_LIMIT_WINDOW_MS=${API_RATE_LIMIT_WINDOW_MS}
       - API_RATE_LIMIT_MAX_REQUESTS=${API_RATE_LIMIT_MAX_REQUESTS}
       - API_SECRET_KEY=${API_SECRET_KEY}
-      
+
       # Payment
       - PAYMENT_PROVIDER=${PAYMENT_PROVIDER}
       - NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}
@@ -113,7 +113,7 @@ services:
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
       - STRIPE_FREE_PRICE_ID=${STRIPE_FREE_PRICE_ID}
       - STRIPE_PRO_PRICE_ID=${STRIPE_PRO_PRICE_ID}
-      
+
       # MinIO
       - MINIO_ENDPOINT=minio
       - MINIO_PORT=9000
@@ -122,16 +122,34 @@ services:
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
       - MINIO_USE_SSL=false
-      
+
       # Jobs
       - JOB_CONCURRENCY=${JOB_CONCURRENCY}
       - JOB_MAX_ATTEMPTS=${JOB_MAX_ATTEMPTS}
       - JOB_DEFAULT_TIMEOUT=${JOB_DEFAULT_TIMEOUT}
       - JOB_CLEANUP_INTERVAL=${JOB_CLEANUP_INTERVAL}
       - JOB_ENABLE_METRICS=${JOB_ENABLE_METRICS}
-      
+
       # Node
       - NODE_ENV=production
+
+      # JESTOR INTEGRATIONS
+      - JESTOR_CREATE_LEAD_WEBHOOK_URL=${JESTOR_CREATE_LEAD_WEBHOOK_URL}
+
+      # Admin Inverter Provider Accounts
+      - SOLIS_ADMIN_API_URL=${SOLIS_ADMIN_API_URL}
+      - SOLIS_ADMIN_API_KEY=${SOLIS_ADMIN_API_KEY}
+      - SOLIS_ADMIN_API_SECRET=${SOLIS_ADMIN_API_SECRET}
+
+      - SOLPLANET_ADMIN_API_URL=${SOLPLANET_ADMIN_API_URL}
+      - SOLPLANET_ADMIN_ACCOUNT=${SOLPLANET_ADMIN_ACCOUNT}
+      - SOLPLANET_ADMIN_PASSWORD=${SOLPLANET_ADMIN_PASSWORD}
+
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+
+      # OpenAI Configuration
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
     depends_on:
       postgres:
         condition: service_healthy
