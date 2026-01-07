@@ -22,12 +22,12 @@ const vendedorSections: SidebarSection[] = [
     {
         title: 'Principal',
         items: [
-            { label: 'Minha geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
-            { label: 'Economia', href: '/economy-dashboard', icon: <DollarSign className="w-5 h-5" /> },
-            { label: 'Clube Solo', href: '/club', icon: <Gift className="w-5 h-5" /> },
-            { label: 'Meus Vouchers', href: '/vouchers', icon: <Ticket className="w-5 h-5" /> },
-            { label: 'Solo Coins', href: '/solo-coins', icon: <Coins className="w-5 h-5" /> },
-            { label: 'Suporte', href: '/support', icon: <HelpCircleIcon className="w-5 h-5" /> },
+            { label: 'Minha geração', mobileLabel: 'Geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
+            { label: 'Economia', mobileLabel: 'Economia', href: '/economy-dashboard', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Clube Solo', mobileLabel: 'Clube', href: '/club', icon: <Gift className="w-5 h-5" /> },
+            { label: 'Meus Vouchers', mobileLabel: 'Vouchers', href: '/vouchers', icon: <Ticket className="w-5 h-5" /> },
+            { label: 'Solo Coins', mobileLabel: 'Coins', href: '/solo-coins', icon: <Coins className="w-5 h-5" /> },
+            { label: 'Suporte', mobileLabel: 'Suporte', href: '/support', icon: <HelpCircleIcon className="w-5 h-5" /> },
         ],
     },
 ]

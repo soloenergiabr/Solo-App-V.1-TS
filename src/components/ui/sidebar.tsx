@@ -8,6 +8,7 @@ import { Button } from "./button"
 
 export type SidebarItem = {
   label: string
+  mobileLabel?: string
   href: string
   icon?: React.ReactNode
 }
@@ -210,10 +211,10 @@ export function Sidebar({ items, sections, type, user, onLogout, logoSrc, onItem
                         {item.icon}
                       </div>
                       <p className={`
-                        text-[10px] font-medium
+                        text-[10px] font-medium text-center
                         ${isActive ? 'text-primary' : 'text-muted-foreground'}
                       `}>
-                        {item.label}
+                        {item.mobileLabel ?? item.label}
                       </p>
                     </Link>
                     {isActive && (
