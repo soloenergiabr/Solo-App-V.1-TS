@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useMemo, useState } from "react";
 import { useAuthenticatedApi } from "@/frontend/auth/hooks/useAuthenticatedApi";
-import { addDays, addMonths, addYears, startOfDay, endOfDay, startOfMonth, endOfMonth, startOfYear, endOfYear, format } from "date-fns";
+import { addMonths, addYears, startOfDay, endOfDay, startOfMonth, endOfMonth, startOfYear, endOfYear, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export interface DashboardFilters {
@@ -83,9 +84,6 @@ export interface DashboardAnalytics {
 
 export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     const api = useAuthenticatedApi();
-    const [analytics, setAnalytics] = useState<DashboardAnalytics | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [filters, setFilters] = useState<DashboardFilters>({
         generationUnitType: 'real_time',
         currentDate: new Date(),
@@ -94,25 +92,21 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     // Calcula startDate e endDate baseado no tipo e currentDate
     const getDateRange = useCallback((type: DashboardFilters['generationUnitType'], date: Date) => {
         if (type === 'real_time') {
-            // Tempo real: apenas hoje
             return {
                 startDate: startOfDay(new Date()).toISOString(),
                 endDate: endOfDay(new Date()).toISOString(),
             };
         } else if (type === 'day') {
-            // Diário: mostra todos os dias do mês selecionado
             return {
                 startDate: startOfMonth(date).toISOString(),
                 endDate: endOfMonth(date).toISOString(),
             };
         } else if (type === 'month') {
-            // Mensal: mostra todos os meses do ano selecionado
             return {
                 startDate: startOfYear(date).toISOString(),
                 endDate: endOfYear(date).toISOString(),
             };
         } else if (type === 'year') {
-            // Anual: busca todos os dados disponíveis para agregar por ano
             return {
                 startDate: undefined,
                 endDate: undefined,
@@ -121,53 +115,66 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         return { startDate: undefined, endDate: undefined };
     }, []);
 
-    const fetchDashboardAnalytics = useCallback(async (customFilters?: DashboardFilters) => {
-        if (!api.isAuthenticated) return;
+    // Build query key that updates when filters change
+    const queryKey = useMemo(() => {
+        const dateRange = getDateRange(filters.generationUnitType, filters.currentDate || new Date());
+        return [
+            'generation-dashboard',
+            filters.generationUnitType,
+            filters.inverterIds?.join(',') || '',
+            dateRange.startDate || '',
+            dateRange.endDate || '',
+            clientId || '',
+        ];
+    }, [filters, getDateRange, clientId]);
 
-        try {
-            setIsLoading(true);
-            setError(null);
+    // Fetch function for React Query
+    const fetchDashboardAnalytics = useCallback(async (): Promise<DashboardAnalytics | null> => {
+        const params = new URLSearchParams();
 
-            const activeFilters = customFilters || filters;
-            const params = new URLSearchParams();
-
-            if (activeFilters.generationUnitType) {
-                params.append('type', activeFilters.generationUnitType);
-            }
-            if (activeFilters.inverterIds && activeFilters.inverterIds.length > 0) {
-                params.append('inverterIds', activeFilters.inverterIds.join(','));
-            }
-
-            // Calcular datas baseado no tipo e currentDate
-            const dateRange = getDateRange(
-                activeFilters.generationUnitType,
-                activeFilters.currentDate || new Date()
-            );
-
-            if (dateRange.startDate) {
-                params.append('startDate', dateRange.startDate);
-            }
-            if (dateRange.endDate) {
-                params.append('endDate', dateRange.endDate);
-            }
-            if (clientId) {
-                params.append('clientId', clientId);
-            }
-
-            const response = await api.get(`/generation/dashboard?${params.toString()}`);
-
-            if (response.data.success) {
-                setAnalytics(response.data.data);
-            } else {
-                setError(response.data.message || 'Failed to fetch dashboard analytics');
-            }
-        } catch (error: any) {
-            console.error('Error fetching dashboard analytics:', error);
-            setError(error.response?.data?.message || 'Network error');
-        } finally {
-            setIsLoading(false);
+        if (filters.generationUnitType) {
+            params.append('type', filters.generationUnitType);
         }
-    }, [filters, getDateRange]);
+        if (filters.inverterIds && filters.inverterIds.length > 0) {
+            params.append('inverterIds', filters.inverterIds.join(','));
+        }
+
+        const dateRange = getDateRange(
+            filters.generationUnitType,
+            filters.currentDate || new Date()
+        );
+
+        if (dateRange.startDate) {
+            params.append('startDate', dateRange.startDate);
+        }
+        if (dateRange.endDate) {
+            params.append('endDate', dateRange.endDate);
+        }
+        if (clientId) {
+            params.append('clientId', clientId);
+        }
+
+        const response = await api.get(`/generation/dashboard?${params.toString()}`);
+
+        if (response.data.success) {
+            return response.data.data;
+        }
+        throw new Error(response.data.message || 'Failed to fetch dashboard analytics');
+    }, [filters, getDateRange, clientId, api]);
+
+    // Use React Query with 5 second refetch interval for real_time mode
+    const {
+        data: analytics,
+        isLoading,
+        error,
+        refetch,
+    } = useQuery({
+        queryKey,
+        queryFn: fetchDashboardAnalytics,
+        enabled: api.isAuthenticated,
+        refetchInterval: filters.generationUnitType === 'real_time' ? 5000 : false,
+        staleTime: filters.generationUnitType === 'real_time' ? 0 : 1000 * 60, // 0 for real_time, 1 min otherwise
+    });
 
     const updateFilters = useCallback((newFilters: Partial<DashboardFilters>) => {
         setFilters(prev => ({ ...prev, ...newFilters }));
@@ -187,14 +194,9 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
             let newDate: Date;
 
             if (prev.generationUnitType === 'day') {
-                // Diário: navega por meses
                 newDate = addMonths(currentDate, -1);
             } else if (prev.generationUnitType === 'month') {
-                // Mensal: navega por anos
                 newDate = addYears(currentDate, -1);
-            } else if (prev.generationUnitType === 'year') {
-                // Anual: não tem navegação de período
-                newDate = currentDate;
             } else {
                 newDate = currentDate;
             }
@@ -209,14 +211,9 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
             let newDate: Date;
 
             if (prev.generationUnitType === 'day') {
-                // Diário: navega por meses
                 newDate = addMonths(currentDate, 1);
             } else if (prev.generationUnitType === 'month') {
-                // Mensal: navega por anos
                 newDate = addYears(currentDate, 1);
-            } else if (prev.generationUnitType === 'year') {
-                // Anual: não tem navegação de período
-                newDate = currentDate;
             } else {
                 newDate = currentDate;
             }
@@ -229,10 +226,6 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         setFilters(prev => ({ ...prev, currentDate: new Date() }));
     }, []);
 
-    const refetch = useCallback(() => {
-        return fetchDashboardAnalytics();
-    }, [fetchDashboardAnalytics]);
-
     // Formatar período atual para exibição
     const getCurrentPeriodLabel = useCallback(() => {
         const date = filters.currentDate || new Date();
@@ -241,28 +234,19 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         if (type === 'real_time') {
             return 'Tempo Real - Hoje';
         } else if (type === 'day') {
-            // Diário: mostra o mês selecionado
             return format(date, "MMMM 'de' yyyy", { locale: ptBR });
         } else if (type === 'month') {
-            // Mensal: mostra o ano selecionado
             return format(date, "yyyy", { locale: ptBR });
         } else if (type === 'year') {
-            // Anual: mostra "Todos os Anos"
             return 'Todos os Anos';
         }
         return '';
     }, [filters]);
 
-    useEffect(() => {
-        if (api.isAuthenticated) {
-            fetchDashboardAnalytics();
-        }
-    }, [api.isAuthenticated, filters, fetchDashboardAnalytics]);
-
     return {
-        analytics,
+        analytics: analytics ?? null,
         isLoading,
-        error,
+        error: error ? (error as Error).message : null,
         filters,
         updateFilters,
         clearFilters,

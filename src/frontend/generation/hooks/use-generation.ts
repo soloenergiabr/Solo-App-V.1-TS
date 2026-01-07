@@ -1,30 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useAuthenticatedApi } from "@/frontend/auth/hooks/useAuthenticatedApi";
 
 export function useGenerationAnalytics() {
     const api = useAuthenticatedApi();
-    const [generationAnalytics, setGenerationAnalytics] = useState<any>(null);
 
-
-    const fetchGenerationAnalytics = useCallback(async () => {
-        if (!api.isAuthenticated) return;
-
-        try {
+    const {
+        data: generationAnalytics,
+        isLoading,
+        error,
+        refetch: fetchGenerationAnalytics,
+    } = useQuery({
+        queryKey: ['generation-analytics'],
+        queryFn: async () => {
             const response = await api.get('/generation/analytics');
-            setGenerationAnalytics(response.data);
-        } catch (error) {
-            console.error('Error fetching generation:', error);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (api.isAuthenticated) {
-            fetchGenerationAnalytics();
-        }
-    }, [api.isAuthenticated, fetchGenerationAnalytics]);
+            return response.data;
+        },
+        enabled: api.isAuthenticated,
+        staleTime: 1000 * 60, // 1 minute
+    });
 
     return {
-        generationAnalytics,
+        generationAnalytics: generationAnalytics ?? null,
+        isLoading,
+        error,
         fetchGenerationAnalytics,
     };
 }

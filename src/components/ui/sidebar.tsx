@@ -26,9 +26,11 @@ type SidebarProps = {
     role: string
   },
   onLogout: () => void
+  logoSrc?: string
+  onItemClick?: () => void
 }
 
-export function Sidebar({ items, sections, type, user, onLogout }: SidebarProps) {
+export function Sidebar({ items, sections, type, user, onLogout, logoSrc, onItemClick }: SidebarProps) {
   const pathname = usePathname()
 
   const handleLogout = async () => {
@@ -61,6 +63,7 @@ export function Sidebar({ items, sections, type, user, onLogout }: SidebarProps)
       <li key={`${item.href}-${index}`}>
         <Link
           href={item.href}
+          onClick={onItemClick}
           className={`
                         flex items-center gap-3 px-4 py-3 rounded-lg
                         transition-all duration-200 group
@@ -92,31 +95,30 @@ export function Sidebar({ items, sections, type, user, onLogout }: SidebarProps)
             {/* Logo Section */}
             <div className="p-3 border-b border-border">
               <Link href="/" className="flex items-center justify-center">
-                <div className="relative w-[96px] h-[60px] flex items-center justify-center">
-                  <Image
-                    src="/logo.svg"
-                    alt="Aura Health"
-                    fill
-                    className="object-contain"
-                    priority
-                    unoptimized
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.style.display = 'none'
-                      const parent = target.parentElement
-                      if (parent && !parent.querySelector('.logo-fallback')) {
-                        const fallback = document.createElement('div')
-                        fallback.className = 'logo-fallback text-center'
-                        fallback.innerHTML = `
+                <Image
+                  src={logoSrc || "/logo.svg"}
+                  alt="Aura Health"
+                  width={180}
+                  height={180}
+                  className="object-contain"
+                  priority
+                  unoptimized
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                    const parent = target.parentElement
+                    if (parent && !parent.querySelector('.logo-fallback')) {
+                      const fallback = document.createElement('div')
+                      fallback.className = 'logo-fallback text-center'
+                      fallback.innerHTML = `
                                                     <div class="text-2xl font-bold text-primary">
                                                         SOLO
                                                     </div>
                                                 `
-                        parent.appendChild(fallback)
-                      }
-                    }}
-                  />
-                </div>
+                      parent.appendChild(fallback)
+                    }
+                  }}
+                />
               </Link>
             </div>
 

@@ -3,8 +3,13 @@
 import { Sidebar, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { DollarSign, HelpCircleIcon, Home } from "lucide-react"
+import { DollarSign, HelpCircleIcon, Home, Menu } from "lucide-react"
 import Link from "next/link"
+import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
 
 const adminSections: SidebarSection[] = [
     {
@@ -33,6 +38,7 @@ const vendedorSections: SidebarSection[] = [
 export function AppSidebar() {
     const { user, logout } = useAuthContext();
     const isMobile = useIsMobile();
+    const { resolvedTheme } = useTheme();
 
     const isMaster = user?.roles.includes("master");
     const role = isMaster ? 'admin' : 'vendedor';
@@ -43,37 +49,16 @@ export function AppSidebar() {
     }
 
     const sections = sectionsMapper[role as keyof typeof sectionsMapper] || vendedorSections;
-    const mobileItems = sections[0].items;
 
-    if (isMobile) {
-        return (
-            <footer className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <div className="flex items-center justify-around px-4 py-2 safe-area-inset-bottom">
-                    {mobileItems.map((item) => {
-                        return (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className="flex flex-col items-center justify-center gap-1 min-w-[64px] py-2 px-3 rounded-lg transition-colors hover:bg-accent"
-                            >
-                                <div className="h-5 w-5">
-                                    {item.icon}
-                                </div>
-                                <span className="text-[10px] font-medium">{item.label}</span>
-                            </Link>
-                        );
-                    })}
-                </div>
-            </footer>
-        )
-    }
+    const logoSrc = resolvedTheme === 'dark' ? '/logo-white-text.png' : '/logo-black-text.png';
 
     return (
         <Sidebar
             sections={sections}
-            type="sidebar"
+            type={isMobile ? 'footer' : 'sidebar'}
             user={{ name: user?.name || 'User', role: role === 'admin' ? 'Admin' : 'Vendedor' }}
             onLogout={logout}
+            logoSrc={logoSrc}
         />
     )
 }

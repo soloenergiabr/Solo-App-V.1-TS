@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { ThemeToggle } from './theme-toggle'
 
 interface PageLayoutProps {
     children: ReactNode
@@ -203,6 +204,7 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
                         {actions}
                     </motion.div>
                 )}
+                <ThemeToggle />
             </div>
             {extra && (
                 <motion.div
@@ -274,21 +276,21 @@ export function PageEmpty({ icon, title, description, action }: PageEmptyProps) 
         >
             {icon && (
                 <motion.div
-                    className="bg-gray-100 rounded-full p-6 mb-4"
+                    className="bg-muted rounded-full p-6 mb-4"
                     variants={emptyIconVariants as any}
                 >
                     {icon}
                 </motion.div>
             )}
             <motion.h3
-                className="text-lg font-semibold text-gray-900 mb-2 text-center"
+                className="text-lg font-semibold text-foreground mb-2 text-center"
                 variants={emptyTextVariants as any}
             >
                 {title}
             </motion.h3>
             {description && (
                 <motion.p
-                    className="text-sm text-gray-600 text-center max-w-sm mb-4"
+                    className="text-sm text-muted-foreground text-center max-w-sm mb-4"
                     variants={emptyTextVariants as any}
                 >
                     {description}
