@@ -40,8 +40,8 @@ export function ClubDashboard() {
             </Card>
 
             {/* Offers Catalog */}
-            <Card>
-                <CardHeader className="pb-2">
+            <div>
+                <div className="pb-2">
                     <div className="flex items-center gap-2">
                         <Gift className="h-5 w-5 text-primary" />
                         <CardTitle className="text-lg">Ofertas Disponíveis</CardTitle>
@@ -49,11 +49,11 @@ export function ClubDashboard() {
                     <CardDescription>
                         Troque seus Solo Coins por prêmios exclusivos dos nossos parceiros
                     </CardDescription>
-                </CardHeader>
-                <CardContent>
+                </div>
+                <div className='pt-4'>
                     <OffersList />
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 }
