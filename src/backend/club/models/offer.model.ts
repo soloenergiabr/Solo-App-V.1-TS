@@ -8,6 +8,8 @@ export class OfferModel {
     cost: number
     discount?: string
     imageUrl?: string
+    confirmationCode?: string
+    maxRedemptionsPerClient: number
     validFrom?: Date
     validTo?: Date
     isActive: boolean
@@ -15,7 +17,7 @@ export class OfferModel {
     updatedAt: Date
 
     constructor(
-        { id, title, description, partner, cost, discount, imageUrl, validFrom, validTo, isActive, createdAt, updatedAt }: {
+        { id, title, description, partner, cost, discount, imageUrl, confirmationCode, maxRedemptionsPerClient, validFrom, validTo, isActive, createdAt, updatedAt }: {
             id?: string,
             title: string,
             description: string,
@@ -23,6 +25,8 @@ export class OfferModel {
             cost: number,
             discount?: string,
             imageUrl?: string,
+            confirmationCode?: string,
+            maxRedemptionsPerClient?: number,
             validFrom?: Date,
             validTo?: Date,
             isActive?: boolean,
@@ -37,6 +41,8 @@ export class OfferModel {
         this.cost = cost
         this.discount = discount
         this.imageUrl = imageUrl
+        this.confirmationCode = confirmationCode
+        this.maxRedemptionsPerClient = maxRedemptionsPerClient ?? 1
         this.validFrom = validFrom
         this.validTo = validTo
         this.isActive = isActive ?? true

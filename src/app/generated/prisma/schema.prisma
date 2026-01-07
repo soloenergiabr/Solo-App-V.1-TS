@@ -76,9 +76,10 @@ model Client {
   inverters             Inverter[]
   users                 User[]
   consumptions          Consumption[]
-  indicationsAsReferrer Indication[]  @relation("Referrer")
-  indicationsAsReferred Indication[]  @relation("Referred")
+  indicationsAsReferrer Indication[]      @relation("Referrer")
+  indicationsAsReferred Indication[]      @relation("Referred")
   transactions          Transaction[]
+  offerRedemptions      OfferRedemption[]
 
   @@index([email])
   @@index([cpfCnpj])
@@ -159,8 +160,10 @@ model Offer {
   partner     String
   cost        Float
 
-  discount String?
-  imageUrl String?
+  discount                String?
+  imageUrl                String?
+  confirmationCode        String? // Código secreto para parceiro confirmar uso
+  maxRedemptionsPerClient Int     @default(1) // Máximo de vezes que cada cliente pode resgatar
 
   validFrom DateTime?
   validTo   DateTime?
@@ -170,7 +173,42 @@ model Offer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  redemptions OfferRedemption[]
+
   @@map("offer")
+}
+
+enum RedemptionStatus {
+  pending
+  used
+  expired
+}
+
+model OfferRedemption {
+  id String @id @default(dbgenerated("(concat('redemption_', gen_random_uuid()))::TEXT"))
+
+  redemptionCode String @unique // Código único de 6 caracteres para validação pelo parceiro
+
+  offer   Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  offerId String
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  status RedemptionStatus @default(pending)
+
+  redeemedAt DateTime  @default(now())
+  usedAt     DateTime?
+  expiresAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clientId])
+  @@index([offerId])
+  @@index([clientId, status])
+  @@index([redemptionCode])
+  @@map("offer_redemption")
 }
 
 model FAQ {

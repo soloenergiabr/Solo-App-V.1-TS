@@ -12,6 +12,9 @@ import type {
 import { OfferService } from "./offer.service";
 import { OfferRepository } from "../repositories/offer.repository";
 import { OfferModel } from "../models/offer.model";
+import { OfferRedemptionRepository } from "../repositories/offer-redemption.repository";
+import { OfferRedemptionModel } from "../models/offer-redemption.model";
+import { TransactionModel } from "../models/transaction.model";
 
 /**
  * Main orchestrator service that coordinates between specialized services
@@ -25,7 +28,8 @@ export class ClubService {
     constructor(
         indicationRepository: IndicationRepository,
         transactionRepository: TransactionRepository,
-        offerRepository: OfferRepository
+        offerRepository: OfferRepository,
+        private offerRedemptionRepository: OfferRedemptionRepository
     ) {
         this.indicationService = new IndicationService(indicationRepository);
         this.transactionService = new TransactionService(transactionRepository);
@@ -68,5 +72,137 @@ export class ClubService {
 
     async deleteOffer(id: string): Promise<void> {
         return await this.offerService.deleteOffer(id);
+    }
+
+    // Redemption operations
+    async redeemOffer(offerId: string, userContext: UserContext): Promise<{ success: boolean; message: string; redemption?: OfferRedemptionModel }> {
+        if (!userContext.clientId) {
+            return { success: false, message: 'Cliente não encontrado' };
+        }
+
+        // Get offer
+        const offer = await this.offerService.getOfferById(offerId);
+        if (!offer) {
+            return { success: false, message: 'Oferta não encontrada' };
+        }
+
+        if (!offer.isActive) {
+            return { success: false, message: 'Oferta não está ativa' };
+        }
+
+        // Check balance
+        const hasSufficientBalance = await this.transactionService.hasSufficientBalance(userContext, offer.cost);
+        if (!hasSufficientBalance) {
+            return { success: false, message: 'Saldo insuficiente de Solo Coins' };
+        }
+
+        // Create redemption
+        const redemption = new OfferRedemptionModel({
+            offerId,
+            clientId: userContext.clientId,
+            status: 'pending',
+            expiresAt: offer.validTo || undefined,
+        });
+
+        const createdRedemption = await this.offerRedemptionRepository.create(redemption);
+
+        // Debit Solo Coins
+        const transaction = new TransactionModel({
+            clientId: userContext.clientId,
+            type: 'offer_redemption',
+            amount: -offer.cost,
+            description: `Resgate: ${offer.title}`,
+            offerId: offer.id,
+        });
+        await this.transactionService.createTransaction(transaction);
+
+        return {
+            success: true,
+            message: 'Oferta resgatada com sucesso!',
+            redemption: createdRedemption
+        };
+    }
+
+    async getClientRedemptions(userContext: UserContext): Promise<OfferRedemptionModel[]> {
+        if (!userContext.clientId) {
+            return [];
+        }
+        return await this.offerRedemptionRepository.findByClientId(userContext.clientId);
+    }
+
+    async getRedemptionById(id: string): Promise<OfferRedemptionModel | null> {
+        return await this.offerRedemptionRepository.findById(id);
+    }
+
+    async confirmRedemptionUsage(redemptionId: string, confirmationCode: string): Promise<{ success: boolean; message: string }> {
+        const redemption = await this.offerRedemptionRepository.findById(redemptionId);
+
+        if (!redemption) {
+            return { success: false, message: 'Voucher não encontrado' };
+        }
+
+        if (redemption.status === 'used') {
+            return { success: false, message: 'Este voucher já foi utilizado' };
+        }
+
+        if (redemption.status === 'expired') {
+            return { success: false, message: 'Este voucher expirou' };
+        }
+
+        // Get the offer to check confirmation code
+        const offer = await this.offerService.getOfferById(redemption.offerId);
+        if (!offer) {
+            return { success: false, message: 'Oferta não encontrada' };
+        }
+
+        // Verify confirmation code
+        if (!offer.confirmationCode) {
+            return { success: false, message: 'Esta oferta não possui código de confirmação' };
+        }
+
+        if (offer.confirmationCode !== confirmationCode) {
+            return { success: false, message: 'Código de confirmação inválido' };
+        }
+
+        // Mark as used
+        redemption.status = 'used';
+        redemption.usedAt = new Date();
+
+        await this.offerRedemptionRepository.update(redemption);
+
+        return { success: true, message: 'Voucher confirmado com sucesso!' };
+    }
+
+    // Partner validation using redemption code
+    async validateRedemptionByCode(redemptionCode: string): Promise<{
+        success: boolean;
+        message: string;
+        redemption?: OfferRedemptionModel
+    }> {
+        const redemption = await this.offerRedemptionRepository.findByRedemptionCode(redemptionCode.toUpperCase());
+
+        if (!redemption) {
+            return { success: false, message: 'Código de voucher inválido' };
+        }
+
+        if (redemption.status === 'used') {
+            return { success: false, message: 'Este voucher já foi utilizado' };
+        }
+
+        if (redemption.status === 'expired') {
+            return { success: false, message: 'Este voucher expirou' };
+        }
+
+        // Mark as used
+        redemption.status = 'used';
+        redemption.usedAt = new Date();
+
+        await this.offerRedemptionRepository.update(redemption);
+
+        return {
+            success: true,
+            message: 'Voucher validado com sucesso!',
+            redemption
+        };
     }
 }

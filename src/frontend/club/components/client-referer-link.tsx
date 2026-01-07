@@ -45,45 +45,33 @@ export function ClientRefererLink() {
     }
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Link de Indicação</CardTitle>
-                <CardDescription>Compartilhe seu link personalizado e ganhe SOLO Coins</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="flex space-x-2">
-                    <Input
-                        value={link || ''}
-                        readOnly
-                        className="flex-1"
-                        placeholder="Carregando link..."
-                    />
-                    <Button
-                        onClick={handleCopyClick}
-                        variant="outline"
-                        size="icon"
-                        disabled={!link}
-                    >
-                        {copied ? (
-                            <Check className="h-4 w-4 text-green-600" />
-                        ) : (
-                            <Copy className="h-4 w-4" />
-                        )}
-                    </Button>
-                </div>
+        <div className="space-y-4">
+            <div className="flex space-x-2">
+                <Input
+                    value={link || ''}
+                    readOnly
+                    className="flex-1"
+                    placeholder="Carregando link..."
+                />
+                <Button
+                    onClick={handleCopyClick}
+                    variant="outline"
+                    size="icon"
+                    disabled={!link}
+                >
+                    {copied ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                    ) : (
+                        <Copy className="h-4 w-4" />
+                    )}
+                </Button>
+            </div>
 
-                {copied && (
-                    <p className="text-sm text-green-600">
-                        Link copiado para a área de transferência!
-                    </p>
-                )}
-
-                <div className="text-sm text-muted-foreground">
-                    <p>
-                        ✅ Cada indicação aprovada gera <strong>5%</strong> do valor do projeto em <strong>SOLO Coins</strong> para você
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
+            {copied && (
+                <p className="text-sm text-green-600">
+                    Link copiado para a área de transferência!
+                </p>
+            )}
+        </div>
     );
 }

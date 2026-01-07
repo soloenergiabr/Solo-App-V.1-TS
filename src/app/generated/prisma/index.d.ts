@@ -44,6 +44,11 @@ export type Indication = $Result.DefaultSelection<Prisma.$IndicationPayload>
  */
 export type Offer = $Result.DefaultSelection<Prisma.$OfferPayload>
 /**
+ * Model OfferRedemption
+ * 
+ */
+export type OfferRedemption = $Result.DefaultSelection<Prisma.$OfferRedemptionPayload>
+/**
  * Model FAQ
  * 
  */
@@ -90,6 +95,15 @@ export const TransactionType: {
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
 
+
+export const RedemptionStatus: {
+  pending: 'pending',
+  used: 'used',
+  expired: 'expired'
+};
+
+export type RedemptionStatus = (typeof RedemptionStatus)[keyof typeof RedemptionStatus]
+
 }
 
 export type ClientStatus = $Enums.ClientStatus
@@ -103,6 +117,10 @@ export const IndicationStatus: typeof $Enums.IndicationStatus
 export type TransactionType = $Enums.TransactionType
 
 export const TransactionType: typeof $Enums.TransactionType
+
+export type RedemptionStatus = $Enums.RedemptionStatus
+
+export const RedemptionStatus: typeof $Enums.RedemptionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -281,6 +299,16 @@ export class PrismaClient<
     * ```
     */
   get offer(): Prisma.OfferDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.offerRedemption`: Exposes CRUD operations for the **OfferRedemption** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OfferRedemptions
+    * const offerRedemptions = await prisma.offerRedemption.findMany()
+    * ```
+    */
+  get offerRedemption(): Prisma.OfferRedemptionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.fAQ`: Exposes CRUD operations for the **FAQ** model.
@@ -757,6 +785,7 @@ export namespace Prisma {
     GenerationUnit: 'GenerationUnit',
     Indication: 'Indication',
     Offer: 'Offer',
+    OfferRedemption: 'OfferRedemption',
     FAQ: 'FAQ',
     Transaction: 'Transaction',
     Consumption: 'Consumption'
@@ -778,7 +807,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "inverter" | "generationUnit" | "indication" | "offer" | "fAQ" | "transaction" | "consumption"
+      modelProps: "user" | "client" | "inverter" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1226,6 +1255,80 @@ export namespace Prisma {
           }
         }
       }
+      OfferRedemption: {
+        payload: Prisma.$OfferRedemptionPayload<ExtArgs>
+        fields: Prisma.OfferRedemptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OfferRedemptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OfferRedemptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>
+          }
+          findFirst: {
+            args: Prisma.OfferRedemptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OfferRedemptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>
+          }
+          findMany: {
+            args: Prisma.OfferRedemptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>[]
+          }
+          create: {
+            args: Prisma.OfferRedemptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>
+          }
+          createMany: {
+            args: Prisma.OfferRedemptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OfferRedemptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>[]
+          }
+          delete: {
+            args: Prisma.OfferRedemptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>
+          }
+          update: {
+            args: Prisma.OfferRedemptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.OfferRedemptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OfferRedemptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OfferRedemptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.OfferRedemptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OfferRedemptionPayload>
+          }
+          aggregate: {
+            args: Prisma.OfferRedemptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOfferRedemption>
+          }
+          groupBy: {
+            args: Prisma.OfferRedemptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OfferRedemptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OfferRedemptionCountArgs<ExtArgs>
+            result: $Utils.Optional<OfferRedemptionCountAggregateOutputType> | number
+          }
+        }
+      }
       FAQ: {
         payload: Prisma.$FAQPayload<ExtArgs>
         fields: Prisma.FAQFieldRefs
@@ -1550,6 +1653,7 @@ export namespace Prisma {
     generationUnit?: GenerationUnitOmit
     indication?: IndicationOmit
     offer?: OfferOmit
+    offerRedemption?: OfferRedemptionOmit
     fAQ?: FAQOmit
     transaction?: TransactionOmit
     consumption?: ConsumptionOmit
@@ -1639,6 +1743,7 @@ export namespace Prisma {
     indicationsAsReferrer: number
     indicationsAsReferred: number
     transactions: number
+    offerRedemptions: number
   }
 
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1648,6 +1753,7 @@ export namespace Prisma {
     indicationsAsReferrer?: boolean | ClientCountOutputTypeCountIndicationsAsReferrerArgs
     indicationsAsReferred?: boolean | ClientCountOutputTypeCountIndicationsAsReferredArgs
     transactions?: boolean | ClientCountOutputTypeCountTransactionsArgs
+    offerRedemptions?: boolean | ClientCountOutputTypeCountOfferRedemptionsArgs
   }
 
   // Custom InputTypes
@@ -1703,6 +1809,13 @@ export namespace Prisma {
     where?: TransactionWhereInput
   }
 
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountOfferRedemptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OfferRedemptionWhereInput
+  }
+
 
   /**
    * Count Type InverterCountOutputType
@@ -1732,6 +1845,37 @@ export namespace Prisma {
    */
   export type InverterCountOutputTypeCountGenerationUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GenerationUnitWhereInput
+  }
+
+
+  /**
+   * Count Type OfferCountOutputType
+   */
+
+  export type OfferCountOutputType = {
+    redemptions: number
+  }
+
+  export type OfferCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    redemptions?: boolean | OfferCountOutputTypeCountRedemptionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * OfferCountOutputType without action
+   */
+  export type OfferCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferCountOutputType
+     */
+    select?: OfferCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * OfferCountOutputType without action
+   */
+  export type OfferCountOutputTypeCountRedemptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OfferRedemptionWhereInput
   }
 
 
@@ -3179,6 +3323,7 @@ export namespace Prisma {
     indicationsAsReferrer?: boolean | Client$indicationsAsReferrerArgs<ExtArgs>
     indicationsAsReferred?: boolean | Client$indicationsAsReferredArgs<ExtArgs>
     transactions?: boolean | Client$transactionsArgs<ExtArgs>
+    offerRedemptions?: boolean | Client$offerRedemptionsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -3241,6 +3386,7 @@ export namespace Prisma {
     indicationsAsReferrer?: boolean | Client$indicationsAsReferrerArgs<ExtArgs>
     indicationsAsReferred?: boolean | Client$indicationsAsReferredArgs<ExtArgs>
     transactions?: boolean | Client$transactionsArgs<ExtArgs>
+    offerRedemptions?: boolean | Client$offerRedemptionsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3255,6 +3401,7 @@ export namespace Prisma {
       indicationsAsReferrer: Prisma.$IndicationPayload<ExtArgs>[]
       indicationsAsReferred: Prisma.$IndicationPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
+      offerRedemptions: Prisma.$OfferRedemptionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3671,6 +3818,7 @@ export namespace Prisma {
     indicationsAsReferrer<T extends Client$indicationsAsReferrerArgs<ExtArgs> = {}>(args?: Subset<T, Client$indicationsAsReferrerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     indicationsAsReferred<T extends Client$indicationsAsReferredArgs<ExtArgs> = {}>(args?: Subset<T, Client$indicationsAsReferredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends Client$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    offerRedemptions<T extends Client$offerRedemptionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$offerRedemptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4243,6 +4391,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Client.offerRedemptions
+   */
+  export type Client$offerRedemptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    where?: OfferRedemptionWhereInput
+    orderBy?: OfferRedemptionOrderByWithRelationInput | OfferRedemptionOrderByWithRelationInput[]
+    cursor?: OfferRedemptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OfferRedemptionScalarFieldEnum | OfferRedemptionScalarFieldEnum[]
   }
 
   /**
@@ -7718,10 +7890,12 @@ export namespace Prisma {
 
   export type OfferAvgAggregateOutputType = {
     cost: number | null
+    maxRedemptionsPerClient: number | null
   }
 
   export type OfferSumAggregateOutputType = {
     cost: number | null
+    maxRedemptionsPerClient: number | null
   }
 
   export type OfferMinAggregateOutputType = {
@@ -7732,6 +7906,8 @@ export namespace Prisma {
     cost: number | null
     discount: string | null
     imageUrl: string | null
+    confirmationCode: string | null
+    maxRedemptionsPerClient: number | null
     validFrom: Date | null
     validTo: Date | null
     isActive: boolean | null
@@ -7747,6 +7923,8 @@ export namespace Prisma {
     cost: number | null
     discount: string | null
     imageUrl: string | null
+    confirmationCode: string | null
+    maxRedemptionsPerClient: number | null
     validFrom: Date | null
     validTo: Date | null
     isActive: boolean | null
@@ -7762,6 +7940,8 @@ export namespace Prisma {
     cost: number
     discount: number
     imageUrl: number
+    confirmationCode: number
+    maxRedemptionsPerClient: number
     validFrom: number
     validTo: number
     isActive: number
@@ -7773,10 +7953,12 @@ export namespace Prisma {
 
   export type OfferAvgAggregateInputType = {
     cost?: true
+    maxRedemptionsPerClient?: true
   }
 
   export type OfferSumAggregateInputType = {
     cost?: true
+    maxRedemptionsPerClient?: true
   }
 
   export type OfferMinAggregateInputType = {
@@ -7787,6 +7969,8 @@ export namespace Prisma {
     cost?: true
     discount?: true
     imageUrl?: true
+    confirmationCode?: true
+    maxRedemptionsPerClient?: true
     validFrom?: true
     validTo?: true
     isActive?: true
@@ -7802,6 +7986,8 @@ export namespace Prisma {
     cost?: true
     discount?: true
     imageUrl?: true
+    confirmationCode?: true
+    maxRedemptionsPerClient?: true
     validFrom?: true
     validTo?: true
     isActive?: true
@@ -7817,6 +8003,8 @@ export namespace Prisma {
     cost?: true
     discount?: true
     imageUrl?: true
+    confirmationCode?: true
+    maxRedemptionsPerClient?: true
     validFrom?: true
     validTo?: true
     isActive?: true
@@ -7919,6 +8107,8 @@ export namespace Prisma {
     cost: number
     discount: string | null
     imageUrl: string | null
+    confirmationCode: string | null
+    maxRedemptionsPerClient: number
     validFrom: Date | null
     validTo: Date | null
     isActive: boolean
@@ -7953,11 +8143,15 @@ export namespace Prisma {
     cost?: boolean
     discount?: boolean
     imageUrl?: boolean
+    confirmationCode?: boolean
+    maxRedemptionsPerClient?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    redemptions?: boolean | Offer$redemptionsArgs<ExtArgs>
+    _count?: boolean | OfferCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["offer"]>
 
   export type OfferSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7968,6 +8162,8 @@ export namespace Prisma {
     cost?: boolean
     discount?: boolean
     imageUrl?: boolean
+    confirmationCode?: boolean
+    maxRedemptionsPerClient?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
@@ -7983,6 +8179,8 @@ export namespace Prisma {
     cost?: boolean
     discount?: boolean
     imageUrl?: boolean
+    confirmationCode?: boolean
+    maxRedemptionsPerClient?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
@@ -7998,6 +8196,8 @@ export namespace Prisma {
     cost?: boolean
     discount?: boolean
     imageUrl?: boolean
+    confirmationCode?: boolean
+    maxRedemptionsPerClient?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
@@ -8005,11 +8205,19 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type OfferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "partner" | "cost" | "discount" | "imageUrl" | "validFrom" | "validTo" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["offer"]>
+  export type OfferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "partner" | "cost" | "discount" | "imageUrl" | "confirmationCode" | "maxRedemptionsPerClient" | "validFrom" | "validTo" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["offer"]>
+  export type OfferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    redemptions?: boolean | Offer$redemptionsArgs<ExtArgs>
+    _count?: boolean | OfferCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type OfferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type OfferIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $OfferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Offer"
-    objects: {}
+    objects: {
+      redemptions: Prisma.$OfferRedemptionPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
@@ -8018,6 +8226,8 @@ export namespace Prisma {
       cost: number
       discount: string | null
       imageUrl: string | null
+      confirmationCode: string | null
+      maxRedemptionsPerClient: number
       validFrom: Date | null
       validTo: Date | null
       isActive: boolean
@@ -8417,6 +8627,7 @@ export namespace Prisma {
    */
   export interface Prisma__OfferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    redemptions<T extends Offer$redemptionsArgs<ExtArgs> = {}>(args?: Subset<T, Offer$redemptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8453,6 +8664,8 @@ export namespace Prisma {
     readonly cost: FieldRef<"Offer", 'Float'>
     readonly discount: FieldRef<"Offer", 'String'>
     readonly imageUrl: FieldRef<"Offer", 'String'>
+    readonly confirmationCode: FieldRef<"Offer", 'String'>
+    readonly maxRedemptionsPerClient: FieldRef<"Offer", 'Int'>
     readonly validFrom: FieldRef<"Offer", 'DateTime'>
     readonly validTo: FieldRef<"Offer", 'DateTime'>
     readonly isActive: FieldRef<"Offer", 'Boolean'>
@@ -8475,6 +8688,10 @@ export namespace Prisma {
      */
     omit?: OfferOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
+    /**
      * Filter, which Offer to fetch.
      */
     where: OfferWhereUniqueInput
@@ -8493,6 +8710,10 @@ export namespace Prisma {
      */
     omit?: OfferOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
+    /**
      * Filter, which Offer to fetch.
      */
     where: OfferWhereUniqueInput
@@ -8510,6 +8731,10 @@ export namespace Prisma {
      * Omit specific fields from the Offer
      */
     omit?: OfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
     /**
      * Filter, which Offer to fetch.
      */
@@ -8559,6 +8784,10 @@ export namespace Prisma {
      */
     omit?: OfferOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
+    /**
      * Filter, which Offer to fetch.
      */
     where?: OfferWhereInput
@@ -8607,6 +8836,10 @@ export namespace Prisma {
      */
     omit?: OfferOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
+    /**
      * Filter, which Offers to fetch.
      */
     where?: OfferWhereInput
@@ -8649,6 +8882,10 @@ export namespace Prisma {
      * Omit specific fields from the Offer
      */
     omit?: OfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
     /**
      * The data needed to create a Offer.
      */
@@ -8697,6 +8934,10 @@ export namespace Prisma {
      * Omit specific fields from the Offer
      */
     omit?: OfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
     /**
      * The data needed to update a Offer.
      */
@@ -8764,6 +9005,10 @@ export namespace Prisma {
      */
     omit?: OfferOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
+    /**
      * The filter to search for the Offer to update in case it exists.
      */
     where: OfferWhereUniqueInput
@@ -8790,6 +9035,10 @@ export namespace Prisma {
      */
     omit?: OfferOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
+    /**
      * Filter which Offer to delete.
      */
     where: OfferWhereUniqueInput
@@ -8810,6 +9059,30 @@ export namespace Prisma {
   }
 
   /**
+   * Offer.redemptions
+   */
+  export type Offer$redemptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    where?: OfferRedemptionWhereInput
+    orderBy?: OfferRedemptionOrderByWithRelationInput | OfferRedemptionOrderByWithRelationInput[]
+    cursor?: OfferRedemptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OfferRedemptionScalarFieldEnum | OfferRedemptionScalarFieldEnum[]
+  }
+
+  /**
    * Offer without action
    */
   export type OfferDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8821,6 +9094,1141 @@ export namespace Prisma {
      * Omit specific fields from the Offer
      */
     omit?: OfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OfferRedemption
+   */
+
+  export type AggregateOfferRedemption = {
+    _count: OfferRedemptionCountAggregateOutputType | null
+    _min: OfferRedemptionMinAggregateOutputType | null
+    _max: OfferRedemptionMaxAggregateOutputType | null
+  }
+
+  export type OfferRedemptionMinAggregateOutputType = {
+    id: string | null
+    redemptionCode: string | null
+    offerId: string | null
+    clientId: string | null
+    status: $Enums.RedemptionStatus | null
+    redeemedAt: Date | null
+    usedAt: Date | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type OfferRedemptionMaxAggregateOutputType = {
+    id: string | null
+    redemptionCode: string | null
+    offerId: string | null
+    clientId: string | null
+    status: $Enums.RedemptionStatus | null
+    redeemedAt: Date | null
+    usedAt: Date | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type OfferRedemptionCountAggregateOutputType = {
+    id: number
+    redemptionCode: number
+    offerId: number
+    clientId: number
+    status: number
+    redeemedAt: number
+    usedAt: number
+    expiresAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type OfferRedemptionMinAggregateInputType = {
+    id?: true
+    redemptionCode?: true
+    offerId?: true
+    clientId?: true
+    status?: true
+    redeemedAt?: true
+    usedAt?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type OfferRedemptionMaxAggregateInputType = {
+    id?: true
+    redemptionCode?: true
+    offerId?: true
+    clientId?: true
+    status?: true
+    redeemedAt?: true
+    usedAt?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type OfferRedemptionCountAggregateInputType = {
+    id?: true
+    redemptionCode?: true
+    offerId?: true
+    clientId?: true
+    status?: true
+    redeemedAt?: true
+    usedAt?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type OfferRedemptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OfferRedemption to aggregate.
+     */
+    where?: OfferRedemptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OfferRedemptions to fetch.
+     */
+    orderBy?: OfferRedemptionOrderByWithRelationInput | OfferRedemptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OfferRedemptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OfferRedemptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OfferRedemptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OfferRedemptions
+    **/
+    _count?: true | OfferRedemptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OfferRedemptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OfferRedemptionMaxAggregateInputType
+  }
+
+  export type GetOfferRedemptionAggregateType<T extends OfferRedemptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateOfferRedemption]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOfferRedemption[P]>
+      : GetScalarType<T[P], AggregateOfferRedemption[P]>
+  }
+
+
+
+
+  export type OfferRedemptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OfferRedemptionWhereInput
+    orderBy?: OfferRedemptionOrderByWithAggregationInput | OfferRedemptionOrderByWithAggregationInput[]
+    by: OfferRedemptionScalarFieldEnum[] | OfferRedemptionScalarFieldEnum
+    having?: OfferRedemptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OfferRedemptionCountAggregateInputType | true
+    _min?: OfferRedemptionMinAggregateInputType
+    _max?: OfferRedemptionMaxAggregateInputType
+  }
+
+  export type OfferRedemptionGroupByOutputType = {
+    id: string
+    redemptionCode: string
+    offerId: string
+    clientId: string
+    status: $Enums.RedemptionStatus
+    redeemedAt: Date
+    usedAt: Date | null
+    expiresAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: OfferRedemptionCountAggregateOutputType | null
+    _min: OfferRedemptionMinAggregateOutputType | null
+    _max: OfferRedemptionMaxAggregateOutputType | null
+  }
+
+  type GetOfferRedemptionGroupByPayload<T extends OfferRedemptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OfferRedemptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OfferRedemptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OfferRedemptionGroupByOutputType[P]>
+            : GetScalarType<T[P], OfferRedemptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OfferRedemptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    redemptionCode?: boolean
+    offerId?: boolean
+    clientId?: boolean
+    status?: boolean
+    redeemedAt?: boolean
+    usedAt?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    offer?: boolean | OfferDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["offerRedemption"]>
+
+  export type OfferRedemptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    redemptionCode?: boolean
+    offerId?: boolean
+    clientId?: boolean
+    status?: boolean
+    redeemedAt?: boolean
+    usedAt?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    offer?: boolean | OfferDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["offerRedemption"]>
+
+  export type OfferRedemptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    redemptionCode?: boolean
+    offerId?: boolean
+    clientId?: boolean
+    status?: boolean
+    redeemedAt?: boolean
+    usedAt?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    offer?: boolean | OfferDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["offerRedemption"]>
+
+  export type OfferRedemptionSelectScalar = {
+    id?: boolean
+    redemptionCode?: boolean
+    offerId?: boolean
+    clientId?: boolean
+    status?: boolean
+    redeemedAt?: boolean
+    usedAt?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type OfferRedemptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "redemptionCode" | "offerId" | "clientId" | "status" | "redeemedAt" | "usedAt" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["offerRedemption"]>
+  export type OfferRedemptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    offer?: boolean | OfferDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type OfferRedemptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    offer?: boolean | OfferDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type OfferRedemptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    offer?: boolean | OfferDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+
+  export type $OfferRedemptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OfferRedemption"
+    objects: {
+      offer: Prisma.$OfferPayload<ExtArgs>
+      client: Prisma.$ClientPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      redemptionCode: string
+      offerId: string
+      clientId: string
+      status: $Enums.RedemptionStatus
+      redeemedAt: Date
+      usedAt: Date | null
+      expiresAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["offerRedemption"]>
+    composites: {}
+  }
+
+  type OfferRedemptionGetPayload<S extends boolean | null | undefined | OfferRedemptionDefaultArgs> = $Result.GetResult<Prisma.$OfferRedemptionPayload, S>
+
+  type OfferRedemptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OfferRedemptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OfferRedemptionCountAggregateInputType | true
+    }
+
+  export interface OfferRedemptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OfferRedemption'], meta: { name: 'OfferRedemption' } }
+    /**
+     * Find zero or one OfferRedemption that matches the filter.
+     * @param {OfferRedemptionFindUniqueArgs} args - Arguments to find a OfferRedemption
+     * @example
+     * // Get one OfferRedemption
+     * const offerRedemption = await prisma.offerRedemption.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OfferRedemptionFindUniqueArgs>(args: SelectSubset<T, OfferRedemptionFindUniqueArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OfferRedemption that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OfferRedemptionFindUniqueOrThrowArgs} args - Arguments to find a OfferRedemption
+     * @example
+     * // Get one OfferRedemption
+     * const offerRedemption = await prisma.offerRedemption.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OfferRedemptionFindUniqueOrThrowArgs>(args: SelectSubset<T, OfferRedemptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OfferRedemption that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OfferRedemptionFindFirstArgs} args - Arguments to find a OfferRedemption
+     * @example
+     * // Get one OfferRedemption
+     * const offerRedemption = await prisma.offerRedemption.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OfferRedemptionFindFirstArgs>(args?: SelectSubset<T, OfferRedemptionFindFirstArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OfferRedemption that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OfferRedemptionFindFirstOrThrowArgs} args - Arguments to find a OfferRedemption
+     * @example
+     * // Get one OfferRedemption
+     * const offerRedemption = await prisma.offerRedemption.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OfferRedemptionFindFirstOrThrowArgs>(args?: SelectSubset<T, OfferRedemptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OfferRedemptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OfferRedemptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OfferRedemptions
+     * const offerRedemptions = await prisma.offerRedemption.findMany()
+     * 
+     * // Get first 10 OfferRedemptions
+     * const offerRedemptions = await prisma.offerRedemption.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const offerRedemptionWithIdOnly = await prisma.offerRedemption.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OfferRedemptionFindManyArgs>(args?: SelectSubset<T, OfferRedemptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OfferRedemption.
+     * @param {OfferRedemptionCreateArgs} args - Arguments to create a OfferRedemption.
+     * @example
+     * // Create one OfferRedemption
+     * const OfferRedemption = await prisma.offerRedemption.create({
+     *   data: {
+     *     // ... data to create a OfferRedemption
+     *   }
+     * })
+     * 
+     */
+    create<T extends OfferRedemptionCreateArgs>(args: SelectSubset<T, OfferRedemptionCreateArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OfferRedemptions.
+     * @param {OfferRedemptionCreateManyArgs} args - Arguments to create many OfferRedemptions.
+     * @example
+     * // Create many OfferRedemptions
+     * const offerRedemption = await prisma.offerRedemption.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OfferRedemptionCreateManyArgs>(args?: SelectSubset<T, OfferRedemptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many OfferRedemptions and returns the data saved in the database.
+     * @param {OfferRedemptionCreateManyAndReturnArgs} args - Arguments to create many OfferRedemptions.
+     * @example
+     * // Create many OfferRedemptions
+     * const offerRedemption = await prisma.offerRedemption.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many OfferRedemptions and only return the `id`
+     * const offerRedemptionWithIdOnly = await prisma.offerRedemption.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OfferRedemptionCreateManyAndReturnArgs>(args?: SelectSubset<T, OfferRedemptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a OfferRedemption.
+     * @param {OfferRedemptionDeleteArgs} args - Arguments to delete one OfferRedemption.
+     * @example
+     * // Delete one OfferRedemption
+     * const OfferRedemption = await prisma.offerRedemption.delete({
+     *   where: {
+     *     // ... filter to delete one OfferRedemption
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OfferRedemptionDeleteArgs>(args: SelectSubset<T, OfferRedemptionDeleteArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OfferRedemption.
+     * @param {OfferRedemptionUpdateArgs} args - Arguments to update one OfferRedemption.
+     * @example
+     * // Update one OfferRedemption
+     * const offerRedemption = await prisma.offerRedemption.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OfferRedemptionUpdateArgs>(args: SelectSubset<T, OfferRedemptionUpdateArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OfferRedemptions.
+     * @param {OfferRedemptionDeleteManyArgs} args - Arguments to filter OfferRedemptions to delete.
+     * @example
+     * // Delete a few OfferRedemptions
+     * const { count } = await prisma.offerRedemption.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OfferRedemptionDeleteManyArgs>(args?: SelectSubset<T, OfferRedemptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OfferRedemptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OfferRedemptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OfferRedemptions
+     * const offerRedemption = await prisma.offerRedemption.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OfferRedemptionUpdateManyArgs>(args: SelectSubset<T, OfferRedemptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OfferRedemptions and returns the data updated in the database.
+     * @param {OfferRedemptionUpdateManyAndReturnArgs} args - Arguments to update many OfferRedemptions.
+     * @example
+     * // Update many OfferRedemptions
+     * const offerRedemption = await prisma.offerRedemption.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more OfferRedemptions and only return the `id`
+     * const offerRedemptionWithIdOnly = await prisma.offerRedemption.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OfferRedemptionUpdateManyAndReturnArgs>(args: SelectSubset<T, OfferRedemptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one OfferRedemption.
+     * @param {OfferRedemptionUpsertArgs} args - Arguments to update or create a OfferRedemption.
+     * @example
+     * // Update or create a OfferRedemption
+     * const offerRedemption = await prisma.offerRedemption.upsert({
+     *   create: {
+     *     // ... data to create a OfferRedemption
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OfferRedemption we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OfferRedemptionUpsertArgs>(args: SelectSubset<T, OfferRedemptionUpsertArgs<ExtArgs>>): Prisma__OfferRedemptionClient<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of OfferRedemptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OfferRedemptionCountArgs} args - Arguments to filter OfferRedemptions to count.
+     * @example
+     * // Count the number of OfferRedemptions
+     * const count = await prisma.offerRedemption.count({
+     *   where: {
+     *     // ... the filter for the OfferRedemptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends OfferRedemptionCountArgs>(
+      args?: Subset<T, OfferRedemptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OfferRedemptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OfferRedemption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OfferRedemptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OfferRedemptionAggregateArgs>(args: Subset<T, OfferRedemptionAggregateArgs>): Prisma.PrismaPromise<GetOfferRedemptionAggregateType<T>>
+
+    /**
+     * Group by OfferRedemption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OfferRedemptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OfferRedemptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OfferRedemptionGroupByArgs['orderBy'] }
+        : { orderBy?: OfferRedemptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OfferRedemptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOfferRedemptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OfferRedemption model
+   */
+  readonly fields: OfferRedemptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OfferRedemption.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OfferRedemptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    offer<T extends OfferDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OfferDefaultArgs<ExtArgs>>): Prisma__OfferClient<$Result.GetResult<Prisma.$OfferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OfferRedemption model
+   */
+  interface OfferRedemptionFieldRefs {
+    readonly id: FieldRef<"OfferRedemption", 'String'>
+    readonly redemptionCode: FieldRef<"OfferRedemption", 'String'>
+    readonly offerId: FieldRef<"OfferRedemption", 'String'>
+    readonly clientId: FieldRef<"OfferRedemption", 'String'>
+    readonly status: FieldRef<"OfferRedemption", 'RedemptionStatus'>
+    readonly redeemedAt: FieldRef<"OfferRedemption", 'DateTime'>
+    readonly usedAt: FieldRef<"OfferRedemption", 'DateTime'>
+    readonly expiresAt: FieldRef<"OfferRedemption", 'DateTime'>
+    readonly createdAt: FieldRef<"OfferRedemption", 'DateTime'>
+    readonly updatedAt: FieldRef<"OfferRedemption", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OfferRedemption findUnique
+   */
+  export type OfferRedemptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * Filter, which OfferRedemption to fetch.
+     */
+    where: OfferRedemptionWhereUniqueInput
+  }
+
+  /**
+   * OfferRedemption findUniqueOrThrow
+   */
+  export type OfferRedemptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * Filter, which OfferRedemption to fetch.
+     */
+    where: OfferRedemptionWhereUniqueInput
+  }
+
+  /**
+   * OfferRedemption findFirst
+   */
+  export type OfferRedemptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * Filter, which OfferRedemption to fetch.
+     */
+    where?: OfferRedemptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OfferRedemptions to fetch.
+     */
+    orderBy?: OfferRedemptionOrderByWithRelationInput | OfferRedemptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OfferRedemptions.
+     */
+    cursor?: OfferRedemptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OfferRedemptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OfferRedemptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OfferRedemptions.
+     */
+    distinct?: OfferRedemptionScalarFieldEnum | OfferRedemptionScalarFieldEnum[]
+  }
+
+  /**
+   * OfferRedemption findFirstOrThrow
+   */
+  export type OfferRedemptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * Filter, which OfferRedemption to fetch.
+     */
+    where?: OfferRedemptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OfferRedemptions to fetch.
+     */
+    orderBy?: OfferRedemptionOrderByWithRelationInput | OfferRedemptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OfferRedemptions.
+     */
+    cursor?: OfferRedemptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OfferRedemptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OfferRedemptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OfferRedemptions.
+     */
+    distinct?: OfferRedemptionScalarFieldEnum | OfferRedemptionScalarFieldEnum[]
+  }
+
+  /**
+   * OfferRedemption findMany
+   */
+  export type OfferRedemptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * Filter, which OfferRedemptions to fetch.
+     */
+    where?: OfferRedemptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OfferRedemptions to fetch.
+     */
+    orderBy?: OfferRedemptionOrderByWithRelationInput | OfferRedemptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OfferRedemptions.
+     */
+    cursor?: OfferRedemptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OfferRedemptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OfferRedemptions.
+     */
+    skip?: number
+    distinct?: OfferRedemptionScalarFieldEnum | OfferRedemptionScalarFieldEnum[]
+  }
+
+  /**
+   * OfferRedemption create
+   */
+  export type OfferRedemptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a OfferRedemption.
+     */
+    data: XOR<OfferRedemptionCreateInput, OfferRedemptionUncheckedCreateInput>
+  }
+
+  /**
+   * OfferRedemption createMany
+   */
+  export type OfferRedemptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OfferRedemptions.
+     */
+    data: OfferRedemptionCreateManyInput | OfferRedemptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * OfferRedemption createManyAndReturn
+   */
+  export type OfferRedemptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many OfferRedemptions.
+     */
+    data: OfferRedemptionCreateManyInput | OfferRedemptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OfferRedemption update
+   */
+  export type OfferRedemptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a OfferRedemption.
+     */
+    data: XOR<OfferRedemptionUpdateInput, OfferRedemptionUncheckedUpdateInput>
+    /**
+     * Choose, which OfferRedemption to update.
+     */
+    where: OfferRedemptionWhereUniqueInput
+  }
+
+  /**
+   * OfferRedemption updateMany
+   */
+  export type OfferRedemptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OfferRedemptions.
+     */
+    data: XOR<OfferRedemptionUpdateManyMutationInput, OfferRedemptionUncheckedUpdateManyInput>
+    /**
+     * Filter which OfferRedemptions to update
+     */
+    where?: OfferRedemptionWhereInput
+    /**
+     * Limit how many OfferRedemptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OfferRedemption updateManyAndReturn
+   */
+  export type OfferRedemptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * The data used to update OfferRedemptions.
+     */
+    data: XOR<OfferRedemptionUpdateManyMutationInput, OfferRedemptionUncheckedUpdateManyInput>
+    /**
+     * Filter which OfferRedemptions to update
+     */
+    where?: OfferRedemptionWhereInput
+    /**
+     * Limit how many OfferRedemptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OfferRedemption upsert
+   */
+  export type OfferRedemptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the OfferRedemption to update in case it exists.
+     */
+    where: OfferRedemptionWhereUniqueInput
+    /**
+     * In case the OfferRedemption found by the `where` argument doesn't exist, create a new OfferRedemption with this data.
+     */
+    create: XOR<OfferRedemptionCreateInput, OfferRedemptionUncheckedCreateInput>
+    /**
+     * In case the OfferRedemption was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OfferRedemptionUpdateInput, OfferRedemptionUncheckedUpdateInput>
+  }
+
+  /**
+   * OfferRedemption delete
+   */
+  export type OfferRedemptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
+    /**
+     * Filter which OfferRedemption to delete.
+     */
+    where: OfferRedemptionWhereUniqueInput
+  }
+
+  /**
+   * OfferRedemption deleteMany
+   */
+  export type OfferRedemptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OfferRedemptions to delete
+     */
+    where?: OfferRedemptionWhereInput
+    /**
+     * Limit how many OfferRedemptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OfferRedemption without action
+   */
+  export type OfferRedemptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OfferRedemption
+     */
+    select?: OfferRedemptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OfferRedemption
+     */
+    omit?: OfferRedemptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OfferRedemptionInclude<ExtArgs> | null
   }
 
 
@@ -12237,6 +13645,8 @@ export namespace Prisma {
     cost: 'cost',
     discount: 'discount',
     imageUrl: 'imageUrl',
+    confirmationCode: 'confirmationCode',
+    maxRedemptionsPerClient: 'maxRedemptionsPerClient',
     validFrom: 'validFrom',
     validTo: 'validTo',
     isActive: 'isActive',
@@ -12245,6 +13655,22 @@ export namespace Prisma {
   };
 
   export type OfferScalarFieldEnum = (typeof OfferScalarFieldEnum)[keyof typeof OfferScalarFieldEnum]
+
+
+  export const OfferRedemptionScalarFieldEnum: {
+    id: 'id',
+    redemptionCode: 'redemptionCode',
+    offerId: 'offerId',
+    clientId: 'clientId',
+    status: 'status',
+    redeemedAt: 'redeemedAt',
+    usedAt: 'usedAt',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type OfferRedemptionScalarFieldEnum = (typeof OfferRedemptionScalarFieldEnum)[keyof typeof OfferRedemptionScalarFieldEnum]
 
 
   export const FAQScalarFieldEnum: {
@@ -12396,20 +13822,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'TransactionType'
-   */
-  export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType'>
-    
-
-
-  /**
-   * Reference to a field of type 'TransactionType[]'
-   */
-  export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -12420,6 +13832,34 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'RedemptionStatus'
+   */
+  export type EnumRedemptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RedemptionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'RedemptionStatus[]'
+   */
+  export type ListEnumRedemptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RedemptionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TransactionType'
+   */
+  export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType'>
+    
+
+
+  /**
+   * Reference to a field of type 'TransactionType[]'
+   */
+  export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType[]'>
     
   /**
    * Deep Input Types
@@ -12540,6 +13980,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationListRelationFilter
     indicationsAsReferred?: IndicationListRelationFilter
     transactions?: TransactionListRelationFilter
+    offerRedemptions?: OfferRedemptionListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
@@ -12563,6 +14004,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationOrderByRelationAggregateInput
     indicationsAsReferred?: IndicationOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
+    offerRedemptions?: OfferRedemptionOrderByRelationAggregateInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
@@ -12589,6 +14031,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationListRelationFilter
     indicationsAsReferred?: IndicationListRelationFilter
     transactions?: TransactionListRelationFilter
+    offerRedemptions?: OfferRedemptionListRelationFilter
   }, "id" | "email" | "cpfCnpj" | "indicationCode">
 
   export type ClientOrderByWithAggregationInput = {
@@ -12879,11 +14322,14 @@ export namespace Prisma {
     cost?: FloatFilter<"Offer"> | number
     discount?: StringNullableFilter<"Offer"> | string | null
     imageUrl?: StringNullableFilter<"Offer"> | string | null
+    confirmationCode?: StringNullableFilter<"Offer"> | string | null
+    maxRedemptionsPerClient?: IntFilter<"Offer"> | number
     validFrom?: DateTimeNullableFilter<"Offer"> | Date | string | null
     validTo?: DateTimeNullableFilter<"Offer"> | Date | string | null
     isActive?: BoolFilter<"Offer"> | boolean
     createdAt?: DateTimeFilter<"Offer"> | Date | string
     updatedAt?: DateTimeFilter<"Offer"> | Date | string
+    redemptions?: OfferRedemptionListRelationFilter
   }
 
   export type OfferOrderByWithRelationInput = {
@@ -12894,11 +14340,14 @@ export namespace Prisma {
     cost?: SortOrder
     discount?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
+    confirmationCode?: SortOrderInput | SortOrder
+    maxRedemptionsPerClient?: SortOrder
     validFrom?: SortOrderInput | SortOrder
     validTo?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    redemptions?: OfferRedemptionOrderByRelationAggregateInput
   }
 
   export type OfferWhereUniqueInput = Prisma.AtLeast<{
@@ -12912,11 +14361,14 @@ export namespace Prisma {
     cost?: FloatFilter<"Offer"> | number
     discount?: StringNullableFilter<"Offer"> | string | null
     imageUrl?: StringNullableFilter<"Offer"> | string | null
+    confirmationCode?: StringNullableFilter<"Offer"> | string | null
+    maxRedemptionsPerClient?: IntFilter<"Offer"> | number
     validFrom?: DateTimeNullableFilter<"Offer"> | Date | string | null
     validTo?: DateTimeNullableFilter<"Offer"> | Date | string | null
     isActive?: BoolFilter<"Offer"> | boolean
     createdAt?: DateTimeFilter<"Offer"> | Date | string
     updatedAt?: DateTimeFilter<"Offer"> | Date | string
+    redemptions?: OfferRedemptionListRelationFilter
   }, "id">
 
   export type OfferOrderByWithAggregationInput = {
@@ -12927,6 +14379,8 @@ export namespace Prisma {
     cost?: SortOrder
     discount?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
+    confirmationCode?: SortOrderInput | SortOrder
+    maxRedemptionsPerClient?: SortOrder
     validFrom?: SortOrderInput | SortOrder
     validTo?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -12950,11 +14404,96 @@ export namespace Prisma {
     cost?: FloatWithAggregatesFilter<"Offer"> | number
     discount?: StringNullableWithAggregatesFilter<"Offer"> | string | null
     imageUrl?: StringNullableWithAggregatesFilter<"Offer"> | string | null
+    confirmationCode?: StringNullableWithAggregatesFilter<"Offer"> | string | null
+    maxRedemptionsPerClient?: IntWithAggregatesFilter<"Offer"> | number
     validFrom?: DateTimeNullableWithAggregatesFilter<"Offer"> | Date | string | null
     validTo?: DateTimeNullableWithAggregatesFilter<"Offer"> | Date | string | null
     isActive?: BoolWithAggregatesFilter<"Offer"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Offer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Offer"> | Date | string
+  }
+
+  export type OfferRedemptionWhereInput = {
+    AND?: OfferRedemptionWhereInput | OfferRedemptionWhereInput[]
+    OR?: OfferRedemptionWhereInput[]
+    NOT?: OfferRedemptionWhereInput | OfferRedemptionWhereInput[]
+    id?: StringFilter<"OfferRedemption"> | string
+    redemptionCode?: StringFilter<"OfferRedemption"> | string
+    offerId?: StringFilter<"OfferRedemption"> | string
+    clientId?: StringFilter<"OfferRedemption"> | string
+    status?: EnumRedemptionStatusFilter<"OfferRedemption"> | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    usedAt?: DateTimeNullableFilter<"OfferRedemption"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"OfferRedemption"> | Date | string | null
+    createdAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    updatedAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    offer?: XOR<OfferScalarRelationFilter, OfferWhereInput>
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }
+
+  export type OfferRedemptionOrderByWithRelationInput = {
+    id?: SortOrder
+    redemptionCode?: SortOrder
+    offerId?: SortOrder
+    clientId?: SortOrder
+    status?: SortOrder
+    redeemedAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    offer?: OfferOrderByWithRelationInput
+    client?: ClientOrderByWithRelationInput
+  }
+
+  export type OfferRedemptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    redemptionCode?: string
+    AND?: OfferRedemptionWhereInput | OfferRedemptionWhereInput[]
+    OR?: OfferRedemptionWhereInput[]
+    NOT?: OfferRedemptionWhereInput | OfferRedemptionWhereInput[]
+    offerId?: StringFilter<"OfferRedemption"> | string
+    clientId?: StringFilter<"OfferRedemption"> | string
+    status?: EnumRedemptionStatusFilter<"OfferRedemption"> | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    usedAt?: DateTimeNullableFilter<"OfferRedemption"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"OfferRedemption"> | Date | string | null
+    createdAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    updatedAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    offer?: XOR<OfferScalarRelationFilter, OfferWhereInput>
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }, "id" | "redemptionCode">
+
+  export type OfferRedemptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    redemptionCode?: SortOrder
+    offerId?: SortOrder
+    clientId?: SortOrder
+    status?: SortOrder
+    redeemedAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: OfferRedemptionCountOrderByAggregateInput
+    _max?: OfferRedemptionMaxOrderByAggregateInput
+    _min?: OfferRedemptionMinOrderByAggregateInput
+  }
+
+  export type OfferRedemptionScalarWhereWithAggregatesInput = {
+    AND?: OfferRedemptionScalarWhereWithAggregatesInput | OfferRedemptionScalarWhereWithAggregatesInput[]
+    OR?: OfferRedemptionScalarWhereWithAggregatesInput[]
+    NOT?: OfferRedemptionScalarWhereWithAggregatesInput | OfferRedemptionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OfferRedemption"> | string
+    redemptionCode?: StringWithAggregatesFilter<"OfferRedemption"> | string
+    offerId?: StringWithAggregatesFilter<"OfferRedemption"> | string
+    clientId?: StringWithAggregatesFilter<"OfferRedemption"> | string
+    status?: EnumRedemptionStatusWithAggregatesFilter<"OfferRedemption"> | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeWithAggregatesFilter<"OfferRedemption"> | Date | string
+    usedAt?: DateTimeNullableWithAggregatesFilter<"OfferRedemption"> | Date | string | null
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"OfferRedemption"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"OfferRedemption"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"OfferRedemption"> | Date | string
   }
 
   export type FAQWhereInput = {
@@ -13294,6 +14833,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
@@ -13317,6 +14857,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
@@ -13340,6 +14881,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
@@ -13363,6 +14905,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
@@ -13676,11 +15219,14 @@ export namespace Prisma {
     cost: number
     discount?: string | null
     imageUrl?: string | null
+    confirmationCode?: string | null
+    maxRedemptionsPerClient?: number
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    redemptions?: OfferRedemptionCreateNestedManyWithoutOfferInput
   }
 
   export type OfferUncheckedCreateInput = {
@@ -13691,11 +15237,14 @@ export namespace Prisma {
     cost: number
     discount?: string | null
     imageUrl?: string | null
+    confirmationCode?: string | null
+    maxRedemptionsPerClient?: number
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    redemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutOfferInput
   }
 
   export type OfferUpdateInput = {
@@ -13706,11 +15255,14 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     discount?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redemptions?: OfferRedemptionUpdateManyWithoutOfferNestedInput
   }
 
   export type OfferUncheckedUpdateInput = {
@@ -13721,11 +15273,14 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     discount?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redemptions?: OfferRedemptionUncheckedUpdateManyWithoutOfferNestedInput
   }
 
   export type OfferCreateManyInput = {
@@ -13736,6 +15291,8 @@ export namespace Prisma {
     cost: number
     discount?: string | null
     imageUrl?: string | null
+    confirmationCode?: string | null
+    maxRedemptionsPerClient?: number
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
@@ -13751,6 +15308,8 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     discount?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -13766,9 +15325,100 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     discount?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OfferRedemptionCreateInput = {
+    id?: string
+    redemptionCode: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    offer: OfferCreateNestedOneWithoutRedemptionsInput
+    client: ClientCreateNestedOneWithoutOfferRedemptionsInput
+  }
+
+  export type OfferRedemptionUncheckedCreateInput = {
+    id?: string
+    redemptionCode: string
+    offerId: string
+    clientId: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OfferRedemptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    offer?: OfferUpdateOneRequiredWithoutRedemptionsNestedInput
+    client?: ClientUpdateOneRequiredWithoutOfferRedemptionsNestedInput
+  }
+
+  export type OfferRedemptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OfferRedemptionCreateManyInput = {
+    id?: string
+    redemptionCode: string
+    offerId: string
+    clientId: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OfferRedemptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OfferRedemptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14249,6 +15899,12 @@ export namespace Prisma {
     none?: TransactionWhereInput
   }
 
+  export type OfferRedemptionListRelationFilter = {
+    every?: OfferRedemptionWhereInput
+    some?: OfferRedemptionWhereInput
+    none?: OfferRedemptionWhereInput
+  }
+
   export type InverterOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -14266,6 +15922,10 @@ export namespace Prisma {
   }
 
   export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type OfferRedemptionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14535,6 +16195,17 @@ export namespace Prisma {
     _max?: NestedEnumIndicationStatusFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type OfferCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -14543,6 +16214,8 @@ export namespace Prisma {
     cost?: SortOrder
     discount?: SortOrder
     imageUrl?: SortOrder
+    confirmationCode?: SortOrder
+    maxRedemptionsPerClient?: SortOrder
     validFrom?: SortOrder
     validTo?: SortOrder
     isActive?: SortOrder
@@ -14552,6 +16225,7 @@ export namespace Prisma {
 
   export type OfferAvgOrderByAggregateInput = {
     cost?: SortOrder
+    maxRedemptionsPerClient?: SortOrder
   }
 
   export type OfferMaxOrderByAggregateInput = {
@@ -14562,6 +16236,8 @@ export namespace Prisma {
     cost?: SortOrder
     discount?: SortOrder
     imageUrl?: SortOrder
+    confirmationCode?: SortOrder
+    maxRedemptionsPerClient?: SortOrder
     validFrom?: SortOrder
     validTo?: SortOrder
     isActive?: SortOrder
@@ -14577,6 +16253,8 @@ export namespace Prisma {
     cost?: SortOrder
     discount?: SortOrder
     imageUrl?: SortOrder
+    confirmationCode?: SortOrder
+    maxRedemptionsPerClient?: SortOrder
     validFrom?: SortOrder
     validTo?: SortOrder
     isActive?: SortOrder
@@ -14586,6 +16264,84 @@ export namespace Prisma {
 
   export type OfferSumOrderByAggregateInput = {
     cost?: SortOrder
+    maxRedemptionsPerClient?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumRedemptionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RedemptionStatus | EnumRedemptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRedemptionStatusFilter<$PrismaModel> | $Enums.RedemptionStatus
+  }
+
+  export type OfferScalarRelationFilter = {
+    is?: OfferWhereInput
+    isNot?: OfferWhereInput
+  }
+
+  export type OfferRedemptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    redemptionCode?: SortOrder
+    offerId?: SortOrder
+    clientId?: SortOrder
+    status?: SortOrder
+    redeemedAt?: SortOrder
+    usedAt?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type OfferRedemptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    redemptionCode?: SortOrder
+    offerId?: SortOrder
+    clientId?: SortOrder
+    status?: SortOrder
+    redeemedAt?: SortOrder
+    usedAt?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type OfferRedemptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    redemptionCode?: SortOrder
+    offerId?: SortOrder
+    clientId?: SortOrder
+    status?: SortOrder
+    redeemedAt?: SortOrder
+    usedAt?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumRedemptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RedemptionStatus | EnumRedemptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRedemptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.RedemptionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRedemptionStatusFilter<$PrismaModel>
+    _max?: NestedEnumRedemptionStatusFilter<$PrismaModel>
   }
 
   export type FAQCountOrderByAggregateInput = {
@@ -14827,6 +16583,13 @@ export namespace Prisma {
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
+  export type OfferRedemptionCreateNestedManyWithoutClientInput = {
+    create?: XOR<OfferRedemptionCreateWithoutClientInput, OfferRedemptionUncheckedCreateWithoutClientInput> | OfferRedemptionCreateWithoutClientInput[] | OfferRedemptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutClientInput | OfferRedemptionCreateOrConnectWithoutClientInput[]
+    createMany?: OfferRedemptionCreateManyClientInputEnvelope
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+  }
+
   export type InverterUncheckedCreateNestedManyWithoutClientInput = {
     create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
     connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
@@ -14867,6 +16630,13 @@ export namespace Prisma {
     connectOrCreate?: TransactionCreateOrConnectWithoutClientInput | TransactionCreateOrConnectWithoutClientInput[]
     createMany?: TransactionCreateManyClientInputEnvelope
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type OfferRedemptionUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<OfferRedemptionCreateWithoutClientInput, OfferRedemptionUncheckedCreateWithoutClientInput> | OfferRedemptionCreateWithoutClientInput[] | OfferRedemptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutClientInput | OfferRedemptionCreateOrConnectWithoutClientInput[]
+    createMany?: OfferRedemptionCreateManyClientInputEnvelope
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -14973,6 +16743,20 @@ export namespace Prisma {
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
+  export type OfferRedemptionUpdateManyWithoutClientNestedInput = {
+    create?: XOR<OfferRedemptionCreateWithoutClientInput, OfferRedemptionUncheckedCreateWithoutClientInput> | OfferRedemptionCreateWithoutClientInput[] | OfferRedemptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutClientInput | OfferRedemptionCreateOrConnectWithoutClientInput[]
+    upsert?: OfferRedemptionUpsertWithWhereUniqueWithoutClientInput | OfferRedemptionUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: OfferRedemptionCreateManyClientInputEnvelope
+    set?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    disconnect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    delete?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    update?: OfferRedemptionUpdateWithWhereUniqueWithoutClientInput | OfferRedemptionUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: OfferRedemptionUpdateManyWithWhereWithoutClientInput | OfferRedemptionUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
+  }
+
   export type InverterUncheckedUpdateManyWithoutClientNestedInput = {
     create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
     connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
@@ -15055,6 +16839,20 @@ export namespace Prisma {
     update?: TransactionUpdateWithWhereUniqueWithoutClientInput | TransactionUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: TransactionUpdateManyWithWhereWithoutClientInput | TransactionUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<OfferRedemptionCreateWithoutClientInput, OfferRedemptionUncheckedCreateWithoutClientInput> | OfferRedemptionCreateWithoutClientInput[] | OfferRedemptionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutClientInput | OfferRedemptionCreateOrConnectWithoutClientInput[]
+    upsert?: OfferRedemptionUpsertWithWhereUniqueWithoutClientInput | OfferRedemptionUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: OfferRedemptionCreateManyClientInputEnvelope
+    set?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    disconnect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    delete?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    update?: OfferRedemptionUpdateWithWhereUniqueWithoutClientInput | OfferRedemptionUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: OfferRedemptionUpdateManyWithWhereWithoutClientInput | OfferRedemptionUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
   }
 
   export type ClientCreateNestedOneWithoutInvertersInput = {
@@ -15157,6 +16955,88 @@ export namespace Prisma {
     upsert?: ClientUpsertWithoutIndicationsAsReferredInput
     connect?: ClientWhereUniqueInput
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutIndicationsAsReferredInput, ClientUpdateWithoutIndicationsAsReferredInput>, ClientUncheckedUpdateWithoutIndicationsAsReferredInput>
+  }
+
+  export type OfferRedemptionCreateNestedManyWithoutOfferInput = {
+    create?: XOR<OfferRedemptionCreateWithoutOfferInput, OfferRedemptionUncheckedCreateWithoutOfferInput> | OfferRedemptionCreateWithoutOfferInput[] | OfferRedemptionUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutOfferInput | OfferRedemptionCreateOrConnectWithoutOfferInput[]
+    createMany?: OfferRedemptionCreateManyOfferInputEnvelope
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+  }
+
+  export type OfferRedemptionUncheckedCreateNestedManyWithoutOfferInput = {
+    create?: XOR<OfferRedemptionCreateWithoutOfferInput, OfferRedemptionUncheckedCreateWithoutOfferInput> | OfferRedemptionCreateWithoutOfferInput[] | OfferRedemptionUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutOfferInput | OfferRedemptionCreateOrConnectWithoutOfferInput[]
+    createMany?: OfferRedemptionCreateManyOfferInputEnvelope
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type OfferRedemptionUpdateManyWithoutOfferNestedInput = {
+    create?: XOR<OfferRedemptionCreateWithoutOfferInput, OfferRedemptionUncheckedCreateWithoutOfferInput> | OfferRedemptionCreateWithoutOfferInput[] | OfferRedemptionUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutOfferInput | OfferRedemptionCreateOrConnectWithoutOfferInput[]
+    upsert?: OfferRedemptionUpsertWithWhereUniqueWithoutOfferInput | OfferRedemptionUpsertWithWhereUniqueWithoutOfferInput[]
+    createMany?: OfferRedemptionCreateManyOfferInputEnvelope
+    set?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    disconnect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    delete?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    update?: OfferRedemptionUpdateWithWhereUniqueWithoutOfferInput | OfferRedemptionUpdateWithWhereUniqueWithoutOfferInput[]
+    updateMany?: OfferRedemptionUpdateManyWithWhereWithoutOfferInput | OfferRedemptionUpdateManyWithWhereWithoutOfferInput[]
+    deleteMany?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
+  }
+
+  export type OfferRedemptionUncheckedUpdateManyWithoutOfferNestedInput = {
+    create?: XOR<OfferRedemptionCreateWithoutOfferInput, OfferRedemptionUncheckedCreateWithoutOfferInput> | OfferRedemptionCreateWithoutOfferInput[] | OfferRedemptionUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: OfferRedemptionCreateOrConnectWithoutOfferInput | OfferRedemptionCreateOrConnectWithoutOfferInput[]
+    upsert?: OfferRedemptionUpsertWithWhereUniqueWithoutOfferInput | OfferRedemptionUpsertWithWhereUniqueWithoutOfferInput[]
+    createMany?: OfferRedemptionCreateManyOfferInputEnvelope
+    set?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    disconnect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    delete?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
+    update?: OfferRedemptionUpdateWithWhereUniqueWithoutOfferInput | OfferRedemptionUpdateWithWhereUniqueWithoutOfferInput[]
+    updateMany?: OfferRedemptionUpdateManyWithWhereWithoutOfferInput | OfferRedemptionUpdateManyWithWhereWithoutOfferInput[]
+    deleteMany?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
+  }
+
+  export type OfferCreateNestedOneWithoutRedemptionsInput = {
+    create?: XOR<OfferCreateWithoutRedemptionsInput, OfferUncheckedCreateWithoutRedemptionsInput>
+    connectOrCreate?: OfferCreateOrConnectWithoutRedemptionsInput
+    connect?: OfferWhereUniqueInput
+  }
+
+  export type ClientCreateNestedOneWithoutOfferRedemptionsInput = {
+    create?: XOR<ClientCreateWithoutOfferRedemptionsInput, ClientUncheckedCreateWithoutOfferRedemptionsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutOfferRedemptionsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type EnumRedemptionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.RedemptionStatus
+  }
+
+  export type OfferUpdateOneRequiredWithoutRedemptionsNestedInput = {
+    create?: XOR<OfferCreateWithoutRedemptionsInput, OfferUncheckedCreateWithoutRedemptionsInput>
+    connectOrCreate?: OfferCreateOrConnectWithoutRedemptionsInput
+    upsert?: OfferUpsertWithoutRedemptionsInput
+    connect?: OfferWhereUniqueInput
+    update?: XOR<XOR<OfferUpdateToOneWithWhereWithoutRedemptionsInput, OfferUpdateWithoutRedemptionsInput>, OfferUncheckedUpdateWithoutRedemptionsInput>
+  }
+
+  export type ClientUpdateOneRequiredWithoutOfferRedemptionsNestedInput = {
+    create?: XOR<ClientCreateWithoutOfferRedemptionsInput, ClientUncheckedCreateWithoutOfferRedemptionsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutOfferRedemptionsInput
+    upsert?: ClientUpsertWithoutOfferRedemptionsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutOfferRedemptionsInput, ClientUpdateWithoutOfferRedemptionsInput>, ClientUncheckedUpdateWithoutOfferRedemptionsInput>
   }
 
   export type ClientCreateNestedOneWithoutTransactionsInput = {
@@ -15426,6 +17306,39 @@ export namespace Prisma {
     _max?: NestedEnumIndicationStatusFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRedemptionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RedemptionStatus | EnumRedemptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRedemptionStatusFilter<$PrismaModel> | $Enums.RedemptionStatus
+  }
+
+  export type NestedEnumRedemptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RedemptionStatus | EnumRedemptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RedemptionStatus[] | ListEnumRedemptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRedemptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.RedemptionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRedemptionStatusFilter<$PrismaModel>
+    _max?: NestedEnumRedemptionStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumTransactionTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
@@ -15463,6 +17376,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutUsersInput = {
@@ -15485,6 +17399,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutUsersInput = {
@@ -15523,6 +17438,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutUsersInput = {
@@ -15545,6 +17461,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type InverterCreateWithoutClientInput = {
@@ -15743,6 +17660,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type OfferRedemptionCreateWithoutClientInput = {
+    id?: string
+    redemptionCode: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    offer: OfferCreateNestedOneWithoutRedemptionsInput
+  }
+
+  export type OfferRedemptionUncheckedCreateWithoutClientInput = {
+    id?: string
+    redemptionCode: string
+    offerId: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OfferRedemptionCreateOrConnectWithoutClientInput = {
+    where: OfferRedemptionWhereUniqueInput
+    create: XOR<OfferRedemptionCreateWithoutClientInput, OfferRedemptionUncheckedCreateWithoutClientInput>
+  }
+
+  export type OfferRedemptionCreateManyClientInputEnvelope = {
+    data: OfferRedemptionCreateManyClientInput | OfferRedemptionCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
   export type InverterUpsertWithWhereUniqueWithoutClientInput = {
     where: InverterWhereUniqueInput
     update: XOR<InverterUpdateWithoutClientInput, InverterUncheckedUpdateWithoutClientInput>
@@ -15916,6 +17867,38 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
   }
 
+  export type OfferRedemptionUpsertWithWhereUniqueWithoutClientInput = {
+    where: OfferRedemptionWhereUniqueInput
+    update: XOR<OfferRedemptionUpdateWithoutClientInput, OfferRedemptionUncheckedUpdateWithoutClientInput>
+    create: XOR<OfferRedemptionCreateWithoutClientInput, OfferRedemptionUncheckedCreateWithoutClientInput>
+  }
+
+  export type OfferRedemptionUpdateWithWhereUniqueWithoutClientInput = {
+    where: OfferRedemptionWhereUniqueInput
+    data: XOR<OfferRedemptionUpdateWithoutClientInput, OfferRedemptionUncheckedUpdateWithoutClientInput>
+  }
+
+  export type OfferRedemptionUpdateManyWithWhereWithoutClientInput = {
+    where: OfferRedemptionScalarWhereInput
+    data: XOR<OfferRedemptionUpdateManyMutationInput, OfferRedemptionUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type OfferRedemptionScalarWhereInput = {
+    AND?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
+    OR?: OfferRedemptionScalarWhereInput[]
+    NOT?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
+    id?: StringFilter<"OfferRedemption"> | string
+    redemptionCode?: StringFilter<"OfferRedemption"> | string
+    offerId?: StringFilter<"OfferRedemption"> | string
+    clientId?: StringFilter<"OfferRedemption"> | string
+    status?: EnumRedemptionStatusFilter<"OfferRedemption"> | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    usedAt?: DateTimeNullableFilter<"OfferRedemption"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"OfferRedemption"> | Date | string | null
+    createdAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+    updatedAt?: DateTimeFilter<"OfferRedemption"> | Date | string
+  }
+
   export type ClientCreateWithoutInvertersInput = {
     id?: string
     name: string
@@ -15936,6 +17919,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutInvertersInput = {
@@ -15958,6 +17942,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutInvertersInput = {
@@ -16028,6 +18013,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutInvertersInput = {
@@ -16050,6 +18036,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type GenerationUnitUpsertWithWhereUniqueWithoutInverterInput = {
@@ -16171,6 +18158,7 @@ export namespace Prisma {
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferrerInput = {
@@ -16193,6 +18181,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferrerInput = {
@@ -16220,6 +18209,7 @@ export namespace Prisma {
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferredInput = {
@@ -16242,6 +18232,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferredInput = {
@@ -16280,6 +18271,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferrerInput = {
@@ -16302,6 +18294,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUpsertWithoutIndicationsAsReferredInput = {
@@ -16335,6 +18328,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferredInput = {
@@ -16356,6 +18350,249 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type OfferRedemptionCreateWithoutOfferInput = {
+    id?: string
+    redemptionCode: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutOfferRedemptionsInput
+  }
+
+  export type OfferRedemptionUncheckedCreateWithoutOfferInput = {
+    id?: string
+    redemptionCode: string
+    clientId: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OfferRedemptionCreateOrConnectWithoutOfferInput = {
+    where: OfferRedemptionWhereUniqueInput
+    create: XOR<OfferRedemptionCreateWithoutOfferInput, OfferRedemptionUncheckedCreateWithoutOfferInput>
+  }
+
+  export type OfferRedemptionCreateManyOfferInputEnvelope = {
+    data: OfferRedemptionCreateManyOfferInput | OfferRedemptionCreateManyOfferInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OfferRedemptionUpsertWithWhereUniqueWithoutOfferInput = {
+    where: OfferRedemptionWhereUniqueInput
+    update: XOR<OfferRedemptionUpdateWithoutOfferInput, OfferRedemptionUncheckedUpdateWithoutOfferInput>
+    create: XOR<OfferRedemptionCreateWithoutOfferInput, OfferRedemptionUncheckedCreateWithoutOfferInput>
+  }
+
+  export type OfferRedemptionUpdateWithWhereUniqueWithoutOfferInput = {
+    where: OfferRedemptionWhereUniqueInput
+    data: XOR<OfferRedemptionUpdateWithoutOfferInput, OfferRedemptionUncheckedUpdateWithoutOfferInput>
+  }
+
+  export type OfferRedemptionUpdateManyWithWhereWithoutOfferInput = {
+    where: OfferRedemptionScalarWhereInput
+    data: XOR<OfferRedemptionUpdateManyMutationInput, OfferRedemptionUncheckedUpdateManyWithoutOfferInput>
+  }
+
+  export type OfferCreateWithoutRedemptionsInput = {
+    id?: string
+    title: string
+    description: string
+    partner: string
+    cost: number
+    discount?: string | null
+    imageUrl?: string | null
+    confirmationCode?: string | null
+    maxRedemptionsPerClient?: number
+    validFrom?: Date | string | null
+    validTo?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OfferUncheckedCreateWithoutRedemptionsInput = {
+    id?: string
+    title: string
+    description: string
+    partner: string
+    cost: number
+    discount?: string | null
+    imageUrl?: string | null
+    confirmationCode?: string | null
+    maxRedemptionsPerClient?: number
+    validFrom?: Date | string | null
+    validTo?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OfferCreateOrConnectWithoutRedemptionsInput = {
+    where: OfferWhereUniqueInput
+    create: XOR<OfferCreateWithoutRedemptionsInput, OfferUncheckedCreateWithoutRedemptionsInput>
+  }
+
+  export type ClientCreateWithoutOfferRedemptionsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutOfferRedemptionsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutOfferRedemptionsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutOfferRedemptionsInput, ClientUncheckedCreateWithoutOfferRedemptionsInput>
+  }
+
+  export type OfferUpsertWithoutRedemptionsInput = {
+    update: XOR<OfferUpdateWithoutRedemptionsInput, OfferUncheckedUpdateWithoutRedemptionsInput>
+    create: XOR<OfferCreateWithoutRedemptionsInput, OfferUncheckedCreateWithoutRedemptionsInput>
+    where?: OfferWhereInput
+  }
+
+  export type OfferUpdateToOneWithWhereWithoutRedemptionsInput = {
+    where?: OfferWhereInput
+    data: XOR<OfferUpdateWithoutRedemptionsInput, OfferUncheckedUpdateWithoutRedemptionsInput>
+  }
+
+  export type OfferUpdateWithoutRedemptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    partner?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OfferUncheckedUpdateWithoutRedemptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    partner?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
+    maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClientUpsertWithoutOfferRedemptionsInput = {
+    update: XOR<ClientUpdateWithoutOfferRedemptionsInput, ClientUncheckedUpdateWithoutOfferRedemptionsInput>
+    create: XOR<ClientCreateWithoutOfferRedemptionsInput, ClientUncheckedCreateWithoutOfferRedemptionsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutOfferRedemptionsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutOfferRedemptionsInput, ClientUncheckedUpdateWithoutOfferRedemptionsInput>
+  }
+
+  export type ClientUpdateWithoutOfferRedemptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutOfferRedemptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
   }
 
@@ -16379,6 +18616,7 @@ export namespace Prisma {
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutTransactionsInput = {
@@ -16401,6 +18639,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutTransactionsInput = {
@@ -16439,6 +18678,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutTransactionsInput = {
@@ -16461,6 +18701,7 @@ export namespace Prisma {
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutConsumptionsInput = {
@@ -16483,6 +18724,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutConsumptionsInput = {
@@ -16505,6 +18747,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutConsumptionsInput = {
@@ -16543,6 +18786,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutConsumptionsInput = {
@@ -16565,6 +18809,7 @@ export namespace Prisma {
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type InverterCreateManyClientInput = {
@@ -16632,6 +18877,18 @@ export namespace Prisma {
     offerId?: string | null
     indicationId?: string | null
     createdAt?: Date | string
+  }
+
+  export type OfferRedemptionCreateManyClientInput = {
+    id?: string
+    redemptionCode: string
+    offerId: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type InverterUpdateWithoutClientInput = {
@@ -16837,6 +19094,42 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type OfferRedemptionUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    offer?: OfferUpdateOneRequiredWithoutRedemptionsNestedInput
+  }
+
+  export type OfferRedemptionUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OfferRedemptionUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GenerationUnitCreateManyInverterInput = {
     id?: string
     power: number
@@ -16879,6 +19172,54 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type OfferRedemptionCreateManyOfferInput = {
+    id?: string
+    redemptionCode: string
+    clientId: string
+    status?: $Enums.RedemptionStatus
+    redeemedAt?: Date | string
+    usedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OfferRedemptionUpdateWithoutOfferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutOfferRedemptionsNestedInput
+  }
+
+  export type OfferRedemptionUncheckedUpdateWithoutOfferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OfferRedemptionUncheckedUpdateManyWithoutOfferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    redemptionCode?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    status?: EnumRedemptionStatusFieldUpdateOperationsInput | $Enums.RedemptionStatus
+    redeemedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

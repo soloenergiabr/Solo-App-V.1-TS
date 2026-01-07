@@ -7,9 +7,11 @@ import { PeriodTabs } from '@/frontend/generation/components/dashboard/period-ta
 import { AdaptiveChart } from '@/frontend/generation/components/dashboard/adaptive-chart';
 import { InvertersTable } from '@/frontend/generation/components/dashboard/inverters-table';
 import { InvertersComparisonChart } from '@/frontend/generation/components/dashboard/inverters-comparison-chart';
+import { InverterMultiSelect } from '@/components/ui/inverter-multi-select';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertCircle, Filter } from "lucide-react";
 import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 
 function GenerationDashboardPage() {
@@ -25,6 +27,12 @@ function GenerationDashboardPage() {
         goToToday,
         getCurrentPeriodLabel,
     } = useGenerationDashboard({});
+
+    const handleInverterSelectionChange = (selectedIds: string[]) => {
+        updateFilters({
+            inverterIds: selectedIds.length > 0 ? selectedIds : undefined
+        });
+    };
 
     if (error) {
         return (
@@ -49,7 +57,7 @@ function GenerationDashboardPage() {
         >
             {/* Content - Scrollable */}
             <div className="flex-1 overflow-y-auto">
-                <div className="p-4 space-y-4">
+                <div className="space-y-4">
                     {/* Loading State */}
                     {isLoading && !analytics ? (
                         <div className="space-y-4">
@@ -81,11 +89,26 @@ function GenerationDashboardPage() {
                                 isLoading={isLoading}
                             />
 
+                            {/* Filtro de Inversores */}
+                            <div className="flex items-center gap-3 flex-wrap">
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Filter className="h-4 w-4" />
+                                    <span>Filtrar por inversor:</span>
+                                </div>
+                                <InverterMultiSelect
+                                    selectedIds={filters.inverterIds || []}
+                                    onSelectionChange={handleInverterSelectionChange}
+                                    placeholder="Todos os inversores"
+                                />
+                            </div>
+
                             {/* Gráfico Principal */}
-                            <AdaptiveChart
-                                analytics={analytics}
-                                viewType={filters.generationUnitType}
-                            />
+                            <Card>
+                                <AdaptiveChart
+                                    analytics={analytics}
+                                    viewType={filters.generationUnitType}
+                                />
+                            </Card>
 
                             {/* Gráfico de Comparação de Inversores */}
                             {analytics.byInverter.length > 1 && (
@@ -116,3 +139,4 @@ function GenerationDashboardPage() {
 }
 
 export default withAuth(GenerationDashboardPage);
+

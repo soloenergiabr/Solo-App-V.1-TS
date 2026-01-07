@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ClubService } from '@/backend/club/services/club.service';
-import { PrismaIndicationRepository } from '@/backend/club/repositories/implementations/prisma.indication.repository';
-import { PrismaTransactionRepository } from '@/backend/club/repositories/implementations/prisma.transaction.repository';
-import { PrismaOfferRepository } from '@/backend/club/repositories/implementations/prisma.offer.repository';
 import { withHandle } from '@/app/api/api-utils';
 import { z } from 'zod';
-import prisma from '@/lib/prisma';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { clubService } from '@/backend/club/services';
 
-// Schema de validação para resgate de oferta
 const RedeemOfferRequestSchema = z.object({
     offerId: z.string().min(1, 'Offer ID is required'),
 });
-
 
 const redeemOfferRoute = async (request: NextRequest): Promise<NextResponse> => {
     const body = await request.json();
@@ -54,6 +47,17 @@ const redeemOfferRoute = async (request: NextRequest): Promise<NextResponse> => 
         }, { status: 400 });
     }
 
+    // Verificar quantas vezes o cliente já resgatou esta oferta
+    const clientRedemptions = await clubService.getClientRedemptions(userContext);
+    const offerRedemptionsCount = clientRedemptions.filter(r => r.offerId === offer.id).length;
+
+    if (offerRedemptionsCount >= offer.maxRedemptionsPerClient) {
+        return NextResponse.json({
+            success: false,
+            message: `Você já resgatou esta oferta o máximo de vezes permitido (${offer.maxRedemptionsPerClient})`,
+        }, { status: 400 });
+    }
+
     // Verificar saldo suficiente
     const currentBalance = await clubService.getClientBalance(userContext);
     if (currentBalance < offer.cost) {
@@ -63,24 +67,23 @@ const redeemOfferRoute = async (request: NextRequest): Promise<NextResponse> => 
         }, { status: 400 });
     }
 
-    // Criar transação de resgate
-    const { TransactionModel } = await import('@/backend/club/models/transaction.model');
-    const transaction = new TransactionModel({
-        clientId: userContext.clientId!,
-        type: 'offer_redemption',
-        amount: -offer.cost,
-        description: `Resgate da oferta: ${offer.title}`,
-        offerId: offer.id,
-    });
+    // Resgatar oferta usando o service (que cria transação e redemption)
+    const result = await clubService.redeemOffer(validatedRequest.offerId, userContext);
 
-    await clubService.transactionService.createTransaction(transaction);
+    if (!result.success) {
+        return NextResponse.json({
+            success: false,
+            message: result.message,
+        }, { status: 400 });
+    }
 
-    // Retornar sucesso
+    // Retornar sucesso com o código do voucher
     return NextResponse.json({
         success: true,
         message: 'Oferta resgatada com sucesso!',
         data: {
-            transactionId: transaction.id,
+            redemptionId: result.redemption?.id,
+            redemptionCode: result.redemption?.redemptionCode,
             offerTitle: offer.title,
             cost: offer.cost,
         },

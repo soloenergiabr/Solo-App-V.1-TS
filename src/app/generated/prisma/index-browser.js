@@ -196,9 +196,24 @@ exports.Prisma.OfferScalarFieldEnum = {
   cost: 'cost',
   discount: 'discount',
   imageUrl: 'imageUrl',
+  confirmationCode: 'confirmationCode',
+  maxRedemptionsPerClient: 'maxRedemptionsPerClient',
   validFrom: 'validFrom',
   validTo: 'validTo',
   isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OfferRedemptionScalarFieldEnum = {
+  id: 'id',
+  redemptionCode: 'redemptionCode',
+  offerId: 'offerId',
+  clientId: 'clientId',
+  status: 'status',
+  redeemedAt: 'redeemedAt',
+  usedAt: 'usedAt',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -262,6 +277,12 @@ exports.IndicationStatus = exports.$Enums.IndicationStatus = {
   rejected: 'rejected'
 };
 
+exports.RedemptionStatus = exports.$Enums.RedemptionStatus = {
+  pending: 'pending',
+  used: 'used',
+  expired: 'expired'
+};
+
 exports.TransactionType = exports.$Enums.TransactionType = {
   indication_reward: 'indication_reward',
   offer_redemption: 'offer_redemption',
@@ -276,6 +297,7 @@ exports.Prisma.ModelName = {
   GenerationUnit: 'GenerationUnit',
   Indication: 'Indication',
   Offer: 'Offer',
+  OfferRedemption: 'OfferRedemption',
   FAQ: 'FAQ',
   Transaction: 'Transaction',
   Consumption: 'Consumption'

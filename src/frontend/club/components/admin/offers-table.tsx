@@ -88,9 +88,8 @@ export function OffersTable() {
 
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Gerenciar Ofertas</h2>
-                <Button onClick={handleCreate}>
+            <div className="flex justify-end items-center">
+                <Button size={"sm"} onClick={handleCreate}>
                     <Plus className="mr-2 h-4 w-4" /> Nova Oferta
                 </Button>
             </div>

@@ -16,6 +16,7 @@ const CreateOfferSchema = z.object({
     validFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
     validTo: z.string().optional().transform(val => val ? new Date(val) : undefined),
     isActive: z.boolean().optional(),
+    maxRedemptionsPerClient: z.number().optional(),
 });
 
 const UpdateOfferSchema = CreateOfferSchema.partial().extend({
@@ -52,20 +53,20 @@ const updateOffer = async (request: NextRequest): Promise<NextResponse> => {
     const body = await request.json();
     const validatedData = UpdateOfferSchema.parse(body);
 
-    // Fetch existing to ensure it exists and merge if necessary (though update usually replaces provided fields)
-    // OfferModel constructor handles partial updates if we reconstruct, but repository update expects full model usually or partial?
-    // The repository update method takes an OfferModel. Let's fetch first.
     const existingOffer = await clubService.getOfferById(validatedData.id);
     if (!existingOffer) {
         return NextResponse.json({ success: false, message: 'Offer not found' }, { status: 404 });
     }
 
-    // Merge updates
     const updatedOfferModel = new OfferModel({
         ...existingOffer,
         ...validatedData,
         updatedAt: new Date(),
     });
+
+    console.log({
+        validatedData
+    })
 
     await clubService.updateOffer(updatedOfferModel);
 

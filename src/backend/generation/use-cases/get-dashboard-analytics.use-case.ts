@@ -166,14 +166,34 @@ export class GetDashboardAnalyticsUseCase {
         let timeSeries: Array<{ timestamp: string; energy: number; power: number; inverterCount: number }>;
 
         if (request?.generationUnitType === 'real_time') {
-            // Para real_time: Retornar TODOS os pontos sem agregar
-            // Cada registro é um ponto no gráfico
-            timeSeries = allUnits
-                .map(unit => ({
-                    timestamp: unit.timestamp.toISOString(),
-                    energy: unit.energy,
-                    power: unit.power,
-                    inverterCount: 1, // Cada unit é de um inversor
+            // Para real_time: Agregar por minuto (arredondado para 5 minutos) entre todos os inversores
+            const timeSeriesMap = new Map<string, { energy: number; power: number; inverters: Set<string>; timestamp: Date }>();
+
+            allUnits.forEach(unit => {
+                const date = new Date(unit.timestamp);
+                // Arredondar para 5 minutos para agregar pontos próximos
+                const minutes = Math.floor(date.getMinutes() / 5) * 5;
+                const roundedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), minutes, 0);
+                const timeKey = roundedDate.toISOString();
+
+                const existing = timeSeriesMap.get(timeKey) || {
+                    energy: 0,
+                    power: 0,
+                    inverters: new Set(),
+                    timestamp: roundedDate
+                };
+                existing.energy += unit.energy;
+                existing.power += unit.power;
+                existing.inverters.add(unit.inverterId);
+                timeSeriesMap.set(timeKey, existing);
+            });
+
+            timeSeries = Array.from(timeSeriesMap.entries())
+                .map(([_, data]) => ({
+                    timestamp: data.timestamp.toISOString(),
+                    energy: data.energy,
+                    power: data.power,
+                    inverterCount: data.inverters.size,
                 }))
                 .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
         } else if (request?.generationUnitType === 'day') {

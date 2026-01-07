@@ -3,13 +3,8 @@
 import { Sidebar, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { DollarSign, HelpCircleIcon, Home, Menu } from "lucide-react"
-import Link from "next/link"
+import { Coins, DollarSign, Gift, HelpCircleIcon, Home, Ticket } from "lucide-react"
 import { useTheme } from "next-themes"
-import { usePathname } from "next/navigation"
-import { useState } from "react"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
 
 const adminSections: SidebarSection[] = [
     {
@@ -17,7 +12,7 @@ const adminSections: SidebarSection[] = [
         items: [
             { label: 'Dashboard', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
             { label: 'Clientes', href: '/clients', icon: <DollarSign className="w-5 h-5" /> },
-            { label: 'Ofertas', href: '/offers', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Ofertas', href: '/offers', icon: <Gift className="w-5 h-5" /> },
             { label: 'FAQ', href: '/faqs', icon: <HelpCircleIcon className="w-5 h-5" /> },
         ],
     },
@@ -29,7 +24,9 @@ const vendedorSections: SidebarSection[] = [
         items: [
             { label: 'Minha geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
             { label: 'Economia', href: '/economy-dashboard', icon: <DollarSign className="w-5 h-5" /> },
-            { label: 'Clube Solo', href: '/club', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Clube Solo', href: '/club', icon: <Gift className="w-5 h-5" /> },
+            { label: 'Meus Vouchers', href: '/vouchers', icon: <Ticket className="w-5 h-5" /> },
+            { label: 'Solo Coins', href: '/solo-coins', icon: <Coins className="w-5 h-5" /> },
             { label: 'Suporte', href: '/support', icon: <HelpCircleIcon className="w-5 h-5" /> },
         ],
     },

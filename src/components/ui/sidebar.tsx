@@ -183,40 +183,42 @@ export function Sidebar({ items, sections, type, user, onLogout, logoSrc, onItem
             </div>
           </div>
         ) : (
-          <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg py-2">
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t border-border py-2">
             <ul className="flex flex-row w-full justify-around items-center max-w-2xl mx-auto px-2">
-              {items?.map((item, index) => {
+              {/* Flatten sections into items for footer mode */}
+              {(items || sections?.flatMap(s => s.items) || []).map((item, index) => {
                 const isActive = pathname === item.href || pathname?.startsWith(item.href + '/')
 
                 return (
-                  <li key={`${item.href}-${index}`} className="flex-1">
+                  <li key={`${item.href}-${index}`} className="flex-1 relative">
                     <Link
                       href={item.href}
+                      onClick={onItemClick}
                       className={`
-                                                flex flex-col items-center justify-center gap-1 px-2
-                                                transition-all duration-200 rounded-lg
-                                                ${isActive
-                          ? 'text-foreground'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-background'
+                        flex flex-col items-center justify-center gap-1 py-2 px-2
+                        transition-all duration-200 rounded-lg
+                        ${isActive
+                          ? 'text-primary'
+                          : 'text-muted-foreground hover:text-foreground'
                         }
-                                            `}
+                      `}
                     >
                       <div className={`
-                                                text-2xl transition-all duration-200
-                                                ${isActive ? 'scale-110' : ''}
-                                            `}>
+                        h-5 w-5 transition-all duration-200
+                        ${isActive ? 'scale-110' : ''}
+                      `}>
                         {item.icon}
                       </div>
                       <p className={`
-                                                text-xs font-medium
-                                                ${isActive ? 'text-foreground' : 'text-muted-foreground'}
-                                            `}>
+                        text-[10px] font-medium
+                        ${isActive ? 'text-primary' : 'text-muted-foreground'}
+                      `}>
                         {item.label}
                       </p>
-                      {isActive && (
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-primary rounded-t-full" />
-                      )}
                     </Link>
+                    {isActive && (
+                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1 bg-primary rounded-t-full" />
+                    )}
                   </li>
                 )
               })}

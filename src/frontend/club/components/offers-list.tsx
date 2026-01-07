@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function OffersList() {
-    const { offers, isLoading: isLoadingOffers, redeemOffer, isRedeeming } = useClubOffers();
+    const { offers, isLoading: isLoadingOffers, redeemOffer, isRedeeming, redemptionCounts } = useClubOffers();
     const { balance } = useClub();
 
     const handleRedeem = async (offerId: string) => {
@@ -40,13 +40,6 @@ export function OffersList() {
 
     return (
         <div className="space-y-4">
-            <div className="flex flex-col space-y-2">
-                <h2 className="text-2xl font-bold tracking-tight">Ofertas Disponíveis</h2>
-                <p className="text-muted-foreground">
-                    Troque seus SOLO Coins por descontos e benefícios exclusivos.
-                </p>
-            </div>
-
             {offers.length === 0 ? (
                 <Card>
                     <CardContent className="pt-6 text-center text-muted-foreground">
@@ -62,6 +55,7 @@ export function OffersList() {
                             onRedeem={handleRedeem}
                             isRedeeming={isRedeeming}
                             userBalance={balance.balance?.balance || 0}
+                            userRedemptionCount={redemptionCounts.get(offer.id) || 0}
                         />
                     ))}
                 </div>
