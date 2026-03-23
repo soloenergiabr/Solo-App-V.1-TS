@@ -14,6 +14,7 @@ const adminSections: SidebarSection[] = [
             { label: 'Clientes', href: '/clients', icon: <DollarSign className="w-5 h-5" /> },
             { label: 'Ofertas', href: '/offers', icon: <Gift className="w-5 h-5" /> },
             { label: 'FAQ', href: '/faqs', icon: <HelpCircleIcon className="w-5 h-5" /> },
+            { label: 'Investor Demo', href: '/investor-demo', icon: <DollarSign className="w-5 h-5 text-yellow-500" /> },
         ],
     },
 ]
@@ -28,6 +29,7 @@ const vendedorSections: SidebarSection[] = [
             { label: 'Meus Vouchers', mobileLabel: 'Vouchers', href: '/vouchers', icon: <Ticket className="w-5 h-5" /> },
             { label: 'Solo Coins', mobileLabel: 'Coins', href: '/solo-coins', icon: <Coins className="w-5 h-5" /> },
             { label: 'Suporte', mobileLabel: 'Suporte', href: '/support', icon: <HelpCircleIcon className="w-5 h-5" /> },
+            { label: 'Investor Demo', href: '/investor-demo', icon: <DollarSign className="w-5 h-5 text-yellow-500" /> },
         ],
     },
 ]
