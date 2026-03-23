@@ -56,15 +56,19 @@ export class DeyeInverterApiRepository extends InverterApiRepository {
     async getRealTimeGeneration(): Promise<{ power: number, energy: number }> {
         const stationId = Number(this.getProviderId())
 
-        const latestResponse = await this.requestDeye<DeyeStationLatestResponse>('/v1.0/station/latest', {
+        const latestResponse = await this.requestDeye<DeyeStationLatestResponse & { wirePower?: number }>('/v1.0/station/latest', {
             method: 'POST',
             body: { stationId }
         })
 
         console.log('latestResponse', latestResponse)
 
-        const power = this.toNumber(latestResponse?.generationPower)
-        const energy = await this.getGenerationByDay()
+        // generationPower na API da Deye corresponde à produção do dia (energy) em Wh
+        // Utilizando wirePower como fallback de potência em tempo real (ou 0 caso ausente) em W
+        const power = this.toNumber(latestResponse?.wirePower || 0) / 1000
+        const energy = latestResponse?.generationPower != null
+            ? this.toNumber(latestResponse.generationPower) / 1000
+            : await this.getGenerationByDay()
 
         return { power, energy }
     }
@@ -134,7 +138,8 @@ export class DeyeInverterApiRepository extends InverterApiRepository {
         console.log('response', response)
 
         const items = response?.stationDataItems ?? []
-        return items.reduce((acc, item) => acc + this.toNumber(item?.generationValue), 0)
+        // Convertendo Wh/W para kWh/kW
+        return items.reduce((acc, item) => acc + (this.toNumber(item?.generationValue) / 1000), 0)
     }
 
     private getProviderId(): string {
