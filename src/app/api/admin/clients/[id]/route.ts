@@ -9,6 +9,7 @@ import { PrismaInverterRepository } from '@/backend/generation/repositories/impl
 import { ClubService } from '@/backend/club/services/club.service';
 import prisma from '@/lib/prisma';
 import { PrismaClientRepository } from '@/backend/club/repositories/implementations/prisma.client.repository';
+import { PrismaOfferRedemptionRepository } from '@/backend/club/repositories/implementations/prisma-offer-redemption.repository';
 
 // Instantiate repositories
 const userRepository = new PrismaUserRepository(prisma);
@@ -17,18 +18,19 @@ const transactionRepository = new PrismaTransactionRepository(prisma);
 const indicationRepository = new PrismaIndicationRepository(prisma);
 const offerRepository = new PrismaOfferRepository(prisma);
 const inverterRepository = new PrismaInverterRepository(prisma);
+const offerRedeemRepository = new PrismaOfferRedemptionRepository(prisma);
 
 // Instantiate services
-const clubService = new ClubService(indicationRepository, transactionRepository, offerRepository);
+const clubService = new ClubService(indicationRepository, transactionRepository, offerRepository, offerRedeemRepository);
 
 const getClientDetails = async (
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) => {
     const userContext = await AuthMiddleware.extractUserContext(request);
     // TODO: Explicit master role check
 
-    const clientId = params.id;
+    const clientId = (await params).id;
 
     const [client, balance, inverters] = await Promise.all([
         clientRepository.findById(clientId),
@@ -52,12 +54,12 @@ const getClientDetails = async (
 
 const updateClient = async (
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) => {
     const userContext = await AuthMiddleware.extractUserContext(request);
     // TODO: Explicit master role check
 
-    const clientId = params.id;
+    const clientId = (await params).id;
     const body = await request.json();
 
     const existingClient = await clientRepository.findById(clientId);

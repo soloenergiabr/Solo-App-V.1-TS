@@ -154,6 +154,7 @@ exports.Prisma.ClientScalarFieldEnum = {
 
 exports.Prisma.InverterScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   provider: 'provider',
   providerId: 'providerId',
   providerApiKey: 'providerApiKey',

@@ -2,18 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
-import { Loader2, ArrowLeft, Battery, Zap } from 'lucide-react';
+import { Loader2, ArrowLeft, Battery, Zap, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { ManualTransactionDialog } from './manual-transaction-dialog';
 import { RegisterInverterDialog } from './register-inverter-dialog';
+import { EditInverterDialog } from './edit-inverter-dialog';
 import { useGenerationDashboard } from '@/frontend/generation/hooks/use-generation-dashboard';
 import { CompactMetrics } from '@/frontend/generation/components/dashboard/compact-metrics';
 import { PeriodTabs } from '@/frontend/generation/components/dashboard/period-tabs';
 import { AdaptiveChart } from '@/frontend/generation/components/dashboard/adaptive-chart';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ClientConsumptionTab } from './client-consumption-tab';
 
 interface ClientDetailsData {
     user: {
@@ -67,6 +69,8 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
         getCurrentPeriodLabel,
     } = useGenerationDashboard({ clientId });
 
+    const [editingInverter, setEditingInverter] = useState<any>(null);
+
     const fetchDetails = async () => {
         if (!api.isAuthenticated || !clientId) return;
 
@@ -89,6 +93,24 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
     useEffect(() => {
         fetchDetails();
     }, [clientId]);
+
+    const handleDeleteInverter = async (inverterId: string) => {
+        if (!window.confirm('Tem certeza que deseja remover esta conexão de inversor?')) return;
+        
+        try {
+            const response = await api.delete(`/admin/inverters/${inverterId}`);
+            if (response.data.success) {
+                toast.success('Inversor removido com sucesso!');
+                fetchDetails();
+            } else {
+                toast.error(response.data.message || 'Erro ao remover o inversor');
+            }
+        } catch (error: any) {
+            console.error('Error deleting inverter:', error);
+            const msg = error.response?.data?.message || 'Erro de comunicação ao excluir inversor.';
+            toast.error(msg);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -174,13 +196,35 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                     ) : (
                         <div className="space-y-4">
                             {data.inverters.map((inverter) => (
-                                <div key={inverter.id} className="flex items-center justify-between border p-4 rounded-lg">
+                                <div key={inverter.id} className="flex items-center justify-between border p-4 rounded-lg hover:bg-muted/10 transition-colors">
                                     <div>
                                         <p className="font-medium">{inverter.name || inverter.provider}</p>
                                         <p className="text-sm text-muted-foreground">Provider: {inverter.provider}</p>
                                     </div>
-                                    <div className="text-sm text-muted-foreground">
-                                        ID: {inverter.providerId}
+                                    <div className="flex items-center gap-4">
+                                        <div className="text-sm text-muted-foreground hidden sm:block">
+                                            ID: {inverter.providerId}
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <Button 
+                                                variant="outline" 
+                                                size="icon" 
+                                                className="h-8 w-8 text-muted-foreground hover:text-primary"
+                                                onClick={() => setEditingInverter(inverter)}
+                                                title="Editar"
+                                            >
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                            <Button 
+                                                variant="outline" 
+                                                size="icon" 
+                                                className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                onClick={() => handleDeleteInverter(inverter.id)}
+                                                title="Remover"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -189,34 +233,58 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                 </CardContent>
             </Card>
 
-            {
-                analytics && (
-                    <>
-                        <CompactMetrics
-                            analytics={analytics}
-                            isRealTime={filters.generationUnitType === 'real_time'}
-                        />
+            {editingInverter && (
+                <EditInverterDialog 
+                    inverter={editingInverter} 
+                    open={!!editingInverter} 
+                    onOpenChange={(isOpen) => !isOpen && setEditingInverter(null)} 
+                    onSuccess={fetchDetails} 
+                />
+            )}
 
-                        {/* Tabs de Período */}
-                        <PeriodTabs
-                            filters={filters}
-                            currentPeriodLabel={getCurrentPeriodLabel()}
-                            onUpdateFilters={updateFilters}
-                            onPreviousPeriod={goToPreviousPeriod}
-                            onNextPeriod={goToNextPeriod}
-                            onToday={goToToday}
-                            onRefresh={refetch}
-                            isLoading={isLoading}
-                        />
+            <Tabs defaultValue="geracao" className="w-full mt-6">
+                <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+                    <TabsTrigger value="geracao">Geração</TabsTrigger>
+                    <TabsTrigger value="consumo">Consumo</TabsTrigger>
+                </TabsList>
 
-                        {/* Gráfico Principal */}
-                        <AdaptiveChart
-                            analytics={analytics}
-                            viewType={filters.generationUnitType}
-                        />
-                    </>
-                )
-            }
+                <TabsContent value="geracao" className="space-y-6 mt-6">
+                    {analytics ? (
+                        <>
+                            <CompactMetrics
+                                analytics={analytics}
+                                isRealTime={filters.generationUnitType === 'real_time'}
+                            />
+
+                            <PeriodTabs
+                                filters={filters}
+                                currentPeriodLabel={getCurrentPeriodLabel()}
+                                onUpdateFilters={updateFilters}
+                                onPreviousPeriod={goToPreviousPeriod}
+                                onNextPeriod={goToNextPeriod}
+                                onToday={goToToday}
+                                onRefresh={refetch}
+                                isLoading={isLoading}
+                            />
+
+                            <AdaptiveChart
+                                analytics={analytics}
+                                viewType={filters.generationUnitType}
+                            />
+                        </>
+                    ) : (
+                        <Card>
+                            <CardContent className="flex flex-col items-center justify-center py-12 text-center h-48">
+                                <p className="text-muted-foreground">O dashboard de geração aparecerá aqui após o registro dos inversores.</p>
+                            </CardContent>
+                        </Card>
+                    )}
+                </TabsContent>
+
+                <TabsContent value="consumo" className="space-y-6 mt-6">
+                    <ClientConsumptionTab clientId={clientId} />
+                </TabsContent>
+            </Tabs>
 
         </div>
     );

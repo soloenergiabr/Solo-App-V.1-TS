@@ -4,7 +4,7 @@ import { SolisInverterApiRepository } from "./implementations/solis.inverter-api
 import { SolplanetInverterApiRepository } from "./implementations/solplanet.inverter-api.repository"
 import { MockInverterApiRepository } from "./implementations/mock.inverter-api.repository"
 import { SolplanetProInverterApiRepository } from "./implementations/solplanet-pro.inverter-api.repository"
-
+import { DeyeInverterApiRepository } from "./implementations/deye.inverter-api.repository"
 export class InverterApiFactory {
     static create(inverter: InverterModel): InverterApiRepository {
         switch (inverter.provider) {
@@ -14,6 +14,8 @@ export class InverterApiFactory {
                 return new SolplanetProInverterApiRepository(inverter)
             case 'mock':
                 return new MockInverterApiRepository(inverter)
+            case 'deye':
+                return new DeyeInverterApiRepository(inverter)
             default:
                 throw new Error('Provider not found')
         }

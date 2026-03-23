@@ -9,6 +9,7 @@ export class PrismaInverterRepository implements InverterRepository {
         await this.prisma.inverter.create({
             data: {
                 id: inverter.id,
+                name: inverter.name,
                 provider: inverter.provider,
                 providerId: inverter.providerId,
                 providerApiKey: inverter.providerApiKey,
@@ -28,7 +29,7 @@ export class PrismaInverterRepository implements InverterRepository {
 
         return inverters.map(inverter => new InverterModel(
             inverter.id,
-            inverter.provider, // Using provider as name for now
+            inverter.name || inverter.provider, 
             inverter.provider,
             inverter.providerId,
             inverter.providerApiKey || undefined,
@@ -52,7 +53,7 @@ export class PrismaInverterRepository implements InverterRepository {
 
         return new InverterModel(
             inverter.id,
-            inverter.provider, // Using provider as name for now
+            inverter.name || inverter.provider,
             inverter.provider,
             inverter.providerId,
             inverter.providerApiKey || undefined,
@@ -79,6 +80,7 @@ export class PrismaInverterRepository implements InverterRepository {
                 id: inverterModel.id,
             },
             data: {
+                name: inverterModel.name,
                 provider: inverterModel.provider,
                 providerId: inverterModel.providerId,
                 providerApiKey: inverterModel.providerApiKey,
@@ -122,7 +124,7 @@ export class PrismaInverterRepository implements InverterRepository {
 
         return inverters.map(inverter => new InverterModel(
             inverter.id,
-            inverter.provider,
+            inverter.name || inverter.provider,
             inverter.provider,
             inverter.providerId,
             inverter.providerApiKey || undefined,

@@ -150,7 +150,19 @@ export class GetDashboardAnalyticsUseCase {
             allUnits = allUnits.filter(unit => new Date(unit.timestamp) <= endDate);
         }
 
-        const totalEnergy = allUnits.reduce((sum, unit) => sum + unit.energy, 0);
+        let totalEnergy = 0;
+        if (request?.generationUnitType === 'real_time') {
+            const maxEnergyByInverter = new Map<string, number>();
+            allUnits.forEach(unit => {
+                const current = maxEnergyByInverter.get(unit.inverterId) || 0;
+                if (unit.energy > current) {
+                    maxEnergyByInverter.set(unit.inverterId, unit.energy);
+                }
+            });
+            totalEnergy = Array.from(maxEnergyByInverter.values()).reduce((sum, e) => sum + e, 0);
+        } else {
+            totalEnergy = allUnits.reduce((sum, unit) => sum + unit.energy, 0);
+        }
         const averageEnergy = allUnits.length > 0 ? totalEnergy / allUnits.length : 0;
         const currentPower = allUnits[allUnits.length - 1]?.power || 0;
         const totalPower = currentPower;
@@ -271,7 +283,12 @@ export class GetDashboardAnalyticsUseCase {
             const inverter = clientInverters.find(inv => inv.id === inverterId)!;
             const inverterUnits = allUnits.filter(unit => unit.inverterId === inverterId);
 
-            const invTotalEnergy = inverterUnits.reduce((sum, unit) => sum + unit.energy, 0);
+            let invTotalEnergy = 0;
+            if (request?.generationUnitType === 'real_time') {
+                invTotalEnergy = inverterUnits.length > 0 ? Math.max(...inverterUnits.map(u => u.energy)) : 0;
+            } else {
+                invTotalEnergy = inverterUnits.reduce((sum, unit) => sum + unit.energy, 0);
+            }
             const invTotalPower = inverterUnits.reduce((sum, unit) => sum + unit.power, 0);
             const invPeakPower = inverterUnits.reduce((max, unit) => Math.max(max, unit.power), 0);
 
@@ -300,8 +317,22 @@ export class GetDashboardAnalyticsUseCase {
         types.forEach(type => {
             const typeUnits = allUnits.filter(unit => unit.generationUnitType === type);
             if (typeUnits.length > 0) {
+                let typeTotalEnergy = 0;
+                if (type === 'real_time') {
+                    const maxEnergyByInverter = new Map<string, number>();
+                    typeUnits.forEach(unit => {
+                        const current = maxEnergyByInverter.get(unit.inverterId) || 0;
+                        if (unit.energy > current) {
+                            maxEnergyByInverter.set(unit.inverterId, unit.energy);
+                        }
+                    });
+                    typeTotalEnergy = Array.from(maxEnergyByInverter.values()).reduce((sum, e) => sum + e, 0);
+                } else {
+                    typeTotalEnergy = typeUnits.reduce((sum, unit) => sum + unit.energy, 0);
+                }
+
                 byType[type] = {
-                    totalEnergy: typeUnits.reduce((sum, unit) => sum + unit.energy, 0),
+                    totalEnergy: typeTotalEnergy,
                     totalPower: typeUnits.reduce((sum, unit) => sum + unit.power, 0),
                     dataPoints: typeUnits.length,
                 };
@@ -333,7 +364,19 @@ export class GetDashboardAnalyticsUseCase {
                 previousUnits = previousUnits.filter(unit => unit.generationUnitType === request.generationUnitType);
             }
 
-            const previousTotalEnergy = previousUnits.reduce((sum, unit) => sum + unit.energy, 0);
+            let previousTotalEnergy = 0;
+            if (request?.generationUnitType === 'real_time') {
+                const maxEnergyByInverter = new Map<string, number>();
+                previousUnits.forEach(unit => {
+                    const current = maxEnergyByInverter.get(unit.inverterId) || 0;
+                    if (unit.energy > current) {
+                        maxEnergyByInverter.set(unit.inverterId, unit.energy);
+                    }
+                });
+                previousTotalEnergy = Array.from(maxEnergyByInverter.values()).reduce((sum, e) => sum + e, 0);
+            } else {
+                previousTotalEnergy = previousUnits.reduce((sum, unit) => sum + unit.energy, 0);
+            }
             const previousTotalPower = previousUnits.reduce((sum, unit) => sum + unit.power, 0);
 
             const energyChange = previousTotalEnergy > 0
