@@ -89,6 +89,7 @@ model Client {
 model Inverter {
   id String @id @default(dbgenerated("(concat('inverter_', gen_random_uuid()))::TEXT"))
 
+  name              String?
   provider          String
   providerId        String
   providerApiKey    String?

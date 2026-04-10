@@ -4448,6 +4448,7 @@ export namespace Prisma {
 
   export type InverterMinAggregateOutputType = {
     id: string | null
+    name: string | null
     provider: string | null
     providerId: string | null
     providerApiKey: string | null
@@ -4461,6 +4462,7 @@ export namespace Prisma {
 
   export type InverterMaxAggregateOutputType = {
     id: string | null
+    name: string | null
     provider: string | null
     providerId: string | null
     providerApiKey: string | null
@@ -4474,6 +4476,7 @@ export namespace Prisma {
 
   export type InverterCountAggregateOutputType = {
     id: number
+    name: number
     provider: number
     providerId: number
     providerApiKey: number
@@ -4489,6 +4492,7 @@ export namespace Prisma {
 
   export type InverterMinAggregateInputType = {
     id?: true
+    name?: true
     provider?: true
     providerId?: true
     providerApiKey?: true
@@ -4502,6 +4506,7 @@ export namespace Prisma {
 
   export type InverterMaxAggregateInputType = {
     id?: true
+    name?: true
     provider?: true
     providerId?: true
     providerApiKey?: true
@@ -4515,6 +4520,7 @@ export namespace Prisma {
 
   export type InverterCountAggregateInputType = {
     id?: true
+    name?: true
     provider?: true
     providerId?: true
     providerApiKey?: true
@@ -4601,6 +4607,7 @@ export namespace Prisma {
 
   export type InverterGroupByOutputType = {
     id: string
+    name: string | null
     provider: string
     providerId: string
     providerApiKey: string | null
@@ -4631,6 +4638,7 @@ export namespace Prisma {
 
   export type InverterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
     provider?: boolean
     providerId?: boolean
     providerApiKey?: boolean
@@ -4647,6 +4655,7 @@ export namespace Prisma {
 
   export type InverterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
     provider?: boolean
     providerId?: boolean
     providerApiKey?: boolean
@@ -4661,6 +4670,7 @@ export namespace Prisma {
 
   export type InverterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
     provider?: boolean
     providerId?: boolean
     providerApiKey?: boolean
@@ -4675,6 +4685,7 @@ export namespace Prisma {
 
   export type InverterSelectScalar = {
     id?: boolean
+    name?: boolean
     provider?: boolean
     providerId?: boolean
     providerApiKey?: boolean
@@ -4686,7 +4697,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type InverterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "provider" | "providerId" | "providerApiKey" | "providerApiSecret" | "providerUrl" | "clientId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["inverter"]>
+  export type InverterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "provider" | "providerId" | "providerApiKey" | "providerApiSecret" | "providerUrl" | "clientId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["inverter"]>
   export type InverterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     generationUnits?: boolean | Inverter$generationUnitsArgs<ExtArgs>
@@ -4707,6 +4718,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      name: string | null
       provider: string
       providerId: string
       providerApiKey: string | null
@@ -5142,6 +5154,7 @@ export namespace Prisma {
    */
   interface InverterFieldRefs {
     readonly id: FieldRef<"Inverter", 'String'>
+    readonly name: FieldRef<"Inverter", 'String'>
     readonly provider: FieldRef<"Inverter", 'String'>
     readonly providerId: FieldRef<"Inverter", 'String'>
     readonly providerApiKey: FieldRef<"Inverter", 'String'>
@@ -13594,6 +13607,7 @@ export namespace Prisma {
 
   export const InverterScalarFieldEnum: {
     id: 'id',
+    name: 'name',
     provider: 'provider',
     providerId: 'providerId',
     providerApiKey: 'providerApiKey',
@@ -14081,6 +14095,7 @@ export namespace Prisma {
     OR?: InverterWhereInput[]
     NOT?: InverterWhereInput | InverterWhereInput[]
     id?: StringFilter<"Inverter"> | string
+    name?: StringNullableFilter<"Inverter"> | string | null
     provider?: StringFilter<"Inverter"> | string
     providerId?: StringFilter<"Inverter"> | string
     providerApiKey?: StringNullableFilter<"Inverter"> | string | null
@@ -14096,6 +14111,7 @@ export namespace Prisma {
 
   export type InverterOrderByWithRelationInput = {
     id?: SortOrder
+    name?: SortOrderInput | SortOrder
     provider?: SortOrder
     providerId?: SortOrder
     providerApiKey?: SortOrderInput | SortOrder
@@ -14114,6 +14130,7 @@ export namespace Prisma {
     AND?: InverterWhereInput | InverterWhereInput[]
     OR?: InverterWhereInput[]
     NOT?: InverterWhereInput | InverterWhereInput[]
+    name?: StringNullableFilter<"Inverter"> | string | null
     provider?: StringFilter<"Inverter"> | string
     providerId?: StringFilter<"Inverter"> | string
     providerApiKey?: StringNullableFilter<"Inverter"> | string | null
@@ -14129,6 +14146,7 @@ export namespace Prisma {
 
   export type InverterOrderByWithAggregationInput = {
     id?: SortOrder
+    name?: SortOrderInput | SortOrder
     provider?: SortOrder
     providerId?: SortOrder
     providerApiKey?: SortOrderInput | SortOrder
@@ -14148,6 +14166,7 @@ export namespace Prisma {
     OR?: InverterScalarWhereWithAggregatesInput[]
     NOT?: InverterScalarWhereWithAggregatesInput | InverterScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Inverter"> | string
+    name?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
     provider?: StringWithAggregatesFilter<"Inverter"> | string
     providerId?: StringWithAggregatesFilter<"Inverter"> | string
     providerApiKey?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
@@ -14961,6 +14980,7 @@ export namespace Prisma {
 
   export type InverterCreateInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -14975,6 +14995,7 @@ export namespace Prisma {
 
   export type InverterUncheckedCreateInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -14989,6 +15010,7 @@ export namespace Prisma {
 
   export type InverterUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15003,6 +15025,7 @@ export namespace Prisma {
 
   export type InverterUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15017,6 +15040,7 @@ export namespace Prisma {
 
   export type InverterCreateManyInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -15030,6 +15054,7 @@ export namespace Prisma {
 
   export type InverterUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15042,6 +15067,7 @@ export namespace Prisma {
 
   export type InverterUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16049,6 +16075,7 @@ export namespace Prisma {
 
   export type InverterCountOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
     providerApiKey?: SortOrder
@@ -16062,6 +16089,7 @@ export namespace Prisma {
 
   export type InverterMaxOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
     providerApiKey?: SortOrder
@@ -16075,6 +16103,7 @@ export namespace Prisma {
 
   export type InverterMinOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     provider?: SortOrder
     providerId?: SortOrder
     providerApiKey?: SortOrder
@@ -17466,6 +17495,7 @@ export namespace Prisma {
 
   export type InverterCreateWithoutClientInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -17479,6 +17509,7 @@ export namespace Prisma {
 
   export type InverterUncheckedCreateWithoutClientInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -17715,6 +17746,7 @@ export namespace Prisma {
     OR?: InverterScalarWhereInput[]
     NOT?: InverterScalarWhereInput | InverterScalarWhereInput[]
     id?: StringFilter<"Inverter"> | string
+    name?: StringNullableFilter<"Inverter"> | string | null
     provider?: StringFilter<"Inverter"> | string
     providerId?: StringFilter<"Inverter"> | string
     providerApiKey?: StringNullableFilter<"Inverter"> | string | null
@@ -18072,6 +18104,7 @@ export namespace Prisma {
 
   export type InverterCreateWithoutGenerationUnitsInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -18085,6 +18118,7 @@ export namespace Prisma {
 
   export type InverterUncheckedCreateWithoutGenerationUnitsInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -18114,6 +18148,7 @@ export namespace Prisma {
 
   export type InverterUpdateWithoutGenerationUnitsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18127,6 +18162,7 @@ export namespace Prisma {
 
   export type InverterUncheckedUpdateWithoutGenerationUnitsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18814,6 +18850,7 @@ export namespace Prisma {
 
   export type InverterCreateManyClientInput = {
     id?: string
+    name?: string | null
     provider: string
     providerId: string
     providerApiKey?: string | null
@@ -18893,6 +18930,7 @@ export namespace Prisma {
 
   export type InverterUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18906,6 +18944,7 @@ export namespace Prisma {
 
   export type InverterUncheckedUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18919,6 +18958,7 @@ export namespace Prisma {
 
   export type InverterUncheckedUpdateManyWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     provider?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null

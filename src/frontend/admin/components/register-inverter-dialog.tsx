@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -66,6 +66,33 @@ export function RegisterInverterDialog({ clientId, onSuccess }: RegisterInverter
             providerUrl: '',
         },
     });
+
+    const providerWatched = form.watch('provider');
+    const [plants, setPlants] = useState<any[]>([]);
+    const [isLoadingPlants, setIsLoadingPlants] = useState(false);
+
+    useEffect(() => {
+        if (!providerWatched || providerWatched === 'other' || providerWatched === 'growatt') {
+            setPlants([]);
+            return;
+        }
+
+        const fetchPlants = async () => {
+            setIsLoadingPlants(true);
+            try {
+                const response = await api.get(`/admin/inverters/plants?provider=${providerWatched}`);
+                if (response.data.success) {
+                    setPlants(response.data.data || []);
+                }
+            } catch (error) {
+                console.error('Failed to fetch plants:', error);
+            } finally {
+                setIsLoadingPlants(false);
+            }
+        };
+
+        fetchPlants();
+    }, [providerWatched]);
 
     const onSubmit = async (data: InverterFormValues) => {
         setIsSubmitting(true);
@@ -141,6 +168,7 @@ export function RegisterInverterDialog({ clientId, onSuccess }: RegisterInverter
                                             <SelectItem value="solis">Solis</SelectItem>
                                             <SelectItem value="solplanet">Solplanet</SelectItem>
                                             <SelectItem value="growatt">Growatt</SelectItem>
+                                            <SelectItem value="deye">Deye</SelectItem>
                                             <SelectItem value="other">Outro</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -148,6 +176,35 @@ export function RegisterInverterDialog({ clientId, onSuccess }: RegisterInverter
                                 </FormItem>
                             )}
                         />
+                        {plants.length > 0 && (
+                            <FormItem>
+                                <FormLabel>Planta / Instalação (Autocompletar)</FormLabel>
+                                <Select onValueChange={(value) => {
+                                    const plant = plants.find(p => p.id === value);
+                                    if (plant) {
+                                        form.setValue('providerId', plant.id);
+                                        form.setValue('name', plant.name);
+                                    }
+                                }}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Selecione uma planta..." />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {plants.map(p => (
+                                            <SelectItem key={p.id} value={p.id}>{p.name} ({p.id})</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </FormItem>
+                        )}
+                        {isLoadingPlants && (
+                            <div className="flex items-center text-sm text-muted-foreground mt-2">
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Carregando plantas disponíveis...
+                            </div>
+                        )}
                         <FormField
                             control={form.control}
                             name="providerId"
@@ -161,7 +218,7 @@ export function RegisterInverterDialog({ clientId, onSuccess }: RegisterInverter
                                 </FormItem>
                             )}
                         />
-                        <div className="grid grid-cols-2 gap-4">
+                        {/* <div className="grid grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
                                 name="providerApiKey"
@@ -201,7 +258,7 @@ export function RegisterInverterDialog({ clientId, onSuccess }: RegisterInverter
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
+                        /> */}
                         <DialogFooter>
                             <Button type="submit" disabled={isSubmitting}>
                                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
