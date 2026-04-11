@@ -286,7 +286,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\mateus\\Downloads\\Solo-App-v1.1\\Solo-App-V.1-TS\\src\\app\\generated\\prisma",
+      "value": "C:\\Users\\mateus\\Documents\\MSM\\Solo-App-v1.1\\Solo-App-V.1-TS\\src\\app\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -300,7 +300,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\mateus\\Downloads\\Solo-App-v1.1\\Solo-App-V.1-TS\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\mateus\\Documents\\MSM\\Solo-App-v1.1\\Solo-App-V.1-TS\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

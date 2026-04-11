@@ -169,6 +169,7 @@ export function RegisterInverterDialog({ clientId, onSuccess }: RegisterInverter
                                             <SelectItem value="solplanet">Solplanet</SelectItem>
                                             <SelectItem value="growatt">Growatt</SelectItem>
                                             <SelectItem value="deye">Deye</SelectItem>
+                                            <SelectItem value="hoymiles">Hoymiles</SelectItem>
                                             <SelectItem value="other">Outro</SelectItem>
                                         </SelectContent>
                                     </Select>
