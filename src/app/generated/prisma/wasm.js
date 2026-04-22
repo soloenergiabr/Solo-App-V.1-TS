@@ -286,7 +286,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/sergiobanhos/www/nook/solo-energy/src/app/generated/prisma",
+      "value": "C:\\Users\\mateus\\Documents\\MSM\\Solo-App-v1.1\\Solo-App-V.1-TS\\src\\app\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -295,12 +295,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/sergiobanhos/www/nook/solo-energy/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\mateus\\Documents\\MSM\\Solo-App-v1.1\\Solo-App-V.1-TS\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

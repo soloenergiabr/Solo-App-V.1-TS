@@ -51,6 +51,15 @@ import type {
 import { UserContext } from "@/backend/auth/models/user-context.model";
 
 /**
+ * Minimum time (ms) between syncs per provider.
+ * Providers not listed here are synced on every call.
+ * Hoymiles uses a reverse-engineered unofficial API — 15 min avoids rate limiting.
+ */
+const PROVIDER_MIN_SYNC_INTERVAL_MS: Record<string, number> = {
+    hoymiles: 15 * 60 * 1000,
+};
+
+/**
  * Main orchestrator service that coordinates between specialized services
  * This service acts as a facade for the generation domain
  */
@@ -231,13 +240,23 @@ export class GenerationService {
         };
     }
 
-    async syncAllInvertersData(): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[] }> {
+    async syncAllInvertersData(): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[], skipped: string[] }> {
         const inverters = await this.inverterRepository.find();
         const results: SyncInverterGenerationDataResponse[] = [];
         const errors: any[] = [];
+        const skipped: string[] = [];
 
         for (const inverter of inverters) {
             try {
+                const minInterval = PROVIDER_MIN_SYNC_INTERVAL_MS[inverter.provider];
+                if (minInterval) {
+                    const latest = await this.generationUnitRepository.findLatestByInverterId(inverter.id);
+                    if (latest && latest.timestamp && (Date.now() - latest.timestamp.getTime()) < minInterval) {
+                        skipped.push(inverter.id);
+                        continue;
+                    }
+                }
+
                 const result = await this.syncInverterData({ inverterId: inverter.id });
                 results.push(result);
             } catch (error) {
@@ -248,6 +267,6 @@ export class GenerationService {
             }
         }
 
-        return { results, errors };
+        return { results, errors, skipped };
     }
 }
