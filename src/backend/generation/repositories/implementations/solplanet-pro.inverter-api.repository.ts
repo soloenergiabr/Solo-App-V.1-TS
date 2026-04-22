@@ -267,7 +267,7 @@ export class SolplanetProInverterApiRepository extends InverterApiRepository {
         this.sessionAccountKey = signature
 
         return {
-            token: this.sessionToken,
+            token: this.sessionToken || "",
             cookie: this.sessionCookie
         }
     }
