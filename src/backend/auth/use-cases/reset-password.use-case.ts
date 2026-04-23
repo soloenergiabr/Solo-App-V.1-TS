@@ -30,8 +30,8 @@ export class ResetPasswordUseCase {
         await this.userRepository.update({
             id: user.id,
             password: hashedPassword,
-            resetPasswordToken: null,
-            resetPasswordExpires: null,
+            resetPasswordToken: undefined,
+            resetPasswordExpires: undefined,
         });
     }
 }

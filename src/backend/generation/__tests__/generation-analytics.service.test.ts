@@ -12,6 +12,7 @@ const mockInverterRepository: InverterRepository = {
     find: vi.fn(),
     findById: vi.fn(),
     update: vi.fn(),
+    findByClientId: vi.fn(),
 };
 
 const mockGenerationUnitRepository: GenerationUnitRepository = {

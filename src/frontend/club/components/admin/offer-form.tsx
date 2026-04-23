@@ -45,7 +45,7 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const form = useForm<OfferFormValues>({
-        resolver: zodResolver(offerSchema),
+        resolver: zodResolver(offerSchema) as any,
         defaultValues: {
             title: offer?.title || '',
             description: offer?.description || '',

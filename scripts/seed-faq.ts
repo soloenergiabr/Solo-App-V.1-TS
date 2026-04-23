@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // Seus dados de FAQ
 const faqData = [
     {
-        category: "Geração de Energia",npx tsx scripts/seed-faq.ts
+        category: "Geração de Energia",
         question: "Meu sistema parou de gerar energia. O que pode ter acontecido?",
         answer: "Verifique se o inversor está ligado e se há energia da concessionária. Caso o inversor esteja desligado, pode ter ocorrido uma queda de rede, disparo do disjuntor ou falha de comunicação. No app, acesse 'Suporte > Diagnóstico' para visualizar o status e solicitar ajuda técnica."
     },

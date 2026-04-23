@@ -1,0 +1,2 @@
+﻿src/backend/auth/__tests__/auth.service.test.ts(51,40): error TS2345: Argument of type 'User' is not assignable to parameter of type 'RegisterRequest'.
+  Property 'cpfCnpj' is missing in type 'User' but required in type 'RegisterRequest'.

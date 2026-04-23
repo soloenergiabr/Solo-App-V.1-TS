@@ -1,0 +1,3621 @@
+1 Introduction
+
+ AUXSOL 
+
+
+
+This document describes the interface definition for third parties to access the data on the AUXSOL cloud
+
+platform. Third parties can obtain information about grid-connected PV and energy storage power plants through
+
+the following interfaces provided.   Amendment Record
+
+   1                                                                       
+
+First Amendment         Content                       Proposer      Date     Related
+                                                                           Documents
+
+1                                                               2023-7-27
+
+                 new
+
+2 AUXSOL Restful Interface Standard
+
+2.1 Range
+
+2.2 This article presumes that the reader is already familiar with or
+understands the following technologies
+
+Restful Web Service
+HTTP/1.1
+JSON formats
+
+3 Terms and Definitions
+
+AUXSOL                AUXSOL 
+                      AUXSOL Cloud Platform System
+ Third parties  Third-party users
+
+APP_ID         ID AUXSOL 
+APP_SECRET
+ACCESS_TOKEN  users' ID (contact AUXSOL technical support to obtain)
+
+               AUXSOL 
+
+              Attestation Identity Key for users, strictly confidential to prevent leakage (contact AUXSOL technical support to obtain)
+
+              ,
+
+              Authorisation token after successful authentication,
+              used to request data from the server
+
+4 Interface Specifications
+
+4.1 Requests and responses
+
+      4.1.1 Interface format
+
+                 
+ Contents     Illustration
+
+Method        Post
+
+URL            AUXSOL 
+              Please contact AUXSOL technical support to obtain
+Request
+Header        Content-Type: application/json;charset=UTF-8
+
+              AuthorizationBearer bc891648-8873-46ab-9d69-1ff7225b61e9
+               tokentoken  Bearer
+
+              A token is needed for subsequent accesses, otherwise they will be denied, and the token needs to be preceded
+              by the word "Bearer"
+
+Request NA
+
+Body
+
+HttpStatus     HTTP 
+              See Appendix HTTP Status Codes
+
+Response {"code":"","msg":"","data":json }
+
+Body
+
+4.2 Protocols
+
+AUXSOL  rest  HTTP  HTTPS 
+The Rest interface provided by AUXSOL follows the HTTP or HTTPS protocol.
+
+4.3 Calling Methods
+
+
+All interface calls return synchronously
+4.4 Formats
+
+ application/json  UTF-8 
+Interfaces are described uniformly using application/json format with UTF-8 encoding.
+
+4.5 Access Processes
+
+1       AUXSOL Web App
+
+1 Register as a user of AUXSOL Web or App (either as service provider or owner).
+
+2       AUXSOL            AUXSOL       APP_ID APP_SERCRET
+
+2 Contact AUXSOL technical support and provide AUXSOL platform account to get the
+
+corresponding APP_ID and APP_SERCRET.
+
+3
+3 Updates and testing of users should be conducted according to this interface document .
+
+4.6 Calling restrictions
+
+ IP  5  10 
+Frequency limit for all interface calls: 10 times per 5 seconds for the same IP.
+
+5 Interface Definitions
+
+5.1 Permission
+1.1.1. Obtaining TOKEN
+
+1.1.1.1. Interface description
+
+ TOKEN TOKEN  AUXSOL API 
+
+User login interface, used for TOKEN acquisition, TOKEN will be the only credentials and
+necessary condition for you to call all other interfaces within AUXSOL API.
+
+1.1.1.2. Interface definitions
+
+      
+   Contents Illustration
+
+   Method Post
+
+   URL  /auth/token
+
+   Request Content-Type: application/json;charset=UTF-8
+   Header
+      Request {
+                          app_id: "12345678",//
+                          app_secret: "AE88E476E27227E460F82450AFDBB943",//
+                          lang: "zh-CN"//
+
+                    }
+
+      Response {       "code": "AWX-0000",
+      Body             "msg": null,
+                       "data": {
+                    }
+                             "access_token": "bc891648-8873-46ab-9d69-1ff7225b61e9",
+                             "expires_in": 43200
+                       }
+
+      1.1.1.3. Description of interface parameters
+
+                                           1 Request Body 
+                                Table 1 Request Body parameter description table
+
+                                                             
+ NO.  Parameters        Type    Name                         Illustration
+                       String
+1     account                                                
+                       String   account,                     support user name, email, mobile phone number login
+
+2     password         String                                
+                                    password                 plaintext
+3     lang                       
+                                                             zh-CN,en-US
+                                currently selected language
+
+                                 2 Response Body 
+
+                                Table 2 Response Body parameter description table
+
+                                                             
+NO.   Parameters       Type     Name                         Illustration
+
+1     access_token     String   Token
+
+2     expires_in       Integer                               
+                                expiry date                  seconds
+5.2 Archives
+
+6.1.1. List of power plants
+
+6.1.1.1. Interface description
+
+
+Obtain the list of power plants under this user
+
+Interface definitions
+
+          
+Contents  Illustration
+
+Method    Get
+
+URL       archive/plant/list
+
+Request Content-Type: application/json;charset=UTF-8
+Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request {
+                    status: "02",
+                    display: "1"
+                    plantName: ""
+                    capacityRangeLow:1
+                    capacityRangeHigh:100
+                    pageSize:10
+                    pageNum:1
+
+              }
+
+Response {
+
+Body        "code": "AWX-0000",
+
+            "msg": null,
+
+            "data": {
+
+            "total": 1,
+
+            "rows": [
+
+            {
+
+               "plantId": 162,
+
+               "deptId": 100,
+
+               "plantName": "",
+
+               "owner": null,
+                             "address": "",
+                             "currentPower": null,
+                             "todayYield": null,
+                             "monthlyYield": null,
+                             "totalYield": null,
+                             "capacity": 12,
+                             "fullLoadHour": null,
+                             "status": "02",
+                             "dt": null,
+                             "createTime": "2023-04-11T10:21:59.000+08:00"
+                          }
+                       ],
+                       "code": 200,
+                       "msg": null
+                    }
+                 }
+
+     6.1.1.3. Description of interface parameters
+
+                                     1 Request Body 
+                            Table 1 RequestBody parameter description table
+
+                                                   
+NO.  Parameters  Type
+1                              Name                Illustration
+     status      String
+2                                                  01. 02. 03.
+
+3                              plant status        01. online 02. offline 03. alarms
+
+4    display     String                            1. 2.
+                               type of plant       1. my power plants 2. power plants of users
+
+     plantName   String        
+
+                               plant name
+
+     capacityRange Integer     
+     Low
+                               installed capacity
+                               greater than...
+
+5    capacityRange Integer     
+
+     High                      installed capacity
+                               less than...
+6    pageSize    Integer
+                               
+7    pageNum     Integer       quantity per page
+                               
+                               page
+
+                                       2 Response Body 
+                            Table 2 Response Body parameter description table
+
+                                                   
+NO.  Parameters  Type          Name                Illustration
+1    total
+                 Long          
+2    rows                      total number
+
+                                                    6.2.1 PlantVo 
+
+                 object array  data                See annex 6.2.1 PlantVo entities for objects
+6.1.2. New power plants
+
+6.1.2.1. Interface description
+
+
+New power plants use this interface
+
+6.1.2.2.Interface definition
+
+         
+
+Contents Illustration
+
+Method Post
+
+URL      archive/plant/addPlant
+
+Request Content-Type: application/json;charset=UTF-8
+Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request  {
+            "plantBasicFormItems": {
+               "plantName": "zsy ",
+               "plantType": "1",
+               "capacity": "100",
+               "location": "116.403119,39.914714",
+               "address": "",
+               "timeZone": "+08:00"
+            },
+             "tariff": {
+               "priceType": "1",
+               "fixPrice": "1",
+               "priceUom": "1"
+            },
+            "ownerList": [
+               {
+                  "userName": "18069846718@163.com",
+                  "ownerName": "zsy1"
+               }
+            ],
+            "visitorList": [
+               {
+                  "userName": "zsy",
+                              "ownerName": "zsy"
+                           }
+                        ],
+                        "plantOtherFormItems": {
+                           "installPhone": "18069846708",
+                           "installEmail": "18069846708@163.com",
+                           "componentsAmount": "2",
+                           "investmentType": "1"
+                        },
+                        "photoList": [
+                           {
+
+                              "orderNo": 1,
+                              "url":
+                     "http://10.88.11.15:9000/awx/2023/05/07/fdd0fbef-ecac-438e-95fc-
+                     d0a2bb5eaf42.png",
+                            }
+                        ],
+                        "collectorList": [
+                           {
+                              "collectorSN": "AWX123",
+                              "collectorType": "02"
+                           }
+                        ]
+                     }
+
+     Response {
+
+     Body               "code": "AWX-0000",
+
+                        "msg": null,
+
+                        "data": 189
+
+                     }
+
+     6.1.2.3. Interface parameter description
+
+                                         1 Request Body 
+                              Table 1 Request Body parameter description table
+
+                                                         
+NO.  Parameters         Type            Name
+                                                         Illustration
+1     PlantVo
+     Entity PlantVo      PlantVo                          6.2.2 PlantSaveVo
+                        Entity PlantVo                   
+                                        New Power Plant  Refer to Annex 6.2.2 PlantSaveVo, where the fields in the example are
+                                           Information   supported, and fields not in the example do not need to be passed on
+                             2 Response Body 
+
+                            Table 2 Response Body parameter description table
+
+                                          
+NO.  Parameters  Type       Name          Illustration
+
+1    data                                  id
+                                          Returns the id of the new power plant
+
+     6.1.3. Editing power plants
+
+     6.1.3.1. Interface description
+
+     
+     Edit profile information
+
+     6.1.3.2. Interface definition
+
+                 
+
+     Contents Illustration
+
+     Method Post
+
+     URL         archive/plant/editPlant
+
+     Request Content-Type: application/json;charset=UTF-8
+     Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+     Request     {
+                    "plantId": 189,
+                    "deptId": 100,
+                    "plantName": "zsy ",
+                    "owner": "18069846718@163.com",
+                    "address": "",
+                     "capacity": 100,
+                    "plantBasicFormItems": {
+                       "plantName": "zsy ",
+                       "plantType": "1",
+                       "capacity": 100,
+                       "location": "116.4031190000,39.9147140000",
+                       "address": "",
+                       "timeZone": "+08:00"
+                    },
+                    "collectorList": [
+                       {
+                          "collectorSN": "AWX123",
+                          "collectorType": "02"
+      }
+   ],
+   "tariff": {
+
+      "planId": 322,
+      "plantId": 189,
+      "priceDirection": "01",
+      "priceType": "1",
+      "fixPrice": 1,
+      "priceUom": "1"
+   },
+   "ownerList": [
+      {
+
+         "userName": "18069846718@163.com",
+         "ownerName": "zsy1"
+      }
+   ],
+   "visitorList": [
+      {
+         "userName": "zsy",
+         "ownerName": "zsy"
+      }
+   ],
+   "plantOtherFormItems": {
+      "installPhone": "18069846708",
+      "installEmail": "18069846708@163.com",
+      "componentsAmount": 2,
+      "investmentType": "1"
+   },
+   "photoList": [
+      {
+         "id": null,
+         "plantId": null,
+         "orderNo": 1,
+         "url":
+"http://10.88.11.15:9000/awx/2023/05/07/fdd0fbef-ecac-438e-95fc-
+d0a2bb5eaf42.png",
+         "status": "success"
+      }
+   ]
+                 }
+
+     Response {
+
+     Body           "code": "AWX-0000",
+
+                    "msg": null,
+
+                    "data": null
+
+                 }
+
+     6.1.3.3. Interface parameter description
+
+                                         1 Request Body 
+
+                            Table 1 Request Body parameter description table
+
+                                                     
+NO.  Parameters                                      Illustration
+                    Type                Name          6.2.2 PlantSaveVo 
+1                                                    Refer to Annex 6.2.2 PlantSaveVo Entity
+                                        
+                    Power plant entity  Power plant
+
+                                        information
+
+                                         2 Response Body 
+
+                            Table 2 Response Body parameter description table
+
+                                                     
+NO. Parameters      Type
+                                        Name         Illustration
+
+     6.1.4. Deletion of power plants
+
+     6.1.4.1. Interface description
+
+     
+     Deletion of power plant archive information
+
+     6.1.4.2. Interface definition
+
+                 
+
+     Contents Illustration
+
+     Method Delete
+
+     URL         archive/plant/{plantId}
+
+     Request     Content-Type: application/json;charset=UTF-8
+     Header      Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+     Request  plantId  url 
+
+     Response {
+
+     Body           "code": "AWX-0000",
+
+                    "msg": null,
+                    "data": null
+                 }
+
+     6.1.4.3. Interface parameter description
+
+                                   1 Request Body 
+
+                            Table 1 Request Body parameter description table
+
+                                               
+NO.  Parameters  Type
+                                  Name         Illustration
+1    plantId     Long
+                                   ID           url 
+
+                                  Plant ID     Parameters after the url
+
+                                   2 Response Body 
+
+                                               
+NO. Parameters   Type             Name         Illustration
+
+     6.1.5.Power Plant Detailed Information
+
+     6.1.5.1. Interface description
+
+     
+     View details of individual power plants
+
+     6.1.5.2. Interface definition
+
+                 
+
+     Contents Illustration
+
+     Method Get
+
+     URL         archive/plant/findPlantDetail/{plantId}
+
+     Request Content-Type: application/json;charset=UTF-8
+     Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+     Request  url  plantId
+
+     Response {
+
+     Body        "code": "AWX-0000",
+
+                 "msg": null,
+
+                 "data": {
+
+                   "plantId": 169,
+
+                   "deptId": 100,
+
+                   "plantName": "",
+"owner": "admin",
+"address": " 3",
+"currentPower": null,
+"todayYield": null,
+"monthlyYield": null,
+"totalYield": null,
+"capacity": 25,
+"plantBasicFormItems": {
+
+   "plantName": "",
+   "plantType": "1",
+   "capacity": 25,
+   "location": "-122.0840000000,37.4219980000",
+   "address": " 3",
+   "timeZone": "+08:00"
+},
+"collectorList": [
+   {
+
+      "collectorSN": "A012304060000004",
+      "collectorType": "02"
+   },
+   {
+      "collectorSN": "A012304180004444",
+      "collectorType": "02"
+   }
+],
+"tariff": {
+   "planId": 321,
+   "plantId": 169,
+   "priceDirection": null,
+   "priceType": "1",
+   "fixPrice": 1,
+   "priceUom": "1"
+},
+"ownerList": [
+   {
+      "userName": "admin",
+      "ownerName": "admidsgf888888888888"
+   }
+],
+                       "visitorList": [],
+                       "plantOtherFormItems": {
+
+                          "installPhone": null,
+                          "installEmail": null,
+                          "componentsAmount": null,
+                          "investmentType": null
+                       },
+                       "photoList": []
+                    }
+                 }
+
+     6.1.5.3. Interface parameter description
+
+                                          1 Request Body 
+                               Table 1 RequestBody parameter description table
+
+                                                     
+NO.  Parameters  Type
+                               Name                  Illustration
+1    plantId     Long           id                    url 
+                               power plant ID        This parameter follows the url
+
+                                2 Response Body 
+
+                               Table 2 Response Body parameter description table
+
+                                                     
+NO.  Parameters  Type
+                               Name                  Illustration
+1    data
+                 PlantSaveVo    6.2.2 PlantSaveVo 
+
+                 PlantSaveVo entity power plant details Refer to Annex 6.2.2 PlantSaveVo Entity
+
+     6.1.6. Viewing inverters under a power plant
+
+     6.1.6.1. Interface description
+
+     
+     Query the list of all inverters under a certain power plant
+
+     6.1.6.2. Interface definition
+
+                 
+     Contents    Illustration
+
+     Method      Get
+
+     URL         /archive/inverter/getInverterByPlant/{plantId}
+
+     Request Content-Type: application/json;charset=UTF-8
+Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request  url plantId
+
+Response {
+
+Body        "code": "AWX-0000",
+
+            "msg": null,
+
+            "data": [
+
+               {
+
+                  "inverterId": 1234567890126778,
+
+                  "deptId": null,
+
+                  "inverterName": "ASG_TL",
+
+                  "sn": "ASG12332213321",
+
+                  "commAddress": 1,
+
+                  "type": "02",
+
+                  "model": "ASG_TL",
+
+                  "status": "03",
+
+                  "ratePower": 12,
+
+                  "ratePowerWithUnit": null,
+
+                  "productionDate": null,
+
+                  "warranty": null,
+
+                  "csn": "A012304060000004",
+
+                  "armVersion": "A8170",
+
+                  "dspVersion": "D1011",
+
+                  "slaveDspVersion": "0000",
+
+                  "createUser": null,
+
+                  "createTime": "2023-05-07 21:36:47",
+
+                  "updateBy": null,
+
+                  "updateTime": "2023-05-07 21:36:47",
+
+                  "plantName": "",
+
+                  "plantId": "169",
+
+                  "currentPower": 0.05,
+
+                  "dayEnergy": 0,
+
+                  "totalEnergy": 0,
+
+                  "lastDt": "2023-05-07 22:14:06",
+
+                  "inverterModel": "ASG_TL"
+
+               }
+
+            ]
+
+      }
+     6.1.6.3. Interface parameter description
+
+                                1 Request Body 
+
+                               Table 1 Request Body parameter description table
+
+                                               
+NO.  Parameters  Type          Name
+                                id             Illustration
+1    plantId     Long          power plant ID   url 
+                                               The parameter follows the url
+
+                                2 Response Body 
+
+                               Table 2 Response Body parameter description table
+
+                                               
+NO.  Parameters
+                 Type          Name            Illustration
+1    data
+                                 6.4.1 
+                 entity array  List of Inverters Inverter entities as detailed in annex 6.4.1
+
+2
+
+                 Viewing collectors under a certain plant
+
+     6.1.7.1. Interface description
+
+     
+     Query the list of all inverters under a certain power plant
+
+     6.1.7.2. Interface definition
+
+                 
+     Contents    Illustration
+
+     Method      Get
+
+     URL         archive/collector/getCollectorByPlantId/{plantId}
+                 Content-Type: application/json;charset=UTF-8
+     Request     Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+     Header
+
+     Request  url plantId
+
+     Response {
+
+     Body        "code": "AWX-0000",
+
+                 "msg": null,
+
+                 "data": [
+
+                 {
+
+                       "collectorId": 181,
+
+                       "plantId": 169,
+
+                       "deptId": null,
+
+                       "collectorName": null,
+                           "collectorSn": "A012304180004444",
+                           "collectorType": "02",
+                           "collectorVersion": null,
+                           "collectorStatus": "02",
+                           "totalWTime": 0,
+                           "currentWTime": 921,
+                           "signal": 100,
+                           "ip": "10.9.5.252",
+                           "lastDataTime": "2023-04-28 17:38:02",
+                           "updateIn": 0,
+                           "createUser": "admin",
+                           "createTime": "2023-04-18T17:07:31.000+08:00",
+                           "updateUser": null,
+                           "updateTime": "2023-04-28T17:23:39.000+08:00",
+                           "productionDate": null,
+                           "firmwareVersion": "E.YN01-BW01-001.CN.V0.00.26",
+                           "firstTime": null,
+                           "plantName": ""
+                        }
+                     ]
+                  }
+
+      6.1.7.3. Interface parameter description
+
+                                   1 Request Body 
+                        Table 1 Request Body parameter description table
+
+                                                
+ NO.  Parameters  Type                          Illustration
+                                Name
+1     plantId     Long           id              url 
+                                power plant ID  The parameter follows the url
+
+                                 2 Response Body 
+
+                        Table 2 Response Body parameter description table
+
+                                                
+NO.   Parameters
+                  Type          Name            Illustration
+1     data
+                                  6.3.1 
+                  entity array  List of collectors See Annex 6.3.1 for details of collector entities
+6.1.8. Viewing the List of Collectors under Operators
+
+6.1.8.1. Interface description
+
+
+Query the list of all collectors under an operator
+
+6.1.8.2. Interface definition
+
+      
+
+Contents Illustration
+
+Method Get
+
+URL   archive/collector/list
+
+Request Content-Type: application/json;charset=UTF-8
+Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request {
+                    status: "01"
+                    collectorBindStatus: "0"
+                    collectorType: "02"
+                    collectorSN: "12"
+                    pageSize: 10
+                    pageNum: 1
+
+              }
+
+Response {
+
+Body        "code": "AWX-0000",
+
+            "msg": null,
+
+            "data": {
+
+            "total": 1,
+
+            "rows": [
+
+            {
+
+               "collectorId": 175,
+
+               "plantId": 169,
+
+               "deptId": null,
+
+               "collectorName": null,
+
+               "collectorSn": "A012304060000004",
+
+               "collectorType": "02",
+
+               "collectorVersion": null,
+
+               "collectorStatus": "01",
+                              "totalWTime": 0,
+                              "currentWTime": 181739,
+                              "signal": 100,
+                              "ip": "10.9.5.252",
+                              "lastDataTime": "2023-05-07 21:44:05",
+                              "updateIn": 0,
+                              "createUser": "admin",
+                              "createTime": "2023-04-07T15:13:01.000+08:00",
+                              "updateUser": null,
+                              "updateTime": "2023-05-07T21:36:47.000+08:00",
+                              "productionDate": null,
+                              "firmwareVersion": "E.YN01-BW01-001.CN.V0.00.27",
+                              "firstTime": null,
+                              "plantName": ""
+                           }
+                        ],
+                        "code": 200,
+                        "msg": null
+                     }
+                  }
+
+     6.1.8.3. Interface parameter description
+
+                            1 Request Body 
+
+                           Table 1 RequestBody parameter description table
+
+                                               
+NO.  Parameters   Type
+1                          Name                Illustration
+2    collectorSN  String    SN
+                           collector SN
+3
+     collectorBind String                      0             0 bound
+4    Status                Collector Binding   1             1 not bound
+5
+6                                 Status
+
+     collectorType String                      01.4G
+
+                           Collector type 02.WIFI
+
+     status       String                       01. 02. 03.
+     pageSize     Integer                      01.online 02.offline 03.alarms
+     pageNum      Integer  status
+                           
+                           number per page
+
+                           
+                           page number
+                                   2 Response Body 
+
+                            Table 2 Response Body parameter description table
+
+                                                     
+NO.  Parameters     Type                             Illustration
+1    total                        Name
+                    Long                              6.3.1 ArchiveCollector 
+2    rows                                            For objects, see annex 6.3.1ArchiveCollector entities
+                                  total number
+                    object array  of articles
+
+                                  
+
+                                  data sheet
+
+     6.1.9.Collector Unbinding
+
+     6.1.9.1. Interface description
+
+     
+     Unbinding the collector from the power plant
+
+     6.1.9.2. Interface definition
+
+                 
+
+     Contents Illustration
+
+     Method Post
+
+     URL         archive/collector/unbind
+
+     Request Content-Type: application/json;charset=UTF-8
+     Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+     Request [189,120]
+
+     Response {
+
+     Body           "code": "AWX-0000",
+
+                    "msg": null,
+
+                    "data": 3
+
+                 }
+
+     6.1.9.3. Interface parameter description
+
+                                   1 Request Body 
+
+                            Table 1 Request Body parameter description table
+
+                                                     
+NO.  Parameters
+                    Type          Name               Illustration
+1
+                    Long          id                 
+                                  Collector id that  This parameter has no name and can
+
+                 Arrays of type Long needs to be unbound be passed directly as an array
+                                2 Response Body 
+
+                               Table 2 Response Body parameter description table
+
+                                                          
+NO.  Parameters  Type          Name                       Illustration
+                               
+1    data        Integer
+                               Number of unbound
+
+     6.1.10. Obtaining the list of inverters
+
+     6.1.10.1. Interface description
+
+     
+     Obtain a list of inverters that the user can access
+
+     6.1.10.2. Interface definition
+
+                 
+     Contents    Illustration
+
+     Method      Get
+
+     URL         archive/inverter/list
+
+     Request Content-Type: application/json;charset=UTF-8
+     Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+     Request {
+                         status: "01"
+                         display: "1"
+                         sn: "2"
+                         ratedPowerLow: 1
+                         ratedPowerHigh: 2
+                         pageSize: 10
+                         pageNum: 1
+
+                   }
+
+     Response {
+
+     Body        "code": "AWX-0000",
+
+                 "msg": null,
+
+                 "data": {
+
+                 "total": 1,
+
+                 "rows": [
+
+                 {
+
+                    "inverterId": 2022110800,
+
+                    "deptId": null,
+
+                    "inverterName": "2022110800",
+                             "sn": "2022110800",
+                             "commAddress": 1,
+                             "type": "01",
+                             "model": "sanxing",
+                             "status": "02",
+                             "ratePower": null,
+                             "ratePowerWithUnit": null,
+                             "productionDate": null,
+                             "warranty": null,
+                             "csn": "1002",
+                             "armVersion": null,
+                             "dspVersion": null,
+                             "slaveDspVersion": null,
+                             "createUser": "",
+                             "createTime": null,
+                             "updateBy": "",
+                             "updateTime": null,
+                             "plantName": "LHtest",
+                             "plantId": "190",
+                             "currentPower": null,
+                             "dayEnergy": null,
+                             "totalEnergy": null,
+                             "lastDt": null,
+                             "inverterModel": "sanxing"
+                          }
+                       ],
+                       "code": 200,
+                       "msg": null
+                    }
+                 }
+
+     6.1.10.3. Interface parameter description
+
+                                   1 Request Body 
+                       Table 1 Request Body parameter description table
+
+                                                
+NO.  Parameters  Type    Name                   Illustration
+
+1    status      String                         01. 02. 03.
+                         Status                 01.online 02.offline 03.alarms
+
+2    display     String                         1. 2.
+                                                1.my inverters 2.users' inverters
+3  sn              String         SN                Support fuzzy query
+                                 Inverter SN        Low power rating
+
+4  ratedPowerLow Double                            The part with high rated power
+
+5  ratedPowerHigh Double                            number of pages
+                                                    which page
+6  pageSize        Integer
+
+7  pageNum         Integer
+
+                                     2 Response Body 
+                   Table 2 Response Body parameter description table
+
+                                                   
+1  total
+2  rows            Long          
+
+                                                    6.4.2 InverterVo 
+
+   5.3Date class
+   6.2.1.Query account curve data
+
+   6.2.1.1.Interfacedescription
+
+   
+   Query the summary data curve of the power station under the account, including curve,daily,
+   monthly,annual date
+
+   6.2.1.2.Interface definition
+
+               
+       Part    Description
+
+       Method  Get
+
+       URL     analysis/plantReport/queryPlantReportAggregate
+
+       Request Content-Type: application/json;charset=UTF-8
+       Header Authorization: Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+       Request {
+                           reportType: "0"
+                           dataTime: "2023-05-07"
+
+                     }
+
+       Response {
+
+       Body        "code": "AWX-0000",
+
+                   "msg": null,
+   "data": [
+      {
+         "dt": "00:00"
+      },
+      {
+         "dt": "00:05"
+      },
+
+      {
+         "dt": "22:20",
+         "value": 0.03
+
+      },
+      {
+
+         "dt": "22:25",
+         "value": 0.02
+      },
+      {
+         "dt": "22:30",
+         "value": 0.02
+      },
+      {
+         "dt": "23:05"
+      },
+      {
+         "dt": "23:10"
+      },
+      {
+         "dt": "23:15"
+      },
+      {
+         "dt": "23:20"
+      },
+      {
+         "dt": "23:55"
+      }
+   ]
+}
+     6.2.1.3.Interface parameter description
+
+                          1 Request Body 
+
+                 Table 1 Request Body parameter description lable
+
+                                      
+No.  Parameter
+                 Type    Full name    Description
+1    reportType
+                 String               CURRENT("0","Current"), CURRENT("0","Current"),//
+                         report Type  //DAY("1","Day"),// daily
+
+                                      MONTH("2","Month"),// DAY("1","Day"),//monthly
+
+                                      YEAR("3","Year"),// MONTH("2","Month"),//annual
+
+                                                                   YEAR("3","Year"),//total
+
+2    dataTime    String               reportType  If reportType is different
+                                      0yyyy- , formate is different0
+
+                                      MM-dd                        yyyy-MM-dd
+
+                                      1: yyyy-MM                   1: yyyy-MM
+
+                                      2: yyyy                      2: yyyy
+
+                                      3                            3
+
+      2 Response Body    L a b l e 2 Response Body P a r a m e t e r d e s c r i p t i o n l a b e l
+
+                                      
+No.  Parameter   Type    Full name    Description
+
+1    data                              5 
+                                      Data completion based on query conditions, when the type is
+                 Array                total.Query to the current time, before and after 5 years of data
+
+1.1 dt           String                reportType                  According to query condition
+                         date time                                 , if reportType i s
+                                      0mm:ss                       d i f f e r e n t formate is
+                                      1: dd                        different0mm:ss
+                         date value   2: MM                        1: dd
+
+                                      3: yyyy                      2: MM
+                                                                   3: yyyy
+
+1.2 value        Double               Two decimal places,
+                                      if there is no data at that point, this field is missing
+     6.2.2.3.Interface parameter description
+
+                              1 Request Body 
+
+                                             
+No. Parameter       Type     Full name       Description
+
+                              2 Response Body 
+
+                                             
+No.  Parameter      Type     Full name       Description
+1
+     inverterOnlin  Integer  
+2    eNum                    inverter
+                             Online Number
+3
+     inverterOffli Integer   
+4    neNum                   inverter
+                             Offline Number
+     inverterAlarm Integer
+     Num                     
+                             inverter Alarm
+     collectorOnli Integer    Number
+     neNum
+                             
+                             collector
+                             Online Number
+5  collectorOffl Integer           
+                                   collector
+   ineNum                          Offline Number
+
+6  collectorAlar Integer           
+                                    collector
+   mNum
+                                   Alarm Numver
+7  plantOnlineNu Integer
+                                   
+   m                              plant Online
+                                  Number
+8  plantOfflineN Integer
+                                   
+   um                              plant Offline
+                                   Number
+9  plantAlarmNum Integer
+                                  
+                                  plant Alarm Number
+
+   
+   Query the summary date of the power station under the account
+
+                Interface definition
+
+                
+       Part     Description
+
+       Method Get
+
+       URL      analysis/ plantReport/ queryPlantCurrentDataAll
+       Request
+       Header   Content- Type: application/ json; charset= UTF- 8
+                Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+       Request 
+
+       Response {
+
+       Body        "code" : "AWX-0000",
+
+                   "msg" : null,
+
+                   "data" : {
+
+                   "deptId": null,
+
+                   " energyData": {
+
+                   "flh" : null,
+
+                   "power" : 0.07,
+
+                   "y" : 0,
+
+                   "earn" : 0,
+                   "yt": 8334.32,
+
+                   "earnT" : 8334.32,
+                        "ym": 0.3,
+                        "earnM" : 0.3,
+                        "yy": null,
+                        "earnY" : null,
+                        "co2" : 8.31,
+                        "treePlants": 450.05,
+                        "stringNum" : null,
+                        "pvList": null
+                     },
+                     "capacity" : 340
+                  }
+               }
+
+    1 Request Body              T a b l e 1 RequestBody Parameter D e s c r i p t i o n T a b l e
+
+                                               
+No. Parameter  Type             Full name      Description
+
+    2 Response Body             T a b l e 2 RequestBody Parameter D e s c r i p t i o n T a b l e
+
+                                               
+No. Parameter  Type             Full name      Description
+
+1  data                                         6.4.2 
+               Account Summary  Account        Refer to Appendix6. 4. 2 Account Summary Data
+               Data Entity                     entity
+                                summary data
+
+   
+   View real- time data for individual power plants
+
+               
+   Part        Description
+   Method      Get
+
+   URL         analysis/ plantReport/ queryPlantCurrentData/ { plantId}
+Request  Content- Type: application/ json; charset= UTF- 8
+Header   Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request  url 
+
+Response {
+
+Body        "code" : "AWX-0000",
+
+            "msg" : null,
+
+            "data" : {
+
+            "plantId" : 169,
+            "dt": "2023-05-08 15:55:31",
+
+            "day" : "2023-05-08",
+
+            "statusEnum": "03",
+
+            "installCapacity" : 25,
+
+            "lastCommTime" : "2023-05-08T15:55:27.956+08:00",
+            "updateIn" : 5,
+
+            "type" : "02",
+
+            "plantCurrentData" : {
+
+            "flh" : 0,
+
+            "p" : 0.02,
+
+            "y" : 0,
+
+            "earn" : 0,
+
+            "earnM" : 0,
+
+            "earnY" : 0,
+
+            "earnT" : 0,
+
+            "en": 0,
+
+            "enT" : 0,
+
+            "enM" : 0,
+
+            "enY" : 0,
+            "buyEn" : 0,
+
+            "buyEnM": 0,
+
+            "buyEnY": 0,
+
+            "buyEnT": 0,
+
+            "sellEn": 0,
+
+            "sellEnM" : 0,
+
+            "sellEnY" : 0,
+
+            "sellEnT" : 0,
+
+            "bcEn" : 0,
+
+            "bcEnM" : 0,
+
+            "bcEnY" : 0,
+                         "bcEnT" : 0,
+                         "bdcEn" : 0,
+                         "bdcEnM": 0,
+                         "bdcEnY": 0,
+                         "bdcEnT": 0,
+                         "gridPower" : 0,
+                         "loadPower" : 0,
+                         "batteryPower" : 0,
+                         "soc" : 0,
+                         "co2" : 0,
+                         "treePlants": 0,
+                         "status": null,
+                         "yt": 0,
+                         "yy": 0,
+                         "ym": 0
+                      }
+                   }
+                }
+
+                                description
+
+      1 Request Body            T a b l e 1 Response Body Parameter D e s c r i t i o n T a b l e
+
+                                                     
+NO.  Parameter  Type            Full name            Description
+
+      2 Response Body           T a b l e 2 Response Body Parameter D e s c r i t i o n T a b l e
+
+                                                     
+NO   Parameter  Type            Full name            Description
+
+1    data                                             6.5.14 
+                Power station   Current status data  Refer to Appendix 6.5.14 Power Station current
+                current status                       status Entity
+                entity           of the power
+                                station
+
+     
+     View individual plant curve data, including daily, monthly, anuual, total data
+         
+Part     Description
+Method   Get
+
+URL      analysis/ plantReport/ queryPlantReportByPlantId
+Request
+Header   Content- Type: application/ json; charset= UTF- 8
+         Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+Request
+         {
+                  reportType : "0"
+                  dataTime: "2023-05-08"
+                  plantId : 169
+                  dataItems : 63
+
+         }
+
+Response {
+
+Body        "code" : "AWX-0000",
+
+            "msg" : null,
+
+            "data" : [{
+                  "dataItem" : 0,
+
+                     "data" : [{
+                                 "dt": "00:00",
+
+                           "value" : null
+                     },
+
+                     {
+                          "dt": "23:50",
+
+                           "value" : null
+                     },
+
+                     {
+                          "dt": "23:55",
+                          "value" : null
+
+                           }
+                     ]
+
+               }, ]
+         }]
+
+         }
+      1 Request Body      T a b l e 1 Response Body Parameter D e s c r i t i o n T a b l e
+
+                                               
+No.  Parameter   Type     Full name            Description
+1
+     reportType  String                                                                  0.daily 1.monthly 2.
+2                         Report type
+                                               0.  1. 2. 3. annual 3. total
+
+     dataTime    String                        reportType         if reportTypeis different
+                          Date time              0  yyyy- MM- dd  format is different 0
+                                               1: yyyy-MM         yyyy- MM- dd
+
+                                               2 : yyyy           1:yyyy-MM
+
+                                               3                  2: yyyy
+
+                                                                  3
+
+3    plantId     Long      id
+                          plant Id
+4    dataItems   Integer                        bit , 0-
+                                               5  repotType=0  1-3 bit 
+                           date Items          
+                                               Use bit to represent data items, multiple data items can
+                                               be requested at once,0 to 5 is used when repotType=0 ,
+                                               Other for 1 - 3 , the data items corresponding to the bit
+                                               bits are as follows:
+                                               0. PV  PV power
+                                               1 .  Grid power
+                                               2 .  Battery power
+                                               3.  Load power
+                                               4 .     Self-utilized power in PV power
+
+                                                generation
+
+                                               5 .  Self-use power in energy
+                                               consumption
+                                               6. Pv  Pv capacity
+                                               7 .       Electricity purchased from grid
+                                               8 .      The amount of electricity the grid
+                                               sells
+                                               9 .      Battery charge capacity
+                                               1 0.  Battery discharge capacity
+                                               11.  Load electricity quantity
+                                               1 2.  Self-consumption in PV power
+                                               generation
+
+                                               13.  Self-use of electricity in
+                                               energy consumption
+
+      2 Response Body     T a b l e 2 Response Body Parameter D e s c r i t i o n T a b l e
+
+                                               
+No. Parameter    Type
+                          Full name            Description
+
+1    data         Array
+
+1.1 dataItem     Integer                        dataItem  bit 
+                          Data item            The bit in the dataItem in the condition
+1.2 data          Array   
+                                                reportType 0mm:ss
+1.2.1 dt         String   Concrete data value  According to query condition, if reportTypeis
+                                               different, format is different 0  mm: ss
+                           
+                          Date time
+                                              1 : dd
+                                              2 : MM
+                                              3 : yyyy
+
+1.2.2 value       Double          
+                                  date value
+
+
+Query the power data of the energy storage station by day, month, year, and total
+
+             
+Part         Descrition
+Method       Get
+
+URL          analysis/ plantReport/ queryStorePlantTotalReportByPlantId
+
+Request      Content- Type: application/ json; charset= UTF- 8
+Header       Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request {         reportType : "0"
+               }
+                  dataTime: "2023-05-08"
+                  plantId : 169
+
+Response {
+
+Body              "code" : "AWX-0000",
+
+                  "msg" : null,
+
+                  "data" : {
+                     "id": null,
+
+                  "dt": null,
+
+                  "flh" : null,
+
+                  "y" : 0,
+
+                  "earn" : null,
+
+                  "en": 0,
+                  "enT" : null,
+
+                  "buyEn" : 0,
+
+                  "buyEnT": null,
+                      "sellEn": 0,
+                      "sellEnT" : null,
+                      "bcEn" : 0,
+                      "bcEnT" : null,
+                      "bdcEn" : 0,
+                      "bdcEnT": null,
+                      "dataH" : null,
+                      "pid" : null,
+                      "yt": null
+                   }
+                }
+
+     1 Request Body                      T a b l e 1 Response Body Parameter D e s c r i t i o n T a b l e
+
+                                                  
+No, Parameter   Type                 Full name    Description
+
+1   reportType  String                            0.  1. 2. 3.       0.daily 1.monthly 2.
+                                     report Type                     annual 3. total
+
+2   dataTime    String                            reportType         if reportTypeis different
+                                     date Time      0  yyyy- MM- dd  format is different 0 
+                                                  1: yyyy-MM         yyyy- MM- dd
+
+                                                  2 : yyyy           1:yyyy-MM
+
+                                                  3                  2:yyyy
+
+                                                                     3
+
+3   plantId     Long                  id
+                                     plant ID
+
+                                      2 Response Body 
+
+                                                  
+No  Parameter   Type                 Full name    Description
+
+1   data                                           6.6.1 
+                plant report entity               Refer to Appendix 6.6 .1 Plant Report Data Entity
+
+    
+    Alarm data can be queried by power station, inverter, and organization
+         
+Part     Decription
+Method   Get
+
+URL      analysis/ alarm/ list
+
+Request  Content- Type: application/ json; charset= UTF- 8
+Header   Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request {         type: "02"
+               }  startTime : "2023-04-23"
+                  endTime : "2023-05-08"
+                  status : "01"
+                  plantIds: 169
+                  pageSize: 10
+                  pageNum : 1
+
+Response {
+
+Body              "code" : "AWX-0000",
+
+                  "msg" : null,
+
+                  "data" : {
+                     "total" : 10,
+
+                  "rows" : [
+
+                  {
+
+                      "id": "8f76d902c08e45078d28c59dbad41bff",
+                      "pname": "",
+
+                      "sn": "ASG12332213321",
+
+                      "aname": "BMS ",
+
+                      "level" : "03",
+                      "dt": "2023-05-08 16:46:38",
+
+                      "rdt" : null,
+
+                      "status": "01",
+                      " suggestion": "suggestion.25",
+
+                      "duration" : null,
+
+                      "durationStr" : null,
+
+                      "pid" : 169,
+
+                      "aid" : 196
+
+                  },
+                          {
+                            "id": "9d0a248c8c7748a78b62a328ad3de35b",
+                            "pname": "",
+                            "sn": "ASG12332213321",
+                            "aname": "Meter ",
+                            "level" : "04",
+                            "dt": "2023-05-08 16:46:38",
+                            "rdt" : null,
+                            "status": "01",
+                            " suggestion": "suggestion.16",
+                            "duration" : null,
+                            "durationStr" : null,
+                            "pid" : 169,
+                            "aid" : 207
+
+                         },
+                      ],
+                      "code" : 0,
+                      "msg" : null
+                   }
+                }
+
+    1 Request Body -- T a b l e 1 Request Body parameter description table--query by organization
+
+                                       
+No. Parameter   Type     Full name     Description
+
+1    type       String                 01.  01. q u e r y b y
+                         Query type
+                                        01                             o r g a n i z a t i o n fixed 01
+
+2    startTime  String                 yyyy- MM- dd
+                         start Time
+
+3    endTime    String                 yyyy- MM- dd
+                         end Time
+
+4    status     String                 0 1. 02. 01.unprocessed 02.processed
+                         alarm Status
+                                       03.                             03.recovered
+
+5    plantName  String                   plant name,support fuzzy
+                         plant Name                                          query
+
+6    pageSize   Integer  
+                         page Size
+
+     pageNum    Integer  
+                         page Number
+
+    1 Request Body -- T a b l e 1 Request Body parameter description table--query by plant
+
+                                                                       02. q u e r y b y p l a n t 
+No.  Parameter  Type     Full name     Description                       fixed 02
+
+1    type       String                 02.
+                         query type    02
+2  startTime   String                 yyyy- MM- dd
+                        start Time
+3  endTime     String                 yyyy- MM- dd
+                        end Time
+4  status      String                 01. 02.        0 1. unprocessed 02. processed
+                                      03.            03. recovered
+5  plantIds    String   alarm Status
+                         ID            id id         plant id multiple id is
+                        plant ID                     separated by commas (, )
+
+7  pageSize    Integer  
+                        page Size
+8  pageNum     Integer  
+                        page Number
+
+ 1 Request Body -- T a b l e 1 Request Body parameter description table--query by inverter
+
+                                      
+No. Parameter  Type     Full name     Description
+
+1  type        String                 03.            03. query by inverter
+                        query type      03           f i x e d 03
+
+2  startTime   String                 yyyy- MM- dd
+                        startTime
+
+3  endTime     String                 yyyy- MM- dd
+               String   end Time
+4  status      String                 01. 02.        0 1. unprocessed 02. processed
+                        alarm status  03.            03. recovered
+
+5  sn                    SN
+                        inverter SN
+
+6  pageSize    Integer  
+                        page Size
+
+7  pageNum     Integer  
+                        Page Number
+
+                         2 Response Body 
+
+                                      
+1  total       Integer
+                                       
+2  rows                 Total number         This data is not valid and is consistent with the
+               Array                  current number of pages. Because the total number of alarms is not
+                        rows          displayed, only the previous page and the next page are displayed
+
+                                       6.6.2 refer to attachment 6.6.2
+
+   
+   Query the signal strength curve of the collector
+          
+Part      Description
+
+Method    Get
+
+URL       archive/ collector/ getCollectorSignal
+Request
+Header    Content- Type: application/ json; charset= UTF- 8
+          Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+Request {
+
+             collectorSN : A012304060000004
+
+                    date: 2023-05-08
+             }
+
+Response  {
+Body        "code" : "AWX-0000",
+            "msg" : null,
+            "data" : [
+                {
+                   "name" : "08:04:34",
+
+                "value" : 100
+             },
+             {
+
+                "name" : "08:09:35",
+
+                "value" : 100
+             },
+
+             {
+               "name" : "08:19:34",
+
+                "value" : 100
+             },
+
+             {
+               "name" : "08:24:35",
+
+                   "value" : 100
+                }
+             ]
+
+          }
+      1 Request Body                   T a b l e 1 Request Body parameter description table
+
+                                               
+No.  Parameter   Type           Full name      Description
+1
+     collectorSN String          SN            yyyy- MM- dd
+2                               collector SN
+     date        String
+                                
+                                date time
+
+      2 Response Body                  T a b l e 2 Request Body parameter description table
+
+                                               
+No.  Parameter   Type           Full name      Description
+1                
+     data        Array
+1.1
+     name        String                        HH :mm:ss
+1.2                             Time
+     value       Integer
+                                
+                                Value
+
+     
+     Query the signal strength curve of the collector
+
+                
+     Part       Description
+     Method     Get
+
+     URL        analysis/ inverterReport/ findInverterRealTimeInfoBySn/ { sn}
+
+     Request    Content- Type: application/ json; charset= UTF- 8
+     Header     Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+     Request    url
+
+     Response {
+
+     Body        "code" : "AWX-0000",
+
+                 "msg" : null,
+
+                 "data" : {
+
+                 "id": null,
+
+                 "sn": "ASG12332213321",
+
+                 "dt": "2023-05-08 17:21:38",
+"deptId": 100,
+"history" : null,
+"moneyType" : "1",
+"price" : 1,
+"ratedPower": 12,
+"type" : "02",
+"lastDay" : "2023-05-08",
+"lastCommTime" : "2023-05-08T17:21 :34.776+08:00",
+" energyData": {
+
+   "flh" : null,
+   "power" : 0.01,
+   "y" : 0,
+   "earn" : 0,
+   "yt": 0,
+   "earnT" : 0,
+   "ym": 0,
+   "earnM" : 0,
+   "yy": 0,
+   "earnY" : 0,
+   "co2" : null,
+   "treePlants": null,
+   "stringNum" : null,
+   "pvList": [
+
+      {
+         "index" : 1,
+         "i" : 0,
+         "i1": null,
+         "i2": null,
+         "u" : 253.5,
+         "p" : 1
+
+      },
+      {
+
+         "index" : 2,
+         "i" : 0,
+         "i1": null,
+         "i2": null,
+         "u" : 0,
+         "p" : 0
+      }
+   ]
+},
+"batteryData" : {
+
+   "bcEn" : 0,
+   "bcEnM" : 0,
+   "bcEnY" : 0,
+   "bcEnT" : 0,
+   "bdcEn" : 0,
+   "bdcEnM": 0,
+   "bdcEnY": 0,
+   "bdcEnT": 0,
+   "batteryPower" : 0,
+   "batterySoc": 0,
+   "batterySoh": 0,
+   "voltage" : 0,
+   "current" : 0,
+   "capacity" : 0,
+   "batteryType" : "1",
+   " maxChargingCurrent": 30,
+   "dischargeCurrent" : 30
+},
+"gridData" : {
+   "gridPower" : 0,
+   "buyEn" : 0,
+   "buyEnM": 0,
+   "buyEnY": 0,
+   "buyEnT": 0,
+   "sellEn": 0,
+   "sellEnM" : 0,
+   "sellEnY" : 0,
+   "sellEnT" : 0,
+   "acList": [
+
+      {
+         "phase" : "A",
+         "u" : 0,
+         "i" : 0,
+         "f" : 0,
+         "loadRate" : null,
+         "p" : 0
+      },
+      {
+
+         "phase" : "B",
+         "u" : 0,
+         "i" : 0,
+         "f" : 0,
+         "loadRate" : null,
+         "p" : 0
+      },
+      {
+         "phase" : "C",
+         "u" : 0,
+         "i" : 0,
+         "f" : 0,
+         "loadRate" : null,
+         "p" : 0
+      }
+   ]
+},
+"loadData" : {
+   "en": 0,
+   "enM" : 0,
+   "enY" : 0,
+   "enT" : 0,
+   "f" : 0,
+   "loadRateTotal" : 0,
+   "acList": [
+      {
+         "phase" : "A",
+         "u" : 0,
+         "i" : 0,
+         "f" : null,
+         "loadRate" : 0,
+         "p" : 0
+      },
+      {
+         "phase" : "B",
+         "u" : 0,
+         "i" : 0,
+         "f" : null,
+         "loadRate" : 0,
+         "p" : 0
+      },
+      {
+         "phase" : "C",
+         "u" : 0,
+         "i" : 0,
+         "f" : null,
+         "loadRate" : 0,
+         "p" : 0
+      }
+   ],
+   "loadPower" : 0
+},
+"version" : {
+   "armVersion": "A8170",
+   "dspVersion": "D1011",
+   "slaveDspVersion" : "0000"
+},
+"alarmCurrent" : {
+   "mainFaultCode" : 8388608,
+   "faultCode" : 2401,
+   "mainAlarmCode" : 33586,
+   "alarmCode" : 201,
+   "lastAlarm" : null,
+   " alarmCount": null
+},
+"otherData" : {
+   "temperature1" : null,
+   "temperature2" : null,
+   "insideTemperature" : null,
+   "standard" : "1",
+   "npeVoltage": 51,
+   "workModel" : "4",
+   "energyDistribute" : "3",
+   "dcTemperature" : 28,
+   "invTemperature": 28,
+   "pvTemperature" : 28,
+                          "cntlTemperature" : 30,
+                          " batteryTemperature": 0
+                       },
+                       "pid" : 169
+                    }
+                 }
+
+    1 Request Body                 T a b l e 1 Request Body parameter description table
+
+                                                    
+No. Parameter    Type              Full name        Description
+
+1   Sn           String             SN               url 
+                                   Inverter SN      parameter is in url
+
+                                    2 Response Body 
+
+                                                    
+NO  Parameter    Type              Full name        Description
+
+1   data                                             6.5.3 
+                  Inverter real-   date             refer to attachment 6. 5 . 3 Inverter real-
+                 time data entity
+                                                    time data entity
+
+    
+    Query the curve data of the inverter
+
+                 
+        Part     Description
+        Method   Get
+
+        URL      analysis/ inverterReport/ queryInverterCurveBySn
+        Request
+        Header   Content- Type: application/ json; charset= UTF- 8
+                 Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+        Request
+                 {
+                          reportType : "01"
+                          dataTime: "2023-05-07"
+                          sn : "ASG12332213321"
+                        dataItemList: [20123]
+               }
+
+   Response {
+
+   Body           "code" : "AWX-0000",
+
+                  "msg" : null,
+
+                  "data" : {
+
+                     "yaxisData" : [
+
+                         {
+
+                            "20123" : [
+
+                               "0.08",
+
+                               "0.03",
+
+                               "0.03",
+
+                               "0.01",
+
+                               "0.03",
+                            ]
+
+                         }
+
+                     ],
+
+                     "yaxisNum" : 1,
+
+                     "yaxisUnit" : [
+
+                         "kW"
+
+                     ],
+
+                     "xaxis" : [
+
+                         "00:04",
+
+                         "00:09",
+
+                         "00:14",
+
+                         "00:19",
+
+                         "00:24",
+
+                     ]
+
+                  }
+
+               }
+
+    1 Request Body                 T a b l e 1 Request Body p a r a m e t e r d e s c r i p t i o n t a b l e
+
+                                                     
+No. Parameter     Tyoe                  Full name    Description
+
+1  reportType     String                              The value of the curve
+                                        report type
+                                                      01           is 01
+
+2  dataTime       String                             yyyy- MM- dd
+                                        date time
+3   sn                    String          SN
+                                         Inverter SN
+4   dataItemList Long                                            For details,
+                                         Data item list         refer to the inverter data item table
+
+     2 Response Body                     T a b l e 2 Response Body p a r a m e t e r d e s c r i p t i o n t a b l e
+
+                                                                
+                          Type           Full name              Description
+No  Parameter
+
+1   data                                                         6.6.3 
+                          Array                                 refer to attachment 6 . 6 . 3 Inverter historical curve entity
+
+    
+    Query inverter power daily, monthly, annual date
+
+                 
+        Part     Description
+
+        Method   Get
+
+        URL      analysis/ inverterReport/ queryInverterCurveBySn
+        Request
+        Header   Content- Type: application/ json; charset= UTF- 8
+                 Authorization : Bearer bc891648-8873-46ab-9d69-1ff7225b61e9
+
+        Request {         reportType : "02"
+                       }  dataTime: "2023-04"
+                          sn : "ASG12332213321"
+                          dataItems : 16320
+
+        Response {
+
+        Body              "code" : "AWX-0000",
+
+                          "msg" : null,
+
+                          "data" : [
+
+                                  {
+                                       "dataItem" : 7,
+                                       "data" : [{
+                                                    "dt": "1",
+      "value" : null
+},
+{
+
+      "dt": "2",
+      "value" : null
+},
+{
+      "dt": "3",
+      "value" : null
+},
+{
+      "dt": "4",
+      "value" : null
+},
+{
+      "dt": "5",
+      "value" : null
+},
+{
+      "dt": "6",
+      "value" : 0
+},
+{
+      "dt": "7",
+      "value" : 0
+},
+{
+      "dt": "8",
+      "value" : 0
+},
+{
+      "dt": "9",
+      "value" : 0
+},
+{
+      "dt": "10",
+      "value" : 0
+},
+{
+      "dt": "11",
+      "value" : 0
+},
+{
+      "dt": "12",
+      "value" : 0
+},
+{
+      "dt": "13",
+      "value" : null
+},
+{
+      "dt": "14",
+      "value" : 0
+},
+{
+      "dt": "15",
+      "value" : 0
+},
+{
+      "dt": "16",
+      "value" : 0
+},
+{
+      "dt": "17",
+      "value" : 0
+},
+{
+      "dt": "18",
+      "value" : 0
+},
+{
+      "dt": "19",
+      "value" : 0
+},
+{
+      "dt": "20",
+      "value" : 0
+},
+{
+      "dt": "21",
+      "value" : 0
+
+},
+{
+
+      "dt": "22",
+      "value" : 0
+},
+{
+      "dt": "23",
+      "value" : 0
+},
+{
+      "dt": "24",
+      "value" : 0
+},
+{
+      "dt": "25",
+      "value" : 0
+},
+{
+      "dt": "26",
+      "value" : 0
+},
+{
+      "dt": "27",
+      "value" : 0
+},
+{
+      "dt": "28",
+      "value" : 0
+},
+{
+      "dt": "29",
+      "value" : 0
+},
+{
+      "dt": "30",
+      "value" : 0
+                                         }
+                                   ]
+                            }
+                      ]
+                }
+
+     1 Request Body                         Table1 Request Body Parameter d e s c r i p t i o n t a b l e
+
+                                                                 
+                Type                        Full name            Description
+No  Parameter
+
+1   reportType  String                                           02            daily electricity02
+                                            report type          03            monthly electricity 0 3
+
+                                                                 04 annual electricity 04
+
+2   dataTime    String                                           yyyy- MM- dd
+                                            date time
+3   sn          String
+                                             SN
+                                            Inverter SN
+
+4   dataItems   Integer                                            bit , bit 
+                                            data Items                   Use bit to represent data items, multiple
+                                                                 data items can be requested at once
+                                                                 6. Pv  Pv capacity
+                                                                 7 .       Electricity purchased from grid
+                                                                 8 .       The amount of electricity the grid sells
+                                                                 9 .      Battery charge capacity
+                                                                 1 0.  Battery discharge capacity
+                                                                 1 1.  Load electricity quantity
+                                                                 1 2.  Self-consumptioninPVpower
+                                                                 generation
+
+                                                                 1 3.  Self-use of electricity in
+                                                                 energy consumption
+
+     2 Response Body                        Table2 Request Body Parameter d e s c r i p t i o n t a b l e
+
+                                                                 
+No  Parameter   Type                        Full name            Description
+                
+1   data        Array
+
+1.1 dataItem    Integer                                           dataItem  bit 
+                                            date Item            Query the bit of the dataItem in the condition
+
+1.2 data                                    
+                                            Specific date value
+
+1.2.1 dt        String                                                         According to query
+                                            Date time            reportType    condition, if reportType is
+                                                                    0  mm: ss  different format is
+                                                                 1: dd         different 0  mm: ss
+                                                                 2: MM         1 : dd
+                                                                 3: yyyy       2 : MM
+                                                                               3 : yyyy
+1.2.2 value  Double                 
+                                    Date value
+      6
+
+            PlantVo
+
+public class PlantVO {
+
+      /**  ID */
+      private Long plantId;
+
+      /**  */
+      private Long deptId;
+
+      /** */
+      private String plantName;
+
+      /** */
+      private String owner;
+
+      /** */
+      private String address;
+
+      /** */
+      private Double currentPower;
+
+      /** */
+      private Double todayYield;
+
+      /** */
+      private Double monthlyYield;
+
+      /** */
+      private Double totalYield;
+
+      /** */
+      private BigDecimal capacity;
+      /** */
+      private Double fullLoad Hour;
+
+      //
+      private String status;
+
+      //
+      private String dt;
+
+      /**  */
+      private Date createTime;
+
+}
+
+            PlantSaveVo
+
+public class PlantSaveVO {
+
+      /**  ID */
+      private Long plantId;
+
+      /**  */
+      private Long deptId;
+
+      /** */
+      private String plantName;
+
+      /** */
+      private String owner;
+
+      /** */
+      private String address;
+
+      /** */
+      private Double currentPower;
+
+      /** */
+      private Double todayYield;
+
+      /** */
+      private Double monthlyYield;
+
+      /** */
+      private Double totalYield;
+      /** */
+      private BigDecimal capacity;
+
+      /**  basic  6.2.2.1*/
+      private PlantBasicFormItems plantBasicFormItems;
+
+      /**  6.2.2.2*/
+      private List< CollectorVO> collectorList;
+
+      /**  6.2.2.3*/
+      private ArchivePrice tariff;
+
+      /**  (Size  1) 6.2.2.4*/
+      private List< OwnerVisitor> ownerList;
+
+      /**  6.2.2.4*/
+      private List< OwnerVisitor> visitorList;
+
+      /**  1-4 6.2.2.5*/
+      private PlantOtherFormItems plantOtherFormItems;
+
+      /**  6.2.2.6 */
+      private List< PlantPhoto> photoList;
+
+}
+
+public class PlantBasicFormItems {
+
+      /** */
+      private String plantName;
+
+      /**  */
+      private String plantType;
+
+      /** */
+      private BigDecimal capacity;
+
+      /** +`, '+ 120.01,28.01 */
+      private String location;
+      /** */
+      private String address;
+
+      /** */
+      private String timeZone;
+
+}
+
+public class CollectorVO {
+      /**  */
+      private String collectorSN;
+
+      /**  01-4G 02-WIFI*/
+      private String collectorType;
+}
+
+public class ArchivePrice {
+      /**  id */
+      private Long planId;
+
+      /**  ID */
+      private Long plantId;
+
+      /**  */
+      private String priceDirection;
+
+      /**  */
+      private String priceType;
+
+      /**  */
+      private BigDecimal fixPrice;
+
+      /**  */
+      private String priceUom;
+
+}
+public class OwnerVisitor {
+      /** / */
+      private String userName;
+      /** / nickname */
+      private String ownerName;
+
+}
+
+public class PlantOtherFormItems {
+      /**  ( 1) */
+      private String installPhone;
+      /**  ( 2) */
+      private String installEmail;
+      /**  ( 3) */
+      private Integer componentsAmount;
+      /**  investmentEnum ( 4) */
+      private String investmentType;
+
+}
+
+public class PlantPhoto {
+      /**  id */
+      private Long id;
+      /**  id */
+      private Long plantId;
+      /**  */
+      private Integer orderNo;
+
+      /**  */
+      private String url;
+
+}
+
+public class ArchiveCollector {
+      /* ID*/
+      private Long collectorId;
+      /* id*/
+      private Long plantId;
+      /* ID*/
+      private Long deptId;
+
+      /**/
+      private String collectorName;
+      /* SN*/
+      private String collectorSn;
+      /* 01.4G 02.WIFI*/
+      private String collectorType;
+      /**/
+      private String collectorVersion;
+      /* 01. 02. 03.*/
+      private String collectorStatus;
+      /**/
+      private int totalWTi me;
+      /**/
+      private int currentWTi me;
+      /**/
+      private Integer signal;
+      /* ip*/
+      private String ip;
+      /**/
+      private String lastDataTime;
+      /**/
+      private int updateIn;
+      /**/
+      private String createUser;
+      /**/
+      private Date createTime;
+      /**/
+      private String updateUser;
+      /**/
+      private Date updateTime;
+      /**/
+      @JsonFormat(pattern = "yyyy- MM-dd HH:mm:ss")
+      private Date productionDate;
+
+      /**/
+      private String firmwareVersion;
+
+      /**/
+      private Date firstTime;
+      /**/
+      private String plantName;
+}
+
+public class ArchiveInverter implements Serializable {
+      /** 1. ID */
+      private Long inverterId;
+      /** 2. ID */
+      private Long deptId;
+      /** 3. */
+      private String inverterName;
+      /** 4. SN */
+      private String sn;
+      /** 5. */
+      private Integer commAddress;
+      /** 6. */
+      private String type;
+      /** 7. */
+      private String model;
+      /** 8. */
+      private String status;
+      /** 9. */
+      private BigDecimal ratePower;
+      /** 10.  */
+      @JsonFormat(pattern = "yyyy- MM-dd")
+      private Date productionDate;
+      /** 11. */
+      @JsonFormat(pattern = "yyyy- MM-dd")
+      private Date warranty;
+      /** 12. */
+      private String csn;
+      private Long plantId;
+      /** ARM  */
+      private String armVersion;
+      /** dsp  */
+      private String dspVersion;
+      /** slave dsp  */
+      private String slaveDspVersion;
+      /** 14. */
+      private String createUser;
+      /** 15. */
+      @JsonFormat(pattern = "yyyy- MM-dd HH:mm:ss")
+      private Date createTime;
+      /** 16. */
+      private String updateBy;
+      /** 17. */
+      @JsonFormat(pattern = "yyyy- MM-dd HH:mm:ss")
+      private Date updateTime;
+      private String phase;
+      //
+      private Integer dispersionConfig;
+      //
+      private String inverterModel;
+
+}
+
+            InverterVO
+
+public class InverterVO {
+
+      /** 1. ID */
+      private Long inverterId;
+
+      /** 2. ID */
+private Long deptId;
+
+/** 3.-- 1 */
+private String inverterName;
+
+/** 4. SN-- 2 */
+private String sn;
+
+/** 5. */
+private Integer commAddress;
+
+/** 6. */
+private String type;
+
+/** 7.-- 3 */
+private String model;
+
+/** 8.-- 4 */
+private String status;
+
+/** 9.-- 5 */
+private BigDecimal ratePower;
+
+/** --*/
+private String ratePowerWithUnit;
+
+/** 10.  */
+@JsonFormat(pattern = "yyyy- MM-dd")
+private Date productionDate;
+
+/** 11.-- 6 */
+@JsonFormat(pattern = "yyyy- MM-dd")
+private Date warranty;
+
+/** 12. sn */
+private String csn;
+
+/** ARM  */
+private String armVersion;
+
+/** dsp  */
+private String dspVersion;
+
+/** slave dsp  */
+      private String slaveDspVersion;
+
+      /** 14. */
+      private String createUser;
+
+      /** 15. */
+      @JsonFormat(pattern = "yyyy- MM-dd HH:mm:ss")
+      private Date createTime;
+
+      /** 16. */
+      private String updateBy;
+
+      /** 17. */
+      @JsonFormat(pattern = "yyyy- MM-dd HH:mm:ss")
+      private Date updateTime;
+
+      /** -- 7 */
+      private String plantName;
+
+      /**  id-- */
+      private String plantId;
+
+      /** -- 8 */
+      private Double currentPower;
+
+      /** -- 9 */
+      private Double dayEnergy;
+
+      /** -- 10 */
+      private Double totalEnergy;
+      //
+      private String lastDt;
+
+      private String inverterModel;
+
+}
+public class PlantOverViewData {
+      /* ID */
+      private Long deptId;
+      /* 6.5.4*/
+      private EnergyData energyData;
+      /**/
+      private BigDecimal capacity;
+
+}
+
+public class PlantCurrentData {
+      /**  h */
+      private Double flh;
+      /**  */
+      private Double p;
+      /** yield, , Decimal */
+      private Double y;
+      /**  */
+      private Double yM;
+      /**  */
+      private Double yY;
+      /** Total yield , Decimal */
+      private Double yT;
+      /** earni ng , Decimal */
+      private Double earn;
+
+      /**  */
+      private Double earnM;
+      /**  */
+      private Double earnY;
+      /**  */
+      private Double earnT;
+      /** , Decimal */
+      private Double en;
+      /** , Decimal */
+      private Double enT;
+      /**  */
+private Double enM;
+/**  */
+private Double enY;
+/** Decimal */
+private Double buyEn;
+/**  */
+private Double buyEnM;
+/**  */
+private Double buyEnY;
+/** , Decimal */
+private Double buyEnT;
+/** Decimal */
+private Double sellEn;
+/**  */
+private Double sellEnM;
+/**  */
+private Double sellEnY;
+/** , Decimal */
+private Double sellEnT;
+/** Battary Charging Energy, , Decimal */
+private Double bcEn;
+/** */
+private Double bcEnM;
+/**  */
+private Double bcEnY;
+/**  */
+private Double bcEnT;
+/** Battary Discharging Energy, , Decimal */
+private Double bdcEn;
+/**  */
+private Double bdcEnM;
+/**  */
+private Double bdcEnY;
+/**  */
+private Double bdcEnT;
+/**  */
+private Double gridPower;
+/**  */
+private Double load Power;
+/**  */
+private Double batteryPower;
+/**  soc */
+private Double soc;
+/**  co2 */
+      private Double co2;
+      /**  */
+      private Double treePlants;
+      /**  */
+      private String status;
+}
+
+public class InverterCurrentData {
+      /**id*/
+      private String id;
+
+      /** sn*/
+      private String sn;
+
+      /***/
+      private String dt;
+
+      /** id*/
+      private Long pId;
+
+      /** id*/
+      private Long deptId;
+
+      /***/
+      private Boolean history;
+
+      /***/
+      private String moneyType;
+
+      /***/
+      private Double price;
+
+      /***/
+      private BigDecimal rated Power;
+      /** 01. 02.*/
+      private String type;
+
+      /***/
+      private String lastDay;
+      /***/
+      private Date lastCommTime;
+      /** 6.5.4*/
+      private EnergyData energyData;
+      /** 6.5.5*/
+      private BatteryData batteryData;
+      /** 6.5.6*/
+      private GridData gridData;
+      /** 6.5.7*/
+      private Load Data load Data;
+      /** 6.5.10*/
+      private FirmwareVersion version;
+      /** 6.5.12*/
+      private AlarmCurrent alarmCurrent;
+      /** 6.5.13*/
+      private OtherData otherData;
+}
+
+            EnergyData
+
+public class EnergyData implements Serializable {
+
+      private static final long serialVersionUID = -3911255650485738676L;
+
+      /* h*/
+      private Double flh;
+      /**/
+      private Double power;
+      /*kWh*/
+      private Double y;
+      /**/
+      private Double earn;
+
+      /**/
+      private Double yt;
+      /**/
+      private Double earnT;
+      /**/
+      private Double ym;
+      /**/
+      private Double earnM;
+      /**/
+      private Double yy;
+      /**/
+      private Double earnY;
+
+      /* co2  kg*/
+      private Double co2;
+
+      /**/
+      private Double treePlants;
+
+      /**/
+      private Integer stringNum;
+      /*PV  PV  6.5.8*/
+      private List<PV> pvList;
+}
+
+            BatteryData
+
+public class BatteryData {
+      /**/
+      private Double bcEn;
+      /**/
+      private Double bcEnM;
+      /**/
+      private Double bcEnY;
+      /**/
+      private Double bcEnT;
+
+      /**/
+      private Double bdcEn;
+      /**/
+      private Double bdcEnM;
+      /**/
+      private Double bdcEnY;
+      /**/
+      private Double bdcEnT;
+      /*  */
+      private Double batteryPower;
+      /* SOC*/
+      private Double batterySoc;
+      /* SOH*/
+      private Double batterySoh;
+      /**/
+      private Double voltage;
+      /**/
+      private Double current;
+      /**/
+      private Double capacity;
+
+      /* */
+      private String batteryType;
+      /**/
+      private Double maxChargingCurrent;
+      /**/
+      private Double dischargeCurrent;
+}
+
+           GridData
+
+public class GridData {
+      /**/
+      private Double gridPower;
+
+      /**/
+      private Double buyEn;
+      /**/
+      private Double buyEnM;
+      /**/
+      private Double buyEnY;
+      /**/
+      private Double buyEnT;
+
+      /**/
+      private Double sellEn;
+      /**/
+      private Double sellEnM;
+      /**/
+      private Double sellEnY;
+      /**/
+      private Double sellEnT;
+
+      /* AC  6.5.9*/
+      private List<AC> acList;
+}
+            LoadData
+
+public class Load Data {
+      /**/
+      private Double en;
+      /**/
+      private Double enM;
+      /**/
+      private Double enY;
+      /**/
+      private Double enT;
+      /**/
+      private Double f;
+      /**/
+      private Double load RateTotal;
+      /* AC  6.5.9*/
+      private List<AC> acList;
+
+      //1 0 
+      private Integer meterFlag;
+      /* 1026  bit0=1  load Power1 + load Power2 
+ load Power2*/
+      private Double load Power;
+      //
+      private Double load Power1;
+      //
+      private Double load Power2;
+
+}
+
+PV                            PV
+
+public class PV {
+      /*PV */
+      private Integer index;
+      /**/
+      private Double i;
+      /* 1*/
+      private Double i1;
+      /* 2*/
+      private Double i2;
+      /**/
+      private Double u;
+      /**/
+      private Double p;
+}
+
+           AC
+
+public class AC {
+      /**/
+      private String phase;
+      /**/
+      private Double u;
+      /**/
+      private Double i;
+      /**/
+      private Double f;
+      /**/
+      private Double load Rate;
+      /**/
+      private Double p;
+
+}
+
+            FirmwareVersion
+
+public class FirmwareVersion {
+      /*arm */
+      private String armVersion;
+      /*dsp */
+      private String dspVersion;
+      /*Slave dsp */
+      private String slaveDspVersion;
+
+}
+
+            AlarmCurrent
+
+public class AlarmCurrent {
+      /**/
+      private BigInteger mainFaultCode;
+      /**/
+      private Integer faultCode;
+
+      /**/
+      private Integer mainAlarmCode;
+      /**/
+      private Integer alarmCode;
+      /* Alarm  6.5.12*/
+      private Map< Integer,Alarm> lastAlarm;
+      /**/
+      private Integer alarmCount;
+}
+
+            Alarm
+
+public class Alarm{
+      /* id*/
+      private String id;
+      /**/
+      private String dt;
+      /**/
+      private String rdt;
+
+}
+
+            OtherData
+
+public class OtherData {
+      /* 1 */
+      private Double temperature1 ;
+      /* 2 */
+      private Double temperature2 ;
+      /**/
+      private Double insideTemperature;
+      /**/
+      private String standard;
+
+      /*N  PE */
+      private Double npeVoltage;
+      /**/
+      private String work Model;
+      /**/
+      private String energyDistribute;
+      /*DCDC */
+      private Double dcTemperature;
+      /*INV */
+      private Double invTemperature;
+      /*PV */
+      private Double pvTemperature;
+      /*CNTL */
+      private Double cntlTemperature;
+      /**/
+      private Double batteryTemperature;
+}
+
+            PlantCurrentStatus
+
+public class PlantCurrentStatus {
+      /* id*/
+      private Long plantId;
+      /**/
+      private String dt;
+      /**/
+      private String day;
+      /*01. 02. 03.*/
+      private String statusEnum;
+      /**/
+      private BigDecimal installCapacity;
+      /**/
+      private Date lastCommTime;
+      /**/
+      private int updateIn;//
+      /* 01. 02.*/
+      private String type;
+      /* 6.5.2*/
+      private PlantCurrentData plantCurrentData;
+
+}
+public class Report PlantDMY {
+      /** id */
+      private String id;
+      /**  id */
+      private Long pId;
+      /** ,String yyyy- MM-dd yyyy- MM yyyy */
+      private String dt;
+      /** Full Load Hour,, Decimal */
+      private Double flh;
+      /** yield, , Decimal */
+      private Double y;
+      /** earni ng , Decimal */
+      private Double earn;
+      /** Total yield , Decimal */
+      private Double yT;
+      //
+      /** , Decimal */
+      private Double en;
+      /** , Decimal */
+      private Double enT;
+      /** Decimal */
+      private Double buyEn;
+      /** , Decimal */
+      private Double buyEnT;
+      /** , Decimal */
+      private Double sellEn;
+      /** , Decimal */
+      private Double sellEnT;
+      /** Battary Charging Energy, , Decimal */
+      private Double bcEn;
+      /**  */
+      private Double bcEnT;
+      /** Battary Discharging Energy, , Decimal */
+      private Double bdcEn;
+      /**  */
+      private Double bdcEnT;
+
+}
+            ReportAlarm
+
+public class ReportAlarm {
+      @ Id
+      private String id;
+      /* id*/
+      private Long pId;
+      /**/
+      private String pname;
+      /* sn*/
+      private String sn;
+      /* id*/
+      private Integer aId;
+      /**/
+      private String aname;
+      /* */
+      private String level;
+      /* */
+      private String dt;
+      /* */
+      private String rdt;
+      /* */
+      private String status;
+      /* */
+      private String suggestion;
+      /* */
+      private Double duration;
+      /* 1  xxx  xxx  24  xxx
+
+ */
+      private String durationStr;
+
+}
+
+             InverterCurrentDataChartVO
+
+public class InverterCurrentDataChartVO {
+      /*  (00:00~23:30  5 ) */
+      private List<String> xAxis;
+      /* */
+      private Integer yAxisNum;
+      /*y */
+      private List<String> yAxisUnit;
+      /*list  y , x */ 6.6.5
+      private List<List<InverterChart Data>> yAxisData;
+}
+
+            ReportInverter
+
+public class Report Inverter {
+      private String id;
+      /* sn*/
+      private String sn;
+      /**/
+      private String dt;
+      /* id*/
+      private Long pId;
+      /* id*/
+      private Long deptId;
+
+      /** Full Load Hour,, Decimal */
+      private Double flh;
+
+      /** yield, , Decimal */
+      private Double y;
+
+      //
+      private Double earn;
+
+      /** Total yield , Decimal */
+      private Double yT;
+      /** , Decimal */
+      private Double earnT;
+
+      //
+      /** , Decimal */
+      private Double en;
+
+      /** , Decimal */
+      private Double enT;
+
+      /** Decimal */
+      private Double buyEn;
+
+      /** , Decimal */
+      private Double buyEnT;
+      /** , Decimal */
+      private Double sellEn;
+
+      /** , Decimal */
+      private Double sellEnT;
+
+      /** Battary Charging Energy, , Decimal */
+      private Double bcEn;
+
+      /**  */
+      private Double bcEnT;
+
+      /** Battary Discharging Energy, , Decimal */
+      private Double bdcEn;
+
+      /**  */
+      private Double bdcEnT;
+}
+
+            InverterChartData
+
+public class InverterChartData {
+      // ID
+      private Integer dataItem;
+      //
+      private List<String> data;
+
+}
+
+            Chinese  English
+error code           Operation success!
+                     Input parameter error!
+AWX-0000             Other error!
+AWX-0001             Data encode fail!
+AWX-0002             Data decode fail!
+AWX-0003             Unable to establish connection!
+AWX-0004             Device busy!
+AWX-0005             Unknown Code!
+AWX-0006     ID      data id not found!
+AWX-0007
+AWX-0008
+AWX-0009     Device no access!
+AWX-0010
+AWX-0011     Inverter sn is not exist!
+AWX-0012
+AWX-0013     Collector sn is not exist!
+AWX-0014
+AWX-0015     The communication address is not
+AWX-0016     exist!
+AWX-0017
+AWX-0018     Service failed!
+AWX-0019
+AWX-0020     return timeout
+AWX-0021
+AWX-0022     Add remote task failed!
+AWX-0600
+AWX-1002   Add remote server information error!
+
+AWX-1003     The collector does not exist!
+
+AWX-1004     The plan is not found!
+
+AWX-1005     The inverter is not found!
+
+AWX-1006     The inverter data is not found!
+
+AWX-1007     set point gap!
+AWX-1300
+AWX-1301     Only can write
+AWX-1304
+AWX-1305     Please Set The Time Zone First
+AWX-1308
+AWX-1309  / Add/Edit organization is failed,the
+AWX-1310
+AWX-1311     name has existed!
+AWX-1312
+AWX-1313                                       Failure to modify the organization,
+AWX-1314  
+
+                                               the parent organization cannot be
+
+          !  itself!
+
+             This department contains
+             sub-departments that are not
+             deactivated!
+
+          ,  The existence of lower departments,
+             not allowed to delete.
+
+          ,  The dept has exited users are not
+             allowed to be deleted.
+
+          ,  The dept has exited plants are not
+             allowed to be deleted.
+
+             The phone has existed.
+
+             The email has existed.
+
+             The account has existed.
+
+             The current user is not allowed to
+             delete.
+
+             Register owner failed!
+
+           User type is not owner!
+
+             The verification code is error.
+             The email is not registed.
+
+           The plant owner or visitor can not be
+
+             current user!
+
+           The Old Password is Wrong
+
+           The New Password Cannot be the Same as
+                      the Old Password
+
+AWX-1315  , Plants exists under the user,can not
+AWX-1316
+AWX-1317              cancel
+
+AWX-1318              You can not cancel the administrator
+
+AWX-1319              In Frequent operation, please operate
+                      later
+AWX-1400
+                                               Exceeds the number of operations
+AWX-1401  
+
+AWX-1402                                       allowed for the day
+
+AWX-1403  The phone account has not Exceeds the number of operations
+
+AWX-1404  registered  allowed for the day
+
+AWX-1405  /           Add/edit role failed, role name
+                      already exists
+AWX-1406              Add/edit role failed, Role
+          /           permissions already exist
+AWX-2000  
+AWX-2001
+AWX-3000  / Add/edit role failed, Role name cannot
+AWX-3001
+AWX-3002   20         exceed 20 digits
+AWX-3003
+AWX-3004  / Add/edit role failed, Description
+AWX-3006
+AWX-3007   256        cannot exceed 256 digits
+AWX-3008
+          / Add/edit role failed, role name cannot
+AWX-3009
+                      be empty
+AWX-3010
+AWX-3011  {0} Delete role failed, {0} is bound
+          
+
+          // The inner/super/owner roles are not
+
+          /           allowed to be deleted/edited!
+
+                      Incorrect account or password, please
+                      re-enter
+
+           User Name and Password Cannot be Empty
+
+                      The Datalogger not exists!
+
+                      Add plant failed
+
+           Can not find current user infomation!
+
+           Inverter query condition diplay is
+
+                      empty!
+
+                      Inverter chosen is empty!
+
+           Add plant failed, owner added is
+
+                      empty!
+
+           id  Delete plant id array is empty!
+
+                      The Datalogger has already bind with
+                      plant!
+                      Can not find the plant detail
+                      information!
+
+           Edit inverter name failed, inverter sn
+
+           SN         is empty!
+
+           Can not delete the plant which is not
+                be created by you
+
+AWX-4000   Find plant report with Query Param:
+AWX-4001
+AWX-4002   id   plantId List is empty!
+AWX-4003
+AWX-4004   Id  Find plant with current plantId List
+AWX-4005
+AWX-4006        failed!
+AWX-5000
+                The Plant is null
+
+          Remote plant  Find plant by feignClient
+           0 RemotePlantService plant count is 0!
+
+           Find inverter report with Query Param:
+           sn  dataTime  sn or dataTime is empty!
+
+           sn   Find inverter with current sn failed!
+
+          
+
+           The inverter currently has a task in
+
+                progress, please try again later!
+
+           Sorry,System Error, Please Contact
+
+                the Administrator
+

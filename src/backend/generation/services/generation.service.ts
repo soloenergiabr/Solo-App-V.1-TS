@@ -250,7 +250,8 @@ export class GenerationService {
             try {
                 const minInterval = PROVIDER_MIN_SYNC_INTERVAL_MS[inverter.provider];
                 if (minInterval) {
-                    const latest = await this.generationUnitRepository.findLatestByInverterId(inverter.id);
+                    const units = await this.generationUnitRepository.findByInverterId(inverter.id);
+                    const latest = units.length > 0 ? units.reduce((latest, current) => current.timestamp > latest.timestamp ? current : latest) : null;
                     if (latest && latest.timestamp && (Date.now() - latest.timestamp.getTime()) < minInterval) {
                         skipped.push(inverter.id);
                         continue;

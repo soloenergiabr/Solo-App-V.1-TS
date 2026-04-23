@@ -4,12 +4,12 @@ import { InverterRepository } from '../repositories/inverter.repository';
 import { ZodError } from 'zod';
 import { UserContextModel } from '@/backend/auth/models/user-context.model';
 
-// Mock the repository
 const mockInverterRepository: InverterRepository = {
     create: vi.fn(),
     find: vi.fn(),
     findById: vi.fn(),
     update: vi.fn(),
+    findByClientId: vi.fn(),
 };
 
 describe('CreateInverterUseCase', () => {

@@ -12,7 +12,7 @@ async function main() {
     });
 
     console.log('--- Indications Debug ---');
-    indications.forEach(ind => {
+    indications.forEach((ind: any) => {
         console.log(`ID: ${ind.id}`);
         console.log(`Referred: ${ind.referred.name}`);
         console.log(`Status: ${ind.status}`);

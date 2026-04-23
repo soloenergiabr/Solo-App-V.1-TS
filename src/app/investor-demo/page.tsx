@@ -107,7 +107,7 @@ export default function InvestorDemoPage() {
                                     <p className="text-sm font-bold text-slate-200">{DEMO_DATA.financial.paybackDate}</p>
                                 </div>
                             </div>
-                            <Progress value={DEMO_DATA.financial.roiPercent} className="h-2 bg-slate-800" indicatorClassName="bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]" />
+                            <Progress value={DEMO_DATA.financial.roiPercent} className="h-2 bg-slate-800" />
                         </div>
                     </div>
                 </CardContent>
