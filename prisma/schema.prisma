@@ -73,17 +73,35 @@ model Client {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  inverters             Inverter[]
   users                 User[]
   consumptions          Consumption[]
   indicationsAsReferrer Indication[]      @relation("Referrer")
   indicationsAsReferred Indication[]      @relation("Referred")
   transactions          Transaction[]
   offerRedemptions      OfferRedemption[]
+  energyBills           EnergyBill[]
+
+  // Energy
+  plants            Plant[]
+  inverters         Inverter[]
+  consumerUnits     ConsumerUnit[]
+  creditAllocations CreditAllocation[]
 
   @@index([email])
   @@index([cpfCnpj])
   @@map("client")
+}
+
+model Plant {
+  id String @id @default(dbgenerated("(concat('plant_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  inverters         Inverter[]
+  consumerUnits     ConsumerUnit[]
+  creditAllocations CreditAllocation[]
+  energyBills       EnergyBill[]
 }
 
 model Inverter {
@@ -99,6 +117,9 @@ model Inverter {
   client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
 
+  plant   Plant?  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String?
+
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   deletedAt       DateTime?
@@ -106,6 +127,60 @@ model Inverter {
 
   @@index([providerId])
   @@map("inverter")
+}
+
+model ConsumerUnit {
+  id String @id @default(dbgenerated("(concat('consumer_unit_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  name        String?
+  isGenerator Boolean @default(true)
+  isConsumer  Boolean @default(true)
+
+  plant   Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String
+
+  energyBills EnergyBill[]
+
+  allocationsFrom CreditAllocation[] @relation("CreditAllocationFrom")
+  allocationsTo   CreditAllocation[] @relation("CreditAllocationTo")
+
+  @@index([clientId])
+  @@index([plantId])
+  @@index([clientId, plantId])
+  @@map("consumer_unit")
+}
+
+model CreditAllocation {
+  id String @id @default(dbgenerated("(concat('credit_allocation_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  plant   Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String
+
+  from   ConsumerUnit @relation("CreditAllocationFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  fromId String
+
+  to   ConsumerUnit @relation("CreditAllocationTo", fields: [toId], references: [id], onDelete: Cascade)
+  toId String
+
+  allocationPercentage Float
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([clientId])
+  @@index([plantId])
+  @@index([fromId])
+  @@index([toId])
+  @@index([clientId, plantId])
+  @@index([fromId, toId])
+  @@map("credit_allocation")
 }
 
 model GenerationUnit {
@@ -269,4 +344,35 @@ model Consumption {
   @@unique([clientId, competenceDate]) // One consumption record per client per month
   @@index([clientId])
   @@map("consumption")
+}
+
+model EnergyBill {
+  id String @id @default(dbgenerated("(concat('energy_bill_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  plant   Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String
+
+  consumerUnit   ConsumerUnit @relation(fields: [consumerUnitId], references: [id], onDelete: Cascade)
+  consumerUnitId String
+
+  competenceDate DateTime // The month/year this consumption refers to (e.g., 2023-10-01)
+
+  // Customer data
+  clientNumber      String?
+  instalationNumber String?
+
+  consumptionKwh    Float // Consumo de energia da rede (kWh)
+  injectedEnergyKwh Float // Energia injetada (kWh)
+  tariffPerKwh      Float // Tarifa da concessionária (R$/kWh)
+  totalBillValue    Float // Valor final da fatura (R$)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([clientId, competenceDate]) // One consumption record per client per month
+  @@index([clientId])
+  @@map("energy_bill")
 }
