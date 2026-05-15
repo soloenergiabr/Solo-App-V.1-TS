@@ -16,6 +16,18 @@ export class MockUserRepository implements UserRepository {
         return this.users.find(user => user.id === id) || null;
     }
 
+    async findByResetToken(token: string): Promise<User | null> {
+        return this.users.find(user => (user as any).resetPasswordToken === token) || null;
+    }
+
+    async findAll(): Promise<User[]> {
+        return [...this.users];
+    }
+
+    async findByClientId(clientId: string): Promise<User | null> {
+        return this.users.find(user => (user as any).clientId === clientId) || null;
+    }
+
     async create(userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
         const user: User = {
             ...userData,

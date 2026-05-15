@@ -41,7 +41,7 @@ describe('Solis Inverter Api Repository', () => {
 
     it('should sync inverter generation data', async () => {
         const syncInverterGenerationDataUseCase = new SyncInverterGenerationDataUseCase(inverterRepository, generationUnitRepository)
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' })).resolves.not.toThrow()
         await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(4)
     })
 })

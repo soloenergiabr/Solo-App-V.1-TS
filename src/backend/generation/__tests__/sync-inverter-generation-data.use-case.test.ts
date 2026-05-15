@@ -45,19 +45,19 @@ describe('Sync Inverter Generation Data Use Case', () => {
         vi.useFakeTimers();
         vi.setSystemTime(new Date('2025-10-02T03:00:00.000Z'));
 
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' })).resolves.not.toThrow()
         await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(4)
 
         vi.setSystemTime(new Date('2025-10-02T04:00:00.000Z'));
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' })).resolves.not.toThrow()
         await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(5)
 
         vi.setSystemTime(new Date('2025-10-02T05:00:00.000Z'));
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' })).resolves.not.toThrow()
         await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(6)
 
         vi.setSystemTime(new Date('2025-11-02T06:00:00.000Z'));
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' })).resolves.not.toThrow()
         await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(9)
     })
 
@@ -72,12 +72,12 @@ describe('Sync Inverter Generation Data Use Case', () => {
         })
 
         const syncInverterGenerationDataUseCase = new SyncInverterGenerationDataUseCase(inverterRepository, generationUnitRepository)
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' }, mockUserContext)).resolves.not.toThrow()
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' })).resolves.not.toThrow()
         await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(4)
     })
 
     it('should not sync inverter generation data if inverter not found', async () => {
         const syncInverterGenerationDataUseCase = new SyncInverterGenerationDataUseCase(inverterRepository, generationUnitRepository)
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '2' }, mockUserContext)).rejects.toThrow()
+        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '2' })).rejects.toThrow()
     })
 })

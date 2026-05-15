@@ -1,6 +1,6 @@
 import { IndicationStatus } from "@/app/generated/prisma"
 import { uuid } from "@/lib/uuid"
-import { ClientModel } from "../../auth/models/client.model"
+import { ClientModel } from "./client.model"
 
 export { IndicationStatus }
 

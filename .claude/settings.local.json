@@ -3,7 +3,10 @@
     "allow": [
       "Bash(gh api:*)",
       "Bash(xargs grep:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(pdftotext --version)",
+      "Bash(pdftotext -layout \"C:/Users/mateus/Downloads/API - AUXSOL\\(1\\)\\(1\\)\\(1\\).pdf\" \"C:/Users/mateus/Documents/MSM/Solo-App-v1.1/Solo-App-V.1-TS/scripts/Planning/auxsol_api.txt\")",
+      "Bash(npx tsc *)"
     ]
   }
 }

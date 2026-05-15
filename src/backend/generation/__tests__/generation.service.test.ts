@@ -183,7 +183,7 @@ describe('GenerationService', () => {
             await inverterRepository.create(mockInverters[0]);
             await inverterRepository.create(mockInverters[1]);
 
-            const result = await service.syncAllInvertersData(mockUserContext);
+            const result = await service.syncAllInvertersData();
 
             expect(result.results).toHaveLength(2);
             expect(result.errors).toHaveLength(0);

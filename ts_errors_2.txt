@@ -1,0 +1,24 @@
+﻿src/backend/auth/__tests__/auth.service.test.ts(21,23): error TS2554: Expected 2 arguments, but got 1.
+src/backend/auth/__tests__/auth.service.test.ts(40,40): error TS2345: Argument of type 'User' is not assignable to parameter of type 'RegisterRequest'.
+  Property 'cpfCnpj' is missing in type 'User' but required in type 'RegisterRequest'.
+src/backend/auth/__tests__/auth.service.test.ts(125,55): error TS2345: Argument of type '{ email: string; password: string; name: string; clientId: string; }' is not assignable to parameter of type 'RegisterRequest'.
+  Property 'cpfCnpj' is missing in type '{ email: string; password: string; name: string; clientId: string; }' but required in type 'RegisterRequest'.
+src/backend/auth/__tests__/auth.service.test.ts(129,27): error TS2339: Property 'user' does not exist on type 'RegisterResponse'.
+src/backend/auth/__tests__/auth.service.test.ts(130,27): error TS2339: Property 'user' does not exist on type 'RegisterResponse'.
+src/backend/auth/__tests__/auth.service.test.ts(145,47): error TS2345: Argument of type '{ email: string; password: string; name: string; }' is not assignable to parameter of type 'RegisterRequest'.
+  Property 'cpfCnpj' is missing in type '{ email: string; password: string; name: string; }' but required in type 'RegisterRequest'.
+src/backend/auth/__tests__/auth.service.test.ts(157,47): error TS2345: Argument of type '{ email: string; password: string; name: string; }' is not assignable to parameter of type 'RegisterRequest'.
+  Property 'cpfCnpj' is missing in type '{ email: string; password: string; name: string; }' but required in type 'RegisterRequest'.
+src/backend/auth/__tests__/auth.service.test.ts(168,17): error TS2353: Object literal may only specify known properties, and 'password' does not exist in type 'RegisterRequest'.
+src/backend/auth/__tests__/auth.service.test.ts(224,17): error TS2353: Object literal may only specify known properties, and 'password' does not exist in type 'RegisterRequest'.
+src/backend/generation/__tests__/create-inverter.use-case.test.ts(8,7): error TS2741: Property 'findByClientId' is missing in type '{ create: Mock<Procedure>; find: Mock<Procedure>; findById: Mock<Procedure>; update: Mock<Procedure>; }' but required in type 'InverterRepository'.
+src/backend/generation/__tests__/generation-analytics.service.test.ts(10,7): error TS2741: Property 'findByClientId' is missing in type '{ create: Mock<Procedure>; find: Mock<Procedure>; findById: Mock<Procedure>; update: Mock<Procedure>; }' but required in type 'InverterRepository'.
+src/backend/generation/__tests__/generation.service.test.ts(186,63): error TS2554: Expected 0 arguments, but got 1.
+src/backend/generation/__tests__/solis.inverter-api.repository.test.ts(44,85): error TS2554: Expected 1 arguments, but got 2.
+src/backend/generation/__tests__/sync-inverter-generation-data.use-case.test.ts(48,85): error TS2554: Expected 1 arguments, but got 2.
+src/backend/generation/__tests__/sync-inverter-generation-data.use-case.test.ts(52,85): error TS2554: Expected 1 arguments, but got 2.
+src/backend/generation/__tests__/sync-inverter-generation-data.use-case.test.ts(56,85): error TS2554: Expected 1 arguments, but got 2.
+src/backend/generation/__tests__/sync-inverter-generation-data.use-case.test.ts(60,85): error TS2554: Expected 1 arguments, but got 2.
+src/backend/generation/__tests__/sync-inverter-generation-data.use-case.test.ts(75,85): error TS2554: Expected 1 arguments, but got 2.
+src/backend/generation/__tests__/sync-inverter-generation-data.use-case.test.ts(81,85): error TS2554: Expected 1 arguments, but got 2.
+src/backend/generation/services/generation.service.ts(253,72): error TS2551: Property 'findLatestByInverterId' does not exist on type 'GenerationUnitRepository'. Did you mean 'findByInverterId'?

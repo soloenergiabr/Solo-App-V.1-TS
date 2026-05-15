@@ -18,7 +18,18 @@ describe('AuthService', () => {
 
         // Setup mock repository
         mockUserRepository = new MockUserRepository();
-        authService = new AuthService(mockUserRepository);
+
+        const mockPrisma = {
+            client: {
+                findUnique: vi.fn(),
+                create: vi.fn(),
+            },
+            indication: {
+                create: vi.fn(),
+            }
+        };
+
+        authService = new AuthService(mockUserRepository, mockPrisma as any);
 
         // Setup mock user
         mockUser = {
@@ -37,7 +48,7 @@ describe('AuthService', () => {
 
     describe('login', () => {
         it('should successfully login with valid credentials', async () => {
-            await authService.register(mockUser);
+            mockUserRepository.addUser(mockUser);
 
             const loginRequest = {
                 email: mockUser.email,
@@ -113,49 +124,59 @@ describe('AuthService', () => {
 
     describe('register', () => {
         it('should successfully register a new user', async () => {
+            // Mock Prisma calls
+            const mockPrisma = (authService as any).prisma;
+            mockPrisma.client.findUnique.mockResolvedValue(null);
+            mockPrisma.client.create.mockResolvedValue({
+                id: 'client_123',
+                name: 'New User',
+                email: 'newuser@example.com',
+            });
+
             // Arrange
             const registerRequest = {
                 email: 'newuser@example.com',
-                password: 'password123',
                 name: 'New User',
-                clientId: 'client_456',
+                cpfCnpj: '00000000000',
+                avgEnergyCost: 100,
             };
 
             // Act
             const result = await authService.register(registerRequest);
 
             // Assert
-            expect(result).toHaveProperty('user');
-            expect(result.user.name).toBe(registerRequest.name);
-            expect(result.user.email).toBe(registerRequest.email);
-            expect(mockUserRepository.getUserCount()).toBe(1);
+            expect(result).toHaveProperty('client');
+            expect(result.client.name).toBe(registerRequest.name);
+            expect(result.client.email).toBe(registerRequest.email);
         });
 
         it('should throw error for existing user', async () => {
             // Arrange
-            mockUserRepository.addUser(mockUser);
+            const mockPrisma = (authService as any).prisma;
+            mockPrisma.client.findUnique.mockResolvedValue({ id: 'client_123' });
 
             const registerRequest = {
                 email: 'test@example.com',
-                password: 'password123',
                 name: 'Test User',
+                cpfCnpj: '11111111111',
+                enelInvoiceFile: 'url',
             };
 
             // Act & Assert
-            await expect(authService.register(registerRequest)).rejects.toThrow('User already exists');
+            await expect(authService.register(registerRequest)).rejects.toThrow('Client with this email already exists');
         });
 
-        it('should throw error for short password', async () => {
+        it('should throw error when missing energy cost and invoice', async () => {
             // Arrange
             const registerRequest = {
                 email: 'newuser@example.com',
-                password: '123',
                 name: 'New User',
+                cpfCnpj: '00000000000',
             };
 
             // Act & Assert
             await expect(authService.register(registerRequest)).rejects.toThrow(
-                'Password must be at least 8 characters long'
+                'Either average energy cost or ENEL invoice must be provided'
             );
         });
     });
@@ -163,12 +184,7 @@ describe('AuthService', () => {
     describe('refreshToken', () => {
         it('should successfully refresh token', async () => {
 
-            await authService.register({
-                email: mockUser.email,
-                password: mockUser.password,
-                name: mockUser.name,
-                clientId: mockUser.clientId,
-            })
+            mockUserRepository.addUser(mockUser);
 
             const { accessToken, refreshToken } = await authService.login({
                 email: mockUser.email,
@@ -219,10 +235,7 @@ describe('AuthService', () => {
                 isAuthenticated: true,
             };
 
-            await authService.register({
-                ...mockUserContext,
-                password: 'password123',
-            });
+            mockUserRepository.addUser(mockUser);
 
             const { accessToken } = await authService.login({
                 email: 'test@example.com',
