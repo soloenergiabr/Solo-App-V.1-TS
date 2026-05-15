@@ -33,6 +33,13 @@ enum TransactionType {
   manual_adjustment
 }
 
+enum GenerationUnitType {
+  real_time
+  day
+  month
+  year
+}
+
 model User {
   id                   String    @id @default(cuid())
   email                String    @unique
@@ -73,17 +80,57 @@ model Client {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  inverters             Inverter[]
   users                 User[]
   consumptions          Consumption[]
   indicationsAsReferrer Indication[]      @relation("Referrer")
   indicationsAsReferred Indication[]      @relation("Referred")
   transactions          Transaction[]
   offerRedemptions      OfferRedemption[]
+  energyBills           EnergyBill[]
+
+  // Energy
+  plants            Plant[]
+  inverters         Inverter[]
+  consumerUnits     ConsumerUnit[]
+  creditAllocations CreditAllocation[]
 
   @@index([email])
   @@index([cpfCnpj])
   @@map("client")
+}
+
+model Plant {
+  id String @id @default(dbgenerated("(concat('plant_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  name             String?
+  provider         String?
+  providerStatus   String?
+  providerPlantId  String?
+  installedPowerKw Decimal? @db.Decimal(10, 3)
+  totalEnergyKwh   Decimal? @db.Decimal(14, 4)
+  address          String?
+  city             String?
+  state            String?
+  timezone         String?
+  latitude         Decimal? @db.Decimal(10, 7)
+  longitude        Decimal? @db.Decimal(10, 7)
+  providerMetadata Json?
+
+  inverters         Inverter[]
+  consumerUnits     ConsumerUnit[]
+  creditAllocations CreditAllocation[]
+  energyBills       EnergyBill[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([clientId])
+  @@index([providerPlantId])
+  @@map("plant")
 }
 
 model Inverter {
@@ -95,17 +142,120 @@ model Inverter {
   providerApiKey    String?
   providerApiSecret String?
   providerUrl       String?
+  providerPlantId   String?
+  providerPlantName String?
+  providerStatus    String?
+  providerConfig    Json?
+  providerMetadata  Json?
+
+  serialNumber    String?
+  manufacturer    String?
+  modelName       String?
+  firmwareVersion String?
+  nominalPowerKw  Decimal? @db.Decimal(10, 3)
+  timezone        String?
+
+  syncEnabled          Boolean   @default(true)
+  syncIntervalMinutes  Int?
+  lastSyncAt           DateTime?
+  lastSuccessfulSyncAt DateTime?
+  lastSyncStatus       String?
+  lastSyncError        String?
+  installedAt          DateTime?
+  commissionedAt       DateTime?
 
   client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
+
+  plant   Plant?  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String?
 
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   deletedAt       DateTime?
   generationUnits GenerationUnit[]
 
+  @@index([clientId])
+  @@index([plantId])
   @@index([providerId])
+  @@index([provider, providerId])
+  @@index([providerPlantId])
+  @@index([syncEnabled])
+  @@index([lastSyncStatus])
   @@map("inverter")
+}
+
+model ConsumerUnit {
+  id String @id @default(dbgenerated("(concat('consumer_unit_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  name        String?
+  isGenerator Boolean @default(true)
+  isConsumer  Boolean @default(true)
+
+  accountHolder      String?
+  accountNumber      String?
+  clientNumber       String?
+  installationNumber String?
+  distributor        String?
+  address            String?
+  city               String?
+  state              String?
+  status             String?
+
+  plant   Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String
+
+  energyBills EnergyBill[]
+
+  allocationsFrom CreditAllocation[] @relation("CreditAllocationFrom")
+  allocationsTo   CreditAllocation[] @relation("CreditAllocationTo")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([clientId])
+  @@index([plantId])
+  @@index([clientId, plantId])
+  @@index([clientId, clientNumber])
+  @@map("consumer_unit")
+}
+
+model CreditAllocation {
+  id String @id @default(dbgenerated("(concat('credit_allocation_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  plant   Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String
+
+  from   ConsumerUnit @relation("CreditAllocationFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  fromId String
+
+  to   ConsumerUnit @relation("CreditAllocationTo", fields: [toId], references: [id], onDelete: Cascade)
+  toId String
+
+  allocationPercentage Decimal   @db.Decimal(5, 2)
+  startsAt             DateTime?
+  endsAt               DateTime?
+  isActive             Boolean   @default(true)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([clientId])
+  @@index([plantId])
+  @@index([fromId])
+  @@index([toId])
+  @@index([clientId, plantId])
+  @@index([clientId, isActive])
+  @@index([fromId, toId])
+  @@map("credit_allocation")
 }
 
 model GenerationUnit {
@@ -114,7 +264,10 @@ model GenerationUnit {
   power  Float
   energy Float
 
-  generationUnitType String @default("real_time")
+  generationUnitType GenerationUnitType @default(real_time)
+  source             String?
+  providerRecordId   String?
+  rawPayload         Json?
 
   timestamp DateTime @default(now())
 
@@ -125,9 +278,11 @@ model GenerationUnit {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
+  @@unique([inverterId, generationUnitType, providerRecordId])
   @@index([inverterId])
   @@index([inverterId, generationUnitType])
   @@index([inverterId, generationUnitType, timestamp])
+  @@index([providerRecordId])
   @@map("generation_unit")
 }
 
@@ -269,4 +424,100 @@ model Consumption {
   @@unique([clientId, competenceDate]) // One consumption record per client per month
   @@index([clientId])
   @@map("consumption")
+}
+
+model EnergyBill {
+  id String @id @default(dbgenerated("(concat('energy_bill_', gen_random_uuid()))::TEXT"))
+
+  billFileUrl     String?
+  rawBillFileKey  String? // Key in the S3 bucket where the raw bill file is stored
+  rawBillFileSize Int? // Size of the raw bill file in bytes
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  plant   Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId String
+
+  consumerUnit   ConsumerUnit @relation(fields: [consumerUnitId], references: [id], onDelete: Cascade)
+  consumerUnitId String
+
+  competenceDate DateTime // The month/year this consumption refers to (e.g., 2023-10-01)
+  referenceMonth Int
+  referenceYear  Int
+
+  // Customer data
+  accountHolder     String?
+  accountNumber     String?
+  clientNumber      String?
+  instalationNumber String?
+  distributor       String?
+  consumerClass     String?
+  tariffModality    String?
+  connectionType    String?
+  tariffPeriod      String?
+  billingDays       Int?
+  readingPeriodFrom DateTime? @db.Date
+  readingPeriodTo   DateTime? @db.Date
+  creditExpiryDate  DateTime? @db.Date
+
+  // Energy data
+  monitoredGenerationKwh Decimal? @db.Decimal(14, 4)
+  billedConsumptionKwh   Decimal? @db.Decimal(14, 4)
+  consumptionKwh         Decimal? @db.Decimal(14, 4) // Consumo de energia da rede (kWh)
+  realConsumptionKwh     Decimal? @db.Decimal(14, 4)
+  injectedEnergyKwh      Decimal? @db.Decimal(14, 4) // Energia injetada (kWh)
+  compensatedEnergyKwh   Decimal? @db.Decimal(14, 4)
+  previousCreditsKwh     Decimal? @db.Decimal(14, 4)
+  currentCreditsKwh      Decimal? @db.Decimal(14, 4)
+  expectedGenerationKwh  Decimal? @db.Decimal(14, 4)
+  generationEfficiency   Decimal? @db.Decimal(8, 4)
+  meterReadingCurrent    Decimal? @db.Decimal(14, 4)
+  meterReadingPrevious   Decimal? @db.Decimal(14, 4)
+  demandContractedKw     Decimal? @db.Decimal(14, 4)
+  demandMeasuredKw       Decimal? @db.Decimal(14, 4)
+
+  // Financial data
+  totalBillValue     Decimal? @db.Decimal(14, 2) // Valor final da fatura (R$)
+  totalAmount        Decimal? @db.Decimal(14, 2)
+  energyCost         Decimal? @db.Decimal(14, 2)
+  availabilityCost   Decimal? @db.Decimal(14, 2)
+  publicLightingCost Decimal? @db.Decimal(14, 2)
+  icmsCost           Decimal? @db.Decimal(14, 2)
+  pisCost            Decimal? @db.Decimal(14, 2)
+  cofinsCost         Decimal? @db.Decimal(14, 2)
+  pisCofinsCost      Decimal? @db.Decimal(14, 2)
+  tariffPerKwh       Decimal? @db.Decimal(12, 6) // Tarifa da concessionária (R$/kWh)
+  tariffTeValue      Decimal? @db.Decimal(12, 6)
+  tariffTusdValue    Decimal? @db.Decimal(12, 6)
+  tariffFlag         String?
+  tariffFlagCost     Decimal? @db.Decimal(14, 2)
+  sectoralCharges    Decimal? @db.Decimal(14, 2)
+  fineAmount         Decimal? @db.Decimal(14, 2)
+  interestAmount     Decimal? @db.Decimal(14, 2)
+  otherCharges       Decimal? @db.Decimal(14, 2)
+  estimatedSavings   Decimal? @db.Decimal(14, 2)
+
+  // AI analysis and extracted details
+  aiAnalysis        String?
+  aiExplanations    Json?
+  aiRecommendations Json?
+  alerts            Json?
+  extraCharges      Json?
+  billingItems      Json?
+  creditSummary     Json?
+  billScore         Decimal? @db.Decimal(5, 2)
+  status            String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([consumerUnitId, referenceMonth, referenceYear])
+  @@index([clientId])
+  @@index([plantId])
+  @@index([consumerUnitId])
+  @@index([referenceYear, referenceMonth])
+  @@index([clientId, referenceYear, referenceMonth])
+  @@index([status])
+  @@map("energy_bill")
 }

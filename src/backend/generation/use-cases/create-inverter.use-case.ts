@@ -6,11 +6,27 @@ import { UserContext } from '@/backend/auth/models/user-context.model';
 // Request Schema
 export const CreateInverterRequestSchema = z.object({
     name: z.string().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
-    provider: z.enum(['solis', 'solplanet', 'growatt', 'other']),
+    provider: z.enum(['solis', 'solplanet', 'growatt', 'deye', 'hoymiles', 'mock', 'other']),
     providerId: z.string().min(1, 'Provider ID is required'),
     providerApiKey: z.string().optional(),
     providerApiSecret: z.string().optional(),
     providerUrl: z.string().url('Invalid URL format').optional(),
+    plantId: z.string().optional(),
+    providerPlantId: z.string().optional(),
+    providerPlantName: z.string().optional(),
+    providerStatus: z.string().optional(),
+    providerConfig: z.unknown().optional(),
+    providerMetadata: z.unknown().optional(),
+    serialNumber: z.string().optional(),
+    manufacturer: z.string().optional(),
+    modelName: z.string().optional(),
+    firmwareVersion: z.string().optional(),
+    nominalPowerKw: z.number().min(0).optional(),
+    timezone: z.string().optional(),
+    syncEnabled: z.boolean().optional(),
+    syncIntervalMinutes: z.number().int().positive().optional(),
+    installedAt: z.coerce.date().optional(),
+    commissionedAt: z.coerce.date().optional(),
 });
 
 // Response Schema
@@ -36,10 +52,6 @@ export class CreateInverterUseCase {
             throw new Error('User does not have permission to create inverters');
         }
 
-        console.log({
-            userContext
-        })
-
         // Criar o inversor
         const inverterId = `inverter_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const inverter = new InverterModel(
@@ -50,7 +62,25 @@ export class CreateInverterUseCase {
             validatedRequest.providerApiKey,
             validatedRequest.providerApiSecret,
             validatedRequest.providerUrl,
-            userContext.clientId // Associar ao cliente do usuário
+            userContext.clientId, // Associar ao cliente do usuário
+            {
+                plantId: validatedRequest.plantId,
+                providerPlantId: validatedRequest.providerPlantId ?? validatedRequest.providerId,
+                providerPlantName: validatedRequest.providerPlantName,
+                providerStatus: validatedRequest.providerStatus,
+                providerConfig: validatedRequest.providerConfig,
+                providerMetadata: validatedRequest.providerMetadata,
+                serialNumber: validatedRequest.serialNumber,
+                manufacturer: validatedRequest.manufacturer,
+                modelName: validatedRequest.modelName,
+                firmwareVersion: validatedRequest.firmwareVersion,
+                nominalPowerKw: validatedRequest.nominalPowerKw,
+                timezone: validatedRequest.timezone,
+                syncEnabled: validatedRequest.syncEnabled,
+                syncIntervalMinutes: validatedRequest.syncIntervalMinutes,
+                installedAt: validatedRequest.installedAt,
+                commissionedAt: validatedRequest.commissionedAt,
+            }
         );
 
         await this.inverterRepository.create(inverter);

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/app/generated/prisma";
+import { Prisma, PrismaClient } from "@/app/generated/prisma";
 import { GenerationUnitModel, GenerationUnitType } from "../../models/generation-unit.model";
 import { GenerationUnitRepository } from "../generation-unit.repository";
 
@@ -14,6 +14,9 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
                 generationUnitType: generationUnit.generationUnitType,
                 inverterId: generationUnit.inverterId,
                 timestamp: generationUnit.timestamp,
+                source: generationUnit.source,
+                providerRecordId: generationUnit.providerRecordId,
+                rawPayload: generationUnit.rawPayload as any,
             },
         });
     }
@@ -29,14 +32,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             },
         });
 
-        return generationUnits.map(unit => new GenerationUnitModel({
-            id: unit.id,
-            power: unit.power,
-            energy: unit.energy,
-            generationUnitType: unit.generationUnitType as GenerationUnitType,
-            inverterId: unit.inverterId,
-            timestamp: unit.timestamp,
-        }));
+        return generationUnits.map(unit => this.toModel(unit));
     }
 
     async update(generationUnit: GenerationUnitModel): Promise<void> {
@@ -60,6 +56,9 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
                 energy: generationUnit.energy,
                 generationUnitType: generationUnit.generationUnitType,
                 timestamp: generationUnit.timestamp,
+                source: generationUnit.source,
+                providerRecordId: generationUnit.providerRecordId,
+                rawPayload: generationUnit.rawPayload as any,
                 updatedAt: new Date(),
             },
         });
@@ -92,14 +91,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             },
         });
 
-        return generationUnits.map(unit => new GenerationUnitModel({
-            id: unit.id,
-            power: unit.power,
-            energy: unit.energy,
-            generationUnitType: unit.generationUnitType as GenerationUnitType,
-            inverterId: unit.inverterId,
-            timestamp: unit.timestamp,
-        }));
+        return generationUnits.map(unit => this.toModel(unit));
     }
 
     async findByInverterIdAndDateRange(
@@ -121,14 +113,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             },
         });
 
-        return generationUnits.map(unit => new GenerationUnitModel({
-            id: unit.id,
-            power: unit.power,
-            energy: unit.energy,
-            generationUnitType: unit.generationUnitType as GenerationUnitType,
-            inverterId: unit.inverterId,
-            timestamp: unit.timestamp,
-        }));
+        return generationUnits.map(unit => this.toModel(unit));
     }
 
     async delete(id: string): Promise<void> {
@@ -175,6 +160,24 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             energy: latestUnit.energy,
             generationUnitType: latestUnit.generationUnitType as GenerationUnitType,
             inverterId: latestUnit.inverterId,
+            timestamp: latestUnit.timestamp,
+            source: latestUnit.source || undefined,
+            providerRecordId: latestUnit.providerRecordId || undefined,
+            rawPayload: latestUnit.rawPayload,
+        });
+    }
+
+    private toModel(unit: Prisma.GenerationUnitGetPayload<{}>): GenerationUnitModel {
+        return new GenerationUnitModel({
+            id: unit.id,
+            power: unit.power,
+            energy: unit.energy,
+            generationUnitType: unit.generationUnitType as GenerationUnitType,
+            inverterId: unit.inverterId,
+            timestamp: unit.timestamp,
+            source: unit.source || undefined,
+            providerRecordId: unit.providerRecordId || undefined,
+            rawPayload: unit.rawPayload,
         });
     }
 }
