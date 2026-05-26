@@ -24,10 +24,25 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Client = $Result.DefaultSelection<Prisma.$ClientPayload>
 /**
+ * Model Plant
+ * 
+ */
+export type Plant = $Result.DefaultSelection<Prisma.$PlantPayload>
+/**
  * Model Inverter
  * 
  */
 export type Inverter = $Result.DefaultSelection<Prisma.$InverterPayload>
+/**
+ * Model ConsumerUnit
+ * 
+ */
+export type ConsumerUnit = $Result.DefaultSelection<Prisma.$ConsumerUnitPayload>
+/**
+ * Model CreditAllocation
+ * 
+ */
+export type CreditAllocation = $Result.DefaultSelection<Prisma.$CreditAllocationPayload>
 /**
  * Model GenerationUnit
  * 
@@ -63,6 +78,11 @@ export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
  * 
  */
 export type Consumption = $Result.DefaultSelection<Prisma.$ConsumptionPayload>
+/**
+ * Model EnergyBill
+ * 
+ */
+export type EnergyBill = $Result.DefaultSelection<Prisma.$EnergyBillPayload>
 
 /**
  * Enums
@@ -96,6 +116,16 @@ export const TransactionType: {
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
 
 
+export const GenerationUnitType: {
+  real_time: 'real_time',
+  day: 'day',
+  month: 'month',
+  year: 'year'
+};
+
+export type GenerationUnitType = (typeof GenerationUnitType)[keyof typeof GenerationUnitType]
+
+
 export const RedemptionStatus: {
   pending: 'pending',
   used: 'used',
@@ -117,6 +147,10 @@ export const IndicationStatus: typeof $Enums.IndicationStatus
 export type TransactionType = $Enums.TransactionType
 
 export const TransactionType: typeof $Enums.TransactionType
+
+export type GenerationUnitType = $Enums.GenerationUnitType
+
+export const GenerationUnitType: typeof $Enums.GenerationUnitType
 
 export type RedemptionStatus = $Enums.RedemptionStatus
 
@@ -261,6 +295,16 @@ export class PrismaClient<
   get client(): Prisma.ClientDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.plant`: Exposes CRUD operations for the **Plant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Plants
+    * const plants = await prisma.plant.findMany()
+    * ```
+    */
+  get plant(): Prisma.PlantDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.inverter`: Exposes CRUD operations for the **Inverter** model.
     * Example usage:
     * ```ts
@@ -269,6 +313,26 @@ export class PrismaClient<
     * ```
     */
   get inverter(): Prisma.InverterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.consumerUnit`: Exposes CRUD operations for the **ConsumerUnit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConsumerUnits
+    * const consumerUnits = await prisma.consumerUnit.findMany()
+    * ```
+    */
+  get consumerUnit(): Prisma.ConsumerUnitDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.creditAllocation`: Exposes CRUD operations for the **CreditAllocation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CreditAllocations
+    * const creditAllocations = await prisma.creditAllocation.findMany()
+    * ```
+    */
+  get creditAllocation(): Prisma.CreditAllocationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.generationUnit`: Exposes CRUD operations for the **GenerationUnit** model.
@@ -339,6 +403,16 @@ export class PrismaClient<
     * ```
     */
   get consumption(): Prisma.ConsumptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.energyBill`: Exposes CRUD operations for the **EnergyBill** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EnergyBills
+    * const energyBills = await prisma.energyBill.findMany()
+    * ```
+    */
+  get energyBill(): Prisma.EnergyBillDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -781,14 +855,18 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Client: 'Client',
+    Plant: 'Plant',
     Inverter: 'Inverter',
+    ConsumerUnit: 'ConsumerUnit',
+    CreditAllocation: 'CreditAllocation',
     GenerationUnit: 'GenerationUnit',
     Indication: 'Indication',
     Offer: 'Offer',
     OfferRedemption: 'OfferRedemption',
     FAQ: 'FAQ',
     Transaction: 'Transaction',
-    Consumption: 'Consumption'
+    Consumption: 'Consumption',
+    EnergyBill: 'EnergyBill'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -807,7 +885,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "inverter" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption"
+      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -959,6 +1037,80 @@ export namespace Prisma {
           }
         }
       }
+      Plant: {
+        payload: Prisma.$PlantPayload<ExtArgs>
+        fields: Prisma.PlantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>
+          }
+          findFirst: {
+            args: Prisma.PlantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>
+          }
+          findMany: {
+            args: Prisma.PlantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>[]
+          }
+          create: {
+            args: Prisma.PlantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>
+          }
+          createMany: {
+            args: Prisma.PlantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlantCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>[]
+          }
+          delete: {
+            args: Prisma.PlantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>
+          }
+          update: {
+            args: Prisma.PlantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlantUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlantPayload>
+          }
+          aggregate: {
+            args: Prisma.PlantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlant>
+          }
+          groupBy: {
+            args: Prisma.PlantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlantCountArgs<ExtArgs>
+            result: $Utils.Optional<PlantCountAggregateOutputType> | number
+          }
+        }
+      }
       Inverter: {
         payload: Prisma.$InverterPayload<ExtArgs>
         fields: Prisma.InverterFieldRefs
@@ -1030,6 +1182,154 @@ export namespace Prisma {
           count: {
             args: Prisma.InverterCountArgs<ExtArgs>
             result: $Utils.Optional<InverterCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConsumerUnit: {
+        payload: Prisma.$ConsumerUnitPayload<ExtArgs>
+        fields: Prisma.ConsumerUnitFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConsumerUnitFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConsumerUnitFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>
+          }
+          findFirst: {
+            args: Prisma.ConsumerUnitFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConsumerUnitFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>
+          }
+          findMany: {
+            args: Prisma.ConsumerUnitFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>[]
+          }
+          create: {
+            args: Prisma.ConsumerUnitCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>
+          }
+          createMany: {
+            args: Prisma.ConsumerUnitCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConsumerUnitCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>[]
+          }
+          delete: {
+            args: Prisma.ConsumerUnitDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>
+          }
+          update: {
+            args: Prisma.ConsumerUnitUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConsumerUnitDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConsumerUnitUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConsumerUnitUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConsumerUnitUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsumerUnitPayload>
+          }
+          aggregate: {
+            args: Prisma.ConsumerUnitAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConsumerUnit>
+          }
+          groupBy: {
+            args: Prisma.ConsumerUnitGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConsumerUnitGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConsumerUnitCountArgs<ExtArgs>
+            result: $Utils.Optional<ConsumerUnitCountAggregateOutputType> | number
+          }
+        }
+      }
+      CreditAllocation: {
+        payload: Prisma.$CreditAllocationPayload<ExtArgs>
+        fields: Prisma.CreditAllocationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CreditAllocationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CreditAllocationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>
+          }
+          findFirst: {
+            args: Prisma.CreditAllocationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CreditAllocationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>
+          }
+          findMany: {
+            args: Prisma.CreditAllocationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>[]
+          }
+          create: {
+            args: Prisma.CreditAllocationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>
+          }
+          createMany: {
+            args: Prisma.CreditAllocationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CreditAllocationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>[]
+          }
+          delete: {
+            args: Prisma.CreditAllocationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>
+          }
+          update: {
+            args: Prisma.CreditAllocationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>
+          }
+          deleteMany: {
+            args: Prisma.CreditAllocationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CreditAllocationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CreditAllocationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>[]
+          }
+          upsert: {
+            args: Prisma.CreditAllocationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CreditAllocationPayload>
+          }
+          aggregate: {
+            args: Prisma.CreditAllocationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCreditAllocation>
+          }
+          groupBy: {
+            args: Prisma.CreditAllocationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CreditAllocationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CreditAllocationCountArgs<ExtArgs>
+            result: $Utils.Optional<CreditAllocationCountAggregateOutputType> | number
           }
         }
       }
@@ -1551,6 +1851,80 @@ export namespace Prisma {
           }
         }
       }
+      EnergyBill: {
+        payload: Prisma.$EnergyBillPayload<ExtArgs>
+        fields: Prisma.EnergyBillFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EnergyBillFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EnergyBillFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>
+          }
+          findFirst: {
+            args: Prisma.EnergyBillFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EnergyBillFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>
+          }
+          findMany: {
+            args: Prisma.EnergyBillFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>[]
+          }
+          create: {
+            args: Prisma.EnergyBillCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>
+          }
+          createMany: {
+            args: Prisma.EnergyBillCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EnergyBillCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>[]
+          }
+          delete: {
+            args: Prisma.EnergyBillDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>
+          }
+          update: {
+            args: Prisma.EnergyBillUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>
+          }
+          deleteMany: {
+            args: Prisma.EnergyBillDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EnergyBillUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EnergyBillUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>[]
+          }
+          upsert: {
+            args: Prisma.EnergyBillUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyBillPayload>
+          }
+          aggregate: {
+            args: Prisma.EnergyBillAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEnergyBill>
+          }
+          groupBy: {
+            args: Prisma.EnergyBillGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EnergyBillGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EnergyBillCountArgs<ExtArgs>
+            result: $Utils.Optional<EnergyBillCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1649,7 +2023,10 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     client?: ClientOmit
+    plant?: PlantOmit
     inverter?: InverterOmit
+    consumerUnit?: ConsumerUnitOmit
+    creditAllocation?: CreditAllocationOmit
     generationUnit?: GenerationUnitOmit
     indication?: IndicationOmit
     offer?: OfferOmit
@@ -1657,6 +2034,7 @@ export namespace Prisma {
     fAQ?: FAQOmit
     transaction?: TransactionOmit
     consumption?: ConsumptionOmit
+    energyBill?: EnergyBillOmit
   }
 
   /* Types for Logging */
@@ -1737,23 +2115,31 @@ export namespace Prisma {
    */
 
   export type ClientCountOutputType = {
-    inverters: number
     users: number
     consumptions: number
     indicationsAsReferrer: number
     indicationsAsReferred: number
     transactions: number
     offerRedemptions: number
+    energyBills: number
+    plants: number
+    inverters: number
+    consumerUnits: number
+    creditAllocations: number
   }
 
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    inverters?: boolean | ClientCountOutputTypeCountInvertersArgs
     users?: boolean | ClientCountOutputTypeCountUsersArgs
     consumptions?: boolean | ClientCountOutputTypeCountConsumptionsArgs
     indicationsAsReferrer?: boolean | ClientCountOutputTypeCountIndicationsAsReferrerArgs
     indicationsAsReferred?: boolean | ClientCountOutputTypeCountIndicationsAsReferredArgs
     transactions?: boolean | ClientCountOutputTypeCountTransactionsArgs
     offerRedemptions?: boolean | ClientCountOutputTypeCountOfferRedemptionsArgs
+    energyBills?: boolean | ClientCountOutputTypeCountEnergyBillsArgs
+    plants?: boolean | ClientCountOutputTypeCountPlantsArgs
+    inverters?: boolean | ClientCountOutputTypeCountInvertersArgs
+    consumerUnits?: boolean | ClientCountOutputTypeCountConsumerUnitsArgs
+    creditAllocations?: boolean | ClientCountOutputTypeCountCreditAllocationsArgs
   }
 
   // Custom InputTypes
@@ -1765,13 +2151,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the ClientCountOutputType
      */
     select?: ClientCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ClientCountOutputType without action
-   */
-  export type ClientCountOutputTypeCountInvertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InverterWhereInput
   }
 
   /**
@@ -1816,6 +2195,99 @@ export namespace Prisma {
     where?: OfferRedemptionWhereInput
   }
 
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountEnergyBillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnergyBillWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountPlantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlantWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountInvertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InverterWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountConsumerUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsumerUnitWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountCreditAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CreditAllocationWhereInput
+  }
+
+
+  /**
+   * Count Type PlantCountOutputType
+   */
+
+  export type PlantCountOutputType = {
+    inverters: number
+    consumerUnits: number
+    creditAllocations: number
+    energyBills: number
+  }
+
+  export type PlantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inverters?: boolean | PlantCountOutputTypeCountInvertersArgs
+    consumerUnits?: boolean | PlantCountOutputTypeCountConsumerUnitsArgs
+    creditAllocations?: boolean | PlantCountOutputTypeCountCreditAllocationsArgs
+    energyBills?: boolean | PlantCountOutputTypeCountEnergyBillsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PlantCountOutputType without action
+   */
+  export type PlantCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlantCountOutputType
+     */
+    select?: PlantCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PlantCountOutputType without action
+   */
+  export type PlantCountOutputTypeCountInvertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InverterWhereInput
+  }
+
+  /**
+   * PlantCountOutputType without action
+   */
+  export type PlantCountOutputTypeCountConsumerUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsumerUnitWhereInput
+  }
+
+  /**
+   * PlantCountOutputType without action
+   */
+  export type PlantCountOutputTypeCountCreditAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CreditAllocationWhereInput
+  }
+
+  /**
+   * PlantCountOutputType without action
+   */
+  export type PlantCountOutputTypeCountEnergyBillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnergyBillWhereInput
+  }
+
 
   /**
    * Count Type InverterCountOutputType
@@ -1845,6 +2317,55 @@ export namespace Prisma {
    */
   export type InverterCountOutputTypeCountGenerationUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GenerationUnitWhereInput
+  }
+
+
+  /**
+   * Count Type ConsumerUnitCountOutputType
+   */
+
+  export type ConsumerUnitCountOutputType = {
+    energyBills: number
+    allocationsFrom: number
+    allocationsTo: number
+  }
+
+  export type ConsumerUnitCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    energyBills?: boolean | ConsumerUnitCountOutputTypeCountEnergyBillsArgs
+    allocationsFrom?: boolean | ConsumerUnitCountOutputTypeCountAllocationsFromArgs
+    allocationsTo?: boolean | ConsumerUnitCountOutputTypeCountAllocationsToArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ConsumerUnitCountOutputType without action
+   */
+  export type ConsumerUnitCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnitCountOutputType
+     */
+    select?: ConsumerUnitCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ConsumerUnitCountOutputType without action
+   */
+  export type ConsumerUnitCountOutputTypeCountEnergyBillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnergyBillWhereInput
+  }
+
+  /**
+   * ConsumerUnitCountOutputType without action
+   */
+  export type ConsumerUnitCountOutputTypeCountAllocationsFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CreditAllocationWhereInput
+  }
+
+  /**
+   * ConsumerUnitCountOutputType without action
+   */
+  export type ConsumerUnitCountOutputTypeCountAllocationsToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CreditAllocationWhereInput
   }
 
 
@@ -3317,13 +3838,17 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    inverters?: boolean | Client$invertersArgs<ExtArgs>
     users?: boolean | Client$usersArgs<ExtArgs>
     consumptions?: boolean | Client$consumptionsArgs<ExtArgs>
     indicationsAsReferrer?: boolean | Client$indicationsAsReferrerArgs<ExtArgs>
     indicationsAsReferred?: boolean | Client$indicationsAsReferredArgs<ExtArgs>
     transactions?: boolean | Client$transactionsArgs<ExtArgs>
     offerRedemptions?: boolean | Client$offerRedemptionsArgs<ExtArgs>
+    energyBills?: boolean | Client$energyBillsArgs<ExtArgs>
+    plants?: boolean | Client$plantsArgs<ExtArgs>
+    inverters?: boolean | Client$invertersArgs<ExtArgs>
+    consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
+    creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -3380,13 +3905,17 @@ export namespace Prisma {
 
   export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "cpfCnpj" | "phone" | "address" | "avgEnergyCost" | "enelInvoiceFile" | "soloCoinBalance" | "indicationCode" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["client"]>
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    inverters?: boolean | Client$invertersArgs<ExtArgs>
     users?: boolean | Client$usersArgs<ExtArgs>
     consumptions?: boolean | Client$consumptionsArgs<ExtArgs>
     indicationsAsReferrer?: boolean | Client$indicationsAsReferrerArgs<ExtArgs>
     indicationsAsReferred?: boolean | Client$indicationsAsReferredArgs<ExtArgs>
     transactions?: boolean | Client$transactionsArgs<ExtArgs>
     offerRedemptions?: boolean | Client$offerRedemptionsArgs<ExtArgs>
+    energyBills?: boolean | Client$energyBillsArgs<ExtArgs>
+    plants?: boolean | Client$plantsArgs<ExtArgs>
+    inverters?: boolean | Client$invertersArgs<ExtArgs>
+    consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
+    creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3395,13 +3924,17 @@ export namespace Prisma {
   export type $ClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Client"
     objects: {
-      inverters: Prisma.$InverterPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
       consumptions: Prisma.$ConsumptionPayload<ExtArgs>[]
       indicationsAsReferrer: Prisma.$IndicationPayload<ExtArgs>[]
       indicationsAsReferred: Prisma.$IndicationPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       offerRedemptions: Prisma.$OfferRedemptionPayload<ExtArgs>[]
+      energyBills: Prisma.$EnergyBillPayload<ExtArgs>[]
+      plants: Prisma.$PlantPayload<ExtArgs>[]
+      inverters: Prisma.$InverterPayload<ExtArgs>[]
+      consumerUnits: Prisma.$ConsumerUnitPayload<ExtArgs>[]
+      creditAllocations: Prisma.$CreditAllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3812,13 +4345,17 @@ export namespace Prisma {
    */
   export interface Prisma__ClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    inverters<T extends Client$invertersArgs<ExtArgs> = {}>(args?: Subset<T, Client$invertersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Client$usersArgs<ExtArgs> = {}>(args?: Subset<T, Client$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     consumptions<T extends Client$consumptionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$consumptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     indicationsAsReferrer<T extends Client$indicationsAsReferrerArgs<ExtArgs> = {}>(args?: Subset<T, Client$indicationsAsReferrerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     indicationsAsReferred<T extends Client$indicationsAsReferredArgs<ExtArgs> = {}>(args?: Subset<T, Client$indicationsAsReferredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends Client$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     offerRedemptions<T extends Client$offerRedemptionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$offerRedemptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfferRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    energyBills<T extends Client$energyBillsArgs<ExtArgs> = {}>(args?: Subset<T, Client$energyBillsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    plants<T extends Client$plantsArgs<ExtArgs> = {}>(args?: Subset<T, Client$plantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    inverters<T extends Client$invertersArgs<ExtArgs> = {}>(args?: Subset<T, Client$invertersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    consumerUnits<T extends Client$consumerUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Client$consumerUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    creditAllocations<T extends Client$creditAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, Client$creditAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4250,30 +4787,6 @@ export namespace Prisma {
   }
 
   /**
-   * Client.inverters
-   */
-  export type Client$invertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Inverter
-     */
-    select?: InverterSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Inverter
-     */
-    omit?: InverterOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: InverterInclude<ExtArgs> | null
-    where?: InverterWhereInput
-    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
-    cursor?: InverterWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: InverterScalarFieldEnum | InverterScalarFieldEnum[]
-  }
-
-  /**
    * Client.users
    */
   export type Client$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4418,6 +4931,126 @@ export namespace Prisma {
   }
 
   /**
+   * Client.energyBills
+   */
+  export type Client$energyBillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    where?: EnergyBillWhereInput
+    orderBy?: EnergyBillOrderByWithRelationInput | EnergyBillOrderByWithRelationInput[]
+    cursor?: EnergyBillWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnergyBillScalarFieldEnum | EnergyBillScalarFieldEnum[]
+  }
+
+  /**
+   * Client.plants
+   */
+  export type Client$plantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    where?: PlantWhereInput
+    orderBy?: PlantOrderByWithRelationInput | PlantOrderByWithRelationInput[]
+    cursor?: PlantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlantScalarFieldEnum | PlantScalarFieldEnum[]
+  }
+
+  /**
+   * Client.inverters
+   */
+  export type Client$invertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    where?: InverterWhereInput
+    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
+    cursor?: InverterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InverterScalarFieldEnum | InverterScalarFieldEnum[]
+  }
+
+  /**
+   * Client.consumerUnits
+   */
+  export type Client$consumerUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    where?: ConsumerUnitWhereInput
+    orderBy?: ConsumerUnitOrderByWithRelationInput | ConsumerUnitOrderByWithRelationInput[]
+    cursor?: ConsumerUnitWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConsumerUnitScalarFieldEnum | ConsumerUnitScalarFieldEnum[]
+  }
+
+  /**
+   * Client.creditAllocations
+   */
+  export type Client$creditAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    where?: CreditAllocationWhereInput
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    cursor?: CreditAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
    * Client without action
    */
   export type ClientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4437,13 +5070,1408 @@ export namespace Prisma {
 
 
   /**
+   * Model Plant
+   */
+
+  export type AggregatePlant = {
+    _count: PlantCountAggregateOutputType | null
+    _avg: PlantAvgAggregateOutputType | null
+    _sum: PlantSumAggregateOutputType | null
+    _min: PlantMinAggregateOutputType | null
+    _max: PlantMaxAggregateOutputType | null
+  }
+
+  export type PlantAvgAggregateOutputType = {
+    installedPowerKw: Decimal | null
+    totalEnergyKwh: Decimal | null
+    latitude: Decimal | null
+    longitude: Decimal | null
+  }
+
+  export type PlantSumAggregateOutputType = {
+    installedPowerKw: Decimal | null
+    totalEnergyKwh: Decimal | null
+    latitude: Decimal | null
+    longitude: Decimal | null
+  }
+
+  export type PlantMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    name: string | null
+    provider: string | null
+    providerStatus: string | null
+    providerPlantId: string | null
+    installedPowerKw: Decimal | null
+    totalEnergyKwh: Decimal | null
+    address: string | null
+    city: string | null
+    state: string | null
+    timezone: string | null
+    latitude: Decimal | null
+    longitude: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type PlantMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    name: string | null
+    provider: string | null
+    providerStatus: string | null
+    providerPlantId: string | null
+    installedPowerKw: Decimal | null
+    totalEnergyKwh: Decimal | null
+    address: string | null
+    city: string | null
+    state: string | null
+    timezone: string | null
+    latitude: Decimal | null
+    longitude: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type PlantCountAggregateOutputType = {
+    id: number
+    clientId: number
+    name: number
+    provider: number
+    providerStatus: number
+    providerPlantId: number
+    installedPowerKw: number
+    totalEnergyKwh: number
+    address: number
+    city: number
+    state: number
+    timezone: number
+    latitude: number
+    longitude: number
+    providerMetadata: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type PlantAvgAggregateInputType = {
+    installedPowerKw?: true
+    totalEnergyKwh?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type PlantSumAggregateInputType = {
+    installedPowerKw?: true
+    totalEnergyKwh?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type PlantMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    name?: true
+    provider?: true
+    providerStatus?: true
+    providerPlantId?: true
+    installedPowerKw?: true
+    totalEnergyKwh?: true
+    address?: true
+    city?: true
+    state?: true
+    timezone?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type PlantMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    name?: true
+    provider?: true
+    providerStatus?: true
+    providerPlantId?: true
+    installedPowerKw?: true
+    totalEnergyKwh?: true
+    address?: true
+    city?: true
+    state?: true
+    timezone?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type PlantCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    name?: true
+    provider?: true
+    providerStatus?: true
+    providerPlantId?: true
+    installedPowerKw?: true
+    totalEnergyKwh?: true
+    address?: true
+    city?: true
+    state?: true
+    timezone?: true
+    latitude?: true
+    longitude?: true
+    providerMetadata?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type PlantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Plant to aggregate.
+     */
+    where?: PlantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Plants to fetch.
+     */
+    orderBy?: PlantOrderByWithRelationInput | PlantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Plants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Plants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Plants
+    **/
+    _count?: true | PlantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlantAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlantSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlantMaxAggregateInputType
+  }
+
+  export type GetPlantAggregateType<T extends PlantAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlant[P]>
+      : GetScalarType<T[P], AggregatePlant[P]>
+  }
+
+
+
+
+  export type PlantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlantWhereInput
+    orderBy?: PlantOrderByWithAggregationInput | PlantOrderByWithAggregationInput[]
+    by: PlantScalarFieldEnum[] | PlantScalarFieldEnum
+    having?: PlantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlantCountAggregateInputType | true
+    _avg?: PlantAvgAggregateInputType
+    _sum?: PlantSumAggregateInputType
+    _min?: PlantMinAggregateInputType
+    _max?: PlantMaxAggregateInputType
+  }
+
+  export type PlantGroupByOutputType = {
+    id: string
+    clientId: string
+    name: string | null
+    provider: string | null
+    providerStatus: string | null
+    providerPlantId: string | null
+    installedPowerKw: Decimal | null
+    totalEnergyKwh: Decimal | null
+    address: string | null
+    city: string | null
+    state: string | null
+    timezone: string | null
+    latitude: Decimal | null
+    longitude: Decimal | null
+    providerMetadata: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: PlantCountAggregateOutputType | null
+    _avg: PlantAvgAggregateOutputType | null
+    _sum: PlantSumAggregateOutputType | null
+    _min: PlantMinAggregateOutputType | null
+    _max: PlantMaxAggregateOutputType | null
+  }
+
+  type GetPlantGroupByPayload<T extends PlantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlantGroupByOutputType[P]>
+            : GetScalarType<T[P], PlantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    provider?: boolean
+    providerStatus?: boolean
+    providerPlantId?: boolean
+    installedPowerKw?: boolean
+    totalEnergyKwh?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    timezone?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    providerMetadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    inverters?: boolean | Plant$invertersArgs<ExtArgs>
+    consumerUnits?: boolean | Plant$consumerUnitsArgs<ExtArgs>
+    creditAllocations?: boolean | Plant$creditAllocationsArgs<ExtArgs>
+    energyBills?: boolean | Plant$energyBillsArgs<ExtArgs>
+    _count?: boolean | PlantCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["plant"]>
+
+  export type PlantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    provider?: boolean
+    providerStatus?: boolean
+    providerPlantId?: boolean
+    installedPowerKw?: boolean
+    totalEnergyKwh?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    timezone?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    providerMetadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["plant"]>
+
+  export type PlantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    provider?: boolean
+    providerStatus?: boolean
+    providerPlantId?: boolean
+    installedPowerKw?: boolean
+    totalEnergyKwh?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    timezone?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    providerMetadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["plant"]>
+
+  export type PlantSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    provider?: boolean
+    providerStatus?: boolean
+    providerPlantId?: boolean
+    installedPowerKw?: boolean
+    totalEnergyKwh?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    timezone?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    providerMetadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type PlantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "provider" | "providerStatus" | "providerPlantId" | "installedPowerKw" | "totalEnergyKwh" | "address" | "city" | "state" | "timezone" | "latitude" | "longitude" | "providerMetadata" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["plant"]>
+  export type PlantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    inverters?: boolean | Plant$invertersArgs<ExtArgs>
+    consumerUnits?: boolean | Plant$consumerUnitsArgs<ExtArgs>
+    creditAllocations?: boolean | Plant$creditAllocationsArgs<ExtArgs>
+    energyBills?: boolean | Plant$energyBillsArgs<ExtArgs>
+    _count?: boolean | PlantCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PlantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type PlantIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+
+  export type $PlantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Plant"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+      inverters: Prisma.$InverterPayload<ExtArgs>[]
+      consumerUnits: Prisma.$ConsumerUnitPayload<ExtArgs>[]
+      creditAllocations: Prisma.$CreditAllocationPayload<ExtArgs>[]
+      energyBills: Prisma.$EnergyBillPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      name: string | null
+      provider: string | null
+      providerStatus: string | null
+      providerPlantId: string | null
+      installedPowerKw: Prisma.Decimal | null
+      totalEnergyKwh: Prisma.Decimal | null
+      address: string | null
+      city: string | null
+      state: string | null
+      timezone: string | null
+      latitude: Prisma.Decimal | null
+      longitude: Prisma.Decimal | null
+      providerMetadata: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["plant"]>
+    composites: {}
+  }
+
+  type PlantGetPayload<S extends boolean | null | undefined | PlantDefaultArgs> = $Result.GetResult<Prisma.$PlantPayload, S>
+
+  type PlantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlantCountAggregateInputType | true
+    }
+
+  export interface PlantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Plant'], meta: { name: 'Plant' } }
+    /**
+     * Find zero or one Plant that matches the filter.
+     * @param {PlantFindUniqueArgs} args - Arguments to find a Plant
+     * @example
+     * // Get one Plant
+     * const plant = await prisma.plant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlantFindUniqueArgs>(args: SelectSubset<T, PlantFindUniqueArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Plant that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlantFindUniqueOrThrowArgs} args - Arguments to find a Plant
+     * @example
+     * // Get one Plant
+     * const plant = await prisma.plant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlantFindUniqueOrThrowArgs>(args: SelectSubset<T, PlantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Plant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlantFindFirstArgs} args - Arguments to find a Plant
+     * @example
+     * // Get one Plant
+     * const plant = await prisma.plant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlantFindFirstArgs>(args?: SelectSubset<T, PlantFindFirstArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Plant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlantFindFirstOrThrowArgs} args - Arguments to find a Plant
+     * @example
+     * // Get one Plant
+     * const plant = await prisma.plant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlantFindFirstOrThrowArgs>(args?: SelectSubset<T, PlantFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Plants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Plants
+     * const plants = await prisma.plant.findMany()
+     * 
+     * // Get first 10 Plants
+     * const plants = await prisma.plant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const plantWithIdOnly = await prisma.plant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlantFindManyArgs>(args?: SelectSubset<T, PlantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Plant.
+     * @param {PlantCreateArgs} args - Arguments to create a Plant.
+     * @example
+     * // Create one Plant
+     * const Plant = await prisma.plant.create({
+     *   data: {
+     *     // ... data to create a Plant
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlantCreateArgs>(args: SelectSubset<T, PlantCreateArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Plants.
+     * @param {PlantCreateManyArgs} args - Arguments to create many Plants.
+     * @example
+     * // Create many Plants
+     * const plant = await prisma.plant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlantCreateManyArgs>(args?: SelectSubset<T, PlantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Plants and returns the data saved in the database.
+     * @param {PlantCreateManyAndReturnArgs} args - Arguments to create many Plants.
+     * @example
+     * // Create many Plants
+     * const plant = await prisma.plant.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Plants and only return the `id`
+     * const plantWithIdOnly = await prisma.plant.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlantCreateManyAndReturnArgs>(args?: SelectSubset<T, PlantCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Plant.
+     * @param {PlantDeleteArgs} args - Arguments to delete one Plant.
+     * @example
+     * // Delete one Plant
+     * const Plant = await prisma.plant.delete({
+     *   where: {
+     *     // ... filter to delete one Plant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlantDeleteArgs>(args: SelectSubset<T, PlantDeleteArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Plant.
+     * @param {PlantUpdateArgs} args - Arguments to update one Plant.
+     * @example
+     * // Update one Plant
+     * const plant = await prisma.plant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlantUpdateArgs>(args: SelectSubset<T, PlantUpdateArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Plants.
+     * @param {PlantDeleteManyArgs} args - Arguments to filter Plants to delete.
+     * @example
+     * // Delete a few Plants
+     * const { count } = await prisma.plant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlantDeleteManyArgs>(args?: SelectSubset<T, PlantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Plants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Plants
+     * const plant = await prisma.plant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlantUpdateManyArgs>(args: SelectSubset<T, PlantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Plants and returns the data updated in the database.
+     * @param {PlantUpdateManyAndReturnArgs} args - Arguments to update many Plants.
+     * @example
+     * // Update many Plants
+     * const plant = await prisma.plant.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Plants and only return the `id`
+     * const plantWithIdOnly = await prisma.plant.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlantUpdateManyAndReturnArgs>(args: SelectSubset<T, PlantUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Plant.
+     * @param {PlantUpsertArgs} args - Arguments to update or create a Plant.
+     * @example
+     * // Update or create a Plant
+     * const plant = await prisma.plant.upsert({
+     *   create: {
+     *     // ... data to create a Plant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Plant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlantUpsertArgs>(args: SelectSubset<T, PlantUpsertArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Plants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlantCountArgs} args - Arguments to filter Plants to count.
+     * @example
+     * // Count the number of Plants
+     * const count = await prisma.plant.count({
+     *   where: {
+     *     // ... the filter for the Plants we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlantCountArgs>(
+      args?: Subset<T, PlantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Plant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlantAggregateArgs>(args: Subset<T, PlantAggregateArgs>): Prisma.PrismaPromise<GetPlantAggregateType<T>>
+
+    /**
+     * Group by Plant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlantGroupByArgs['orderBy'] }
+        : { orderBy?: PlantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Plant model
+   */
+  readonly fields: PlantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Plant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    inverters<T extends Plant$invertersArgs<ExtArgs> = {}>(args?: Subset<T, Plant$invertersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    consumerUnits<T extends Plant$consumerUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Plant$consumerUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    creditAllocations<T extends Plant$creditAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, Plant$creditAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    energyBills<T extends Plant$energyBillsArgs<ExtArgs> = {}>(args?: Subset<T, Plant$energyBillsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Plant model
+   */
+  interface PlantFieldRefs {
+    readonly id: FieldRef<"Plant", 'String'>
+    readonly clientId: FieldRef<"Plant", 'String'>
+    readonly name: FieldRef<"Plant", 'String'>
+    readonly provider: FieldRef<"Plant", 'String'>
+    readonly providerStatus: FieldRef<"Plant", 'String'>
+    readonly providerPlantId: FieldRef<"Plant", 'String'>
+    readonly installedPowerKw: FieldRef<"Plant", 'Decimal'>
+    readonly totalEnergyKwh: FieldRef<"Plant", 'Decimal'>
+    readonly address: FieldRef<"Plant", 'String'>
+    readonly city: FieldRef<"Plant", 'String'>
+    readonly state: FieldRef<"Plant", 'String'>
+    readonly timezone: FieldRef<"Plant", 'String'>
+    readonly latitude: FieldRef<"Plant", 'Decimal'>
+    readonly longitude: FieldRef<"Plant", 'Decimal'>
+    readonly providerMetadata: FieldRef<"Plant", 'Json'>
+    readonly createdAt: FieldRef<"Plant", 'DateTime'>
+    readonly updatedAt: FieldRef<"Plant", 'DateTime'>
+    readonly deletedAt: FieldRef<"Plant", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Plant findUnique
+   */
+  export type PlantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * Filter, which Plant to fetch.
+     */
+    where: PlantWhereUniqueInput
+  }
+
+  /**
+   * Plant findUniqueOrThrow
+   */
+  export type PlantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * Filter, which Plant to fetch.
+     */
+    where: PlantWhereUniqueInput
+  }
+
+  /**
+   * Plant findFirst
+   */
+  export type PlantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * Filter, which Plant to fetch.
+     */
+    where?: PlantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Plants to fetch.
+     */
+    orderBy?: PlantOrderByWithRelationInput | PlantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Plants.
+     */
+    cursor?: PlantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Plants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Plants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Plants.
+     */
+    distinct?: PlantScalarFieldEnum | PlantScalarFieldEnum[]
+  }
+
+  /**
+   * Plant findFirstOrThrow
+   */
+  export type PlantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * Filter, which Plant to fetch.
+     */
+    where?: PlantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Plants to fetch.
+     */
+    orderBy?: PlantOrderByWithRelationInput | PlantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Plants.
+     */
+    cursor?: PlantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Plants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Plants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Plants.
+     */
+    distinct?: PlantScalarFieldEnum | PlantScalarFieldEnum[]
+  }
+
+  /**
+   * Plant findMany
+   */
+  export type PlantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * Filter, which Plants to fetch.
+     */
+    where?: PlantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Plants to fetch.
+     */
+    orderBy?: PlantOrderByWithRelationInput | PlantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Plants.
+     */
+    cursor?: PlantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Plants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Plants.
+     */
+    skip?: number
+    distinct?: PlantScalarFieldEnum | PlantScalarFieldEnum[]
+  }
+
+  /**
+   * Plant create
+   */
+  export type PlantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Plant.
+     */
+    data: XOR<PlantCreateInput, PlantUncheckedCreateInput>
+  }
+
+  /**
+   * Plant createMany
+   */
+  export type PlantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Plants.
+     */
+    data: PlantCreateManyInput | PlantCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Plant createManyAndReturn
+   */
+  export type PlantCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * The data used to create many Plants.
+     */
+    data: PlantCreateManyInput | PlantCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Plant update
+   */
+  export type PlantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Plant.
+     */
+    data: XOR<PlantUpdateInput, PlantUncheckedUpdateInput>
+    /**
+     * Choose, which Plant to update.
+     */
+    where: PlantWhereUniqueInput
+  }
+
+  /**
+   * Plant updateMany
+   */
+  export type PlantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Plants.
+     */
+    data: XOR<PlantUpdateManyMutationInput, PlantUncheckedUpdateManyInput>
+    /**
+     * Filter which Plants to update
+     */
+    where?: PlantWhereInput
+    /**
+     * Limit how many Plants to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Plant updateManyAndReturn
+   */
+  export type PlantUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * The data used to update Plants.
+     */
+    data: XOR<PlantUpdateManyMutationInput, PlantUncheckedUpdateManyInput>
+    /**
+     * Filter which Plants to update
+     */
+    where?: PlantWhereInput
+    /**
+     * Limit how many Plants to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Plant upsert
+   */
+  export type PlantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Plant to update in case it exists.
+     */
+    where: PlantWhereUniqueInput
+    /**
+     * In case the Plant found by the `where` argument doesn't exist, create a new Plant with this data.
+     */
+    create: XOR<PlantCreateInput, PlantUncheckedCreateInput>
+    /**
+     * In case the Plant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlantUpdateInput, PlantUncheckedUpdateInput>
+  }
+
+  /**
+   * Plant delete
+   */
+  export type PlantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    /**
+     * Filter which Plant to delete.
+     */
+    where: PlantWhereUniqueInput
+  }
+
+  /**
+   * Plant deleteMany
+   */
+  export type PlantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Plants to delete
+     */
+    where?: PlantWhereInput
+    /**
+     * Limit how many Plants to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Plant.inverters
+   */
+  export type Plant$invertersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Inverter
+     */
+    select?: InverterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Inverter
+     */
+    omit?: InverterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InverterInclude<ExtArgs> | null
+    where?: InverterWhereInput
+    orderBy?: InverterOrderByWithRelationInput | InverterOrderByWithRelationInput[]
+    cursor?: InverterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InverterScalarFieldEnum | InverterScalarFieldEnum[]
+  }
+
+  /**
+   * Plant.consumerUnits
+   */
+  export type Plant$consumerUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    where?: ConsumerUnitWhereInput
+    orderBy?: ConsumerUnitOrderByWithRelationInput | ConsumerUnitOrderByWithRelationInput[]
+    cursor?: ConsumerUnitWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConsumerUnitScalarFieldEnum | ConsumerUnitScalarFieldEnum[]
+  }
+
+  /**
+   * Plant.creditAllocations
+   */
+  export type Plant$creditAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    where?: CreditAllocationWhereInput
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    cursor?: CreditAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * Plant.energyBills
+   */
+  export type Plant$energyBillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    where?: EnergyBillWhereInput
+    orderBy?: EnergyBillOrderByWithRelationInput | EnergyBillOrderByWithRelationInput[]
+    cursor?: EnergyBillWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnergyBillScalarFieldEnum | EnergyBillScalarFieldEnum[]
+  }
+
+  /**
+   * Plant without action
+   */
+  export type PlantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Inverter
    */
 
   export type AggregateInverter = {
     _count: InverterCountAggregateOutputType | null
+    _avg: InverterAvgAggregateOutputType | null
+    _sum: InverterSumAggregateOutputType | null
     _min: InverterMinAggregateOutputType | null
     _max: InverterMaxAggregateOutputType | null
+  }
+
+  export type InverterAvgAggregateOutputType = {
+    nominalPowerKw: Decimal | null
+    syncIntervalMinutes: number | null
+  }
+
+  export type InverterSumAggregateOutputType = {
+    nominalPowerKw: Decimal | null
+    syncIntervalMinutes: number | null
   }
 
   export type InverterMinAggregateOutputType = {
@@ -4454,7 +6482,25 @@ export namespace Prisma {
     providerApiKey: string | null
     providerApiSecret: string | null
     providerUrl: string | null
+    providerPlantId: string | null
+    providerPlantName: string | null
+    providerStatus: string | null
+    serialNumber: string | null
+    manufacturer: string | null
+    modelName: string | null
+    firmwareVersion: string | null
+    nominalPowerKw: Decimal | null
+    timezone: string | null
+    syncEnabled: boolean | null
+    syncIntervalMinutes: number | null
+    lastSyncAt: Date | null
+    lastSuccessfulSyncAt: Date | null
+    lastSyncStatus: string | null
+    lastSyncError: string | null
+    installedAt: Date | null
+    commissionedAt: Date | null
     clientId: string | null
+    plantId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -4468,7 +6514,25 @@ export namespace Prisma {
     providerApiKey: string | null
     providerApiSecret: string | null
     providerUrl: string | null
+    providerPlantId: string | null
+    providerPlantName: string | null
+    providerStatus: string | null
+    serialNumber: string | null
+    manufacturer: string | null
+    modelName: string | null
+    firmwareVersion: string | null
+    nominalPowerKw: Decimal | null
+    timezone: string | null
+    syncEnabled: boolean | null
+    syncIntervalMinutes: number | null
+    lastSyncAt: Date | null
+    lastSuccessfulSyncAt: Date | null
+    lastSyncStatus: string | null
+    lastSyncError: string | null
+    installedAt: Date | null
+    commissionedAt: Date | null
     clientId: string | null
+    plantId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -4482,13 +6546,43 @@ export namespace Prisma {
     providerApiKey: number
     providerApiSecret: number
     providerUrl: number
+    providerPlantId: number
+    providerPlantName: number
+    providerStatus: number
+    providerConfig: number
+    providerMetadata: number
+    serialNumber: number
+    manufacturer: number
+    modelName: number
+    firmwareVersion: number
+    nominalPowerKw: number
+    timezone: number
+    syncEnabled: number
+    syncIntervalMinutes: number
+    lastSyncAt: number
+    lastSuccessfulSyncAt: number
+    lastSyncStatus: number
+    lastSyncError: number
+    installedAt: number
+    commissionedAt: number
     clientId: number
+    plantId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
     _all: number
   }
 
+
+  export type InverterAvgAggregateInputType = {
+    nominalPowerKw?: true
+    syncIntervalMinutes?: true
+  }
+
+  export type InverterSumAggregateInputType = {
+    nominalPowerKw?: true
+    syncIntervalMinutes?: true
+  }
 
   export type InverterMinAggregateInputType = {
     id?: true
@@ -4498,7 +6592,25 @@ export namespace Prisma {
     providerApiKey?: true
     providerApiSecret?: true
     providerUrl?: true
+    providerPlantId?: true
+    providerPlantName?: true
+    providerStatus?: true
+    serialNumber?: true
+    manufacturer?: true
+    modelName?: true
+    firmwareVersion?: true
+    nominalPowerKw?: true
+    timezone?: true
+    syncEnabled?: true
+    syncIntervalMinutes?: true
+    lastSyncAt?: true
+    lastSuccessfulSyncAt?: true
+    lastSyncStatus?: true
+    lastSyncError?: true
+    installedAt?: true
+    commissionedAt?: true
     clientId?: true
+    plantId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -4512,7 +6624,25 @@ export namespace Prisma {
     providerApiKey?: true
     providerApiSecret?: true
     providerUrl?: true
+    providerPlantId?: true
+    providerPlantName?: true
+    providerStatus?: true
+    serialNumber?: true
+    manufacturer?: true
+    modelName?: true
+    firmwareVersion?: true
+    nominalPowerKw?: true
+    timezone?: true
+    syncEnabled?: true
+    syncIntervalMinutes?: true
+    lastSyncAt?: true
+    lastSuccessfulSyncAt?: true
+    lastSyncStatus?: true
+    lastSyncError?: true
+    installedAt?: true
+    commissionedAt?: true
     clientId?: true
+    plantId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -4526,7 +6656,27 @@ export namespace Prisma {
     providerApiKey?: true
     providerApiSecret?: true
     providerUrl?: true
+    providerPlantId?: true
+    providerPlantName?: true
+    providerStatus?: true
+    providerConfig?: true
+    providerMetadata?: true
+    serialNumber?: true
+    manufacturer?: true
+    modelName?: true
+    firmwareVersion?: true
+    nominalPowerKw?: true
+    timezone?: true
+    syncEnabled?: true
+    syncIntervalMinutes?: true
+    lastSyncAt?: true
+    lastSuccessfulSyncAt?: true
+    lastSyncStatus?: true
+    lastSyncError?: true
+    installedAt?: true
+    commissionedAt?: true
     clientId?: true
+    plantId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -4571,6 +6721,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: InverterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InverterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: InverterMinAggregateInputType
@@ -4601,6 +6763,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: InverterCountAggregateInputType | true
+    _avg?: InverterAvgAggregateInputType
+    _sum?: InverterSumAggregateInputType
     _min?: InverterMinAggregateInputType
     _max?: InverterMaxAggregateInputType
   }
@@ -4613,11 +6777,33 @@ export namespace Prisma {
     providerApiKey: string | null
     providerApiSecret: string | null
     providerUrl: string | null
+    providerPlantId: string | null
+    providerPlantName: string | null
+    providerStatus: string | null
+    providerConfig: JsonValue | null
+    providerMetadata: JsonValue | null
+    serialNumber: string | null
+    manufacturer: string | null
+    modelName: string | null
+    firmwareVersion: string | null
+    nominalPowerKw: Decimal | null
+    timezone: string | null
+    syncEnabled: boolean
+    syncIntervalMinutes: number | null
+    lastSyncAt: Date | null
+    lastSuccessfulSyncAt: Date | null
+    lastSyncStatus: string | null
+    lastSyncError: string | null
+    installedAt: Date | null
+    commissionedAt: Date | null
     clientId: string
+    plantId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
     _count: InverterCountAggregateOutputType | null
+    _avg: InverterAvgAggregateOutputType | null
+    _sum: InverterSumAggregateOutputType | null
     _min: InverterMinAggregateOutputType | null
     _max: InverterMaxAggregateOutputType | null
   }
@@ -4644,11 +6830,32 @@ export namespace Prisma {
     providerApiKey?: boolean
     providerApiSecret?: boolean
     providerUrl?: boolean
+    providerPlantId?: boolean
+    providerPlantName?: boolean
+    providerStatus?: boolean
+    providerConfig?: boolean
+    providerMetadata?: boolean
+    serialNumber?: boolean
+    manufacturer?: boolean
+    modelName?: boolean
+    firmwareVersion?: boolean
+    nominalPowerKw?: boolean
+    timezone?: boolean
+    syncEnabled?: boolean
+    syncIntervalMinutes?: boolean
+    lastSyncAt?: boolean
+    lastSuccessfulSyncAt?: boolean
+    lastSyncStatus?: boolean
+    lastSyncError?: boolean
+    installedAt?: boolean
+    commissionedAt?: boolean
     clientId?: boolean
+    plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | Inverter$plantArgs<ExtArgs>
     generationUnits?: boolean | Inverter$generationUnitsArgs<ExtArgs>
     _count?: boolean | InverterCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["inverter"]>
@@ -4661,11 +6868,32 @@ export namespace Prisma {
     providerApiKey?: boolean
     providerApiSecret?: boolean
     providerUrl?: boolean
+    providerPlantId?: boolean
+    providerPlantName?: boolean
+    providerStatus?: boolean
+    providerConfig?: boolean
+    providerMetadata?: boolean
+    serialNumber?: boolean
+    manufacturer?: boolean
+    modelName?: boolean
+    firmwareVersion?: boolean
+    nominalPowerKw?: boolean
+    timezone?: boolean
+    syncEnabled?: boolean
+    syncIntervalMinutes?: boolean
+    lastSyncAt?: boolean
+    lastSuccessfulSyncAt?: boolean
+    lastSyncStatus?: boolean
+    lastSyncError?: boolean
+    installedAt?: boolean
+    commissionedAt?: boolean
     clientId?: boolean
+    plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | Inverter$plantArgs<ExtArgs>
   }, ExtArgs["result"]["inverter"]>
 
   export type InverterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4676,11 +6904,32 @@ export namespace Prisma {
     providerApiKey?: boolean
     providerApiSecret?: boolean
     providerUrl?: boolean
+    providerPlantId?: boolean
+    providerPlantName?: boolean
+    providerStatus?: boolean
+    providerConfig?: boolean
+    providerMetadata?: boolean
+    serialNumber?: boolean
+    manufacturer?: boolean
+    modelName?: boolean
+    firmwareVersion?: boolean
+    nominalPowerKw?: boolean
+    timezone?: boolean
+    syncEnabled?: boolean
+    syncIntervalMinutes?: boolean
+    lastSyncAt?: boolean
+    lastSuccessfulSyncAt?: boolean
+    lastSyncStatus?: boolean
+    lastSyncError?: boolean
+    installedAt?: boolean
+    commissionedAt?: boolean
     clientId?: boolean
+    plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | Inverter$plantArgs<ExtArgs>
   }, ExtArgs["result"]["inverter"]>
 
   export type InverterSelectScalar = {
@@ -4691,29 +6940,53 @@ export namespace Prisma {
     providerApiKey?: boolean
     providerApiSecret?: boolean
     providerUrl?: boolean
+    providerPlantId?: boolean
+    providerPlantName?: boolean
+    providerStatus?: boolean
+    providerConfig?: boolean
+    providerMetadata?: boolean
+    serialNumber?: boolean
+    manufacturer?: boolean
+    modelName?: boolean
+    firmwareVersion?: boolean
+    nominalPowerKw?: boolean
+    timezone?: boolean
+    syncEnabled?: boolean
+    syncIntervalMinutes?: boolean
+    lastSyncAt?: boolean
+    lastSuccessfulSyncAt?: boolean
+    lastSyncStatus?: boolean
+    lastSyncError?: boolean
+    installedAt?: boolean
+    commissionedAt?: boolean
     clientId?: boolean
+    plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type InverterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "provider" | "providerId" | "providerApiKey" | "providerApiSecret" | "providerUrl" | "clientId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["inverter"]>
+  export type InverterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "provider" | "providerId" | "providerApiKey" | "providerApiSecret" | "providerUrl" | "providerPlantId" | "providerPlantName" | "providerStatus" | "providerConfig" | "providerMetadata" | "serialNumber" | "manufacturer" | "modelName" | "firmwareVersion" | "nominalPowerKw" | "timezone" | "syncEnabled" | "syncIntervalMinutes" | "lastSyncAt" | "lastSuccessfulSyncAt" | "lastSyncStatus" | "lastSyncError" | "installedAt" | "commissionedAt" | "clientId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["inverter"]>
   export type InverterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | Inverter$plantArgs<ExtArgs>
     generationUnits?: boolean | Inverter$generationUnitsArgs<ExtArgs>
     _count?: boolean | InverterCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InverterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | Inverter$plantArgs<ExtArgs>
   }
   export type InverterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | Inverter$plantArgs<ExtArgs>
   }
 
   export type $InverterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Inverter"
     objects: {
       client: Prisma.$ClientPayload<ExtArgs>
+      plant: Prisma.$PlantPayload<ExtArgs> | null
       generationUnits: Prisma.$GenerationUnitPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -4724,7 +6997,27 @@ export namespace Prisma {
       providerApiKey: string | null
       providerApiSecret: string | null
       providerUrl: string | null
+      providerPlantId: string | null
+      providerPlantName: string | null
+      providerStatus: string | null
+      providerConfig: Prisma.JsonValue | null
+      providerMetadata: Prisma.JsonValue | null
+      serialNumber: string | null
+      manufacturer: string | null
+      modelName: string | null
+      firmwareVersion: string | null
+      nominalPowerKw: Prisma.Decimal | null
+      timezone: string | null
+      syncEnabled: boolean
+      syncIntervalMinutes: number | null
+      lastSyncAt: Date | null
+      lastSuccessfulSyncAt: Date | null
+      lastSyncStatus: string | null
+      lastSyncError: string | null
+      installedAt: Date | null
+      commissionedAt: Date | null
       clientId: string
+      plantId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -5123,6 +7416,7 @@ export namespace Prisma {
   export interface Prisma__InverterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    plant<T extends Inverter$plantArgs<ExtArgs> = {}>(args?: Subset<T, Inverter$plantArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     generationUnits<T extends Inverter$generationUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Inverter$generationUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5160,7 +7454,27 @@ export namespace Prisma {
     readonly providerApiKey: FieldRef<"Inverter", 'String'>
     readonly providerApiSecret: FieldRef<"Inverter", 'String'>
     readonly providerUrl: FieldRef<"Inverter", 'String'>
+    readonly providerPlantId: FieldRef<"Inverter", 'String'>
+    readonly providerPlantName: FieldRef<"Inverter", 'String'>
+    readonly providerStatus: FieldRef<"Inverter", 'String'>
+    readonly providerConfig: FieldRef<"Inverter", 'Json'>
+    readonly providerMetadata: FieldRef<"Inverter", 'Json'>
+    readonly serialNumber: FieldRef<"Inverter", 'String'>
+    readonly manufacturer: FieldRef<"Inverter", 'String'>
+    readonly modelName: FieldRef<"Inverter", 'String'>
+    readonly firmwareVersion: FieldRef<"Inverter", 'String'>
+    readonly nominalPowerKw: FieldRef<"Inverter", 'Decimal'>
+    readonly timezone: FieldRef<"Inverter", 'String'>
+    readonly syncEnabled: FieldRef<"Inverter", 'Boolean'>
+    readonly syncIntervalMinutes: FieldRef<"Inverter", 'Int'>
+    readonly lastSyncAt: FieldRef<"Inverter", 'DateTime'>
+    readonly lastSuccessfulSyncAt: FieldRef<"Inverter", 'DateTime'>
+    readonly lastSyncStatus: FieldRef<"Inverter", 'String'>
+    readonly lastSyncError: FieldRef<"Inverter", 'String'>
+    readonly installedAt: FieldRef<"Inverter", 'DateTime'>
+    readonly commissionedAt: FieldRef<"Inverter", 'DateTime'>
     readonly clientId: FieldRef<"Inverter", 'String'>
+    readonly plantId: FieldRef<"Inverter", 'String'>
     readonly createdAt: FieldRef<"Inverter", 'DateTime'>
     readonly updatedAt: FieldRef<"Inverter", 'DateTime'>
     readonly deletedAt: FieldRef<"Inverter", 'DateTime'>
@@ -5560,6 +7874,25 @@ export namespace Prisma {
   }
 
   /**
+   * Inverter.plant
+   */
+  export type Inverter$plantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Plant
+     */
+    select?: PlantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Plant
+     */
+    omit?: PlantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlantInclude<ExtArgs> | null
+    where?: PlantWhereInput
+  }
+
+  /**
    * Inverter.generationUnits
    */
   export type Inverter$generationUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5603,6 +7936,2534 @@ export namespace Prisma {
 
 
   /**
+   * Model ConsumerUnit
+   */
+
+  export type AggregateConsumerUnit = {
+    _count: ConsumerUnitCountAggregateOutputType | null
+    _min: ConsumerUnitMinAggregateOutputType | null
+    _max: ConsumerUnitMaxAggregateOutputType | null
+  }
+
+  export type ConsumerUnitMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    name: string | null
+    isGenerator: boolean | null
+    isConsumer: boolean | null
+    accountHolder: string | null
+    accountNumber: string | null
+    clientNumber: string | null
+    installationNumber: string | null
+    distributor: string | null
+    address: string | null
+    city: string | null
+    state: string | null
+    status: string | null
+    plantId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ConsumerUnitMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    name: string | null
+    isGenerator: boolean | null
+    isConsumer: boolean | null
+    accountHolder: string | null
+    accountNumber: string | null
+    clientNumber: string | null
+    installationNumber: string | null
+    distributor: string | null
+    address: string | null
+    city: string | null
+    state: string | null
+    status: string | null
+    plantId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ConsumerUnitCountAggregateOutputType = {
+    id: number
+    clientId: number
+    name: number
+    isGenerator: number
+    isConsumer: number
+    accountHolder: number
+    accountNumber: number
+    clientNumber: number
+    installationNumber: number
+    distributor: number
+    address: number
+    city: number
+    state: number
+    status: number
+    plantId: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type ConsumerUnitMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    name?: true
+    isGenerator?: true
+    isConsumer?: true
+    accountHolder?: true
+    accountNumber?: true
+    clientNumber?: true
+    installationNumber?: true
+    distributor?: true
+    address?: true
+    city?: true
+    state?: true
+    status?: true
+    plantId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ConsumerUnitMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    name?: true
+    isGenerator?: true
+    isConsumer?: true
+    accountHolder?: true
+    accountNumber?: true
+    clientNumber?: true
+    installationNumber?: true
+    distributor?: true
+    address?: true
+    city?: true
+    state?: true
+    status?: true
+    plantId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ConsumerUnitCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    name?: true
+    isGenerator?: true
+    isConsumer?: true
+    accountHolder?: true
+    accountNumber?: true
+    clientNumber?: true
+    installationNumber?: true
+    distributor?: true
+    address?: true
+    city?: true
+    state?: true
+    status?: true
+    plantId?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type ConsumerUnitAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConsumerUnit to aggregate.
+     */
+    where?: ConsumerUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsumerUnits to fetch.
+     */
+    orderBy?: ConsumerUnitOrderByWithRelationInput | ConsumerUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConsumerUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsumerUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsumerUnits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConsumerUnits
+    **/
+    _count?: true | ConsumerUnitCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConsumerUnitMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConsumerUnitMaxAggregateInputType
+  }
+
+  export type GetConsumerUnitAggregateType<T extends ConsumerUnitAggregateArgs> = {
+        [P in keyof T & keyof AggregateConsumerUnit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConsumerUnit[P]>
+      : GetScalarType<T[P], AggregateConsumerUnit[P]>
+  }
+
+
+
+
+  export type ConsumerUnitGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsumerUnitWhereInput
+    orderBy?: ConsumerUnitOrderByWithAggregationInput | ConsumerUnitOrderByWithAggregationInput[]
+    by: ConsumerUnitScalarFieldEnum[] | ConsumerUnitScalarFieldEnum
+    having?: ConsumerUnitScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConsumerUnitCountAggregateInputType | true
+    _min?: ConsumerUnitMinAggregateInputType
+    _max?: ConsumerUnitMaxAggregateInputType
+  }
+
+  export type ConsumerUnitGroupByOutputType = {
+    id: string
+    clientId: string
+    name: string | null
+    isGenerator: boolean
+    isConsumer: boolean
+    accountHolder: string | null
+    accountNumber: string | null
+    clientNumber: string | null
+    installationNumber: string | null
+    distributor: string | null
+    address: string | null
+    city: string | null
+    state: string | null
+    status: string | null
+    plantId: string
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: ConsumerUnitCountAggregateOutputType | null
+    _min: ConsumerUnitMinAggregateOutputType | null
+    _max: ConsumerUnitMaxAggregateOutputType | null
+  }
+
+  type GetConsumerUnitGroupByPayload<T extends ConsumerUnitGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConsumerUnitGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConsumerUnitGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConsumerUnitGroupByOutputType[P]>
+            : GetScalarType<T[P], ConsumerUnitGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConsumerUnitSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    installationNumber?: boolean
+    distributor?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    status?: boolean
+    plantId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    energyBills?: boolean | ConsumerUnit$energyBillsArgs<ExtArgs>
+    allocationsFrom?: boolean | ConsumerUnit$allocationsFromArgs<ExtArgs>
+    allocationsTo?: boolean | ConsumerUnit$allocationsToArgs<ExtArgs>
+    _count?: boolean | ConsumerUnitCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consumerUnit"]>
+
+  export type ConsumerUnitSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    installationNumber?: boolean
+    distributor?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    status?: boolean
+    plantId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consumerUnit"]>
+
+  export type ConsumerUnitSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    installationNumber?: boolean
+    distributor?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    status?: boolean
+    plantId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consumerUnit"]>
+
+  export type ConsumerUnitSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    name?: boolean
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    installationNumber?: boolean
+    distributor?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    status?: boolean
+    plantId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "plantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["consumerUnit"]>
+  export type ConsumerUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    energyBills?: boolean | ConsumerUnit$energyBillsArgs<ExtArgs>
+    allocationsFrom?: boolean | ConsumerUnit$allocationsFromArgs<ExtArgs>
+    allocationsTo?: boolean | ConsumerUnit$allocationsToArgs<ExtArgs>
+    _count?: boolean | ConsumerUnitCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ConsumerUnitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+  }
+  export type ConsumerUnitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+  }
+
+  export type $ConsumerUnitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConsumerUnit"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+      plant: Prisma.$PlantPayload<ExtArgs>
+      energyBills: Prisma.$EnergyBillPayload<ExtArgs>[]
+      allocationsFrom: Prisma.$CreditAllocationPayload<ExtArgs>[]
+      allocationsTo: Prisma.$CreditAllocationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      name: string | null
+      isGenerator: boolean
+      isConsumer: boolean
+      accountHolder: string | null
+      accountNumber: string | null
+      clientNumber: string | null
+      installationNumber: string | null
+      distributor: string | null
+      address: string | null
+      city: string | null
+      state: string | null
+      status: string | null
+      plantId: string
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["consumerUnit"]>
+    composites: {}
+  }
+
+  type ConsumerUnitGetPayload<S extends boolean | null | undefined | ConsumerUnitDefaultArgs> = $Result.GetResult<Prisma.$ConsumerUnitPayload, S>
+
+  type ConsumerUnitCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConsumerUnitFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConsumerUnitCountAggregateInputType | true
+    }
+
+  export interface ConsumerUnitDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConsumerUnit'], meta: { name: 'ConsumerUnit' } }
+    /**
+     * Find zero or one ConsumerUnit that matches the filter.
+     * @param {ConsumerUnitFindUniqueArgs} args - Arguments to find a ConsumerUnit
+     * @example
+     * // Get one ConsumerUnit
+     * const consumerUnit = await prisma.consumerUnit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConsumerUnitFindUniqueArgs>(args: SelectSubset<T, ConsumerUnitFindUniqueArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConsumerUnit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConsumerUnitFindUniqueOrThrowArgs} args - Arguments to find a ConsumerUnit
+     * @example
+     * // Get one ConsumerUnit
+     * const consumerUnit = await prisma.consumerUnit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConsumerUnitFindUniqueOrThrowArgs>(args: SelectSubset<T, ConsumerUnitFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConsumerUnit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumerUnitFindFirstArgs} args - Arguments to find a ConsumerUnit
+     * @example
+     * // Get one ConsumerUnit
+     * const consumerUnit = await prisma.consumerUnit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConsumerUnitFindFirstArgs>(args?: SelectSubset<T, ConsumerUnitFindFirstArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConsumerUnit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumerUnitFindFirstOrThrowArgs} args - Arguments to find a ConsumerUnit
+     * @example
+     * // Get one ConsumerUnit
+     * const consumerUnit = await prisma.consumerUnit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConsumerUnitFindFirstOrThrowArgs>(args?: SelectSubset<T, ConsumerUnitFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConsumerUnits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumerUnitFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConsumerUnits
+     * const consumerUnits = await prisma.consumerUnit.findMany()
+     * 
+     * // Get first 10 ConsumerUnits
+     * const consumerUnits = await prisma.consumerUnit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const consumerUnitWithIdOnly = await prisma.consumerUnit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConsumerUnitFindManyArgs>(args?: SelectSubset<T, ConsumerUnitFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConsumerUnit.
+     * @param {ConsumerUnitCreateArgs} args - Arguments to create a ConsumerUnit.
+     * @example
+     * // Create one ConsumerUnit
+     * const ConsumerUnit = await prisma.consumerUnit.create({
+     *   data: {
+     *     // ... data to create a ConsumerUnit
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConsumerUnitCreateArgs>(args: SelectSubset<T, ConsumerUnitCreateArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConsumerUnits.
+     * @param {ConsumerUnitCreateManyArgs} args - Arguments to create many ConsumerUnits.
+     * @example
+     * // Create many ConsumerUnits
+     * const consumerUnit = await prisma.consumerUnit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConsumerUnitCreateManyArgs>(args?: SelectSubset<T, ConsumerUnitCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConsumerUnits and returns the data saved in the database.
+     * @param {ConsumerUnitCreateManyAndReturnArgs} args - Arguments to create many ConsumerUnits.
+     * @example
+     * // Create many ConsumerUnits
+     * const consumerUnit = await prisma.consumerUnit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConsumerUnits and only return the `id`
+     * const consumerUnitWithIdOnly = await prisma.consumerUnit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConsumerUnitCreateManyAndReturnArgs>(args?: SelectSubset<T, ConsumerUnitCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConsumerUnit.
+     * @param {ConsumerUnitDeleteArgs} args - Arguments to delete one ConsumerUnit.
+     * @example
+     * // Delete one ConsumerUnit
+     * const ConsumerUnit = await prisma.consumerUnit.delete({
+     *   where: {
+     *     // ... filter to delete one ConsumerUnit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConsumerUnitDeleteArgs>(args: SelectSubset<T, ConsumerUnitDeleteArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConsumerUnit.
+     * @param {ConsumerUnitUpdateArgs} args - Arguments to update one ConsumerUnit.
+     * @example
+     * // Update one ConsumerUnit
+     * const consumerUnit = await prisma.consumerUnit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConsumerUnitUpdateArgs>(args: SelectSubset<T, ConsumerUnitUpdateArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConsumerUnits.
+     * @param {ConsumerUnitDeleteManyArgs} args - Arguments to filter ConsumerUnits to delete.
+     * @example
+     * // Delete a few ConsumerUnits
+     * const { count } = await prisma.consumerUnit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConsumerUnitDeleteManyArgs>(args?: SelectSubset<T, ConsumerUnitDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConsumerUnits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumerUnitUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConsumerUnits
+     * const consumerUnit = await prisma.consumerUnit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConsumerUnitUpdateManyArgs>(args: SelectSubset<T, ConsumerUnitUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConsumerUnits and returns the data updated in the database.
+     * @param {ConsumerUnitUpdateManyAndReturnArgs} args - Arguments to update many ConsumerUnits.
+     * @example
+     * // Update many ConsumerUnits
+     * const consumerUnit = await prisma.consumerUnit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConsumerUnits and only return the `id`
+     * const consumerUnitWithIdOnly = await prisma.consumerUnit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConsumerUnitUpdateManyAndReturnArgs>(args: SelectSubset<T, ConsumerUnitUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConsumerUnit.
+     * @param {ConsumerUnitUpsertArgs} args - Arguments to update or create a ConsumerUnit.
+     * @example
+     * // Update or create a ConsumerUnit
+     * const consumerUnit = await prisma.consumerUnit.upsert({
+     *   create: {
+     *     // ... data to create a ConsumerUnit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConsumerUnit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConsumerUnitUpsertArgs>(args: SelectSubset<T, ConsumerUnitUpsertArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConsumerUnits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumerUnitCountArgs} args - Arguments to filter ConsumerUnits to count.
+     * @example
+     * // Count the number of ConsumerUnits
+     * const count = await prisma.consumerUnit.count({
+     *   where: {
+     *     // ... the filter for the ConsumerUnits we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConsumerUnitCountArgs>(
+      args?: Subset<T, ConsumerUnitCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConsumerUnitCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConsumerUnit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumerUnitAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConsumerUnitAggregateArgs>(args: Subset<T, ConsumerUnitAggregateArgs>): Prisma.PrismaPromise<GetConsumerUnitAggregateType<T>>
+
+    /**
+     * Group by ConsumerUnit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsumerUnitGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConsumerUnitGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConsumerUnitGroupByArgs['orderBy'] }
+        : { orderBy?: ConsumerUnitGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConsumerUnitGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConsumerUnitGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConsumerUnit model
+   */
+  readonly fields: ConsumerUnitFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConsumerUnit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConsumerUnitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    plant<T extends PlantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlantDefaultArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    energyBills<T extends ConsumerUnit$energyBillsArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$energyBillsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    allocationsFrom<T extends ConsumerUnit$allocationsFromArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$allocationsFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    allocationsTo<T extends ConsumerUnit$allocationsToArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$allocationsToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConsumerUnit model
+   */
+  interface ConsumerUnitFieldRefs {
+    readonly id: FieldRef<"ConsumerUnit", 'String'>
+    readonly clientId: FieldRef<"ConsumerUnit", 'String'>
+    readonly name: FieldRef<"ConsumerUnit", 'String'>
+    readonly isGenerator: FieldRef<"ConsumerUnit", 'Boolean'>
+    readonly isConsumer: FieldRef<"ConsumerUnit", 'Boolean'>
+    readonly accountHolder: FieldRef<"ConsumerUnit", 'String'>
+    readonly accountNumber: FieldRef<"ConsumerUnit", 'String'>
+    readonly clientNumber: FieldRef<"ConsumerUnit", 'String'>
+    readonly installationNumber: FieldRef<"ConsumerUnit", 'String'>
+    readonly distributor: FieldRef<"ConsumerUnit", 'String'>
+    readonly address: FieldRef<"ConsumerUnit", 'String'>
+    readonly city: FieldRef<"ConsumerUnit", 'String'>
+    readonly state: FieldRef<"ConsumerUnit", 'String'>
+    readonly status: FieldRef<"ConsumerUnit", 'String'>
+    readonly plantId: FieldRef<"ConsumerUnit", 'String'>
+    readonly createdAt: FieldRef<"ConsumerUnit", 'DateTime'>
+    readonly updatedAt: FieldRef<"ConsumerUnit", 'DateTime'>
+    readonly deletedAt: FieldRef<"ConsumerUnit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConsumerUnit findUnique
+   */
+  export type ConsumerUnitFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsumerUnit to fetch.
+     */
+    where: ConsumerUnitWhereUniqueInput
+  }
+
+  /**
+   * ConsumerUnit findUniqueOrThrow
+   */
+  export type ConsumerUnitFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsumerUnit to fetch.
+     */
+    where: ConsumerUnitWhereUniqueInput
+  }
+
+  /**
+   * ConsumerUnit findFirst
+   */
+  export type ConsumerUnitFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsumerUnit to fetch.
+     */
+    where?: ConsumerUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsumerUnits to fetch.
+     */
+    orderBy?: ConsumerUnitOrderByWithRelationInput | ConsumerUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConsumerUnits.
+     */
+    cursor?: ConsumerUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsumerUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsumerUnits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConsumerUnits.
+     */
+    distinct?: ConsumerUnitScalarFieldEnum | ConsumerUnitScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit findFirstOrThrow
+   */
+  export type ConsumerUnitFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsumerUnit to fetch.
+     */
+    where?: ConsumerUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsumerUnits to fetch.
+     */
+    orderBy?: ConsumerUnitOrderByWithRelationInput | ConsumerUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConsumerUnits.
+     */
+    cursor?: ConsumerUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsumerUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsumerUnits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConsumerUnits.
+     */
+    distinct?: ConsumerUnitScalarFieldEnum | ConsumerUnitScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit findMany
+   */
+  export type ConsumerUnitFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsumerUnits to fetch.
+     */
+    where?: ConsumerUnitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsumerUnits to fetch.
+     */
+    orderBy?: ConsumerUnitOrderByWithRelationInput | ConsumerUnitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConsumerUnits.
+     */
+    cursor?: ConsumerUnitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsumerUnits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsumerUnits.
+     */
+    skip?: number
+    distinct?: ConsumerUnitScalarFieldEnum | ConsumerUnitScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit create
+   */
+  export type ConsumerUnitCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ConsumerUnit.
+     */
+    data: XOR<ConsumerUnitCreateInput, ConsumerUnitUncheckedCreateInput>
+  }
+
+  /**
+   * ConsumerUnit createMany
+   */
+  export type ConsumerUnitCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConsumerUnits.
+     */
+    data: ConsumerUnitCreateManyInput | ConsumerUnitCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConsumerUnit createManyAndReturn
+   */
+  export type ConsumerUnitCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConsumerUnits.
+     */
+    data: ConsumerUnitCreateManyInput | ConsumerUnitCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConsumerUnit update
+   */
+  export type ConsumerUnitUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ConsumerUnit.
+     */
+    data: XOR<ConsumerUnitUpdateInput, ConsumerUnitUncheckedUpdateInput>
+    /**
+     * Choose, which ConsumerUnit to update.
+     */
+    where: ConsumerUnitWhereUniqueInput
+  }
+
+  /**
+   * ConsumerUnit updateMany
+   */
+  export type ConsumerUnitUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConsumerUnits.
+     */
+    data: XOR<ConsumerUnitUpdateManyMutationInput, ConsumerUnitUncheckedUpdateManyInput>
+    /**
+     * Filter which ConsumerUnits to update
+     */
+    where?: ConsumerUnitWhereInput
+    /**
+     * Limit how many ConsumerUnits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConsumerUnit updateManyAndReturn
+   */
+  export type ConsumerUnitUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * The data used to update ConsumerUnits.
+     */
+    data: XOR<ConsumerUnitUpdateManyMutationInput, ConsumerUnitUncheckedUpdateManyInput>
+    /**
+     * Filter which ConsumerUnits to update
+     */
+    where?: ConsumerUnitWhereInput
+    /**
+     * Limit how many ConsumerUnits to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConsumerUnit upsert
+   */
+  export type ConsumerUnitUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ConsumerUnit to update in case it exists.
+     */
+    where: ConsumerUnitWhereUniqueInput
+    /**
+     * In case the ConsumerUnit found by the `where` argument doesn't exist, create a new ConsumerUnit with this data.
+     */
+    create: XOR<ConsumerUnitCreateInput, ConsumerUnitUncheckedCreateInput>
+    /**
+     * In case the ConsumerUnit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConsumerUnitUpdateInput, ConsumerUnitUncheckedUpdateInput>
+  }
+
+  /**
+   * ConsumerUnit delete
+   */
+  export type ConsumerUnitDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    /**
+     * Filter which ConsumerUnit to delete.
+     */
+    where: ConsumerUnitWhereUniqueInput
+  }
+
+  /**
+   * ConsumerUnit deleteMany
+   */
+  export type ConsumerUnitDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConsumerUnits to delete
+     */
+    where?: ConsumerUnitWhereInput
+    /**
+     * Limit how many ConsumerUnits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConsumerUnit.energyBills
+   */
+  export type ConsumerUnit$energyBillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    where?: EnergyBillWhereInput
+    orderBy?: EnergyBillOrderByWithRelationInput | EnergyBillOrderByWithRelationInput[]
+    cursor?: EnergyBillWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnergyBillScalarFieldEnum | EnergyBillScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit.allocationsFrom
+   */
+  export type ConsumerUnit$allocationsFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    where?: CreditAllocationWhereInput
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    cursor?: CreditAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit.allocationsTo
+   */
+  export type ConsumerUnit$allocationsToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    where?: CreditAllocationWhereInput
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    cursor?: CreditAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit without action
+   */
+  export type ConsumerUnitDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CreditAllocation
+   */
+
+  export type AggregateCreditAllocation = {
+    _count: CreditAllocationCountAggregateOutputType | null
+    _avg: CreditAllocationAvgAggregateOutputType | null
+    _sum: CreditAllocationSumAggregateOutputType | null
+    _min: CreditAllocationMinAggregateOutputType | null
+    _max: CreditAllocationMaxAggregateOutputType | null
+  }
+
+  export type CreditAllocationAvgAggregateOutputType = {
+    allocationPercentage: Decimal | null
+  }
+
+  export type CreditAllocationSumAggregateOutputType = {
+    allocationPercentage: Decimal | null
+  }
+
+  export type CreditAllocationMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    plantId: string | null
+    fromId: string | null
+    toId: string | null
+    allocationPercentage: Decimal | null
+    startsAt: Date | null
+    endsAt: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type CreditAllocationMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    plantId: string | null
+    fromId: string | null
+    toId: string | null
+    allocationPercentage: Decimal | null
+    startsAt: Date | null
+    endsAt: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type CreditAllocationCountAggregateOutputType = {
+    id: number
+    clientId: number
+    plantId: number
+    fromId: number
+    toId: number
+    allocationPercentage: number
+    startsAt: number
+    endsAt: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type CreditAllocationAvgAggregateInputType = {
+    allocationPercentage?: true
+  }
+
+  export type CreditAllocationSumAggregateInputType = {
+    allocationPercentage?: true
+  }
+
+  export type CreditAllocationMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    plantId?: true
+    fromId?: true
+    toId?: true
+    allocationPercentage?: true
+    startsAt?: true
+    endsAt?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type CreditAllocationMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    plantId?: true
+    fromId?: true
+    toId?: true
+    allocationPercentage?: true
+    startsAt?: true
+    endsAt?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type CreditAllocationCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    plantId?: true
+    fromId?: true
+    toId?: true
+    allocationPercentage?: true
+    startsAt?: true
+    endsAt?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type CreditAllocationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CreditAllocation to aggregate.
+     */
+    where?: CreditAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CreditAllocations to fetch.
+     */
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CreditAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CreditAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CreditAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CreditAllocations
+    **/
+    _count?: true | CreditAllocationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CreditAllocationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CreditAllocationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CreditAllocationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CreditAllocationMaxAggregateInputType
+  }
+
+  export type GetCreditAllocationAggregateType<T extends CreditAllocationAggregateArgs> = {
+        [P in keyof T & keyof AggregateCreditAllocation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCreditAllocation[P]>
+      : GetScalarType<T[P], AggregateCreditAllocation[P]>
+  }
+
+
+
+
+  export type CreditAllocationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CreditAllocationWhereInput
+    orderBy?: CreditAllocationOrderByWithAggregationInput | CreditAllocationOrderByWithAggregationInput[]
+    by: CreditAllocationScalarFieldEnum[] | CreditAllocationScalarFieldEnum
+    having?: CreditAllocationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CreditAllocationCountAggregateInputType | true
+    _avg?: CreditAllocationAvgAggregateInputType
+    _sum?: CreditAllocationSumAggregateInputType
+    _min?: CreditAllocationMinAggregateInputType
+    _max?: CreditAllocationMaxAggregateInputType
+  }
+
+  export type CreditAllocationGroupByOutputType = {
+    id: string
+    clientId: string
+    plantId: string
+    fromId: string
+    toId: string
+    allocationPercentage: Decimal
+    startsAt: Date | null
+    endsAt: Date | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: CreditAllocationCountAggregateOutputType | null
+    _avg: CreditAllocationAvgAggregateOutputType | null
+    _sum: CreditAllocationSumAggregateOutputType | null
+    _min: CreditAllocationMinAggregateOutputType | null
+    _max: CreditAllocationMaxAggregateOutputType | null
+  }
+
+  type GetCreditAllocationGroupByPayload<T extends CreditAllocationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CreditAllocationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CreditAllocationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CreditAllocationGroupByOutputType[P]>
+            : GetScalarType<T[P], CreditAllocationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CreditAllocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    fromId?: boolean
+    toId?: boolean
+    allocationPercentage?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    from?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    to?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["creditAllocation"]>
+
+  export type CreditAllocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    fromId?: boolean
+    toId?: boolean
+    allocationPercentage?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    from?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    to?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["creditAllocation"]>
+
+  export type CreditAllocationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    fromId?: boolean
+    toId?: boolean
+    allocationPercentage?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    from?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    to?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["creditAllocation"]>
+
+  export type CreditAllocationSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    fromId?: boolean
+    toId?: boolean
+    allocationPercentage?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type CreditAllocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "plantId" | "fromId" | "toId" | "allocationPercentage" | "startsAt" | "endsAt" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["creditAllocation"]>
+  export type CreditAllocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    from?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    to?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+  export type CreditAllocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    from?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    to?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+  export type CreditAllocationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    from?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    to?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+
+  export type $CreditAllocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CreditAllocation"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+      plant: Prisma.$PlantPayload<ExtArgs>
+      from: Prisma.$ConsumerUnitPayload<ExtArgs>
+      to: Prisma.$ConsumerUnitPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      plantId: string
+      fromId: string
+      toId: string
+      allocationPercentage: Prisma.Decimal
+      startsAt: Date | null
+      endsAt: Date | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["creditAllocation"]>
+    composites: {}
+  }
+
+  type CreditAllocationGetPayload<S extends boolean | null | undefined | CreditAllocationDefaultArgs> = $Result.GetResult<Prisma.$CreditAllocationPayload, S>
+
+  type CreditAllocationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CreditAllocationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CreditAllocationCountAggregateInputType | true
+    }
+
+  export interface CreditAllocationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CreditAllocation'], meta: { name: 'CreditAllocation' } }
+    /**
+     * Find zero or one CreditAllocation that matches the filter.
+     * @param {CreditAllocationFindUniqueArgs} args - Arguments to find a CreditAllocation
+     * @example
+     * // Get one CreditAllocation
+     * const creditAllocation = await prisma.creditAllocation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CreditAllocationFindUniqueArgs>(args: SelectSubset<T, CreditAllocationFindUniqueArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CreditAllocation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CreditAllocationFindUniqueOrThrowArgs} args - Arguments to find a CreditAllocation
+     * @example
+     * // Get one CreditAllocation
+     * const creditAllocation = await prisma.creditAllocation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CreditAllocationFindUniqueOrThrowArgs>(args: SelectSubset<T, CreditAllocationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CreditAllocation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreditAllocationFindFirstArgs} args - Arguments to find a CreditAllocation
+     * @example
+     * // Get one CreditAllocation
+     * const creditAllocation = await prisma.creditAllocation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CreditAllocationFindFirstArgs>(args?: SelectSubset<T, CreditAllocationFindFirstArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CreditAllocation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreditAllocationFindFirstOrThrowArgs} args - Arguments to find a CreditAllocation
+     * @example
+     * // Get one CreditAllocation
+     * const creditAllocation = await prisma.creditAllocation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CreditAllocationFindFirstOrThrowArgs>(args?: SelectSubset<T, CreditAllocationFindFirstOrThrowArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CreditAllocations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreditAllocationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CreditAllocations
+     * const creditAllocations = await prisma.creditAllocation.findMany()
+     * 
+     * // Get first 10 CreditAllocations
+     * const creditAllocations = await prisma.creditAllocation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const creditAllocationWithIdOnly = await prisma.creditAllocation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CreditAllocationFindManyArgs>(args?: SelectSubset<T, CreditAllocationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CreditAllocation.
+     * @param {CreditAllocationCreateArgs} args - Arguments to create a CreditAllocation.
+     * @example
+     * // Create one CreditAllocation
+     * const CreditAllocation = await prisma.creditAllocation.create({
+     *   data: {
+     *     // ... data to create a CreditAllocation
+     *   }
+     * })
+     * 
+     */
+    create<T extends CreditAllocationCreateArgs>(args: SelectSubset<T, CreditAllocationCreateArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CreditAllocations.
+     * @param {CreditAllocationCreateManyArgs} args - Arguments to create many CreditAllocations.
+     * @example
+     * // Create many CreditAllocations
+     * const creditAllocation = await prisma.creditAllocation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CreditAllocationCreateManyArgs>(args?: SelectSubset<T, CreditAllocationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CreditAllocations and returns the data saved in the database.
+     * @param {CreditAllocationCreateManyAndReturnArgs} args - Arguments to create many CreditAllocations.
+     * @example
+     * // Create many CreditAllocations
+     * const creditAllocation = await prisma.creditAllocation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CreditAllocations and only return the `id`
+     * const creditAllocationWithIdOnly = await prisma.creditAllocation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CreditAllocationCreateManyAndReturnArgs>(args?: SelectSubset<T, CreditAllocationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CreditAllocation.
+     * @param {CreditAllocationDeleteArgs} args - Arguments to delete one CreditAllocation.
+     * @example
+     * // Delete one CreditAllocation
+     * const CreditAllocation = await prisma.creditAllocation.delete({
+     *   where: {
+     *     // ... filter to delete one CreditAllocation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CreditAllocationDeleteArgs>(args: SelectSubset<T, CreditAllocationDeleteArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CreditAllocation.
+     * @param {CreditAllocationUpdateArgs} args - Arguments to update one CreditAllocation.
+     * @example
+     * // Update one CreditAllocation
+     * const creditAllocation = await prisma.creditAllocation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CreditAllocationUpdateArgs>(args: SelectSubset<T, CreditAllocationUpdateArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CreditAllocations.
+     * @param {CreditAllocationDeleteManyArgs} args - Arguments to filter CreditAllocations to delete.
+     * @example
+     * // Delete a few CreditAllocations
+     * const { count } = await prisma.creditAllocation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CreditAllocationDeleteManyArgs>(args?: SelectSubset<T, CreditAllocationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CreditAllocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreditAllocationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CreditAllocations
+     * const creditAllocation = await prisma.creditAllocation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CreditAllocationUpdateManyArgs>(args: SelectSubset<T, CreditAllocationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CreditAllocations and returns the data updated in the database.
+     * @param {CreditAllocationUpdateManyAndReturnArgs} args - Arguments to update many CreditAllocations.
+     * @example
+     * // Update many CreditAllocations
+     * const creditAllocation = await prisma.creditAllocation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CreditAllocations and only return the `id`
+     * const creditAllocationWithIdOnly = await prisma.creditAllocation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CreditAllocationUpdateManyAndReturnArgs>(args: SelectSubset<T, CreditAllocationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CreditAllocation.
+     * @param {CreditAllocationUpsertArgs} args - Arguments to update or create a CreditAllocation.
+     * @example
+     * // Update or create a CreditAllocation
+     * const creditAllocation = await prisma.creditAllocation.upsert({
+     *   create: {
+     *     // ... data to create a CreditAllocation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CreditAllocation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CreditAllocationUpsertArgs>(args: SelectSubset<T, CreditAllocationUpsertArgs<ExtArgs>>): Prisma__CreditAllocationClient<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CreditAllocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreditAllocationCountArgs} args - Arguments to filter CreditAllocations to count.
+     * @example
+     * // Count the number of CreditAllocations
+     * const count = await prisma.creditAllocation.count({
+     *   where: {
+     *     // ... the filter for the CreditAllocations we want to count
+     *   }
+     * })
+    **/
+    count<T extends CreditAllocationCountArgs>(
+      args?: Subset<T, CreditAllocationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CreditAllocationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CreditAllocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreditAllocationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CreditAllocationAggregateArgs>(args: Subset<T, CreditAllocationAggregateArgs>): Prisma.PrismaPromise<GetCreditAllocationAggregateType<T>>
+
+    /**
+     * Group by CreditAllocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreditAllocationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CreditAllocationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CreditAllocationGroupByArgs['orderBy'] }
+        : { orderBy?: CreditAllocationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CreditAllocationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCreditAllocationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CreditAllocation model
+   */
+  readonly fields: CreditAllocationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CreditAllocation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CreditAllocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    plant<T extends PlantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlantDefaultArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    from<T extends ConsumerUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnitDefaultArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    to<T extends ConsumerUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnitDefaultArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CreditAllocation model
+   */
+  interface CreditAllocationFieldRefs {
+    readonly id: FieldRef<"CreditAllocation", 'String'>
+    readonly clientId: FieldRef<"CreditAllocation", 'String'>
+    readonly plantId: FieldRef<"CreditAllocation", 'String'>
+    readonly fromId: FieldRef<"CreditAllocation", 'String'>
+    readonly toId: FieldRef<"CreditAllocation", 'String'>
+    readonly allocationPercentage: FieldRef<"CreditAllocation", 'Decimal'>
+    readonly startsAt: FieldRef<"CreditAllocation", 'DateTime'>
+    readonly endsAt: FieldRef<"CreditAllocation", 'DateTime'>
+    readonly isActive: FieldRef<"CreditAllocation", 'Boolean'>
+    readonly createdAt: FieldRef<"CreditAllocation", 'DateTime'>
+    readonly updatedAt: FieldRef<"CreditAllocation", 'DateTime'>
+    readonly deletedAt: FieldRef<"CreditAllocation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CreditAllocation findUnique
+   */
+  export type CreditAllocationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which CreditAllocation to fetch.
+     */
+    where: CreditAllocationWhereUniqueInput
+  }
+
+  /**
+   * CreditAllocation findUniqueOrThrow
+   */
+  export type CreditAllocationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which CreditAllocation to fetch.
+     */
+    where: CreditAllocationWhereUniqueInput
+  }
+
+  /**
+   * CreditAllocation findFirst
+   */
+  export type CreditAllocationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which CreditAllocation to fetch.
+     */
+    where?: CreditAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CreditAllocations to fetch.
+     */
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CreditAllocations.
+     */
+    cursor?: CreditAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CreditAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CreditAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CreditAllocations.
+     */
+    distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * CreditAllocation findFirstOrThrow
+   */
+  export type CreditAllocationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which CreditAllocation to fetch.
+     */
+    where?: CreditAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CreditAllocations to fetch.
+     */
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CreditAllocations.
+     */
+    cursor?: CreditAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CreditAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CreditAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CreditAllocations.
+     */
+    distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * CreditAllocation findMany
+   */
+  export type CreditAllocationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which CreditAllocations to fetch.
+     */
+    where?: CreditAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CreditAllocations to fetch.
+     */
+    orderBy?: CreditAllocationOrderByWithRelationInput | CreditAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CreditAllocations.
+     */
+    cursor?: CreditAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CreditAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CreditAllocations.
+     */
+    skip?: number
+    distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * CreditAllocation create
+   */
+  export type CreditAllocationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CreditAllocation.
+     */
+    data: XOR<CreditAllocationCreateInput, CreditAllocationUncheckedCreateInput>
+  }
+
+  /**
+   * CreditAllocation createMany
+   */
+  export type CreditAllocationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CreditAllocations.
+     */
+    data: CreditAllocationCreateManyInput | CreditAllocationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CreditAllocation createManyAndReturn
+   */
+  export type CreditAllocationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * The data used to create many CreditAllocations.
+     */
+    data: CreditAllocationCreateManyInput | CreditAllocationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CreditAllocation update
+   */
+  export type CreditAllocationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CreditAllocation.
+     */
+    data: XOR<CreditAllocationUpdateInput, CreditAllocationUncheckedUpdateInput>
+    /**
+     * Choose, which CreditAllocation to update.
+     */
+    where: CreditAllocationWhereUniqueInput
+  }
+
+  /**
+   * CreditAllocation updateMany
+   */
+  export type CreditAllocationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CreditAllocations.
+     */
+    data: XOR<CreditAllocationUpdateManyMutationInput, CreditAllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which CreditAllocations to update
+     */
+    where?: CreditAllocationWhereInput
+    /**
+     * Limit how many CreditAllocations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CreditAllocation updateManyAndReturn
+   */
+  export type CreditAllocationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * The data used to update CreditAllocations.
+     */
+    data: XOR<CreditAllocationUpdateManyMutationInput, CreditAllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which CreditAllocations to update
+     */
+    where?: CreditAllocationWhereInput
+    /**
+     * Limit how many CreditAllocations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CreditAllocation upsert
+   */
+  export type CreditAllocationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CreditAllocation to update in case it exists.
+     */
+    where: CreditAllocationWhereUniqueInput
+    /**
+     * In case the CreditAllocation found by the `where` argument doesn't exist, create a new CreditAllocation with this data.
+     */
+    create: XOR<CreditAllocationCreateInput, CreditAllocationUncheckedCreateInput>
+    /**
+     * In case the CreditAllocation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CreditAllocationUpdateInput, CreditAllocationUncheckedUpdateInput>
+  }
+
+  /**
+   * CreditAllocation delete
+   */
+  export type CreditAllocationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+    /**
+     * Filter which CreditAllocation to delete.
+     */
+    where: CreditAllocationWhereUniqueInput
+  }
+
+  /**
+   * CreditAllocation deleteMany
+   */
+  export type CreditAllocationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CreditAllocations to delete
+     */
+    where?: CreditAllocationWhereInput
+    /**
+     * Limit how many CreditAllocations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CreditAllocation without action
+   */
+  export type CreditAllocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CreditAllocation
+     */
+    select?: CreditAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CreditAllocation
+     */
+    omit?: CreditAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CreditAllocationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model GenerationUnit
    */
 
@@ -5628,7 +10489,9 @@ export namespace Prisma {
     id: string | null
     power: number | null
     energy: number | null
-    generationUnitType: string | null
+    generationUnitType: $Enums.GenerationUnitType | null
+    source: string | null
+    providerRecordId: string | null
     timestamp: Date | null
     inverterId: string | null
     createdAt: Date | null
@@ -5640,7 +10503,9 @@ export namespace Prisma {
     id: string | null
     power: number | null
     energy: number | null
-    generationUnitType: string | null
+    generationUnitType: $Enums.GenerationUnitType | null
+    source: string | null
+    providerRecordId: string | null
     timestamp: Date | null
     inverterId: string | null
     createdAt: Date | null
@@ -5653,6 +10518,9 @@ export namespace Prisma {
     power: number
     energy: number
     generationUnitType: number
+    source: number
+    providerRecordId: number
+    rawPayload: number
     timestamp: number
     inverterId: number
     createdAt: number
@@ -5677,6 +10545,8 @@ export namespace Prisma {
     power?: true
     energy?: true
     generationUnitType?: true
+    source?: true
+    providerRecordId?: true
     timestamp?: true
     inverterId?: true
     createdAt?: true
@@ -5689,6 +10559,8 @@ export namespace Prisma {
     power?: true
     energy?: true
     generationUnitType?: true
+    source?: true
+    providerRecordId?: true
     timestamp?: true
     inverterId?: true
     createdAt?: true
@@ -5701,6 +10573,9 @@ export namespace Prisma {
     power?: true
     energy?: true
     generationUnitType?: true
+    source?: true
+    providerRecordId?: true
+    rawPayload?: true
     timestamp?: true
     inverterId?: true
     createdAt?: true
@@ -5799,7 +10674,10 @@ export namespace Prisma {
     id: string
     power: number
     energy: number
-    generationUnitType: string
+    generationUnitType: $Enums.GenerationUnitType
+    source: string | null
+    providerRecordId: string | null
+    rawPayload: JsonValue | null
     timestamp: Date
     inverterId: string
     createdAt: Date
@@ -5831,6 +10709,9 @@ export namespace Prisma {
     power?: boolean
     energy?: boolean
     generationUnitType?: boolean
+    source?: boolean
+    providerRecordId?: boolean
+    rawPayload?: boolean
     timestamp?: boolean
     inverterId?: boolean
     createdAt?: boolean
@@ -5844,6 +10725,9 @@ export namespace Prisma {
     power?: boolean
     energy?: boolean
     generationUnitType?: boolean
+    source?: boolean
+    providerRecordId?: boolean
+    rawPayload?: boolean
     timestamp?: boolean
     inverterId?: boolean
     createdAt?: boolean
@@ -5857,6 +10741,9 @@ export namespace Prisma {
     power?: boolean
     energy?: boolean
     generationUnitType?: boolean
+    source?: boolean
+    providerRecordId?: boolean
+    rawPayload?: boolean
     timestamp?: boolean
     inverterId?: boolean
     createdAt?: boolean
@@ -5870,6 +10757,9 @@ export namespace Prisma {
     power?: boolean
     energy?: boolean
     generationUnitType?: boolean
+    source?: boolean
+    providerRecordId?: boolean
+    rawPayload?: boolean
     timestamp?: boolean
     inverterId?: boolean
     createdAt?: boolean
@@ -5877,7 +10767,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type GenerationUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "power" | "energy" | "generationUnitType" | "timestamp" | "inverterId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["generationUnit"]>
+  export type GenerationUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "power" | "energy" | "generationUnitType" | "source" | "providerRecordId" | "rawPayload" | "timestamp" | "inverterId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["generationUnit"]>
   export type GenerationUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     inverter?: boolean | InverterDefaultArgs<ExtArgs>
   }
@@ -5897,7 +10787,10 @@ export namespace Prisma {
       id: string
       power: number
       energy: number
-      generationUnitType: string
+      generationUnitType: $Enums.GenerationUnitType
+      source: string | null
+      providerRecordId: string | null
+      rawPayload: Prisma.JsonValue | null
       timestamp: Date
       inverterId: string
       createdAt: Date
@@ -6330,7 +11223,10 @@ export namespace Prisma {
     readonly id: FieldRef<"GenerationUnit", 'String'>
     readonly power: FieldRef<"GenerationUnit", 'Float'>
     readonly energy: FieldRef<"GenerationUnit", 'Float'>
-    readonly generationUnitType: FieldRef<"GenerationUnit", 'String'>
+    readonly generationUnitType: FieldRef<"GenerationUnit", 'GenerationUnitType'>
+    readonly source: FieldRef<"GenerationUnit", 'String'>
+    readonly providerRecordId: FieldRef<"GenerationUnit", 'String'>
+    readonly rawPayload: FieldRef<"GenerationUnit", 'Json'>
     readonly timestamp: FieldRef<"GenerationUnit", 'DateTime'>
     readonly inverterId: FieldRef<"GenerationUnit", 'String'>
     readonly createdAt: FieldRef<"GenerationUnit", 'DateTime'>
@@ -13554,6 +18450,2040 @@ export namespace Prisma {
 
 
   /**
+   * Model EnergyBill
+   */
+
+  export type AggregateEnergyBill = {
+    _count: EnergyBillCountAggregateOutputType | null
+    _avg: EnergyBillAvgAggregateOutputType | null
+    _sum: EnergyBillSumAggregateOutputType | null
+    _min: EnergyBillMinAggregateOutputType | null
+    _max: EnergyBillMaxAggregateOutputType | null
+  }
+
+  export type EnergyBillAvgAggregateOutputType = {
+    rawBillFileSize: number | null
+    referenceMonth: number | null
+    referenceYear: number | null
+    billingDays: number | null
+    monitoredGenerationKwh: Decimal | null
+    billedConsumptionKwh: Decimal | null
+    consumptionKwh: Decimal | null
+    realConsumptionKwh: Decimal | null
+    injectedEnergyKwh: Decimal | null
+    compensatedEnergyKwh: Decimal | null
+    previousCreditsKwh: Decimal | null
+    currentCreditsKwh: Decimal | null
+    expectedGenerationKwh: Decimal | null
+    generationEfficiency: Decimal | null
+    meterReadingCurrent: Decimal | null
+    meterReadingPrevious: Decimal | null
+    demandContractedKw: Decimal | null
+    demandMeasuredKw: Decimal | null
+    totalBillValue: Decimal | null
+    totalAmount: Decimal | null
+    energyCost: Decimal | null
+    availabilityCost: Decimal | null
+    publicLightingCost: Decimal | null
+    icmsCost: Decimal | null
+    pisCost: Decimal | null
+    cofinsCost: Decimal | null
+    pisCofinsCost: Decimal | null
+    tariffPerKwh: Decimal | null
+    tariffTeValue: Decimal | null
+    tariffTusdValue: Decimal | null
+    tariffFlagCost: Decimal | null
+    sectoralCharges: Decimal | null
+    fineAmount: Decimal | null
+    interestAmount: Decimal | null
+    otherCharges: Decimal | null
+    estimatedSavings: Decimal | null
+    billScore: Decimal | null
+  }
+
+  export type EnergyBillSumAggregateOutputType = {
+    rawBillFileSize: number | null
+    referenceMonth: number | null
+    referenceYear: number | null
+    billingDays: number | null
+    monitoredGenerationKwh: Decimal | null
+    billedConsumptionKwh: Decimal | null
+    consumptionKwh: Decimal | null
+    realConsumptionKwh: Decimal | null
+    injectedEnergyKwh: Decimal | null
+    compensatedEnergyKwh: Decimal | null
+    previousCreditsKwh: Decimal | null
+    currentCreditsKwh: Decimal | null
+    expectedGenerationKwh: Decimal | null
+    generationEfficiency: Decimal | null
+    meterReadingCurrent: Decimal | null
+    meterReadingPrevious: Decimal | null
+    demandContractedKw: Decimal | null
+    demandMeasuredKw: Decimal | null
+    totalBillValue: Decimal | null
+    totalAmount: Decimal | null
+    energyCost: Decimal | null
+    availabilityCost: Decimal | null
+    publicLightingCost: Decimal | null
+    icmsCost: Decimal | null
+    pisCost: Decimal | null
+    cofinsCost: Decimal | null
+    pisCofinsCost: Decimal | null
+    tariffPerKwh: Decimal | null
+    tariffTeValue: Decimal | null
+    tariffTusdValue: Decimal | null
+    tariffFlagCost: Decimal | null
+    sectoralCharges: Decimal | null
+    fineAmount: Decimal | null
+    interestAmount: Decimal | null
+    otherCharges: Decimal | null
+    estimatedSavings: Decimal | null
+    billScore: Decimal | null
+  }
+
+  export type EnergyBillMinAggregateOutputType = {
+    id: string | null
+    billFileUrl: string | null
+    rawBillFileKey: string | null
+    rawBillFileSize: number | null
+    clientId: string | null
+    plantId: string | null
+    consumerUnitId: string | null
+    competenceDate: Date | null
+    referenceMonth: number | null
+    referenceYear: number | null
+    accountHolder: string | null
+    accountNumber: string | null
+    clientNumber: string | null
+    instalationNumber: string | null
+    distributor: string | null
+    consumerClass: string | null
+    tariffModality: string | null
+    connectionType: string | null
+    tariffPeriod: string | null
+    billingDays: number | null
+    readingPeriodFrom: Date | null
+    readingPeriodTo: Date | null
+    creditExpiryDate: Date | null
+    monitoredGenerationKwh: Decimal | null
+    billedConsumptionKwh: Decimal | null
+    consumptionKwh: Decimal | null
+    realConsumptionKwh: Decimal | null
+    injectedEnergyKwh: Decimal | null
+    compensatedEnergyKwh: Decimal | null
+    previousCreditsKwh: Decimal | null
+    currentCreditsKwh: Decimal | null
+    expectedGenerationKwh: Decimal | null
+    generationEfficiency: Decimal | null
+    meterReadingCurrent: Decimal | null
+    meterReadingPrevious: Decimal | null
+    demandContractedKw: Decimal | null
+    demandMeasuredKw: Decimal | null
+    totalBillValue: Decimal | null
+    totalAmount: Decimal | null
+    energyCost: Decimal | null
+    availabilityCost: Decimal | null
+    publicLightingCost: Decimal | null
+    icmsCost: Decimal | null
+    pisCost: Decimal | null
+    cofinsCost: Decimal | null
+    pisCofinsCost: Decimal | null
+    tariffPerKwh: Decimal | null
+    tariffTeValue: Decimal | null
+    tariffTusdValue: Decimal | null
+    tariffFlag: string | null
+    tariffFlagCost: Decimal | null
+    sectoralCharges: Decimal | null
+    fineAmount: Decimal | null
+    interestAmount: Decimal | null
+    otherCharges: Decimal | null
+    estimatedSavings: Decimal | null
+    aiAnalysis: string | null
+    billScore: Decimal | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EnergyBillMaxAggregateOutputType = {
+    id: string | null
+    billFileUrl: string | null
+    rawBillFileKey: string | null
+    rawBillFileSize: number | null
+    clientId: string | null
+    plantId: string | null
+    consumerUnitId: string | null
+    competenceDate: Date | null
+    referenceMonth: number | null
+    referenceYear: number | null
+    accountHolder: string | null
+    accountNumber: string | null
+    clientNumber: string | null
+    instalationNumber: string | null
+    distributor: string | null
+    consumerClass: string | null
+    tariffModality: string | null
+    connectionType: string | null
+    tariffPeriod: string | null
+    billingDays: number | null
+    readingPeriodFrom: Date | null
+    readingPeriodTo: Date | null
+    creditExpiryDate: Date | null
+    monitoredGenerationKwh: Decimal | null
+    billedConsumptionKwh: Decimal | null
+    consumptionKwh: Decimal | null
+    realConsumptionKwh: Decimal | null
+    injectedEnergyKwh: Decimal | null
+    compensatedEnergyKwh: Decimal | null
+    previousCreditsKwh: Decimal | null
+    currentCreditsKwh: Decimal | null
+    expectedGenerationKwh: Decimal | null
+    generationEfficiency: Decimal | null
+    meterReadingCurrent: Decimal | null
+    meterReadingPrevious: Decimal | null
+    demandContractedKw: Decimal | null
+    demandMeasuredKw: Decimal | null
+    totalBillValue: Decimal | null
+    totalAmount: Decimal | null
+    energyCost: Decimal | null
+    availabilityCost: Decimal | null
+    publicLightingCost: Decimal | null
+    icmsCost: Decimal | null
+    pisCost: Decimal | null
+    cofinsCost: Decimal | null
+    pisCofinsCost: Decimal | null
+    tariffPerKwh: Decimal | null
+    tariffTeValue: Decimal | null
+    tariffTusdValue: Decimal | null
+    tariffFlag: string | null
+    tariffFlagCost: Decimal | null
+    sectoralCharges: Decimal | null
+    fineAmount: Decimal | null
+    interestAmount: Decimal | null
+    otherCharges: Decimal | null
+    estimatedSavings: Decimal | null
+    aiAnalysis: string | null
+    billScore: Decimal | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EnergyBillCountAggregateOutputType = {
+    id: number
+    billFileUrl: number
+    rawBillFileKey: number
+    rawBillFileSize: number
+    clientId: number
+    plantId: number
+    consumerUnitId: number
+    competenceDate: number
+    referenceMonth: number
+    referenceYear: number
+    accountHolder: number
+    accountNumber: number
+    clientNumber: number
+    instalationNumber: number
+    distributor: number
+    consumerClass: number
+    tariffModality: number
+    connectionType: number
+    tariffPeriod: number
+    billingDays: number
+    readingPeriodFrom: number
+    readingPeriodTo: number
+    creditExpiryDate: number
+    monitoredGenerationKwh: number
+    billedConsumptionKwh: number
+    consumptionKwh: number
+    realConsumptionKwh: number
+    injectedEnergyKwh: number
+    compensatedEnergyKwh: number
+    previousCreditsKwh: number
+    currentCreditsKwh: number
+    expectedGenerationKwh: number
+    generationEfficiency: number
+    meterReadingCurrent: number
+    meterReadingPrevious: number
+    demandContractedKw: number
+    demandMeasuredKw: number
+    totalBillValue: number
+    totalAmount: number
+    energyCost: number
+    availabilityCost: number
+    publicLightingCost: number
+    icmsCost: number
+    pisCost: number
+    cofinsCost: number
+    pisCofinsCost: number
+    tariffPerKwh: number
+    tariffTeValue: number
+    tariffTusdValue: number
+    tariffFlag: number
+    tariffFlagCost: number
+    sectoralCharges: number
+    fineAmount: number
+    interestAmount: number
+    otherCharges: number
+    estimatedSavings: number
+    aiAnalysis: number
+    aiExplanations: number
+    aiRecommendations: number
+    alerts: number
+    extraCharges: number
+    billingItems: number
+    creditSummary: number
+    billScore: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EnergyBillAvgAggregateInputType = {
+    rawBillFileSize?: true
+    referenceMonth?: true
+    referenceYear?: true
+    billingDays?: true
+    monitoredGenerationKwh?: true
+    billedConsumptionKwh?: true
+    consumptionKwh?: true
+    realConsumptionKwh?: true
+    injectedEnergyKwh?: true
+    compensatedEnergyKwh?: true
+    previousCreditsKwh?: true
+    currentCreditsKwh?: true
+    expectedGenerationKwh?: true
+    generationEfficiency?: true
+    meterReadingCurrent?: true
+    meterReadingPrevious?: true
+    demandContractedKw?: true
+    demandMeasuredKw?: true
+    totalBillValue?: true
+    totalAmount?: true
+    energyCost?: true
+    availabilityCost?: true
+    publicLightingCost?: true
+    icmsCost?: true
+    pisCost?: true
+    cofinsCost?: true
+    pisCofinsCost?: true
+    tariffPerKwh?: true
+    tariffTeValue?: true
+    tariffTusdValue?: true
+    tariffFlagCost?: true
+    sectoralCharges?: true
+    fineAmount?: true
+    interestAmount?: true
+    otherCharges?: true
+    estimatedSavings?: true
+    billScore?: true
+  }
+
+  export type EnergyBillSumAggregateInputType = {
+    rawBillFileSize?: true
+    referenceMonth?: true
+    referenceYear?: true
+    billingDays?: true
+    monitoredGenerationKwh?: true
+    billedConsumptionKwh?: true
+    consumptionKwh?: true
+    realConsumptionKwh?: true
+    injectedEnergyKwh?: true
+    compensatedEnergyKwh?: true
+    previousCreditsKwh?: true
+    currentCreditsKwh?: true
+    expectedGenerationKwh?: true
+    generationEfficiency?: true
+    meterReadingCurrent?: true
+    meterReadingPrevious?: true
+    demandContractedKw?: true
+    demandMeasuredKw?: true
+    totalBillValue?: true
+    totalAmount?: true
+    energyCost?: true
+    availabilityCost?: true
+    publicLightingCost?: true
+    icmsCost?: true
+    pisCost?: true
+    cofinsCost?: true
+    pisCofinsCost?: true
+    tariffPerKwh?: true
+    tariffTeValue?: true
+    tariffTusdValue?: true
+    tariffFlagCost?: true
+    sectoralCharges?: true
+    fineAmount?: true
+    interestAmount?: true
+    otherCharges?: true
+    estimatedSavings?: true
+    billScore?: true
+  }
+
+  export type EnergyBillMinAggregateInputType = {
+    id?: true
+    billFileUrl?: true
+    rawBillFileKey?: true
+    rawBillFileSize?: true
+    clientId?: true
+    plantId?: true
+    consumerUnitId?: true
+    competenceDate?: true
+    referenceMonth?: true
+    referenceYear?: true
+    accountHolder?: true
+    accountNumber?: true
+    clientNumber?: true
+    instalationNumber?: true
+    distributor?: true
+    consumerClass?: true
+    tariffModality?: true
+    connectionType?: true
+    tariffPeriod?: true
+    billingDays?: true
+    readingPeriodFrom?: true
+    readingPeriodTo?: true
+    creditExpiryDate?: true
+    monitoredGenerationKwh?: true
+    billedConsumptionKwh?: true
+    consumptionKwh?: true
+    realConsumptionKwh?: true
+    injectedEnergyKwh?: true
+    compensatedEnergyKwh?: true
+    previousCreditsKwh?: true
+    currentCreditsKwh?: true
+    expectedGenerationKwh?: true
+    generationEfficiency?: true
+    meterReadingCurrent?: true
+    meterReadingPrevious?: true
+    demandContractedKw?: true
+    demandMeasuredKw?: true
+    totalBillValue?: true
+    totalAmount?: true
+    energyCost?: true
+    availabilityCost?: true
+    publicLightingCost?: true
+    icmsCost?: true
+    pisCost?: true
+    cofinsCost?: true
+    pisCofinsCost?: true
+    tariffPerKwh?: true
+    tariffTeValue?: true
+    tariffTusdValue?: true
+    tariffFlag?: true
+    tariffFlagCost?: true
+    sectoralCharges?: true
+    fineAmount?: true
+    interestAmount?: true
+    otherCharges?: true
+    estimatedSavings?: true
+    aiAnalysis?: true
+    billScore?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EnergyBillMaxAggregateInputType = {
+    id?: true
+    billFileUrl?: true
+    rawBillFileKey?: true
+    rawBillFileSize?: true
+    clientId?: true
+    plantId?: true
+    consumerUnitId?: true
+    competenceDate?: true
+    referenceMonth?: true
+    referenceYear?: true
+    accountHolder?: true
+    accountNumber?: true
+    clientNumber?: true
+    instalationNumber?: true
+    distributor?: true
+    consumerClass?: true
+    tariffModality?: true
+    connectionType?: true
+    tariffPeriod?: true
+    billingDays?: true
+    readingPeriodFrom?: true
+    readingPeriodTo?: true
+    creditExpiryDate?: true
+    monitoredGenerationKwh?: true
+    billedConsumptionKwh?: true
+    consumptionKwh?: true
+    realConsumptionKwh?: true
+    injectedEnergyKwh?: true
+    compensatedEnergyKwh?: true
+    previousCreditsKwh?: true
+    currentCreditsKwh?: true
+    expectedGenerationKwh?: true
+    generationEfficiency?: true
+    meterReadingCurrent?: true
+    meterReadingPrevious?: true
+    demandContractedKw?: true
+    demandMeasuredKw?: true
+    totalBillValue?: true
+    totalAmount?: true
+    energyCost?: true
+    availabilityCost?: true
+    publicLightingCost?: true
+    icmsCost?: true
+    pisCost?: true
+    cofinsCost?: true
+    pisCofinsCost?: true
+    tariffPerKwh?: true
+    tariffTeValue?: true
+    tariffTusdValue?: true
+    tariffFlag?: true
+    tariffFlagCost?: true
+    sectoralCharges?: true
+    fineAmount?: true
+    interestAmount?: true
+    otherCharges?: true
+    estimatedSavings?: true
+    aiAnalysis?: true
+    billScore?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EnergyBillCountAggregateInputType = {
+    id?: true
+    billFileUrl?: true
+    rawBillFileKey?: true
+    rawBillFileSize?: true
+    clientId?: true
+    plantId?: true
+    consumerUnitId?: true
+    competenceDate?: true
+    referenceMonth?: true
+    referenceYear?: true
+    accountHolder?: true
+    accountNumber?: true
+    clientNumber?: true
+    instalationNumber?: true
+    distributor?: true
+    consumerClass?: true
+    tariffModality?: true
+    connectionType?: true
+    tariffPeriod?: true
+    billingDays?: true
+    readingPeriodFrom?: true
+    readingPeriodTo?: true
+    creditExpiryDate?: true
+    monitoredGenerationKwh?: true
+    billedConsumptionKwh?: true
+    consumptionKwh?: true
+    realConsumptionKwh?: true
+    injectedEnergyKwh?: true
+    compensatedEnergyKwh?: true
+    previousCreditsKwh?: true
+    currentCreditsKwh?: true
+    expectedGenerationKwh?: true
+    generationEfficiency?: true
+    meterReadingCurrent?: true
+    meterReadingPrevious?: true
+    demandContractedKw?: true
+    demandMeasuredKw?: true
+    totalBillValue?: true
+    totalAmount?: true
+    energyCost?: true
+    availabilityCost?: true
+    publicLightingCost?: true
+    icmsCost?: true
+    pisCost?: true
+    cofinsCost?: true
+    pisCofinsCost?: true
+    tariffPerKwh?: true
+    tariffTeValue?: true
+    tariffTusdValue?: true
+    tariffFlag?: true
+    tariffFlagCost?: true
+    sectoralCharges?: true
+    fineAmount?: true
+    interestAmount?: true
+    otherCharges?: true
+    estimatedSavings?: true
+    aiAnalysis?: true
+    aiExplanations?: true
+    aiRecommendations?: true
+    alerts?: true
+    extraCharges?: true
+    billingItems?: true
+    creditSummary?: true
+    billScore?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EnergyBillAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnergyBill to aggregate.
+     */
+    where?: EnergyBillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyBills to fetch.
+     */
+    orderBy?: EnergyBillOrderByWithRelationInput | EnergyBillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EnergyBillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyBills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyBills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EnergyBills
+    **/
+    _count?: true | EnergyBillCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EnergyBillAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EnergyBillSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EnergyBillMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EnergyBillMaxAggregateInputType
+  }
+
+  export type GetEnergyBillAggregateType<T extends EnergyBillAggregateArgs> = {
+        [P in keyof T & keyof AggregateEnergyBill]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEnergyBill[P]>
+      : GetScalarType<T[P], AggregateEnergyBill[P]>
+  }
+
+
+
+
+  export type EnergyBillGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnergyBillWhereInput
+    orderBy?: EnergyBillOrderByWithAggregationInput | EnergyBillOrderByWithAggregationInput[]
+    by: EnergyBillScalarFieldEnum[] | EnergyBillScalarFieldEnum
+    having?: EnergyBillScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EnergyBillCountAggregateInputType | true
+    _avg?: EnergyBillAvgAggregateInputType
+    _sum?: EnergyBillSumAggregateInputType
+    _min?: EnergyBillMinAggregateInputType
+    _max?: EnergyBillMaxAggregateInputType
+  }
+
+  export type EnergyBillGroupByOutputType = {
+    id: string
+    billFileUrl: string | null
+    rawBillFileKey: string | null
+    rawBillFileSize: number | null
+    clientId: string
+    plantId: string
+    consumerUnitId: string
+    competenceDate: Date
+    referenceMonth: number
+    referenceYear: number
+    accountHolder: string | null
+    accountNumber: string | null
+    clientNumber: string | null
+    instalationNumber: string | null
+    distributor: string | null
+    consumerClass: string | null
+    tariffModality: string | null
+    connectionType: string | null
+    tariffPeriod: string | null
+    billingDays: number | null
+    readingPeriodFrom: Date | null
+    readingPeriodTo: Date | null
+    creditExpiryDate: Date | null
+    monitoredGenerationKwh: Decimal | null
+    billedConsumptionKwh: Decimal | null
+    consumptionKwh: Decimal | null
+    realConsumptionKwh: Decimal | null
+    injectedEnergyKwh: Decimal | null
+    compensatedEnergyKwh: Decimal | null
+    previousCreditsKwh: Decimal | null
+    currentCreditsKwh: Decimal | null
+    expectedGenerationKwh: Decimal | null
+    generationEfficiency: Decimal | null
+    meterReadingCurrent: Decimal | null
+    meterReadingPrevious: Decimal | null
+    demandContractedKw: Decimal | null
+    demandMeasuredKw: Decimal | null
+    totalBillValue: Decimal | null
+    totalAmount: Decimal | null
+    energyCost: Decimal | null
+    availabilityCost: Decimal | null
+    publicLightingCost: Decimal | null
+    icmsCost: Decimal | null
+    pisCost: Decimal | null
+    cofinsCost: Decimal | null
+    pisCofinsCost: Decimal | null
+    tariffPerKwh: Decimal | null
+    tariffTeValue: Decimal | null
+    tariffTusdValue: Decimal | null
+    tariffFlag: string | null
+    tariffFlagCost: Decimal | null
+    sectoralCharges: Decimal | null
+    fineAmount: Decimal | null
+    interestAmount: Decimal | null
+    otherCharges: Decimal | null
+    estimatedSavings: Decimal | null
+    aiAnalysis: string | null
+    aiExplanations: JsonValue | null
+    aiRecommendations: JsonValue | null
+    alerts: JsonValue | null
+    extraCharges: JsonValue | null
+    billingItems: JsonValue | null
+    creditSummary: JsonValue | null
+    billScore: Decimal | null
+    status: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EnergyBillCountAggregateOutputType | null
+    _avg: EnergyBillAvgAggregateOutputType | null
+    _sum: EnergyBillSumAggregateOutputType | null
+    _min: EnergyBillMinAggregateOutputType | null
+    _max: EnergyBillMaxAggregateOutputType | null
+  }
+
+  type GetEnergyBillGroupByPayload<T extends EnergyBillGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EnergyBillGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EnergyBillGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EnergyBillGroupByOutputType[P]>
+            : GetScalarType<T[P], EnergyBillGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EnergyBillSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    billFileUrl?: boolean
+    rawBillFileKey?: boolean
+    rawBillFileSize?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    consumerUnitId?: boolean
+    competenceDate?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    instalationNumber?: boolean
+    distributor?: boolean
+    consumerClass?: boolean
+    tariffModality?: boolean
+    connectionType?: boolean
+    tariffPeriod?: boolean
+    billingDays?: boolean
+    readingPeriodFrom?: boolean
+    readingPeriodTo?: boolean
+    creditExpiryDate?: boolean
+    monitoredGenerationKwh?: boolean
+    billedConsumptionKwh?: boolean
+    consumptionKwh?: boolean
+    realConsumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    compensatedEnergyKwh?: boolean
+    previousCreditsKwh?: boolean
+    currentCreditsKwh?: boolean
+    expectedGenerationKwh?: boolean
+    generationEfficiency?: boolean
+    meterReadingCurrent?: boolean
+    meterReadingPrevious?: boolean
+    demandContractedKw?: boolean
+    demandMeasuredKw?: boolean
+    totalBillValue?: boolean
+    totalAmount?: boolean
+    energyCost?: boolean
+    availabilityCost?: boolean
+    publicLightingCost?: boolean
+    icmsCost?: boolean
+    pisCost?: boolean
+    cofinsCost?: boolean
+    pisCofinsCost?: boolean
+    tariffPerKwh?: boolean
+    tariffTeValue?: boolean
+    tariffTusdValue?: boolean
+    tariffFlag?: boolean
+    tariffFlagCost?: boolean
+    sectoralCharges?: boolean
+    fineAmount?: boolean
+    interestAmount?: boolean
+    otherCharges?: boolean
+    estimatedSavings?: boolean
+    aiAnalysis?: boolean
+    aiExplanations?: boolean
+    aiRecommendations?: boolean
+    alerts?: boolean
+    extraCharges?: boolean
+    billingItems?: boolean
+    creditSummary?: boolean
+    billScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["energyBill"]>
+
+  export type EnergyBillSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    billFileUrl?: boolean
+    rawBillFileKey?: boolean
+    rawBillFileSize?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    consumerUnitId?: boolean
+    competenceDate?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    instalationNumber?: boolean
+    distributor?: boolean
+    consumerClass?: boolean
+    tariffModality?: boolean
+    connectionType?: boolean
+    tariffPeriod?: boolean
+    billingDays?: boolean
+    readingPeriodFrom?: boolean
+    readingPeriodTo?: boolean
+    creditExpiryDate?: boolean
+    monitoredGenerationKwh?: boolean
+    billedConsumptionKwh?: boolean
+    consumptionKwh?: boolean
+    realConsumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    compensatedEnergyKwh?: boolean
+    previousCreditsKwh?: boolean
+    currentCreditsKwh?: boolean
+    expectedGenerationKwh?: boolean
+    generationEfficiency?: boolean
+    meterReadingCurrent?: boolean
+    meterReadingPrevious?: boolean
+    demandContractedKw?: boolean
+    demandMeasuredKw?: boolean
+    totalBillValue?: boolean
+    totalAmount?: boolean
+    energyCost?: boolean
+    availabilityCost?: boolean
+    publicLightingCost?: boolean
+    icmsCost?: boolean
+    pisCost?: boolean
+    cofinsCost?: boolean
+    pisCofinsCost?: boolean
+    tariffPerKwh?: boolean
+    tariffTeValue?: boolean
+    tariffTusdValue?: boolean
+    tariffFlag?: boolean
+    tariffFlagCost?: boolean
+    sectoralCharges?: boolean
+    fineAmount?: boolean
+    interestAmount?: boolean
+    otherCharges?: boolean
+    estimatedSavings?: boolean
+    aiAnalysis?: boolean
+    aiExplanations?: boolean
+    aiRecommendations?: boolean
+    alerts?: boolean
+    extraCharges?: boolean
+    billingItems?: boolean
+    creditSummary?: boolean
+    billScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["energyBill"]>
+
+  export type EnergyBillSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    billFileUrl?: boolean
+    rawBillFileKey?: boolean
+    rawBillFileSize?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    consumerUnitId?: boolean
+    competenceDate?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    instalationNumber?: boolean
+    distributor?: boolean
+    consumerClass?: boolean
+    tariffModality?: boolean
+    connectionType?: boolean
+    tariffPeriod?: boolean
+    billingDays?: boolean
+    readingPeriodFrom?: boolean
+    readingPeriodTo?: boolean
+    creditExpiryDate?: boolean
+    monitoredGenerationKwh?: boolean
+    billedConsumptionKwh?: boolean
+    consumptionKwh?: boolean
+    realConsumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    compensatedEnergyKwh?: boolean
+    previousCreditsKwh?: boolean
+    currentCreditsKwh?: boolean
+    expectedGenerationKwh?: boolean
+    generationEfficiency?: boolean
+    meterReadingCurrent?: boolean
+    meterReadingPrevious?: boolean
+    demandContractedKw?: boolean
+    demandMeasuredKw?: boolean
+    totalBillValue?: boolean
+    totalAmount?: boolean
+    energyCost?: boolean
+    availabilityCost?: boolean
+    publicLightingCost?: boolean
+    icmsCost?: boolean
+    pisCost?: boolean
+    cofinsCost?: boolean
+    pisCofinsCost?: boolean
+    tariffPerKwh?: boolean
+    tariffTeValue?: boolean
+    tariffTusdValue?: boolean
+    tariffFlag?: boolean
+    tariffFlagCost?: boolean
+    sectoralCharges?: boolean
+    fineAmount?: boolean
+    interestAmount?: boolean
+    otherCharges?: boolean
+    estimatedSavings?: boolean
+    aiAnalysis?: boolean
+    aiExplanations?: boolean
+    aiRecommendations?: boolean
+    alerts?: boolean
+    extraCharges?: boolean
+    billingItems?: boolean
+    creditSummary?: boolean
+    billScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["energyBill"]>
+
+  export type EnergyBillSelectScalar = {
+    id?: boolean
+    billFileUrl?: boolean
+    rawBillFileKey?: boolean
+    rawBillFileSize?: boolean
+    clientId?: boolean
+    plantId?: boolean
+    consumerUnitId?: boolean
+    competenceDate?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    accountHolder?: boolean
+    accountNumber?: boolean
+    clientNumber?: boolean
+    instalationNumber?: boolean
+    distributor?: boolean
+    consumerClass?: boolean
+    tariffModality?: boolean
+    connectionType?: boolean
+    tariffPeriod?: boolean
+    billingDays?: boolean
+    readingPeriodFrom?: boolean
+    readingPeriodTo?: boolean
+    creditExpiryDate?: boolean
+    monitoredGenerationKwh?: boolean
+    billedConsumptionKwh?: boolean
+    consumptionKwh?: boolean
+    realConsumptionKwh?: boolean
+    injectedEnergyKwh?: boolean
+    compensatedEnergyKwh?: boolean
+    previousCreditsKwh?: boolean
+    currentCreditsKwh?: boolean
+    expectedGenerationKwh?: boolean
+    generationEfficiency?: boolean
+    meterReadingCurrent?: boolean
+    meterReadingPrevious?: boolean
+    demandContractedKw?: boolean
+    demandMeasuredKw?: boolean
+    totalBillValue?: boolean
+    totalAmount?: boolean
+    energyCost?: boolean
+    availabilityCost?: boolean
+    publicLightingCost?: boolean
+    icmsCost?: boolean
+    pisCost?: boolean
+    cofinsCost?: boolean
+    pisCofinsCost?: boolean
+    tariffPerKwh?: boolean
+    tariffTeValue?: boolean
+    tariffTusdValue?: boolean
+    tariffFlag?: boolean
+    tariffFlagCost?: boolean
+    sectoralCharges?: boolean
+    fineAmount?: boolean
+    interestAmount?: boolean
+    otherCharges?: boolean
+    estimatedSavings?: boolean
+    aiAnalysis?: boolean
+    aiExplanations?: boolean
+    aiRecommendations?: boolean
+    alerts?: boolean
+    extraCharges?: boolean
+    billingItems?: boolean
+    creditSummary?: boolean
+    billScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EnergyBillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "billFileUrl" | "rawBillFileKey" | "rawBillFileSize" | "clientId" | "plantId" | "consumerUnitId" | "competenceDate" | "referenceMonth" | "referenceYear" | "accountHolder" | "accountNumber" | "clientNumber" | "instalationNumber" | "distributor" | "consumerClass" | "tariffModality" | "connectionType" | "tariffPeriod" | "billingDays" | "readingPeriodFrom" | "readingPeriodTo" | "creditExpiryDate" | "monitoredGenerationKwh" | "billedConsumptionKwh" | "consumptionKwh" | "realConsumptionKwh" | "injectedEnergyKwh" | "compensatedEnergyKwh" | "previousCreditsKwh" | "currentCreditsKwh" | "expectedGenerationKwh" | "generationEfficiency" | "meterReadingCurrent" | "meterReadingPrevious" | "demandContractedKw" | "demandMeasuredKw" | "totalBillValue" | "totalAmount" | "energyCost" | "availabilityCost" | "publicLightingCost" | "icmsCost" | "pisCost" | "cofinsCost" | "pisCofinsCost" | "tariffPerKwh" | "tariffTeValue" | "tariffTusdValue" | "tariffFlag" | "tariffFlagCost" | "sectoralCharges" | "fineAmount" | "interestAmount" | "otherCharges" | "estimatedSavings" | "aiAnalysis" | "aiExplanations" | "aiRecommendations" | "alerts" | "extraCharges" | "billingItems" | "creditSummary" | "billScore" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["energyBill"]>
+  export type EnergyBillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+  export type EnergyBillIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+  export type EnergyBillIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    plant?: boolean | PlantDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+
+  export type $EnergyBillPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EnergyBill"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+      plant: Prisma.$PlantPayload<ExtArgs>
+      consumerUnit: Prisma.$ConsumerUnitPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      billFileUrl: string | null
+      rawBillFileKey: string | null
+      rawBillFileSize: number | null
+      clientId: string
+      plantId: string
+      consumerUnitId: string
+      competenceDate: Date
+      referenceMonth: number
+      referenceYear: number
+      accountHolder: string | null
+      accountNumber: string | null
+      clientNumber: string | null
+      instalationNumber: string | null
+      distributor: string | null
+      consumerClass: string | null
+      tariffModality: string | null
+      connectionType: string | null
+      tariffPeriod: string | null
+      billingDays: number | null
+      readingPeriodFrom: Date | null
+      readingPeriodTo: Date | null
+      creditExpiryDate: Date | null
+      monitoredGenerationKwh: Prisma.Decimal | null
+      billedConsumptionKwh: Prisma.Decimal | null
+      consumptionKwh: Prisma.Decimal | null
+      realConsumptionKwh: Prisma.Decimal | null
+      injectedEnergyKwh: Prisma.Decimal | null
+      compensatedEnergyKwh: Prisma.Decimal | null
+      previousCreditsKwh: Prisma.Decimal | null
+      currentCreditsKwh: Prisma.Decimal | null
+      expectedGenerationKwh: Prisma.Decimal | null
+      generationEfficiency: Prisma.Decimal | null
+      meterReadingCurrent: Prisma.Decimal | null
+      meterReadingPrevious: Prisma.Decimal | null
+      demandContractedKw: Prisma.Decimal | null
+      demandMeasuredKw: Prisma.Decimal | null
+      totalBillValue: Prisma.Decimal | null
+      totalAmount: Prisma.Decimal | null
+      energyCost: Prisma.Decimal | null
+      availabilityCost: Prisma.Decimal | null
+      publicLightingCost: Prisma.Decimal | null
+      icmsCost: Prisma.Decimal | null
+      pisCost: Prisma.Decimal | null
+      cofinsCost: Prisma.Decimal | null
+      pisCofinsCost: Prisma.Decimal | null
+      tariffPerKwh: Prisma.Decimal | null
+      tariffTeValue: Prisma.Decimal | null
+      tariffTusdValue: Prisma.Decimal | null
+      tariffFlag: string | null
+      tariffFlagCost: Prisma.Decimal | null
+      sectoralCharges: Prisma.Decimal | null
+      fineAmount: Prisma.Decimal | null
+      interestAmount: Prisma.Decimal | null
+      otherCharges: Prisma.Decimal | null
+      estimatedSavings: Prisma.Decimal | null
+      aiAnalysis: string | null
+      aiExplanations: Prisma.JsonValue | null
+      aiRecommendations: Prisma.JsonValue | null
+      alerts: Prisma.JsonValue | null
+      extraCharges: Prisma.JsonValue | null
+      billingItems: Prisma.JsonValue | null
+      creditSummary: Prisma.JsonValue | null
+      billScore: Prisma.Decimal | null
+      status: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["energyBill"]>
+    composites: {}
+  }
+
+  type EnergyBillGetPayload<S extends boolean | null | undefined | EnergyBillDefaultArgs> = $Result.GetResult<Prisma.$EnergyBillPayload, S>
+
+  type EnergyBillCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EnergyBillFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EnergyBillCountAggregateInputType | true
+    }
+
+  export interface EnergyBillDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EnergyBill'], meta: { name: 'EnergyBill' } }
+    /**
+     * Find zero or one EnergyBill that matches the filter.
+     * @param {EnergyBillFindUniqueArgs} args - Arguments to find a EnergyBill
+     * @example
+     * // Get one EnergyBill
+     * const energyBill = await prisma.energyBill.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EnergyBillFindUniqueArgs>(args: SelectSubset<T, EnergyBillFindUniqueArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EnergyBill that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EnergyBillFindUniqueOrThrowArgs} args - Arguments to find a EnergyBill
+     * @example
+     * // Get one EnergyBill
+     * const energyBill = await prisma.energyBill.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EnergyBillFindUniqueOrThrowArgs>(args: SelectSubset<T, EnergyBillFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnergyBill that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyBillFindFirstArgs} args - Arguments to find a EnergyBill
+     * @example
+     * // Get one EnergyBill
+     * const energyBill = await prisma.energyBill.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EnergyBillFindFirstArgs>(args?: SelectSubset<T, EnergyBillFindFirstArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnergyBill that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyBillFindFirstOrThrowArgs} args - Arguments to find a EnergyBill
+     * @example
+     * // Get one EnergyBill
+     * const energyBill = await prisma.energyBill.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EnergyBillFindFirstOrThrowArgs>(args?: SelectSubset<T, EnergyBillFindFirstOrThrowArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EnergyBills that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyBillFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EnergyBills
+     * const energyBills = await prisma.energyBill.findMany()
+     * 
+     * // Get first 10 EnergyBills
+     * const energyBills = await prisma.energyBill.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const energyBillWithIdOnly = await prisma.energyBill.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EnergyBillFindManyArgs>(args?: SelectSubset<T, EnergyBillFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EnergyBill.
+     * @param {EnergyBillCreateArgs} args - Arguments to create a EnergyBill.
+     * @example
+     * // Create one EnergyBill
+     * const EnergyBill = await prisma.energyBill.create({
+     *   data: {
+     *     // ... data to create a EnergyBill
+     *   }
+     * })
+     * 
+     */
+    create<T extends EnergyBillCreateArgs>(args: SelectSubset<T, EnergyBillCreateArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EnergyBills.
+     * @param {EnergyBillCreateManyArgs} args - Arguments to create many EnergyBills.
+     * @example
+     * // Create many EnergyBills
+     * const energyBill = await prisma.energyBill.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EnergyBillCreateManyArgs>(args?: SelectSubset<T, EnergyBillCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EnergyBills and returns the data saved in the database.
+     * @param {EnergyBillCreateManyAndReturnArgs} args - Arguments to create many EnergyBills.
+     * @example
+     * // Create many EnergyBills
+     * const energyBill = await prisma.energyBill.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EnergyBills and only return the `id`
+     * const energyBillWithIdOnly = await prisma.energyBill.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EnergyBillCreateManyAndReturnArgs>(args?: SelectSubset<T, EnergyBillCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EnergyBill.
+     * @param {EnergyBillDeleteArgs} args - Arguments to delete one EnergyBill.
+     * @example
+     * // Delete one EnergyBill
+     * const EnergyBill = await prisma.energyBill.delete({
+     *   where: {
+     *     // ... filter to delete one EnergyBill
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EnergyBillDeleteArgs>(args: SelectSubset<T, EnergyBillDeleteArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EnergyBill.
+     * @param {EnergyBillUpdateArgs} args - Arguments to update one EnergyBill.
+     * @example
+     * // Update one EnergyBill
+     * const energyBill = await prisma.energyBill.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EnergyBillUpdateArgs>(args: SelectSubset<T, EnergyBillUpdateArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EnergyBills.
+     * @param {EnergyBillDeleteManyArgs} args - Arguments to filter EnergyBills to delete.
+     * @example
+     * // Delete a few EnergyBills
+     * const { count } = await prisma.energyBill.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EnergyBillDeleteManyArgs>(args?: SelectSubset<T, EnergyBillDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnergyBills.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyBillUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EnergyBills
+     * const energyBill = await prisma.energyBill.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EnergyBillUpdateManyArgs>(args: SelectSubset<T, EnergyBillUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnergyBills and returns the data updated in the database.
+     * @param {EnergyBillUpdateManyAndReturnArgs} args - Arguments to update many EnergyBills.
+     * @example
+     * // Update many EnergyBills
+     * const energyBill = await prisma.energyBill.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EnergyBills and only return the `id`
+     * const energyBillWithIdOnly = await prisma.energyBill.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EnergyBillUpdateManyAndReturnArgs>(args: SelectSubset<T, EnergyBillUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EnergyBill.
+     * @param {EnergyBillUpsertArgs} args - Arguments to update or create a EnergyBill.
+     * @example
+     * // Update or create a EnergyBill
+     * const energyBill = await prisma.energyBill.upsert({
+     *   create: {
+     *     // ... data to create a EnergyBill
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EnergyBill we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EnergyBillUpsertArgs>(args: SelectSubset<T, EnergyBillUpsertArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EnergyBills.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyBillCountArgs} args - Arguments to filter EnergyBills to count.
+     * @example
+     * // Count the number of EnergyBills
+     * const count = await prisma.energyBill.count({
+     *   where: {
+     *     // ... the filter for the EnergyBills we want to count
+     *   }
+     * })
+    **/
+    count<T extends EnergyBillCountArgs>(
+      args?: Subset<T, EnergyBillCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EnergyBillCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EnergyBill.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyBillAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EnergyBillAggregateArgs>(args: Subset<T, EnergyBillAggregateArgs>): Prisma.PrismaPromise<GetEnergyBillAggregateType<T>>
+
+    /**
+     * Group by EnergyBill.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyBillGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EnergyBillGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EnergyBillGroupByArgs['orderBy'] }
+        : { orderBy?: EnergyBillGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EnergyBillGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEnergyBillGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EnergyBill model
+   */
+  readonly fields: EnergyBillFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EnergyBill.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EnergyBillClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    plant<T extends PlantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlantDefaultArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    consumerUnit<T extends ConsumerUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnitDefaultArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EnergyBill model
+   */
+  interface EnergyBillFieldRefs {
+    readonly id: FieldRef<"EnergyBill", 'String'>
+    readonly billFileUrl: FieldRef<"EnergyBill", 'String'>
+    readonly rawBillFileKey: FieldRef<"EnergyBill", 'String'>
+    readonly rawBillFileSize: FieldRef<"EnergyBill", 'Int'>
+    readonly clientId: FieldRef<"EnergyBill", 'String'>
+    readonly plantId: FieldRef<"EnergyBill", 'String'>
+    readonly consumerUnitId: FieldRef<"EnergyBill", 'String'>
+    readonly competenceDate: FieldRef<"EnergyBill", 'DateTime'>
+    readonly referenceMonth: FieldRef<"EnergyBill", 'Int'>
+    readonly referenceYear: FieldRef<"EnergyBill", 'Int'>
+    readonly accountHolder: FieldRef<"EnergyBill", 'String'>
+    readonly accountNumber: FieldRef<"EnergyBill", 'String'>
+    readonly clientNumber: FieldRef<"EnergyBill", 'String'>
+    readonly instalationNumber: FieldRef<"EnergyBill", 'String'>
+    readonly distributor: FieldRef<"EnergyBill", 'String'>
+    readonly consumerClass: FieldRef<"EnergyBill", 'String'>
+    readonly tariffModality: FieldRef<"EnergyBill", 'String'>
+    readonly connectionType: FieldRef<"EnergyBill", 'String'>
+    readonly tariffPeriod: FieldRef<"EnergyBill", 'String'>
+    readonly billingDays: FieldRef<"EnergyBill", 'Int'>
+    readonly readingPeriodFrom: FieldRef<"EnergyBill", 'DateTime'>
+    readonly readingPeriodTo: FieldRef<"EnergyBill", 'DateTime'>
+    readonly creditExpiryDate: FieldRef<"EnergyBill", 'DateTime'>
+    readonly monitoredGenerationKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly billedConsumptionKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly consumptionKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly realConsumptionKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly injectedEnergyKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly compensatedEnergyKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly previousCreditsKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly currentCreditsKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly expectedGenerationKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly generationEfficiency: FieldRef<"EnergyBill", 'Decimal'>
+    readonly meterReadingCurrent: FieldRef<"EnergyBill", 'Decimal'>
+    readonly meterReadingPrevious: FieldRef<"EnergyBill", 'Decimal'>
+    readonly demandContractedKw: FieldRef<"EnergyBill", 'Decimal'>
+    readonly demandMeasuredKw: FieldRef<"EnergyBill", 'Decimal'>
+    readonly totalBillValue: FieldRef<"EnergyBill", 'Decimal'>
+    readonly totalAmount: FieldRef<"EnergyBill", 'Decimal'>
+    readonly energyCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly availabilityCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly publicLightingCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly icmsCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly pisCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly cofinsCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly pisCofinsCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly tariffPerKwh: FieldRef<"EnergyBill", 'Decimal'>
+    readonly tariffTeValue: FieldRef<"EnergyBill", 'Decimal'>
+    readonly tariffTusdValue: FieldRef<"EnergyBill", 'Decimal'>
+    readonly tariffFlag: FieldRef<"EnergyBill", 'String'>
+    readonly tariffFlagCost: FieldRef<"EnergyBill", 'Decimal'>
+    readonly sectoralCharges: FieldRef<"EnergyBill", 'Decimal'>
+    readonly fineAmount: FieldRef<"EnergyBill", 'Decimal'>
+    readonly interestAmount: FieldRef<"EnergyBill", 'Decimal'>
+    readonly otherCharges: FieldRef<"EnergyBill", 'Decimal'>
+    readonly estimatedSavings: FieldRef<"EnergyBill", 'Decimal'>
+    readonly aiAnalysis: FieldRef<"EnergyBill", 'String'>
+    readonly aiExplanations: FieldRef<"EnergyBill", 'Json'>
+    readonly aiRecommendations: FieldRef<"EnergyBill", 'Json'>
+    readonly alerts: FieldRef<"EnergyBill", 'Json'>
+    readonly extraCharges: FieldRef<"EnergyBill", 'Json'>
+    readonly billingItems: FieldRef<"EnergyBill", 'Json'>
+    readonly creditSummary: FieldRef<"EnergyBill", 'Json'>
+    readonly billScore: FieldRef<"EnergyBill", 'Decimal'>
+    readonly status: FieldRef<"EnergyBill", 'String'>
+    readonly createdAt: FieldRef<"EnergyBill", 'DateTime'>
+    readonly updatedAt: FieldRef<"EnergyBill", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EnergyBill findUnique
+   */
+  export type EnergyBillFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyBill to fetch.
+     */
+    where: EnergyBillWhereUniqueInput
+  }
+
+  /**
+   * EnergyBill findUniqueOrThrow
+   */
+  export type EnergyBillFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyBill to fetch.
+     */
+    where: EnergyBillWhereUniqueInput
+  }
+
+  /**
+   * EnergyBill findFirst
+   */
+  export type EnergyBillFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyBill to fetch.
+     */
+    where?: EnergyBillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyBills to fetch.
+     */
+    orderBy?: EnergyBillOrderByWithRelationInput | EnergyBillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnergyBills.
+     */
+    cursor?: EnergyBillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyBills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyBills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnergyBills.
+     */
+    distinct?: EnergyBillScalarFieldEnum | EnergyBillScalarFieldEnum[]
+  }
+
+  /**
+   * EnergyBill findFirstOrThrow
+   */
+  export type EnergyBillFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyBill to fetch.
+     */
+    where?: EnergyBillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyBills to fetch.
+     */
+    orderBy?: EnergyBillOrderByWithRelationInput | EnergyBillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnergyBills.
+     */
+    cursor?: EnergyBillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyBills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyBills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnergyBills.
+     */
+    distinct?: EnergyBillScalarFieldEnum | EnergyBillScalarFieldEnum[]
+  }
+
+  /**
+   * EnergyBill findMany
+   */
+  export type EnergyBillFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyBills to fetch.
+     */
+    where?: EnergyBillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyBills to fetch.
+     */
+    orderBy?: EnergyBillOrderByWithRelationInput | EnergyBillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EnergyBills.
+     */
+    cursor?: EnergyBillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyBills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyBills.
+     */
+    skip?: number
+    distinct?: EnergyBillScalarFieldEnum | EnergyBillScalarFieldEnum[]
+  }
+
+  /**
+   * EnergyBill create
+   */
+  export type EnergyBillCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EnergyBill.
+     */
+    data: XOR<EnergyBillCreateInput, EnergyBillUncheckedCreateInput>
+  }
+
+  /**
+   * EnergyBill createMany
+   */
+  export type EnergyBillCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EnergyBills.
+     */
+    data: EnergyBillCreateManyInput | EnergyBillCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EnergyBill createManyAndReturn
+   */
+  export type EnergyBillCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * The data used to create many EnergyBills.
+     */
+    data: EnergyBillCreateManyInput | EnergyBillCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnergyBill update
+   */
+  export type EnergyBillUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EnergyBill.
+     */
+    data: XOR<EnergyBillUpdateInput, EnergyBillUncheckedUpdateInput>
+    /**
+     * Choose, which EnergyBill to update.
+     */
+    where: EnergyBillWhereUniqueInput
+  }
+
+  /**
+   * EnergyBill updateMany
+   */
+  export type EnergyBillUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EnergyBills.
+     */
+    data: XOR<EnergyBillUpdateManyMutationInput, EnergyBillUncheckedUpdateManyInput>
+    /**
+     * Filter which EnergyBills to update
+     */
+    where?: EnergyBillWhereInput
+    /**
+     * Limit how many EnergyBills to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnergyBill updateManyAndReturn
+   */
+  export type EnergyBillUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * The data used to update EnergyBills.
+     */
+    data: XOR<EnergyBillUpdateManyMutationInput, EnergyBillUncheckedUpdateManyInput>
+    /**
+     * Filter which EnergyBills to update
+     */
+    where?: EnergyBillWhereInput
+    /**
+     * Limit how many EnergyBills to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnergyBill upsert
+   */
+  export type EnergyBillUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EnergyBill to update in case it exists.
+     */
+    where: EnergyBillWhereUniqueInput
+    /**
+     * In case the EnergyBill found by the `where` argument doesn't exist, create a new EnergyBill with this data.
+     */
+    create: XOR<EnergyBillCreateInput, EnergyBillUncheckedCreateInput>
+    /**
+     * In case the EnergyBill was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EnergyBillUpdateInput, EnergyBillUncheckedUpdateInput>
+  }
+
+  /**
+   * EnergyBill delete
+   */
+  export type EnergyBillDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    /**
+     * Filter which EnergyBill to delete.
+     */
+    where: EnergyBillWhereUniqueInput
+  }
+
+  /**
+   * EnergyBill deleteMany
+   */
+  export type EnergyBillDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnergyBills to delete
+     */
+    where?: EnergyBillWhereInput
+    /**
+     * Limit how many EnergyBills to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnergyBill without action
+   */
+  export type EnergyBillDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -13605,6 +20535,30 @@ export namespace Prisma {
   export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
 
 
+  export const PlantScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    name: 'name',
+    provider: 'provider',
+    providerStatus: 'providerStatus',
+    providerPlantId: 'providerPlantId',
+    installedPowerKw: 'installedPowerKw',
+    totalEnergyKwh: 'totalEnergyKwh',
+    address: 'address',
+    city: 'city',
+    state: 'state',
+    timezone: 'timezone',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    providerMetadata: 'providerMetadata',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type PlantScalarFieldEnum = (typeof PlantScalarFieldEnum)[keyof typeof PlantScalarFieldEnum]
+
+
   export const InverterScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -13613,7 +20567,27 @@ export namespace Prisma {
     providerApiKey: 'providerApiKey',
     providerApiSecret: 'providerApiSecret',
     providerUrl: 'providerUrl',
+    providerPlantId: 'providerPlantId',
+    providerPlantName: 'providerPlantName',
+    providerStatus: 'providerStatus',
+    providerConfig: 'providerConfig',
+    providerMetadata: 'providerMetadata',
+    serialNumber: 'serialNumber',
+    manufacturer: 'manufacturer',
+    modelName: 'modelName',
+    firmwareVersion: 'firmwareVersion',
+    nominalPowerKw: 'nominalPowerKw',
+    timezone: 'timezone',
+    syncEnabled: 'syncEnabled',
+    syncIntervalMinutes: 'syncIntervalMinutes',
+    lastSyncAt: 'lastSyncAt',
+    lastSuccessfulSyncAt: 'lastSuccessfulSyncAt',
+    lastSyncStatus: 'lastSyncStatus',
+    lastSyncError: 'lastSyncError',
+    installedAt: 'installedAt',
+    commissionedAt: 'commissionedAt',
     clientId: 'clientId',
+    plantId: 'plantId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -13622,11 +20596,56 @@ export namespace Prisma {
   export type InverterScalarFieldEnum = (typeof InverterScalarFieldEnum)[keyof typeof InverterScalarFieldEnum]
 
 
+  export const ConsumerUnitScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    name: 'name',
+    isGenerator: 'isGenerator',
+    isConsumer: 'isConsumer',
+    accountHolder: 'accountHolder',
+    accountNumber: 'accountNumber',
+    clientNumber: 'clientNumber',
+    installationNumber: 'installationNumber',
+    distributor: 'distributor',
+    address: 'address',
+    city: 'city',
+    state: 'state',
+    status: 'status',
+    plantId: 'plantId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type ConsumerUnitScalarFieldEnum = (typeof ConsumerUnitScalarFieldEnum)[keyof typeof ConsumerUnitScalarFieldEnum]
+
+
+  export const CreditAllocationScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    plantId: 'plantId',
+    fromId: 'fromId',
+    toId: 'toId',
+    allocationPercentage: 'allocationPercentage',
+    startsAt: 'startsAt',
+    endsAt: 'endsAt',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type CreditAllocationScalarFieldEnum = (typeof CreditAllocationScalarFieldEnum)[keyof typeof CreditAllocationScalarFieldEnum]
+
+
   export const GenerationUnitScalarFieldEnum: {
     id: 'id',
     power: 'power',
     energy: 'energy',
     generationUnitType: 'generationUnitType',
+    source: 'source',
+    providerRecordId: 'providerRecordId',
+    rawPayload: 'rawPayload',
     timestamp: 'timestamp',
     inverterId: 'inverterId',
     createdAt: 'createdAt',
@@ -13729,12 +20748,93 @@ export namespace Prisma {
   export type ConsumptionScalarFieldEnum = (typeof ConsumptionScalarFieldEnum)[keyof typeof ConsumptionScalarFieldEnum]
 
 
+  export const EnergyBillScalarFieldEnum: {
+    id: 'id',
+    billFileUrl: 'billFileUrl',
+    rawBillFileKey: 'rawBillFileKey',
+    rawBillFileSize: 'rawBillFileSize',
+    clientId: 'clientId',
+    plantId: 'plantId',
+    consumerUnitId: 'consumerUnitId',
+    competenceDate: 'competenceDate',
+    referenceMonth: 'referenceMonth',
+    referenceYear: 'referenceYear',
+    accountHolder: 'accountHolder',
+    accountNumber: 'accountNumber',
+    clientNumber: 'clientNumber',
+    instalationNumber: 'instalationNumber',
+    distributor: 'distributor',
+    consumerClass: 'consumerClass',
+    tariffModality: 'tariffModality',
+    connectionType: 'connectionType',
+    tariffPeriod: 'tariffPeriod',
+    billingDays: 'billingDays',
+    readingPeriodFrom: 'readingPeriodFrom',
+    readingPeriodTo: 'readingPeriodTo',
+    creditExpiryDate: 'creditExpiryDate',
+    monitoredGenerationKwh: 'monitoredGenerationKwh',
+    billedConsumptionKwh: 'billedConsumptionKwh',
+    consumptionKwh: 'consumptionKwh',
+    realConsumptionKwh: 'realConsumptionKwh',
+    injectedEnergyKwh: 'injectedEnergyKwh',
+    compensatedEnergyKwh: 'compensatedEnergyKwh',
+    previousCreditsKwh: 'previousCreditsKwh',
+    currentCreditsKwh: 'currentCreditsKwh',
+    expectedGenerationKwh: 'expectedGenerationKwh',
+    generationEfficiency: 'generationEfficiency',
+    meterReadingCurrent: 'meterReadingCurrent',
+    meterReadingPrevious: 'meterReadingPrevious',
+    demandContractedKw: 'demandContractedKw',
+    demandMeasuredKw: 'demandMeasuredKw',
+    totalBillValue: 'totalBillValue',
+    totalAmount: 'totalAmount',
+    energyCost: 'energyCost',
+    availabilityCost: 'availabilityCost',
+    publicLightingCost: 'publicLightingCost',
+    icmsCost: 'icmsCost',
+    pisCost: 'pisCost',
+    cofinsCost: 'cofinsCost',
+    pisCofinsCost: 'pisCofinsCost',
+    tariffPerKwh: 'tariffPerKwh',
+    tariffTeValue: 'tariffTeValue',
+    tariffTusdValue: 'tariffTusdValue',
+    tariffFlag: 'tariffFlag',
+    tariffFlagCost: 'tariffFlagCost',
+    sectoralCharges: 'sectoralCharges',
+    fineAmount: 'fineAmount',
+    interestAmount: 'interestAmount',
+    otherCharges: 'otherCharges',
+    estimatedSavings: 'estimatedSavings',
+    aiAnalysis: 'aiAnalysis',
+    aiExplanations: 'aiExplanations',
+    aiRecommendations: 'aiRecommendations',
+    alerts: 'alerts',
+    extraCharges: 'extraCharges',
+    billingItems: 'billingItems',
+    creditSummary: 'creditSummary',
+    billScore: 'billScore',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EnergyBillScalarFieldEnum = (typeof EnergyBillScalarFieldEnum)[keyof typeof EnergyBillScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -13751,6 +20851,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -13822,16 +20931,30 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'IndicationStatus'
+   * Reference to a field of type 'Decimal'
    */
-  export type EnumIndicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IndicationStatus'>
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
   /**
-   * Reference to a field of type 'IndicationStatus[]'
+   * Reference to a field of type 'Decimal[]'
    */
-  export type ListEnumIndicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IndicationStatus[]'>
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -13846,6 +20969,34 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'GenerationUnitType'
+   */
+  export type EnumGenerationUnitTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GenerationUnitType'>
+    
+
+
+  /**
+   * Reference to a field of type 'GenerationUnitType[]'
+   */
+  export type ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GenerationUnitType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'IndicationStatus'
+   */
+  export type EnumIndicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IndicationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'IndicationStatus[]'
+   */
+  export type ListEnumIndicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IndicationStatus[]'>
     
 
 
@@ -13988,13 +21139,17 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Client"> | Date | string
     updatedAt?: DateTimeFilter<"Client"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Client"> | Date | string | null
-    inverters?: InverterListRelationFilter
     users?: UserListRelationFilter
     consumptions?: ConsumptionListRelationFilter
     indicationsAsReferrer?: IndicationListRelationFilter
     indicationsAsReferred?: IndicationListRelationFilter
     transactions?: TransactionListRelationFilter
     offerRedemptions?: OfferRedemptionListRelationFilter
+    energyBills?: EnergyBillListRelationFilter
+    plants?: PlantListRelationFilter
+    inverters?: InverterListRelationFilter
+    consumerUnits?: ConsumerUnitListRelationFilter
+    creditAllocations?: CreditAllocationListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
@@ -14012,13 +21167,17 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    inverters?: InverterOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
     consumptions?: ConsumptionOrderByRelationAggregateInput
     indicationsAsReferrer?: IndicationOrderByRelationAggregateInput
     indicationsAsReferred?: IndicationOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     offerRedemptions?: OfferRedemptionOrderByRelationAggregateInput
+    energyBills?: EnergyBillOrderByRelationAggregateInput
+    plants?: PlantOrderByRelationAggregateInput
+    inverters?: InverterOrderByRelationAggregateInput
+    consumerUnits?: ConsumerUnitOrderByRelationAggregateInput
+    creditAllocations?: CreditAllocationOrderByRelationAggregateInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
@@ -14039,13 +21198,17 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Client"> | Date | string
     updatedAt?: DateTimeFilter<"Client"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Client"> | Date | string | null
-    inverters?: InverterListRelationFilter
     users?: UserListRelationFilter
     consumptions?: ConsumptionListRelationFilter
     indicationsAsReferrer?: IndicationListRelationFilter
     indicationsAsReferred?: IndicationListRelationFilter
     transactions?: TransactionListRelationFilter
     offerRedemptions?: OfferRedemptionListRelationFilter
+    energyBills?: EnergyBillListRelationFilter
+    plants?: PlantListRelationFilter
+    inverters?: InverterListRelationFilter
+    consumerUnits?: ConsumerUnitListRelationFilter
+    creditAllocations?: CreditAllocationListRelationFilter
   }, "id" | "email" | "cpfCnpj" | "indicationCode">
 
   export type ClientOrderByWithAggregationInput = {
@@ -14090,6 +21253,140 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Client"> | Date | string | null
   }
 
+  export type PlantWhereInput = {
+    AND?: PlantWhereInput | PlantWhereInput[]
+    OR?: PlantWhereInput[]
+    NOT?: PlantWhereInput | PlantWhereInput[]
+    id?: StringFilter<"Plant"> | string
+    clientId?: StringFilter<"Plant"> | string
+    name?: StringNullableFilter<"Plant"> | string | null
+    provider?: StringNullableFilter<"Plant"> | string | null
+    providerStatus?: StringNullableFilter<"Plant"> | string | null
+    providerPlantId?: StringNullableFilter<"Plant"> | string | null
+    installedPowerKw?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    address?: StringNullableFilter<"Plant"> | string | null
+    city?: StringNullableFilter<"Plant"> | string | null
+    state?: StringNullableFilter<"Plant"> | string | null
+    timezone?: StringNullableFilter<"Plant"> | string | null
+    latitude?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    longitude?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: JsonNullableFilter<"Plant">
+    createdAt?: DateTimeFilter<"Plant"> | Date | string
+    updatedAt?: DateTimeFilter<"Plant"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    inverters?: InverterListRelationFilter
+    consumerUnits?: ConsumerUnitListRelationFilter
+    creditAllocations?: CreditAllocationListRelationFilter
+    energyBills?: EnergyBillListRelationFilter
+  }
+
+  export type PlantOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    provider?: SortOrderInput | SortOrder
+    providerStatus?: SortOrderInput | SortOrder
+    providerPlantId?: SortOrderInput | SortOrder
+    installedPowerKw?: SortOrderInput | SortOrder
+    totalEnergyKwh?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    timezone?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    providerMetadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+    inverters?: InverterOrderByRelationAggregateInput
+    consumerUnits?: ConsumerUnitOrderByRelationAggregateInput
+    creditAllocations?: CreditAllocationOrderByRelationAggregateInput
+    energyBills?: EnergyBillOrderByRelationAggregateInput
+  }
+
+  export type PlantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PlantWhereInput | PlantWhereInput[]
+    OR?: PlantWhereInput[]
+    NOT?: PlantWhereInput | PlantWhereInput[]
+    clientId?: StringFilter<"Plant"> | string
+    name?: StringNullableFilter<"Plant"> | string | null
+    provider?: StringNullableFilter<"Plant"> | string | null
+    providerStatus?: StringNullableFilter<"Plant"> | string | null
+    providerPlantId?: StringNullableFilter<"Plant"> | string | null
+    installedPowerKw?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    address?: StringNullableFilter<"Plant"> | string | null
+    city?: StringNullableFilter<"Plant"> | string | null
+    state?: StringNullableFilter<"Plant"> | string | null
+    timezone?: StringNullableFilter<"Plant"> | string | null
+    latitude?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    longitude?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: JsonNullableFilter<"Plant">
+    createdAt?: DateTimeFilter<"Plant"> | Date | string
+    updatedAt?: DateTimeFilter<"Plant"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    inverters?: InverterListRelationFilter
+    consumerUnits?: ConsumerUnitListRelationFilter
+    creditAllocations?: CreditAllocationListRelationFilter
+    energyBills?: EnergyBillListRelationFilter
+  }, "id">
+
+  export type PlantOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    provider?: SortOrderInput | SortOrder
+    providerStatus?: SortOrderInput | SortOrder
+    providerPlantId?: SortOrderInput | SortOrder
+    installedPowerKw?: SortOrderInput | SortOrder
+    totalEnergyKwh?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    timezone?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    providerMetadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: PlantCountOrderByAggregateInput
+    _avg?: PlantAvgOrderByAggregateInput
+    _max?: PlantMaxOrderByAggregateInput
+    _min?: PlantMinOrderByAggregateInput
+    _sum?: PlantSumOrderByAggregateInput
+  }
+
+  export type PlantScalarWhereWithAggregatesInput = {
+    AND?: PlantScalarWhereWithAggregatesInput | PlantScalarWhereWithAggregatesInput[]
+    OR?: PlantScalarWhereWithAggregatesInput[]
+    NOT?: PlantScalarWhereWithAggregatesInput | PlantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Plant"> | string
+    clientId?: StringWithAggregatesFilter<"Plant"> | string
+    name?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    provider?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    providerStatus?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    providerPlantId?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    installedPowerKw?: DecimalNullableWithAggregatesFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: DecimalNullableWithAggregatesFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    address?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    city?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    state?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    timezone?: StringNullableWithAggregatesFilter<"Plant"> | string | null
+    latitude?: DecimalNullableWithAggregatesFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    longitude?: DecimalNullableWithAggregatesFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: JsonNullableWithAggregatesFilter<"Plant">
+    createdAt?: DateTimeWithAggregatesFilter<"Plant"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Plant"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Plant"> | Date | string | null
+  }
+
   export type InverterWhereInput = {
     AND?: InverterWhereInput | InverterWhereInput[]
     OR?: InverterWhereInput[]
@@ -14101,11 +21398,32 @@ export namespace Prisma {
     providerApiKey?: StringNullableFilter<"Inverter"> | string | null
     providerApiSecret?: StringNullableFilter<"Inverter"> | string | null
     providerUrl?: StringNullableFilter<"Inverter"> | string | null
+    providerPlantId?: StringNullableFilter<"Inverter"> | string | null
+    providerPlantName?: StringNullableFilter<"Inverter"> | string | null
+    providerStatus?: StringNullableFilter<"Inverter"> | string | null
+    providerConfig?: JsonNullableFilter<"Inverter">
+    providerMetadata?: JsonNullableFilter<"Inverter">
+    serialNumber?: StringNullableFilter<"Inverter"> | string | null
+    manufacturer?: StringNullableFilter<"Inverter"> | string | null
+    modelName?: StringNullableFilter<"Inverter"> | string | null
+    firmwareVersion?: StringNullableFilter<"Inverter"> | string | null
+    nominalPowerKw?: DecimalNullableFilter<"Inverter"> | Decimal | DecimalJsLike | number | string | null
+    timezone?: StringNullableFilter<"Inverter"> | string | null
+    syncEnabled?: BoolFilter<"Inverter"> | boolean
+    syncIntervalMinutes?: IntNullableFilter<"Inverter"> | number | null
+    lastSyncAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    lastSuccessfulSyncAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    lastSyncStatus?: StringNullableFilter<"Inverter"> | string | null
+    lastSyncError?: StringNullableFilter<"Inverter"> | string | null
+    installedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    commissionedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
     clientId?: StringFilter<"Inverter"> | string
+    plantId?: StringNullableFilter<"Inverter"> | string | null
     createdAt?: DateTimeFilter<"Inverter"> | Date | string
     updatedAt?: DateTimeFilter<"Inverter"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantNullableScalarRelationFilter, PlantWhereInput> | null
     generationUnits?: GenerationUnitListRelationFilter
   }
 
@@ -14117,11 +21435,32 @@ export namespace Prisma {
     providerApiKey?: SortOrderInput | SortOrder
     providerApiSecret?: SortOrderInput | SortOrder
     providerUrl?: SortOrderInput | SortOrder
+    providerPlantId?: SortOrderInput | SortOrder
+    providerPlantName?: SortOrderInput | SortOrder
+    providerStatus?: SortOrderInput | SortOrder
+    providerConfig?: SortOrderInput | SortOrder
+    providerMetadata?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
+    manufacturer?: SortOrderInput | SortOrder
+    modelName?: SortOrderInput | SortOrder
+    firmwareVersion?: SortOrderInput | SortOrder
+    nominalPowerKw?: SortOrderInput | SortOrder
+    timezone?: SortOrderInput | SortOrder
+    syncEnabled?: SortOrder
+    syncIntervalMinutes?: SortOrderInput | SortOrder
+    lastSyncAt?: SortOrderInput | SortOrder
+    lastSuccessfulSyncAt?: SortOrderInput | SortOrder
+    lastSyncStatus?: SortOrderInput | SortOrder
+    lastSyncError?: SortOrderInput | SortOrder
+    installedAt?: SortOrderInput | SortOrder
+    commissionedAt?: SortOrderInput | SortOrder
     clientId?: SortOrder
+    plantId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
+    plant?: PlantOrderByWithRelationInput
     generationUnits?: GenerationUnitOrderByRelationAggregateInput
   }
 
@@ -14136,11 +21475,32 @@ export namespace Prisma {
     providerApiKey?: StringNullableFilter<"Inverter"> | string | null
     providerApiSecret?: StringNullableFilter<"Inverter"> | string | null
     providerUrl?: StringNullableFilter<"Inverter"> | string | null
+    providerPlantId?: StringNullableFilter<"Inverter"> | string | null
+    providerPlantName?: StringNullableFilter<"Inverter"> | string | null
+    providerStatus?: StringNullableFilter<"Inverter"> | string | null
+    providerConfig?: JsonNullableFilter<"Inverter">
+    providerMetadata?: JsonNullableFilter<"Inverter">
+    serialNumber?: StringNullableFilter<"Inverter"> | string | null
+    manufacturer?: StringNullableFilter<"Inverter"> | string | null
+    modelName?: StringNullableFilter<"Inverter"> | string | null
+    firmwareVersion?: StringNullableFilter<"Inverter"> | string | null
+    nominalPowerKw?: DecimalNullableFilter<"Inverter"> | Decimal | DecimalJsLike | number | string | null
+    timezone?: StringNullableFilter<"Inverter"> | string | null
+    syncEnabled?: BoolFilter<"Inverter"> | boolean
+    syncIntervalMinutes?: IntNullableFilter<"Inverter"> | number | null
+    lastSyncAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    lastSuccessfulSyncAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    lastSyncStatus?: StringNullableFilter<"Inverter"> | string | null
+    lastSyncError?: StringNullableFilter<"Inverter"> | string | null
+    installedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    commissionedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
     clientId?: StringFilter<"Inverter"> | string
+    plantId?: StringNullableFilter<"Inverter"> | string | null
     createdAt?: DateTimeFilter<"Inverter"> | Date | string
     updatedAt?: DateTimeFilter<"Inverter"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantNullableScalarRelationFilter, PlantWhereInput> | null
     generationUnits?: GenerationUnitListRelationFilter
   }, "id">
 
@@ -14152,13 +21512,35 @@ export namespace Prisma {
     providerApiKey?: SortOrderInput | SortOrder
     providerApiSecret?: SortOrderInput | SortOrder
     providerUrl?: SortOrderInput | SortOrder
+    providerPlantId?: SortOrderInput | SortOrder
+    providerPlantName?: SortOrderInput | SortOrder
+    providerStatus?: SortOrderInput | SortOrder
+    providerConfig?: SortOrderInput | SortOrder
+    providerMetadata?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
+    manufacturer?: SortOrderInput | SortOrder
+    modelName?: SortOrderInput | SortOrder
+    firmwareVersion?: SortOrderInput | SortOrder
+    nominalPowerKw?: SortOrderInput | SortOrder
+    timezone?: SortOrderInput | SortOrder
+    syncEnabled?: SortOrder
+    syncIntervalMinutes?: SortOrderInput | SortOrder
+    lastSyncAt?: SortOrderInput | SortOrder
+    lastSuccessfulSyncAt?: SortOrderInput | SortOrder
+    lastSyncStatus?: SortOrderInput | SortOrder
+    lastSyncError?: SortOrderInput | SortOrder
+    installedAt?: SortOrderInput | SortOrder
+    commissionedAt?: SortOrderInput | SortOrder
     clientId?: SortOrder
+    plantId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     _count?: InverterCountOrderByAggregateInput
+    _avg?: InverterAvgOrderByAggregateInput
     _max?: InverterMaxOrderByAggregateInput
     _min?: InverterMinOrderByAggregateInput
+    _sum?: InverterSumOrderByAggregateInput
   }
 
   export type InverterScalarWhereWithAggregatesInput = {
@@ -14172,10 +21554,263 @@ export namespace Prisma {
     providerApiKey?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
     providerApiSecret?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
     providerUrl?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    providerPlantId?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    providerPlantName?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    providerStatus?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    providerConfig?: JsonNullableWithAggregatesFilter<"Inverter">
+    providerMetadata?: JsonNullableWithAggregatesFilter<"Inverter">
+    serialNumber?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    manufacturer?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    modelName?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    firmwareVersion?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    nominalPowerKw?: DecimalNullableWithAggregatesFilter<"Inverter"> | Decimal | DecimalJsLike | number | string | null
+    timezone?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    syncEnabled?: BoolWithAggregatesFilter<"Inverter"> | boolean
+    syncIntervalMinutes?: IntNullableWithAggregatesFilter<"Inverter"> | number | null
+    lastSyncAt?: DateTimeNullableWithAggregatesFilter<"Inverter"> | Date | string | null
+    lastSuccessfulSyncAt?: DateTimeNullableWithAggregatesFilter<"Inverter"> | Date | string | null
+    lastSyncStatus?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    lastSyncError?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
+    installedAt?: DateTimeNullableWithAggregatesFilter<"Inverter"> | Date | string | null
+    commissionedAt?: DateTimeNullableWithAggregatesFilter<"Inverter"> | Date | string | null
     clientId?: StringWithAggregatesFilter<"Inverter"> | string
+    plantId?: StringNullableWithAggregatesFilter<"Inverter"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Inverter"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Inverter"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Inverter"> | Date | string | null
+  }
+
+  export type ConsumerUnitWhereInput = {
+    AND?: ConsumerUnitWhereInput | ConsumerUnitWhereInput[]
+    OR?: ConsumerUnitWhereInput[]
+    NOT?: ConsumerUnitWhereInput | ConsumerUnitWhereInput[]
+    id?: StringFilter<"ConsumerUnit"> | string
+    clientId?: StringFilter<"ConsumerUnit"> | string
+    name?: StringNullableFilter<"ConsumerUnit"> | string | null
+    isGenerator?: BoolFilter<"ConsumerUnit"> | boolean
+    isConsumer?: BoolFilter<"ConsumerUnit"> | boolean
+    accountHolder?: StringNullableFilter<"ConsumerUnit"> | string | null
+    accountNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    clientNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    installationNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    distributor?: StringNullableFilter<"ConsumerUnit"> | string | null
+    address?: StringNullableFilter<"ConsumerUnit"> | string | null
+    city?: StringNullableFilter<"ConsumerUnit"> | string | null
+    state?: StringNullableFilter<"ConsumerUnit"> | string | null
+    status?: StringNullableFilter<"ConsumerUnit"> | string | null
+    plantId?: StringFilter<"ConsumerUnit"> | string
+    createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
+    energyBills?: EnergyBillListRelationFilter
+    allocationsFrom?: CreditAllocationListRelationFilter
+    allocationsTo?: CreditAllocationListRelationFilter
+  }
+
+  export type ConsumerUnitOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    isGenerator?: SortOrder
+    isConsumer?: SortOrder
+    accountHolder?: SortOrderInput | SortOrder
+    accountNumber?: SortOrderInput | SortOrder
+    clientNumber?: SortOrderInput | SortOrder
+    installationNumber?: SortOrderInput | SortOrder
+    distributor?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    plantId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+    plant?: PlantOrderByWithRelationInput
+    energyBills?: EnergyBillOrderByRelationAggregateInput
+    allocationsFrom?: CreditAllocationOrderByRelationAggregateInput
+    allocationsTo?: CreditAllocationOrderByRelationAggregateInput
+  }
+
+  export type ConsumerUnitWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ConsumerUnitWhereInput | ConsumerUnitWhereInput[]
+    OR?: ConsumerUnitWhereInput[]
+    NOT?: ConsumerUnitWhereInput | ConsumerUnitWhereInput[]
+    clientId?: StringFilter<"ConsumerUnit"> | string
+    name?: StringNullableFilter<"ConsumerUnit"> | string | null
+    isGenerator?: BoolFilter<"ConsumerUnit"> | boolean
+    isConsumer?: BoolFilter<"ConsumerUnit"> | boolean
+    accountHolder?: StringNullableFilter<"ConsumerUnit"> | string | null
+    accountNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    clientNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    installationNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    distributor?: StringNullableFilter<"ConsumerUnit"> | string | null
+    address?: StringNullableFilter<"ConsumerUnit"> | string | null
+    city?: StringNullableFilter<"ConsumerUnit"> | string | null
+    state?: StringNullableFilter<"ConsumerUnit"> | string | null
+    status?: StringNullableFilter<"ConsumerUnit"> | string | null
+    plantId?: StringFilter<"ConsumerUnit"> | string
+    createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
+    energyBills?: EnergyBillListRelationFilter
+    allocationsFrom?: CreditAllocationListRelationFilter
+    allocationsTo?: CreditAllocationListRelationFilter
+  }, "id">
+
+  export type ConsumerUnitOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    isGenerator?: SortOrder
+    isConsumer?: SortOrder
+    accountHolder?: SortOrderInput | SortOrder
+    accountNumber?: SortOrderInput | SortOrder
+    clientNumber?: SortOrderInput | SortOrder
+    installationNumber?: SortOrderInput | SortOrder
+    distributor?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    plantId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: ConsumerUnitCountOrderByAggregateInput
+    _max?: ConsumerUnitMaxOrderByAggregateInput
+    _min?: ConsumerUnitMinOrderByAggregateInput
+  }
+
+  export type ConsumerUnitScalarWhereWithAggregatesInput = {
+    AND?: ConsumerUnitScalarWhereWithAggregatesInput | ConsumerUnitScalarWhereWithAggregatesInput[]
+    OR?: ConsumerUnitScalarWhereWithAggregatesInput[]
+    NOT?: ConsumerUnitScalarWhereWithAggregatesInput | ConsumerUnitScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ConsumerUnit"> | string
+    clientId?: StringWithAggregatesFilter<"ConsumerUnit"> | string
+    name?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    isGenerator?: BoolWithAggregatesFilter<"ConsumerUnit"> | boolean
+    isConsumer?: BoolWithAggregatesFilter<"ConsumerUnit"> | boolean
+    accountHolder?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    accountNumber?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    clientNumber?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    installationNumber?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    distributor?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    address?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    city?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    state?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    status?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    plantId?: StringWithAggregatesFilter<"ConsumerUnit"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ConsumerUnit"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ConsumerUnit"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"ConsumerUnit"> | Date | string | null
+  }
+
+  export type CreditAllocationWhereInput = {
+    AND?: CreditAllocationWhereInput | CreditAllocationWhereInput[]
+    OR?: CreditAllocationWhereInput[]
+    NOT?: CreditAllocationWhereInput | CreditAllocationWhereInput[]
+    id?: StringFilter<"CreditAllocation"> | string
+    clientId?: StringFilter<"CreditAllocation"> | string
+    plantId?: StringFilter<"CreditAllocation"> | string
+    fromId?: StringFilter<"CreditAllocation"> | string
+    toId?: StringFilter<"CreditAllocation"> | string
+    allocationPercentage?: DecimalFilter<"CreditAllocation"> | Decimal | DecimalJsLike | number | string
+    startsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    endsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    isActive?: BoolFilter<"CreditAllocation"> | boolean
+    createdAt?: DateTimeFilter<"CreditAllocation"> | Date | string
+    updatedAt?: DateTimeFilter<"CreditAllocation"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
+    from?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    to?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+  }
+
+  export type CreditAllocationOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    fromId?: SortOrder
+    toId?: SortOrder
+    allocationPercentage?: SortOrder
+    startsAt?: SortOrderInput | SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+    plant?: PlantOrderByWithRelationInput
+    from?: ConsumerUnitOrderByWithRelationInput
+    to?: ConsumerUnitOrderByWithRelationInput
+  }
+
+  export type CreditAllocationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CreditAllocationWhereInput | CreditAllocationWhereInput[]
+    OR?: CreditAllocationWhereInput[]
+    NOT?: CreditAllocationWhereInput | CreditAllocationWhereInput[]
+    clientId?: StringFilter<"CreditAllocation"> | string
+    plantId?: StringFilter<"CreditAllocation"> | string
+    fromId?: StringFilter<"CreditAllocation"> | string
+    toId?: StringFilter<"CreditAllocation"> | string
+    allocationPercentage?: DecimalFilter<"CreditAllocation"> | Decimal | DecimalJsLike | number | string
+    startsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    endsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    isActive?: BoolFilter<"CreditAllocation"> | boolean
+    createdAt?: DateTimeFilter<"CreditAllocation"> | Date | string
+    updatedAt?: DateTimeFilter<"CreditAllocation"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
+    from?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    to?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+  }, "id">
+
+  export type CreditAllocationOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    fromId?: SortOrder
+    toId?: SortOrder
+    allocationPercentage?: SortOrder
+    startsAt?: SortOrderInput | SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: CreditAllocationCountOrderByAggregateInput
+    _avg?: CreditAllocationAvgOrderByAggregateInput
+    _max?: CreditAllocationMaxOrderByAggregateInput
+    _min?: CreditAllocationMinOrderByAggregateInput
+    _sum?: CreditAllocationSumOrderByAggregateInput
+  }
+
+  export type CreditAllocationScalarWhereWithAggregatesInput = {
+    AND?: CreditAllocationScalarWhereWithAggregatesInput | CreditAllocationScalarWhereWithAggregatesInput[]
+    OR?: CreditAllocationScalarWhereWithAggregatesInput[]
+    NOT?: CreditAllocationScalarWhereWithAggregatesInput | CreditAllocationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CreditAllocation"> | string
+    clientId?: StringWithAggregatesFilter<"CreditAllocation"> | string
+    plantId?: StringWithAggregatesFilter<"CreditAllocation"> | string
+    fromId?: StringWithAggregatesFilter<"CreditAllocation"> | string
+    toId?: StringWithAggregatesFilter<"CreditAllocation"> | string
+    allocationPercentage?: DecimalWithAggregatesFilter<"CreditAllocation"> | Decimal | DecimalJsLike | number | string
+    startsAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
+    endsAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
+    isActive?: BoolWithAggregatesFilter<"CreditAllocation"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CreditAllocation"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CreditAllocation"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
   }
 
   export type GenerationUnitWhereInput = {
@@ -14185,7 +21820,10 @@ export namespace Prisma {
     id?: StringFilter<"GenerationUnit"> | string
     power?: FloatFilter<"GenerationUnit"> | number
     energy?: FloatFilter<"GenerationUnit"> | number
-    generationUnitType?: StringFilter<"GenerationUnit"> | string
+    generationUnitType?: EnumGenerationUnitTypeFilter<"GenerationUnit"> | $Enums.GenerationUnitType
+    source?: StringNullableFilter<"GenerationUnit"> | string | null
+    providerRecordId?: StringNullableFilter<"GenerationUnit"> | string | null
+    rawPayload?: JsonNullableFilter<"GenerationUnit">
     timestamp?: DateTimeFilter<"GenerationUnit"> | Date | string
     inverterId?: StringFilter<"GenerationUnit"> | string
     createdAt?: DateTimeFilter<"GenerationUnit"> | Date | string
@@ -14199,6 +21837,9 @@ export namespace Prisma {
     power?: SortOrder
     energy?: SortOrder
     generationUnitType?: SortOrder
+    source?: SortOrderInput | SortOrder
+    providerRecordId?: SortOrderInput | SortOrder
+    rawPayload?: SortOrderInput | SortOrder
     timestamp?: SortOrder
     inverterId?: SortOrder
     createdAt?: SortOrder
@@ -14209,25 +21850,32 @@ export namespace Prisma {
 
   export type GenerationUnitWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    inverterId_generationUnitType_providerRecordId?: GenerationUnitInverterIdGenerationUnitTypeProviderRecordIdCompoundUniqueInput
     AND?: GenerationUnitWhereInput | GenerationUnitWhereInput[]
     OR?: GenerationUnitWhereInput[]
     NOT?: GenerationUnitWhereInput | GenerationUnitWhereInput[]
     power?: FloatFilter<"GenerationUnit"> | number
     energy?: FloatFilter<"GenerationUnit"> | number
-    generationUnitType?: StringFilter<"GenerationUnit"> | string
+    generationUnitType?: EnumGenerationUnitTypeFilter<"GenerationUnit"> | $Enums.GenerationUnitType
+    source?: StringNullableFilter<"GenerationUnit"> | string | null
+    providerRecordId?: StringNullableFilter<"GenerationUnit"> | string | null
+    rawPayload?: JsonNullableFilter<"GenerationUnit">
     timestamp?: DateTimeFilter<"GenerationUnit"> | Date | string
     inverterId?: StringFilter<"GenerationUnit"> | string
     createdAt?: DateTimeFilter<"GenerationUnit"> | Date | string
     updatedAt?: DateTimeFilter<"GenerationUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"GenerationUnit"> | Date | string | null
     inverter?: XOR<InverterScalarRelationFilter, InverterWhereInput>
-  }, "id">
+  }, "id" | "inverterId_generationUnitType_providerRecordId">
 
   export type GenerationUnitOrderByWithAggregationInput = {
     id?: SortOrder
     power?: SortOrder
     energy?: SortOrder
     generationUnitType?: SortOrder
+    source?: SortOrderInput | SortOrder
+    providerRecordId?: SortOrderInput | SortOrder
+    rawPayload?: SortOrderInput | SortOrder
     timestamp?: SortOrder
     inverterId?: SortOrder
     createdAt?: SortOrder
@@ -14247,7 +21895,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"GenerationUnit"> | string
     power?: FloatWithAggregatesFilter<"GenerationUnit"> | number
     energy?: FloatWithAggregatesFilter<"GenerationUnit"> | number
-    generationUnitType?: StringWithAggregatesFilter<"GenerationUnit"> | string
+    generationUnitType?: EnumGenerationUnitTypeWithAggregatesFilter<"GenerationUnit"> | $Enums.GenerationUnitType
+    source?: StringNullableWithAggregatesFilter<"GenerationUnit"> | string | null
+    providerRecordId?: StringNullableWithAggregatesFilter<"GenerationUnit"> | string | null
+    rawPayload?: JsonNullableWithAggregatesFilter<"GenerationUnit">
     timestamp?: DateTimeWithAggregatesFilter<"GenerationUnit"> | Date | string
     inverterId?: StringWithAggregatesFilter<"GenerationUnit"> | string
     createdAt?: DateTimeWithAggregatesFilter<"GenerationUnit"> | Date | string
@@ -14727,6 +22378,380 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Consumption"> | Date | string
   }
 
+  export type EnergyBillWhereInput = {
+    AND?: EnergyBillWhereInput | EnergyBillWhereInput[]
+    OR?: EnergyBillWhereInput[]
+    NOT?: EnergyBillWhereInput | EnergyBillWhereInput[]
+    id?: StringFilter<"EnergyBill"> | string
+    billFileUrl?: StringNullableFilter<"EnergyBill"> | string | null
+    rawBillFileKey?: StringNullableFilter<"EnergyBill"> | string | null
+    rawBillFileSize?: IntNullableFilter<"EnergyBill"> | number | null
+    clientId?: StringFilter<"EnergyBill"> | string
+    plantId?: StringFilter<"EnergyBill"> | string
+    consumerUnitId?: StringFilter<"EnergyBill"> | string
+    competenceDate?: DateTimeFilter<"EnergyBill"> | Date | string
+    referenceMonth?: IntFilter<"EnergyBill"> | number
+    referenceYear?: IntFilter<"EnergyBill"> | number
+    accountHolder?: StringNullableFilter<"EnergyBill"> | string | null
+    accountNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    clientNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    instalationNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    distributor?: StringNullableFilter<"EnergyBill"> | string | null
+    consumerClass?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffModality?: StringNullableFilter<"EnergyBill"> | string | null
+    connectionType?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffPeriod?: StringNullableFilter<"EnergyBill"> | string | null
+    billingDays?: IntNullableFilter<"EnergyBill"> | number | null
+    readingPeriodFrom?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    readingPeriodTo?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    creditExpiryDate?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    monitoredGenerationKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    energyCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffFlagCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: StringNullableFilter<"EnergyBill"> | string | null
+    aiExplanations?: JsonNullableFilter<"EnergyBill">
+    aiRecommendations?: JsonNullableFilter<"EnergyBill">
+    alerts?: JsonNullableFilter<"EnergyBill">
+    extraCharges?: JsonNullableFilter<"EnergyBill">
+    billingItems?: JsonNullableFilter<"EnergyBill">
+    creditSummary?: JsonNullableFilter<"EnergyBill">
+    billScore?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    status?: StringNullableFilter<"EnergyBill"> | string | null
+    createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
+    updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+  }
+
+  export type EnergyBillOrderByWithRelationInput = {
+    id?: SortOrder
+    billFileUrl?: SortOrderInput | SortOrder
+    rawBillFileKey?: SortOrderInput | SortOrder
+    rawBillFileSize?: SortOrderInput | SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    consumerUnitId?: SortOrder
+    competenceDate?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    accountHolder?: SortOrderInput | SortOrder
+    accountNumber?: SortOrderInput | SortOrder
+    clientNumber?: SortOrderInput | SortOrder
+    instalationNumber?: SortOrderInput | SortOrder
+    distributor?: SortOrderInput | SortOrder
+    consumerClass?: SortOrderInput | SortOrder
+    tariffModality?: SortOrderInput | SortOrder
+    connectionType?: SortOrderInput | SortOrder
+    tariffPeriod?: SortOrderInput | SortOrder
+    billingDays?: SortOrderInput | SortOrder
+    readingPeriodFrom?: SortOrderInput | SortOrder
+    readingPeriodTo?: SortOrderInput | SortOrder
+    creditExpiryDate?: SortOrderInput | SortOrder
+    monitoredGenerationKwh?: SortOrderInput | SortOrder
+    billedConsumptionKwh?: SortOrderInput | SortOrder
+    consumptionKwh?: SortOrderInput | SortOrder
+    realConsumptionKwh?: SortOrderInput | SortOrder
+    injectedEnergyKwh?: SortOrderInput | SortOrder
+    compensatedEnergyKwh?: SortOrderInput | SortOrder
+    previousCreditsKwh?: SortOrderInput | SortOrder
+    currentCreditsKwh?: SortOrderInput | SortOrder
+    expectedGenerationKwh?: SortOrderInput | SortOrder
+    generationEfficiency?: SortOrderInput | SortOrder
+    meterReadingCurrent?: SortOrderInput | SortOrder
+    meterReadingPrevious?: SortOrderInput | SortOrder
+    demandContractedKw?: SortOrderInput | SortOrder
+    demandMeasuredKw?: SortOrderInput | SortOrder
+    totalBillValue?: SortOrderInput | SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    energyCost?: SortOrderInput | SortOrder
+    availabilityCost?: SortOrderInput | SortOrder
+    publicLightingCost?: SortOrderInput | SortOrder
+    icmsCost?: SortOrderInput | SortOrder
+    pisCost?: SortOrderInput | SortOrder
+    cofinsCost?: SortOrderInput | SortOrder
+    pisCofinsCost?: SortOrderInput | SortOrder
+    tariffPerKwh?: SortOrderInput | SortOrder
+    tariffTeValue?: SortOrderInput | SortOrder
+    tariffTusdValue?: SortOrderInput | SortOrder
+    tariffFlag?: SortOrderInput | SortOrder
+    tariffFlagCost?: SortOrderInput | SortOrder
+    sectoralCharges?: SortOrderInput | SortOrder
+    fineAmount?: SortOrderInput | SortOrder
+    interestAmount?: SortOrderInput | SortOrder
+    otherCharges?: SortOrderInput | SortOrder
+    estimatedSavings?: SortOrderInput | SortOrder
+    aiAnalysis?: SortOrderInput | SortOrder
+    aiExplanations?: SortOrderInput | SortOrder
+    aiRecommendations?: SortOrderInput | SortOrder
+    alerts?: SortOrderInput | SortOrder
+    extraCharges?: SortOrderInput | SortOrder
+    billingItems?: SortOrderInput | SortOrder
+    creditSummary?: SortOrderInput | SortOrder
+    billScore?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    client?: ClientOrderByWithRelationInput
+    plant?: PlantOrderByWithRelationInput
+    consumerUnit?: ConsumerUnitOrderByWithRelationInput
+  }
+
+  export type EnergyBillWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    consumerUnitId_referenceMonth_referenceYear?: EnergyBillConsumerUnitIdReferenceMonthReferenceYearCompoundUniqueInput
+    AND?: EnergyBillWhereInput | EnergyBillWhereInput[]
+    OR?: EnergyBillWhereInput[]
+    NOT?: EnergyBillWhereInput | EnergyBillWhereInput[]
+    billFileUrl?: StringNullableFilter<"EnergyBill"> | string | null
+    rawBillFileKey?: StringNullableFilter<"EnergyBill"> | string | null
+    rawBillFileSize?: IntNullableFilter<"EnergyBill"> | number | null
+    clientId?: StringFilter<"EnergyBill"> | string
+    plantId?: StringFilter<"EnergyBill"> | string
+    consumerUnitId?: StringFilter<"EnergyBill"> | string
+    competenceDate?: DateTimeFilter<"EnergyBill"> | Date | string
+    referenceMonth?: IntFilter<"EnergyBill"> | number
+    referenceYear?: IntFilter<"EnergyBill"> | number
+    accountHolder?: StringNullableFilter<"EnergyBill"> | string | null
+    accountNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    clientNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    instalationNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    distributor?: StringNullableFilter<"EnergyBill"> | string | null
+    consumerClass?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffModality?: StringNullableFilter<"EnergyBill"> | string | null
+    connectionType?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffPeriod?: StringNullableFilter<"EnergyBill"> | string | null
+    billingDays?: IntNullableFilter<"EnergyBill"> | number | null
+    readingPeriodFrom?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    readingPeriodTo?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    creditExpiryDate?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    monitoredGenerationKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    energyCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffFlagCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: StringNullableFilter<"EnergyBill"> | string | null
+    aiExplanations?: JsonNullableFilter<"EnergyBill">
+    aiRecommendations?: JsonNullableFilter<"EnergyBill">
+    alerts?: JsonNullableFilter<"EnergyBill">
+    extraCharges?: JsonNullableFilter<"EnergyBill">
+    billingItems?: JsonNullableFilter<"EnergyBill">
+    creditSummary?: JsonNullableFilter<"EnergyBill">
+    billScore?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    status?: StringNullableFilter<"EnergyBill"> | string | null
+    createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
+    updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+  }, "id" | "consumerUnitId_referenceMonth_referenceYear">
+
+  export type EnergyBillOrderByWithAggregationInput = {
+    id?: SortOrder
+    billFileUrl?: SortOrderInput | SortOrder
+    rawBillFileKey?: SortOrderInput | SortOrder
+    rawBillFileSize?: SortOrderInput | SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    consumerUnitId?: SortOrder
+    competenceDate?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    accountHolder?: SortOrderInput | SortOrder
+    accountNumber?: SortOrderInput | SortOrder
+    clientNumber?: SortOrderInput | SortOrder
+    instalationNumber?: SortOrderInput | SortOrder
+    distributor?: SortOrderInput | SortOrder
+    consumerClass?: SortOrderInput | SortOrder
+    tariffModality?: SortOrderInput | SortOrder
+    connectionType?: SortOrderInput | SortOrder
+    tariffPeriod?: SortOrderInput | SortOrder
+    billingDays?: SortOrderInput | SortOrder
+    readingPeriodFrom?: SortOrderInput | SortOrder
+    readingPeriodTo?: SortOrderInput | SortOrder
+    creditExpiryDate?: SortOrderInput | SortOrder
+    monitoredGenerationKwh?: SortOrderInput | SortOrder
+    billedConsumptionKwh?: SortOrderInput | SortOrder
+    consumptionKwh?: SortOrderInput | SortOrder
+    realConsumptionKwh?: SortOrderInput | SortOrder
+    injectedEnergyKwh?: SortOrderInput | SortOrder
+    compensatedEnergyKwh?: SortOrderInput | SortOrder
+    previousCreditsKwh?: SortOrderInput | SortOrder
+    currentCreditsKwh?: SortOrderInput | SortOrder
+    expectedGenerationKwh?: SortOrderInput | SortOrder
+    generationEfficiency?: SortOrderInput | SortOrder
+    meterReadingCurrent?: SortOrderInput | SortOrder
+    meterReadingPrevious?: SortOrderInput | SortOrder
+    demandContractedKw?: SortOrderInput | SortOrder
+    demandMeasuredKw?: SortOrderInput | SortOrder
+    totalBillValue?: SortOrderInput | SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    energyCost?: SortOrderInput | SortOrder
+    availabilityCost?: SortOrderInput | SortOrder
+    publicLightingCost?: SortOrderInput | SortOrder
+    icmsCost?: SortOrderInput | SortOrder
+    pisCost?: SortOrderInput | SortOrder
+    cofinsCost?: SortOrderInput | SortOrder
+    pisCofinsCost?: SortOrderInput | SortOrder
+    tariffPerKwh?: SortOrderInput | SortOrder
+    tariffTeValue?: SortOrderInput | SortOrder
+    tariffTusdValue?: SortOrderInput | SortOrder
+    tariffFlag?: SortOrderInput | SortOrder
+    tariffFlagCost?: SortOrderInput | SortOrder
+    sectoralCharges?: SortOrderInput | SortOrder
+    fineAmount?: SortOrderInput | SortOrder
+    interestAmount?: SortOrderInput | SortOrder
+    otherCharges?: SortOrderInput | SortOrder
+    estimatedSavings?: SortOrderInput | SortOrder
+    aiAnalysis?: SortOrderInput | SortOrder
+    aiExplanations?: SortOrderInput | SortOrder
+    aiRecommendations?: SortOrderInput | SortOrder
+    alerts?: SortOrderInput | SortOrder
+    extraCharges?: SortOrderInput | SortOrder
+    billingItems?: SortOrderInput | SortOrder
+    creditSummary?: SortOrderInput | SortOrder
+    billScore?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EnergyBillCountOrderByAggregateInput
+    _avg?: EnergyBillAvgOrderByAggregateInput
+    _max?: EnergyBillMaxOrderByAggregateInput
+    _min?: EnergyBillMinOrderByAggregateInput
+    _sum?: EnergyBillSumOrderByAggregateInput
+  }
+
+  export type EnergyBillScalarWhereWithAggregatesInput = {
+    AND?: EnergyBillScalarWhereWithAggregatesInput | EnergyBillScalarWhereWithAggregatesInput[]
+    OR?: EnergyBillScalarWhereWithAggregatesInput[]
+    NOT?: EnergyBillScalarWhereWithAggregatesInput | EnergyBillScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EnergyBill"> | string
+    billFileUrl?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    rawBillFileKey?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    rawBillFileSize?: IntNullableWithAggregatesFilter<"EnergyBill"> | number | null
+    clientId?: StringWithAggregatesFilter<"EnergyBill"> | string
+    plantId?: StringWithAggregatesFilter<"EnergyBill"> | string
+    consumerUnitId?: StringWithAggregatesFilter<"EnergyBill"> | string
+    competenceDate?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
+    referenceMonth?: IntWithAggregatesFilter<"EnergyBill"> | number
+    referenceYear?: IntWithAggregatesFilter<"EnergyBill"> | number
+    accountHolder?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    accountNumber?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    clientNumber?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    instalationNumber?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    distributor?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    consumerClass?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    tariffModality?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    connectionType?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    tariffPeriod?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    billingDays?: IntNullableWithAggregatesFilter<"EnergyBill"> | number | null
+    readingPeriodFrom?: DateTimeNullableWithAggregatesFilter<"EnergyBill"> | Date | string | null
+    readingPeriodTo?: DateTimeNullableWithAggregatesFilter<"EnergyBill"> | Date | string | null
+    creditExpiryDate?: DateTimeNullableWithAggregatesFilter<"EnergyBill"> | Date | string | null
+    monitoredGenerationKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    energyCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    tariffFlagCost?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    aiExplanations?: JsonNullableWithAggregatesFilter<"EnergyBill">
+    aiRecommendations?: JsonNullableWithAggregatesFilter<"EnergyBill">
+    alerts?: JsonNullableWithAggregatesFilter<"EnergyBill">
+    extraCharges?: JsonNullableWithAggregatesFilter<"EnergyBill">
+    billingItems?: JsonNullableWithAggregatesFilter<"EnergyBill">
+    creditSummary?: JsonNullableWithAggregatesFilter<"EnergyBill">
+    billScore?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    status?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -14846,13 +22871,17 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
@@ -14870,13 +22899,17 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
@@ -14894,13 +22927,17 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
@@ -14918,13 +22955,17 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
@@ -14978,6 +23019,168 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type PlantCreateInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutPlantsInput
+    inverters?: InverterCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
+    inverters?: InverterUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantCreateManyInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type PlantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PlantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type InverterCreateInput = {
     id?: string
     name?: string | null
@@ -14986,10 +23189,30 @@ export namespace Prisma {
     providerApiKey?: string | null
     providerApiSecret?: string | null
     providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutInvertersInput
+    plant?: PlantCreateNestedOneWithoutInvertersInput
     generationUnits?: GenerationUnitCreateNestedManyWithoutInverterInput
   }
 
@@ -15001,7 +23224,27 @@ export namespace Prisma {
     providerApiKey?: string | null
     providerApiSecret?: string | null
     providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
     clientId: string
+    plantId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -15016,10 +23259,30 @@ export namespace Prisma {
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
     providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
     providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutInvertersNestedInput
+    plant?: PlantUpdateOneWithoutInvertersNestedInput
     generationUnits?: GenerationUnitUpdateManyWithoutInverterNestedInput
   }
 
@@ -15031,7 +23294,27 @@ export namespace Prisma {
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
     providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
     providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15046,7 +23329,27 @@ export namespace Prisma {
     providerApiKey?: string | null
     providerApiSecret?: string | null
     providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
     clientId: string
+    plantId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -15060,6 +23363,25 @@ export namespace Prisma {
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
     providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
     providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15073,7 +23395,285 @@ export namespace Prisma {
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
     providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
     providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConsumerUnitCreateInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitCreateManyInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ConsumerUnitUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConsumerUnitUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationCreateInput = {
+    id?: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutCreditAllocationsInput
+    plant: PlantCreateNestedOneWithoutCreditAllocationsInput
+    from: ConsumerUnitCreateNestedOneWithoutAllocationsFromInput
+    to: ConsumerUnitCreateNestedOneWithoutAllocationsToInput
+  }
+
+  export type CreditAllocationUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    plantId: string
+    fromId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    from?: ConsumerUnitUpdateOneRequiredWithoutAllocationsFromNestedInput
+    to?: ConsumerUnitUpdateOneRequiredWithoutAllocationsToNestedInput
+  }
+
+  export type CreditAllocationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationCreateManyInput = {
+    id?: string
+    clientId: string
+    plantId: string
+    fromId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15083,7 +23683,10 @@ export namespace Prisma {
     id?: string
     power: number
     energy: number
-    generationUnitType?: string
+    generationUnitType?: $Enums.GenerationUnitType
+    source?: string | null
+    providerRecordId?: string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15095,7 +23698,10 @@ export namespace Prisma {
     id?: string
     power: number
     energy: number
-    generationUnitType?: string
+    generationUnitType?: $Enums.GenerationUnitType
+    source?: string | null
+    providerRecordId?: string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: Date | string
     inverterId: string
     createdAt?: Date | string
@@ -15107,7 +23713,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     power?: FloatFieldUpdateOperationsInput | number
     energy?: FloatFieldUpdateOperationsInput | number
-    generationUnitType?: StringFieldUpdateOperationsInput | string
+    generationUnitType?: EnumGenerationUnitTypeFieldUpdateOperationsInput | $Enums.GenerationUnitType
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15119,7 +23728,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     power?: FloatFieldUpdateOperationsInput | number
     energy?: FloatFieldUpdateOperationsInput | number
-    generationUnitType?: StringFieldUpdateOperationsInput | string
+    generationUnitType?: EnumGenerationUnitTypeFieldUpdateOperationsInput | $Enums.GenerationUnitType
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     inverterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15131,7 +23743,10 @@ export namespace Prisma {
     id?: string
     power: number
     energy: number
-    generationUnitType?: string
+    generationUnitType?: $Enums.GenerationUnitType
+    source?: string | null
+    providerRecordId?: string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: Date | string
     inverterId: string
     createdAt?: Date | string
@@ -15143,7 +23758,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     power?: FloatFieldUpdateOperationsInput | number
     energy?: FloatFieldUpdateOperationsInput | number
-    generationUnitType?: StringFieldUpdateOperationsInput | string
+    generationUnitType?: EnumGenerationUnitTypeFieldUpdateOperationsInput | $Enums.GenerationUnitType
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15154,7 +23772,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     power?: FloatFieldUpdateOperationsInput | number
     energy?: FloatFieldUpdateOperationsInput | number
-    generationUnitType?: StringFieldUpdateOperationsInput | string
+    generationUnitType?: EnumGenerationUnitTypeFieldUpdateOperationsInput | $Enums.GenerationUnitType
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     inverterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15678,6 +24299,493 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EnergyBillCreateInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutEnergyBillsInput
+    plant: PlantCreateNestedOneWithoutEnergyBillsInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutEnergyBillsInput
+  }
+
+  export type EnergyBillUncheckedCreateInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    clientId: string
+    plantId: string
+    consumerUnitId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyBillUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput
+  }
+
+  export type EnergyBillUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyBillCreateManyInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    clientId: string
+    plantId: string
+    consumerUnitId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyBillUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyBillUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15895,12 +25003,6 @@ export namespace Prisma {
     not?: NestedEnumClientStatusFilter<$PrismaModel> | $Enums.ClientStatus
   }
 
-  export type InverterListRelationFilter = {
-    every?: InverterWhereInput
-    some?: InverterWhereInput
-    none?: InverterWhereInput
-  }
-
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
@@ -15931,8 +25033,34 @@ export namespace Prisma {
     none?: OfferRedemptionWhereInput
   }
 
-  export type InverterOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type EnergyBillListRelationFilter = {
+    every?: EnergyBillWhereInput
+    some?: EnergyBillWhereInput
+    none?: EnergyBillWhereInput
+  }
+
+  export type PlantListRelationFilter = {
+    every?: PlantWhereInput
+    some?: PlantWhereInput
+    none?: PlantWhereInput
+  }
+
+  export type InverterListRelationFilter = {
+    every?: InverterWhereInput
+    some?: InverterWhereInput
+    none?: InverterWhereInput
+  }
+
+  export type ConsumerUnitListRelationFilter = {
+    every?: ConsumerUnitWhereInput
+    some?: ConsumerUnitWhereInput
+    none?: ConsumerUnitWhereInput
+  }
+
+  export type CreditAllocationListRelationFilter = {
+    every?: CreditAllocationWhereInput
+    some?: CreditAllocationWhereInput
+    none?: CreditAllocationWhereInput
   }
 
   export type UserOrderByRelationAggregateInput = {
@@ -15952,6 +25080,26 @@ export namespace Prisma {
   }
 
   export type OfferRedemptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EnergyBillOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlantOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InverterOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConsumerUnitOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CreditAllocationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16058,9 +25206,176 @@ export namespace Prisma {
     _max?: NestedEnumClientStatusFilter<$PrismaModel>
   }
 
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
   export type ClientScalarRelationFilter = {
     is?: ClientWhereInput
     isNot?: ClientWhereInput
+  }
+
+  export type PlantCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrder
+    provider?: SortOrder
+    providerStatus?: SortOrder
+    providerPlantId?: SortOrder
+    installedPowerKw?: SortOrder
+    totalEnergyKwh?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    timezone?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    providerMetadata?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type PlantAvgOrderByAggregateInput = {
+    installedPowerKw?: SortOrder
+    totalEnergyKwh?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type PlantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrder
+    provider?: SortOrder
+    providerStatus?: SortOrder
+    providerPlantId?: SortOrder
+    installedPowerKw?: SortOrder
+    totalEnergyKwh?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    timezone?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type PlantMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrder
+    provider?: SortOrder
+    providerStatus?: SortOrder
+    providerPlantId?: SortOrder
+    installedPowerKw?: SortOrder
+    totalEnergyKwh?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    timezone?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type PlantSumOrderByAggregateInput = {
+    installedPowerKw?: SortOrder
+    totalEnergyKwh?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type PlantNullableScalarRelationFilter = {
+    is?: PlantWhereInput | null
+    isNot?: PlantWhereInput | null
   }
 
   export type GenerationUnitListRelationFilter = {
@@ -16081,10 +25396,35 @@ export namespace Prisma {
     providerApiKey?: SortOrder
     providerApiSecret?: SortOrder
     providerUrl?: SortOrder
+    providerPlantId?: SortOrder
+    providerPlantName?: SortOrder
+    providerStatus?: SortOrder
+    providerConfig?: SortOrder
+    providerMetadata?: SortOrder
+    serialNumber?: SortOrder
+    manufacturer?: SortOrder
+    modelName?: SortOrder
+    firmwareVersion?: SortOrder
+    nominalPowerKw?: SortOrder
+    timezone?: SortOrder
+    syncEnabled?: SortOrder
+    syncIntervalMinutes?: SortOrder
+    lastSyncAt?: SortOrder
+    lastSuccessfulSyncAt?: SortOrder
+    lastSyncStatus?: SortOrder
+    lastSyncError?: SortOrder
+    installedAt?: SortOrder
+    commissionedAt?: SortOrder
     clientId?: SortOrder
+    plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type InverterAvgOrderByAggregateInput = {
+    nominalPowerKw?: SortOrder
+    syncIntervalMinutes?: SortOrder
   }
 
   export type InverterMaxOrderByAggregateInput = {
@@ -16095,7 +25435,25 @@ export namespace Prisma {
     providerApiKey?: SortOrder
     providerApiSecret?: SortOrder
     providerUrl?: SortOrder
+    providerPlantId?: SortOrder
+    providerPlantName?: SortOrder
+    providerStatus?: SortOrder
+    serialNumber?: SortOrder
+    manufacturer?: SortOrder
+    modelName?: SortOrder
+    firmwareVersion?: SortOrder
+    nominalPowerKw?: SortOrder
+    timezone?: SortOrder
+    syncEnabled?: SortOrder
+    syncIntervalMinutes?: SortOrder
+    lastSyncAt?: SortOrder
+    lastSuccessfulSyncAt?: SortOrder
+    lastSyncStatus?: SortOrder
+    lastSyncError?: SortOrder
+    installedAt?: SortOrder
+    commissionedAt?: SortOrder
     clientId?: SortOrder
+    plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -16109,10 +25467,209 @@ export namespace Prisma {
     providerApiKey?: SortOrder
     providerApiSecret?: SortOrder
     providerUrl?: SortOrder
+    providerPlantId?: SortOrder
+    providerPlantName?: SortOrder
+    providerStatus?: SortOrder
+    serialNumber?: SortOrder
+    manufacturer?: SortOrder
+    modelName?: SortOrder
+    firmwareVersion?: SortOrder
+    nominalPowerKw?: SortOrder
+    timezone?: SortOrder
+    syncEnabled?: SortOrder
+    syncIntervalMinutes?: SortOrder
+    lastSyncAt?: SortOrder
+    lastSuccessfulSyncAt?: SortOrder
+    lastSyncStatus?: SortOrder
+    lastSyncError?: SortOrder
+    installedAt?: SortOrder
+    commissionedAt?: SortOrder
     clientId?: SortOrder
+    plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type InverterSumOrderByAggregateInput = {
+    nominalPowerKw?: SortOrder
+    syncIntervalMinutes?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type PlantScalarRelationFilter = {
+    is?: PlantWhereInput
+    isNot?: PlantWhereInput
+  }
+
+  export type ConsumerUnitCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrder
+    isGenerator?: SortOrder
+    isConsumer?: SortOrder
+    accountHolder?: SortOrder
+    accountNumber?: SortOrder
+    clientNumber?: SortOrder
+    installationNumber?: SortOrder
+    distributor?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    status?: SortOrder
+    plantId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ConsumerUnitMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrder
+    isGenerator?: SortOrder
+    isConsumer?: SortOrder
+    accountHolder?: SortOrder
+    accountNumber?: SortOrder
+    clientNumber?: SortOrder
+    installationNumber?: SortOrder
+    distributor?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    status?: SortOrder
+    plantId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ConsumerUnitMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    name?: SortOrder
+    isGenerator?: SortOrder
+    isConsumer?: SortOrder
+    accountHolder?: SortOrder
+    accountNumber?: SortOrder
+    clientNumber?: SortOrder
+    installationNumber?: SortOrder
+    distributor?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    status?: SortOrder
+    plantId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type ConsumerUnitScalarRelationFilter = {
+    is?: ConsumerUnitWhereInput
+    isNot?: ConsumerUnitWhereInput
+  }
+
+  export type CreditAllocationCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    fromId?: SortOrder
+    toId?: SortOrder
+    allocationPercentage?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CreditAllocationAvgOrderByAggregateInput = {
+    allocationPercentage?: SortOrder
+  }
+
+  export type CreditAllocationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    fromId?: SortOrder
+    toId?: SortOrder
+    allocationPercentage?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CreditAllocationMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    fromId?: SortOrder
+    toId?: SortOrder
+    allocationPercentage?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CreditAllocationSumOrderByAggregateInput = {
+    allocationPercentage?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type EnumGenerationUnitTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenerationUnitType | EnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenerationUnitTypeFilter<$PrismaModel> | $Enums.GenerationUnitType
   }
 
   export type InverterScalarRelationFilter = {
@@ -16120,11 +25677,20 @@ export namespace Prisma {
     isNot?: InverterWhereInput
   }
 
+  export type GenerationUnitInverterIdGenerationUnitTypeProviderRecordIdCompoundUniqueInput = {
+    inverterId: string
+    generationUnitType: $Enums.GenerationUnitType
+    providerRecordId: string
+  }
+
   export type GenerationUnitCountOrderByAggregateInput = {
     id?: SortOrder
     power?: SortOrder
     energy?: SortOrder
     generationUnitType?: SortOrder
+    source?: SortOrder
+    providerRecordId?: SortOrder
+    rawPayload?: SortOrder
     timestamp?: SortOrder
     inverterId?: SortOrder
     createdAt?: SortOrder
@@ -16142,6 +25708,8 @@ export namespace Prisma {
     power?: SortOrder
     energy?: SortOrder
     generationUnitType?: SortOrder
+    source?: SortOrder
+    providerRecordId?: SortOrder
     timestamp?: SortOrder
     inverterId?: SortOrder
     createdAt?: SortOrder
@@ -16154,6 +25722,8 @@ export namespace Prisma {
     power?: SortOrder
     energy?: SortOrder
     generationUnitType?: SortOrder
+    source?: SortOrder
+    providerRecordId?: SortOrder
     timestamp?: SortOrder
     inverterId?: SortOrder
     createdAt?: SortOrder
@@ -16164,6 +25734,16 @@ export namespace Prisma {
   export type GenerationUnitSumOrderByAggregateInput = {
     power?: SortOrder
     energy?: SortOrder
+  }
+
+  export type EnumGenerationUnitTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenerationUnitType | EnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenerationUnitTypeWithAggregatesFilter<$PrismaModel> | $Enums.GenerationUnitType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGenerationUnitTypeFilter<$PrismaModel>
+    _max?: NestedEnumGenerationUnitTypeFilter<$PrismaModel>
   }
 
   export type EnumIndicationStatusFilter<$PrismaModel = never> = {
@@ -16516,6 +26096,290 @@ export namespace Prisma {
     totalBillValue?: SortOrder
   }
 
+  export type EnergyBillConsumerUnitIdReferenceMonthReferenceYearCompoundUniqueInput = {
+    consumerUnitId: string
+    referenceMonth: number
+    referenceYear: number
+  }
+
+  export type EnergyBillCountOrderByAggregateInput = {
+    id?: SortOrder
+    billFileUrl?: SortOrder
+    rawBillFileKey?: SortOrder
+    rawBillFileSize?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    consumerUnitId?: SortOrder
+    competenceDate?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    accountHolder?: SortOrder
+    accountNumber?: SortOrder
+    clientNumber?: SortOrder
+    instalationNumber?: SortOrder
+    distributor?: SortOrder
+    consumerClass?: SortOrder
+    tariffModality?: SortOrder
+    connectionType?: SortOrder
+    tariffPeriod?: SortOrder
+    billingDays?: SortOrder
+    readingPeriodFrom?: SortOrder
+    readingPeriodTo?: SortOrder
+    creditExpiryDate?: SortOrder
+    monitoredGenerationKwh?: SortOrder
+    billedConsumptionKwh?: SortOrder
+    consumptionKwh?: SortOrder
+    realConsumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    compensatedEnergyKwh?: SortOrder
+    previousCreditsKwh?: SortOrder
+    currentCreditsKwh?: SortOrder
+    expectedGenerationKwh?: SortOrder
+    generationEfficiency?: SortOrder
+    meterReadingCurrent?: SortOrder
+    meterReadingPrevious?: SortOrder
+    demandContractedKw?: SortOrder
+    demandMeasuredKw?: SortOrder
+    totalBillValue?: SortOrder
+    totalAmount?: SortOrder
+    energyCost?: SortOrder
+    availabilityCost?: SortOrder
+    publicLightingCost?: SortOrder
+    icmsCost?: SortOrder
+    pisCost?: SortOrder
+    cofinsCost?: SortOrder
+    pisCofinsCost?: SortOrder
+    tariffPerKwh?: SortOrder
+    tariffTeValue?: SortOrder
+    tariffTusdValue?: SortOrder
+    tariffFlag?: SortOrder
+    tariffFlagCost?: SortOrder
+    sectoralCharges?: SortOrder
+    fineAmount?: SortOrder
+    interestAmount?: SortOrder
+    otherCharges?: SortOrder
+    estimatedSavings?: SortOrder
+    aiAnalysis?: SortOrder
+    aiExplanations?: SortOrder
+    aiRecommendations?: SortOrder
+    alerts?: SortOrder
+    extraCharges?: SortOrder
+    billingItems?: SortOrder
+    creditSummary?: SortOrder
+    billScore?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnergyBillAvgOrderByAggregateInput = {
+    rawBillFileSize?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    billingDays?: SortOrder
+    monitoredGenerationKwh?: SortOrder
+    billedConsumptionKwh?: SortOrder
+    consumptionKwh?: SortOrder
+    realConsumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    compensatedEnergyKwh?: SortOrder
+    previousCreditsKwh?: SortOrder
+    currentCreditsKwh?: SortOrder
+    expectedGenerationKwh?: SortOrder
+    generationEfficiency?: SortOrder
+    meterReadingCurrent?: SortOrder
+    meterReadingPrevious?: SortOrder
+    demandContractedKw?: SortOrder
+    demandMeasuredKw?: SortOrder
+    totalBillValue?: SortOrder
+    totalAmount?: SortOrder
+    energyCost?: SortOrder
+    availabilityCost?: SortOrder
+    publicLightingCost?: SortOrder
+    icmsCost?: SortOrder
+    pisCost?: SortOrder
+    cofinsCost?: SortOrder
+    pisCofinsCost?: SortOrder
+    tariffPerKwh?: SortOrder
+    tariffTeValue?: SortOrder
+    tariffTusdValue?: SortOrder
+    tariffFlagCost?: SortOrder
+    sectoralCharges?: SortOrder
+    fineAmount?: SortOrder
+    interestAmount?: SortOrder
+    otherCharges?: SortOrder
+    estimatedSavings?: SortOrder
+    billScore?: SortOrder
+  }
+
+  export type EnergyBillMaxOrderByAggregateInput = {
+    id?: SortOrder
+    billFileUrl?: SortOrder
+    rawBillFileKey?: SortOrder
+    rawBillFileSize?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    consumerUnitId?: SortOrder
+    competenceDate?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    accountHolder?: SortOrder
+    accountNumber?: SortOrder
+    clientNumber?: SortOrder
+    instalationNumber?: SortOrder
+    distributor?: SortOrder
+    consumerClass?: SortOrder
+    tariffModality?: SortOrder
+    connectionType?: SortOrder
+    tariffPeriod?: SortOrder
+    billingDays?: SortOrder
+    readingPeriodFrom?: SortOrder
+    readingPeriodTo?: SortOrder
+    creditExpiryDate?: SortOrder
+    monitoredGenerationKwh?: SortOrder
+    billedConsumptionKwh?: SortOrder
+    consumptionKwh?: SortOrder
+    realConsumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    compensatedEnergyKwh?: SortOrder
+    previousCreditsKwh?: SortOrder
+    currentCreditsKwh?: SortOrder
+    expectedGenerationKwh?: SortOrder
+    generationEfficiency?: SortOrder
+    meterReadingCurrent?: SortOrder
+    meterReadingPrevious?: SortOrder
+    demandContractedKw?: SortOrder
+    demandMeasuredKw?: SortOrder
+    totalBillValue?: SortOrder
+    totalAmount?: SortOrder
+    energyCost?: SortOrder
+    availabilityCost?: SortOrder
+    publicLightingCost?: SortOrder
+    icmsCost?: SortOrder
+    pisCost?: SortOrder
+    cofinsCost?: SortOrder
+    pisCofinsCost?: SortOrder
+    tariffPerKwh?: SortOrder
+    tariffTeValue?: SortOrder
+    tariffTusdValue?: SortOrder
+    tariffFlag?: SortOrder
+    tariffFlagCost?: SortOrder
+    sectoralCharges?: SortOrder
+    fineAmount?: SortOrder
+    interestAmount?: SortOrder
+    otherCharges?: SortOrder
+    estimatedSavings?: SortOrder
+    aiAnalysis?: SortOrder
+    billScore?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnergyBillMinOrderByAggregateInput = {
+    id?: SortOrder
+    billFileUrl?: SortOrder
+    rawBillFileKey?: SortOrder
+    rawBillFileSize?: SortOrder
+    clientId?: SortOrder
+    plantId?: SortOrder
+    consumerUnitId?: SortOrder
+    competenceDate?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    accountHolder?: SortOrder
+    accountNumber?: SortOrder
+    clientNumber?: SortOrder
+    instalationNumber?: SortOrder
+    distributor?: SortOrder
+    consumerClass?: SortOrder
+    tariffModality?: SortOrder
+    connectionType?: SortOrder
+    tariffPeriod?: SortOrder
+    billingDays?: SortOrder
+    readingPeriodFrom?: SortOrder
+    readingPeriodTo?: SortOrder
+    creditExpiryDate?: SortOrder
+    monitoredGenerationKwh?: SortOrder
+    billedConsumptionKwh?: SortOrder
+    consumptionKwh?: SortOrder
+    realConsumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    compensatedEnergyKwh?: SortOrder
+    previousCreditsKwh?: SortOrder
+    currentCreditsKwh?: SortOrder
+    expectedGenerationKwh?: SortOrder
+    generationEfficiency?: SortOrder
+    meterReadingCurrent?: SortOrder
+    meterReadingPrevious?: SortOrder
+    demandContractedKw?: SortOrder
+    demandMeasuredKw?: SortOrder
+    totalBillValue?: SortOrder
+    totalAmount?: SortOrder
+    energyCost?: SortOrder
+    availabilityCost?: SortOrder
+    publicLightingCost?: SortOrder
+    icmsCost?: SortOrder
+    pisCost?: SortOrder
+    cofinsCost?: SortOrder
+    pisCofinsCost?: SortOrder
+    tariffPerKwh?: SortOrder
+    tariffTeValue?: SortOrder
+    tariffTusdValue?: SortOrder
+    tariffFlag?: SortOrder
+    tariffFlagCost?: SortOrder
+    sectoralCharges?: SortOrder
+    fineAmount?: SortOrder
+    interestAmount?: SortOrder
+    otherCharges?: SortOrder
+    estimatedSavings?: SortOrder
+    aiAnalysis?: SortOrder
+    billScore?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnergyBillSumOrderByAggregateInput = {
+    rawBillFileSize?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    billingDays?: SortOrder
+    monitoredGenerationKwh?: SortOrder
+    billedConsumptionKwh?: SortOrder
+    consumptionKwh?: SortOrder
+    realConsumptionKwh?: SortOrder
+    injectedEnergyKwh?: SortOrder
+    compensatedEnergyKwh?: SortOrder
+    previousCreditsKwh?: SortOrder
+    currentCreditsKwh?: SortOrder
+    expectedGenerationKwh?: SortOrder
+    generationEfficiency?: SortOrder
+    meterReadingCurrent?: SortOrder
+    meterReadingPrevious?: SortOrder
+    demandContractedKw?: SortOrder
+    demandMeasuredKw?: SortOrder
+    totalBillValue?: SortOrder
+    totalAmount?: SortOrder
+    energyCost?: SortOrder
+    availabilityCost?: SortOrder
+    publicLightingCost?: SortOrder
+    icmsCost?: SortOrder
+    pisCost?: SortOrder
+    cofinsCost?: SortOrder
+    pisCofinsCost?: SortOrder
+    tariffPerKwh?: SortOrder
+    tariffTeValue?: SortOrder
+    tariffTusdValue?: SortOrder
+    tariffFlagCost?: SortOrder
+    sectoralCharges?: SortOrder
+    fineAmount?: SortOrder
+    interestAmount?: SortOrder
+    otherCharges?: SortOrder
+    estimatedSavings?: SortOrder
+    billScore?: SortOrder
+  }
+
   export type UserCreaterolesInput = {
     set: string[]
   }
@@ -16570,13 +26434,6 @@ export namespace Prisma {
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutUsersInput, ClientUpdateWithoutUsersInput>, ClientUncheckedUpdateWithoutUsersInput>
   }
 
-  export type InverterCreateNestedManyWithoutClientInput = {
-    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
-    createMany?: InverterCreateManyClientInputEnvelope
-    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
-  }
-
   export type UserCreateNestedManyWithoutClientInput = {
     create?: XOR<UserCreateWithoutClientInput, UserUncheckedCreateWithoutClientInput> | UserCreateWithoutClientInput[] | UserUncheckedCreateWithoutClientInput[]
     connectOrCreate?: UserCreateOrConnectWithoutClientInput | UserCreateOrConnectWithoutClientInput[]
@@ -16619,11 +26476,39 @@ export namespace Prisma {
     connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
   }
 
-  export type InverterUncheckedCreateNestedManyWithoutClientInput = {
+  export type EnergyBillCreateNestedManyWithoutClientInput = {
+    create?: XOR<EnergyBillCreateWithoutClientInput, EnergyBillUncheckedCreateWithoutClientInput> | EnergyBillCreateWithoutClientInput[] | EnergyBillUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutClientInput | EnergyBillCreateOrConnectWithoutClientInput[]
+    createMany?: EnergyBillCreateManyClientInputEnvelope
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+  }
+
+  export type PlantCreateNestedManyWithoutClientInput = {
+    create?: XOR<PlantCreateWithoutClientInput, PlantUncheckedCreateWithoutClientInput> | PlantCreateWithoutClientInput[] | PlantUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PlantCreateOrConnectWithoutClientInput | PlantCreateOrConnectWithoutClientInput[]
+    createMany?: PlantCreateManyClientInputEnvelope
+    connect?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+  }
+
+  export type InverterCreateNestedManyWithoutClientInput = {
     create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
     connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
     createMany?: InverterCreateManyClientInputEnvelope
     connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+  }
+
+  export type ConsumerUnitCreateNestedManyWithoutClientInput = {
+    create?: XOR<ConsumerUnitCreateWithoutClientInput, ConsumerUnitUncheckedCreateWithoutClientInput> | ConsumerUnitCreateWithoutClientInput[] | ConsumerUnitUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutClientInput | ConsumerUnitCreateOrConnectWithoutClientInput[]
+    createMany?: ConsumerUnitCreateManyClientInputEnvelope
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+  }
+
+  export type CreditAllocationCreateNestedManyWithoutClientInput = {
+    create?: XOR<CreditAllocationCreateWithoutClientInput, CreditAllocationUncheckedCreateWithoutClientInput> | CreditAllocationCreateWithoutClientInput[] | CreditAllocationUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutClientInput | CreditAllocationCreateOrConnectWithoutClientInput[]
+    createMany?: CreditAllocationCreateManyClientInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
   }
 
   export type UserUncheckedCreateNestedManyWithoutClientInput = {
@@ -16668,6 +26553,41 @@ export namespace Prisma {
     connect?: OfferRedemptionWhereUniqueInput | OfferRedemptionWhereUniqueInput[]
   }
 
+  export type EnergyBillUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<EnergyBillCreateWithoutClientInput, EnergyBillUncheckedCreateWithoutClientInput> | EnergyBillCreateWithoutClientInput[] | EnergyBillUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutClientInput | EnergyBillCreateOrConnectWithoutClientInput[]
+    createMany?: EnergyBillCreateManyClientInputEnvelope
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+  }
+
+  export type PlantUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<PlantCreateWithoutClientInput, PlantUncheckedCreateWithoutClientInput> | PlantCreateWithoutClientInput[] | PlantUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PlantCreateOrConnectWithoutClientInput | PlantCreateOrConnectWithoutClientInput[]
+    createMany?: PlantCreateManyClientInputEnvelope
+    connect?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+  }
+
+  export type InverterUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
+    createMany?: InverterCreateManyClientInputEnvelope
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+  }
+
+  export type ConsumerUnitUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<ConsumerUnitCreateWithoutClientInput, ConsumerUnitUncheckedCreateWithoutClientInput> | ConsumerUnitCreateWithoutClientInput[] | ConsumerUnitUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutClientInput | ConsumerUnitCreateOrConnectWithoutClientInput[]
+    createMany?: ConsumerUnitCreateManyClientInputEnvelope
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+  }
+
+  export type CreditAllocationUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<CreditAllocationCreateWithoutClientInput, CreditAllocationUncheckedCreateWithoutClientInput> | CreditAllocationCreateWithoutClientInput[] | CreditAllocationUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutClientInput | CreditAllocationCreateOrConnectWithoutClientInput[]
+    createMany?: CreditAllocationCreateManyClientInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -16686,20 +26606,6 @@ export namespace Prisma {
 
   export type EnumClientStatusFieldUpdateOperationsInput = {
     set?: $Enums.ClientStatus
-  }
-
-  export type InverterUpdateManyWithoutClientNestedInput = {
-    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
-    upsert?: InverterUpsertWithWhereUniqueWithoutClientInput | InverterUpsertWithWhereUniqueWithoutClientInput[]
-    createMany?: InverterCreateManyClientInputEnvelope
-    set?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
-    disconnect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
-    delete?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
-    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
-    update?: InverterUpdateWithWhereUniqueWithoutClientInput | InverterUpdateWithWhereUniqueWithoutClientInput[]
-    updateMany?: InverterUpdateManyWithWhereWithoutClientInput | InverterUpdateManyWithWhereWithoutClientInput[]
-    deleteMany?: InverterScalarWhereInput | InverterScalarWhereInput[]
   }
 
   export type UserUpdateManyWithoutClientNestedInput = {
@@ -16786,7 +26692,35 @@ export namespace Prisma {
     deleteMany?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
   }
 
-  export type InverterUncheckedUpdateManyWithoutClientNestedInput = {
+  export type EnergyBillUpdateManyWithoutClientNestedInput = {
+    create?: XOR<EnergyBillCreateWithoutClientInput, EnergyBillUncheckedCreateWithoutClientInput> | EnergyBillCreateWithoutClientInput[] | EnergyBillUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutClientInput | EnergyBillCreateOrConnectWithoutClientInput[]
+    upsert?: EnergyBillUpsertWithWhereUniqueWithoutClientInput | EnergyBillUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: EnergyBillCreateManyClientInputEnvelope
+    set?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    disconnect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    delete?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    update?: EnergyBillUpdateWithWhereUniqueWithoutClientInput | EnergyBillUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: EnergyBillUpdateManyWithWhereWithoutClientInput | EnergyBillUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+  }
+
+  export type PlantUpdateManyWithoutClientNestedInput = {
+    create?: XOR<PlantCreateWithoutClientInput, PlantUncheckedCreateWithoutClientInput> | PlantCreateWithoutClientInput[] | PlantUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PlantCreateOrConnectWithoutClientInput | PlantCreateOrConnectWithoutClientInput[]
+    upsert?: PlantUpsertWithWhereUniqueWithoutClientInput | PlantUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: PlantCreateManyClientInputEnvelope
+    set?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    disconnect?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    delete?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    connect?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    update?: PlantUpdateWithWhereUniqueWithoutClientInput | PlantUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: PlantUpdateManyWithWhereWithoutClientInput | PlantUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: PlantScalarWhereInput | PlantScalarWhereInput[]
+  }
+
+  export type InverterUpdateManyWithoutClientNestedInput = {
     create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
     connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
     upsert?: InverterUpsertWithWhereUniqueWithoutClientInput | InverterUpsertWithWhereUniqueWithoutClientInput[]
@@ -16798,6 +26732,34 @@ export namespace Prisma {
     update?: InverterUpdateWithWhereUniqueWithoutClientInput | InverterUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: InverterUpdateManyWithWhereWithoutClientInput | InverterUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: InverterScalarWhereInput | InverterScalarWhereInput[]
+  }
+
+  export type ConsumerUnitUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutClientInput, ConsumerUnitUncheckedCreateWithoutClientInput> | ConsumerUnitCreateWithoutClientInput[] | ConsumerUnitUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutClientInput | ConsumerUnitCreateOrConnectWithoutClientInput[]
+    upsert?: ConsumerUnitUpsertWithWhereUniqueWithoutClientInput | ConsumerUnitUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ConsumerUnitCreateManyClientInputEnvelope
+    set?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    disconnect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    delete?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    update?: ConsumerUnitUpdateWithWhereUniqueWithoutClientInput | ConsumerUnitUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ConsumerUnitUpdateManyWithWhereWithoutClientInput | ConsumerUnitUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+  }
+
+  export type CreditAllocationUpdateManyWithoutClientNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutClientInput, CreditAllocationUncheckedCreateWithoutClientInput> | CreditAllocationCreateWithoutClientInput[] | CreditAllocationUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutClientInput | CreditAllocationCreateOrConnectWithoutClientInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutClientInput | CreditAllocationUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: CreditAllocationCreateManyClientInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutClientInput | CreditAllocationUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutClientInput | CreditAllocationUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
   }
 
   export type UserUncheckedUpdateManyWithoutClientNestedInput = {
@@ -16884,10 +26846,276 @@ export namespace Prisma {
     deleteMany?: OfferRedemptionScalarWhereInput | OfferRedemptionScalarWhereInput[]
   }
 
+  export type EnergyBillUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<EnergyBillCreateWithoutClientInput, EnergyBillUncheckedCreateWithoutClientInput> | EnergyBillCreateWithoutClientInput[] | EnergyBillUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutClientInput | EnergyBillCreateOrConnectWithoutClientInput[]
+    upsert?: EnergyBillUpsertWithWhereUniqueWithoutClientInput | EnergyBillUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: EnergyBillCreateManyClientInputEnvelope
+    set?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    disconnect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    delete?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    update?: EnergyBillUpdateWithWhereUniqueWithoutClientInput | EnergyBillUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: EnergyBillUpdateManyWithWhereWithoutClientInput | EnergyBillUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+  }
+
+  export type PlantUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<PlantCreateWithoutClientInput, PlantUncheckedCreateWithoutClientInput> | PlantCreateWithoutClientInput[] | PlantUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PlantCreateOrConnectWithoutClientInput | PlantCreateOrConnectWithoutClientInput[]
+    upsert?: PlantUpsertWithWhereUniqueWithoutClientInput | PlantUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: PlantCreateManyClientInputEnvelope
+    set?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    disconnect?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    delete?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    connect?: PlantWhereUniqueInput | PlantWhereUniqueInput[]
+    update?: PlantUpdateWithWhereUniqueWithoutClientInput | PlantUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: PlantUpdateManyWithWhereWithoutClientInput | PlantUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: PlantScalarWhereInput | PlantScalarWhereInput[]
+  }
+
+  export type InverterUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput> | InverterCreateWithoutClientInput[] | InverterUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutClientInput | InverterCreateOrConnectWithoutClientInput[]
+    upsert?: InverterUpsertWithWhereUniqueWithoutClientInput | InverterUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: InverterCreateManyClientInputEnvelope
+    set?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    disconnect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    delete?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    update?: InverterUpdateWithWhereUniqueWithoutClientInput | InverterUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: InverterUpdateManyWithWhereWithoutClientInput | InverterUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: InverterScalarWhereInput | InverterScalarWhereInput[]
+  }
+
+  export type ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutClientInput, ConsumerUnitUncheckedCreateWithoutClientInput> | ConsumerUnitCreateWithoutClientInput[] | ConsumerUnitUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutClientInput | ConsumerUnitCreateOrConnectWithoutClientInput[]
+    upsert?: ConsumerUnitUpsertWithWhereUniqueWithoutClientInput | ConsumerUnitUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ConsumerUnitCreateManyClientInputEnvelope
+    set?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    disconnect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    delete?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    update?: ConsumerUnitUpdateWithWhereUniqueWithoutClientInput | ConsumerUnitUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ConsumerUnitUpdateManyWithWhereWithoutClientInput | ConsumerUnitUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutClientInput, CreditAllocationUncheckedCreateWithoutClientInput> | CreditAllocationCreateWithoutClientInput[] | CreditAllocationUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutClientInput | CreditAllocationCreateOrConnectWithoutClientInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutClientInput | CreditAllocationUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: CreditAllocationCreateManyClientInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutClientInput | CreditAllocationUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutClientInput | CreditAllocationUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type ClientCreateNestedOneWithoutPlantsInput = {
+    create?: XOR<ClientCreateWithoutPlantsInput, ClientUncheckedCreateWithoutPlantsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutPlantsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type InverterCreateNestedManyWithoutPlantInput = {
+    create?: XOR<InverterCreateWithoutPlantInput, InverterUncheckedCreateWithoutPlantInput> | InverterCreateWithoutPlantInput[] | InverterUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutPlantInput | InverterCreateOrConnectWithoutPlantInput[]
+    createMany?: InverterCreateManyPlantInputEnvelope
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+  }
+
+  export type ConsumerUnitCreateNestedManyWithoutPlantInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPlantInput, ConsumerUnitUncheckedCreateWithoutPlantInput> | ConsumerUnitCreateWithoutPlantInput[] | ConsumerUnitUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPlantInput | ConsumerUnitCreateOrConnectWithoutPlantInput[]
+    createMany?: ConsumerUnitCreateManyPlantInputEnvelope
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+  }
+
+  export type CreditAllocationCreateNestedManyWithoutPlantInput = {
+    create?: XOR<CreditAllocationCreateWithoutPlantInput, CreditAllocationUncheckedCreateWithoutPlantInput> | CreditAllocationCreateWithoutPlantInput[] | CreditAllocationUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutPlantInput | CreditAllocationCreateOrConnectWithoutPlantInput[]
+    createMany?: CreditAllocationCreateManyPlantInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type EnergyBillCreateNestedManyWithoutPlantInput = {
+    create?: XOR<EnergyBillCreateWithoutPlantInput, EnergyBillUncheckedCreateWithoutPlantInput> | EnergyBillCreateWithoutPlantInput[] | EnergyBillUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutPlantInput | EnergyBillCreateOrConnectWithoutPlantInput[]
+    createMany?: EnergyBillCreateManyPlantInputEnvelope
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+  }
+
+  export type InverterUncheckedCreateNestedManyWithoutPlantInput = {
+    create?: XOR<InverterCreateWithoutPlantInput, InverterUncheckedCreateWithoutPlantInput> | InverterCreateWithoutPlantInput[] | InverterUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutPlantInput | InverterCreateOrConnectWithoutPlantInput[]
+    createMany?: InverterCreateManyPlantInputEnvelope
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+  }
+
+  export type ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPlantInput, ConsumerUnitUncheckedCreateWithoutPlantInput> | ConsumerUnitCreateWithoutPlantInput[] | ConsumerUnitUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPlantInput | ConsumerUnitCreateOrConnectWithoutPlantInput[]
+    createMany?: ConsumerUnitCreateManyPlantInputEnvelope
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+  }
+
+  export type CreditAllocationUncheckedCreateNestedManyWithoutPlantInput = {
+    create?: XOR<CreditAllocationCreateWithoutPlantInput, CreditAllocationUncheckedCreateWithoutPlantInput> | CreditAllocationCreateWithoutPlantInput[] | CreditAllocationUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutPlantInput | CreditAllocationCreateOrConnectWithoutPlantInput[]
+    createMany?: CreditAllocationCreateManyPlantInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type EnergyBillUncheckedCreateNestedManyWithoutPlantInput = {
+    create?: XOR<EnergyBillCreateWithoutPlantInput, EnergyBillUncheckedCreateWithoutPlantInput> | EnergyBillCreateWithoutPlantInput[] | EnergyBillUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutPlantInput | EnergyBillCreateOrConnectWithoutPlantInput[]
+    createMany?: EnergyBillCreateManyPlantInputEnvelope
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type ClientUpdateOneRequiredWithoutPlantsNestedInput = {
+    create?: XOR<ClientCreateWithoutPlantsInput, ClientUncheckedCreateWithoutPlantsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutPlantsInput
+    upsert?: ClientUpsertWithoutPlantsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutPlantsInput, ClientUpdateWithoutPlantsInput>, ClientUncheckedUpdateWithoutPlantsInput>
+  }
+
+  export type InverterUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<InverterCreateWithoutPlantInput, InverterUncheckedCreateWithoutPlantInput> | InverterCreateWithoutPlantInput[] | InverterUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutPlantInput | InverterCreateOrConnectWithoutPlantInput[]
+    upsert?: InverterUpsertWithWhereUniqueWithoutPlantInput | InverterUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: InverterCreateManyPlantInputEnvelope
+    set?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    disconnect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    delete?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    update?: InverterUpdateWithWhereUniqueWithoutPlantInput | InverterUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: InverterUpdateManyWithWhereWithoutPlantInput | InverterUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: InverterScalarWhereInput | InverterScalarWhereInput[]
+  }
+
+  export type ConsumerUnitUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPlantInput, ConsumerUnitUncheckedCreateWithoutPlantInput> | ConsumerUnitCreateWithoutPlantInput[] | ConsumerUnitUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPlantInput | ConsumerUnitCreateOrConnectWithoutPlantInput[]
+    upsert?: ConsumerUnitUpsertWithWhereUniqueWithoutPlantInput | ConsumerUnitUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: ConsumerUnitCreateManyPlantInputEnvelope
+    set?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    disconnect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    delete?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    update?: ConsumerUnitUpdateWithWhereUniqueWithoutPlantInput | ConsumerUnitUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: ConsumerUnitUpdateManyWithWhereWithoutPlantInput | ConsumerUnitUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+  }
+
+  export type CreditAllocationUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutPlantInput, CreditAllocationUncheckedCreateWithoutPlantInput> | CreditAllocationCreateWithoutPlantInput[] | CreditAllocationUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutPlantInput | CreditAllocationCreateOrConnectWithoutPlantInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutPlantInput | CreditAllocationUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: CreditAllocationCreateManyPlantInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutPlantInput | CreditAllocationUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutPlantInput | CreditAllocationUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type EnergyBillUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<EnergyBillCreateWithoutPlantInput, EnergyBillUncheckedCreateWithoutPlantInput> | EnergyBillCreateWithoutPlantInput[] | EnergyBillUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutPlantInput | EnergyBillCreateOrConnectWithoutPlantInput[]
+    upsert?: EnergyBillUpsertWithWhereUniqueWithoutPlantInput | EnergyBillUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: EnergyBillCreateManyPlantInputEnvelope
+    set?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    disconnect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    delete?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    update?: EnergyBillUpdateWithWhereUniqueWithoutPlantInput | EnergyBillUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: EnergyBillUpdateManyWithWhereWithoutPlantInput | EnergyBillUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+  }
+
+  export type InverterUncheckedUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<InverterCreateWithoutPlantInput, InverterUncheckedCreateWithoutPlantInput> | InverterCreateWithoutPlantInput[] | InverterUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: InverterCreateOrConnectWithoutPlantInput | InverterCreateOrConnectWithoutPlantInput[]
+    upsert?: InverterUpsertWithWhereUniqueWithoutPlantInput | InverterUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: InverterCreateManyPlantInputEnvelope
+    set?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    disconnect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    delete?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    connect?: InverterWhereUniqueInput | InverterWhereUniqueInput[]
+    update?: InverterUpdateWithWhereUniqueWithoutPlantInput | InverterUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: InverterUpdateManyWithWhereWithoutPlantInput | InverterUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: InverterScalarWhereInput | InverterScalarWhereInput[]
+  }
+
+  export type ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPlantInput, ConsumerUnitUncheckedCreateWithoutPlantInput> | ConsumerUnitCreateWithoutPlantInput[] | ConsumerUnitUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPlantInput | ConsumerUnitCreateOrConnectWithoutPlantInput[]
+    upsert?: ConsumerUnitUpsertWithWhereUniqueWithoutPlantInput | ConsumerUnitUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: ConsumerUnitCreateManyPlantInputEnvelope
+    set?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    disconnect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    delete?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    update?: ConsumerUnitUpdateWithWhereUniqueWithoutPlantInput | ConsumerUnitUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: ConsumerUnitUpdateManyWithWhereWithoutPlantInput | ConsumerUnitUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutPlantInput, CreditAllocationUncheckedCreateWithoutPlantInput> | CreditAllocationCreateWithoutPlantInput[] | CreditAllocationUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutPlantInput | CreditAllocationCreateOrConnectWithoutPlantInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutPlantInput | CreditAllocationUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: CreditAllocationCreateManyPlantInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutPlantInput | CreditAllocationUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutPlantInput | CreditAllocationUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type EnergyBillUncheckedUpdateManyWithoutPlantNestedInput = {
+    create?: XOR<EnergyBillCreateWithoutPlantInput, EnergyBillUncheckedCreateWithoutPlantInput> | EnergyBillCreateWithoutPlantInput[] | EnergyBillUncheckedCreateWithoutPlantInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutPlantInput | EnergyBillCreateOrConnectWithoutPlantInput[]
+    upsert?: EnergyBillUpsertWithWhereUniqueWithoutPlantInput | EnergyBillUpsertWithWhereUniqueWithoutPlantInput[]
+    createMany?: EnergyBillCreateManyPlantInputEnvelope
+    set?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    disconnect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    delete?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    update?: EnergyBillUpdateWithWhereUniqueWithoutPlantInput | EnergyBillUpdateWithWhereUniqueWithoutPlantInput[]
+    updateMany?: EnergyBillUpdateManyWithWhereWithoutPlantInput | EnergyBillUpdateManyWithWhereWithoutPlantInput[]
+    deleteMany?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+  }
+
   export type ClientCreateNestedOneWithoutInvertersInput = {
     create?: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
     connectOrCreate?: ClientCreateOrConnectWithoutInvertersInput
     connect?: ClientWhereUniqueInput
+  }
+
+  export type PlantCreateNestedOneWithoutInvertersInput = {
+    create?: XOR<PlantCreateWithoutInvertersInput, PlantUncheckedCreateWithoutInvertersInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutInvertersInput
+    connect?: PlantWhereUniqueInput
   }
 
   export type GenerationUnitCreateNestedManyWithoutInverterInput = {
@@ -16904,12 +27132,30 @@ export namespace Prisma {
     connect?: GenerationUnitWhereUniqueInput | GenerationUnitWhereUniqueInput[]
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type ClientUpdateOneRequiredWithoutInvertersNestedInput = {
     create?: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
     connectOrCreate?: ClientCreateOrConnectWithoutInvertersInput
     upsert?: ClientUpsertWithoutInvertersInput
     connect?: ClientWhereUniqueInput
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutInvertersInput, ClientUpdateWithoutInvertersInput>, ClientUncheckedUpdateWithoutInvertersInput>
+  }
+
+  export type PlantUpdateOneWithoutInvertersNestedInput = {
+    create?: XOR<PlantCreateWithoutInvertersInput, PlantUncheckedCreateWithoutInvertersInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutInvertersInput
+    upsert?: PlantUpsertWithoutInvertersInput
+    disconnect?: PlantWhereInput | boolean
+    delete?: PlantWhereInput | boolean
+    connect?: PlantWhereUniqueInput
+    update?: XOR<XOR<PlantUpdateToOneWithWhereWithoutInvertersInput, PlantUpdateWithoutInvertersInput>, PlantUncheckedUpdateWithoutInvertersInput>
   }
 
   export type GenerationUnitUpdateManyWithoutInverterNestedInput = {
@@ -16940,10 +27186,232 @@ export namespace Prisma {
     deleteMany?: GenerationUnitScalarWhereInput | GenerationUnitScalarWhereInput[]
   }
 
+  export type ClientCreateNestedOneWithoutConsumerUnitsInput = {
+    create?: XOR<ClientCreateWithoutConsumerUnitsInput, ClientUncheckedCreateWithoutConsumerUnitsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutConsumerUnitsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type PlantCreateNestedOneWithoutConsumerUnitsInput = {
+    create?: XOR<PlantCreateWithoutConsumerUnitsInput, PlantUncheckedCreateWithoutConsumerUnitsInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutConsumerUnitsInput
+    connect?: PlantWhereUniqueInput
+  }
+
+  export type EnergyBillCreateNestedManyWithoutConsumerUnitInput = {
+    create?: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput> | EnergyBillCreateWithoutConsumerUnitInput[] | EnergyBillUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutConsumerUnitInput | EnergyBillCreateOrConnectWithoutConsumerUnitInput[]
+    createMany?: EnergyBillCreateManyConsumerUnitInputEnvelope
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+  }
+
+  export type CreditAllocationCreateNestedManyWithoutFromInput = {
+    create?: XOR<CreditAllocationCreateWithoutFromInput, CreditAllocationUncheckedCreateWithoutFromInput> | CreditAllocationCreateWithoutFromInput[] | CreditAllocationUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutFromInput | CreditAllocationCreateOrConnectWithoutFromInput[]
+    createMany?: CreditAllocationCreateManyFromInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type CreditAllocationCreateNestedManyWithoutToInput = {
+    create?: XOR<CreditAllocationCreateWithoutToInput, CreditAllocationUncheckedCreateWithoutToInput> | CreditAllocationCreateWithoutToInput[] | CreditAllocationUncheckedCreateWithoutToInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutToInput | CreditAllocationCreateOrConnectWithoutToInput[]
+    createMany?: CreditAllocationCreateManyToInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput = {
+    create?: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput> | EnergyBillCreateWithoutConsumerUnitInput[] | EnergyBillUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutConsumerUnitInput | EnergyBillCreateOrConnectWithoutConsumerUnitInput[]
+    createMany?: EnergyBillCreateManyConsumerUnitInputEnvelope
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+  }
+
+  export type CreditAllocationUncheckedCreateNestedManyWithoutFromInput = {
+    create?: XOR<CreditAllocationCreateWithoutFromInput, CreditAllocationUncheckedCreateWithoutFromInput> | CreditAllocationCreateWithoutFromInput[] | CreditAllocationUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutFromInput | CreditAllocationCreateOrConnectWithoutFromInput[]
+    createMany?: CreditAllocationCreateManyFromInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type CreditAllocationUncheckedCreateNestedManyWithoutToInput = {
+    create?: XOR<CreditAllocationCreateWithoutToInput, CreditAllocationUncheckedCreateWithoutToInput> | CreditAllocationCreateWithoutToInput[] | CreditAllocationUncheckedCreateWithoutToInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutToInput | CreditAllocationCreateOrConnectWithoutToInput[]
+    createMany?: CreditAllocationCreateManyToInputEnvelope
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput = {
+    create?: XOR<ClientCreateWithoutConsumerUnitsInput, ClientUncheckedCreateWithoutConsumerUnitsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutConsumerUnitsInput
+    upsert?: ClientUpsertWithoutConsumerUnitsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutConsumerUnitsInput, ClientUpdateWithoutConsumerUnitsInput>, ClientUncheckedUpdateWithoutConsumerUnitsInput>
+  }
+
+  export type PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput = {
+    create?: XOR<PlantCreateWithoutConsumerUnitsInput, PlantUncheckedCreateWithoutConsumerUnitsInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutConsumerUnitsInput
+    upsert?: PlantUpsertWithoutConsumerUnitsInput
+    connect?: PlantWhereUniqueInput
+    update?: XOR<XOR<PlantUpdateToOneWithWhereWithoutConsumerUnitsInput, PlantUpdateWithoutConsumerUnitsInput>, PlantUncheckedUpdateWithoutConsumerUnitsInput>
+  }
+
+  export type EnergyBillUpdateManyWithoutConsumerUnitNestedInput = {
+    create?: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput> | EnergyBillCreateWithoutConsumerUnitInput[] | EnergyBillUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutConsumerUnitInput | EnergyBillCreateOrConnectWithoutConsumerUnitInput[]
+    upsert?: EnergyBillUpsertWithWhereUniqueWithoutConsumerUnitInput | EnergyBillUpsertWithWhereUniqueWithoutConsumerUnitInput[]
+    createMany?: EnergyBillCreateManyConsumerUnitInputEnvelope
+    set?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    disconnect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    delete?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    update?: EnergyBillUpdateWithWhereUniqueWithoutConsumerUnitInput | EnergyBillUpdateWithWhereUniqueWithoutConsumerUnitInput[]
+    updateMany?: EnergyBillUpdateManyWithWhereWithoutConsumerUnitInput | EnergyBillUpdateManyWithWhereWithoutConsumerUnitInput[]
+    deleteMany?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+  }
+
+  export type CreditAllocationUpdateManyWithoutFromNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutFromInput, CreditAllocationUncheckedCreateWithoutFromInput> | CreditAllocationCreateWithoutFromInput[] | CreditAllocationUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutFromInput | CreditAllocationCreateOrConnectWithoutFromInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutFromInput | CreditAllocationUpsertWithWhereUniqueWithoutFromInput[]
+    createMany?: CreditAllocationCreateManyFromInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutFromInput | CreditAllocationUpdateWithWhereUniqueWithoutFromInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutFromInput | CreditAllocationUpdateManyWithWhereWithoutFromInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type CreditAllocationUpdateManyWithoutToNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutToInput, CreditAllocationUncheckedCreateWithoutToInput> | CreditAllocationCreateWithoutToInput[] | CreditAllocationUncheckedCreateWithoutToInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutToInput | CreditAllocationCreateOrConnectWithoutToInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutToInput | CreditAllocationUpsertWithWhereUniqueWithoutToInput[]
+    createMany?: CreditAllocationCreateManyToInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutToInput | CreditAllocationUpdateWithWhereUniqueWithoutToInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutToInput | CreditAllocationUpdateManyWithWhereWithoutToInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput = {
+    create?: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput> | EnergyBillCreateWithoutConsumerUnitInput[] | EnergyBillUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutConsumerUnitInput | EnergyBillCreateOrConnectWithoutConsumerUnitInput[]
+    upsert?: EnergyBillUpsertWithWhereUniqueWithoutConsumerUnitInput | EnergyBillUpsertWithWhereUniqueWithoutConsumerUnitInput[]
+    createMany?: EnergyBillCreateManyConsumerUnitInputEnvelope
+    set?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    disconnect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    delete?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    connect?: EnergyBillWhereUniqueInput | EnergyBillWhereUniqueInput[]
+    update?: EnergyBillUpdateWithWhereUniqueWithoutConsumerUnitInput | EnergyBillUpdateWithWhereUniqueWithoutConsumerUnitInput[]
+    updateMany?: EnergyBillUpdateManyWithWhereWithoutConsumerUnitInput | EnergyBillUpdateManyWithWhereWithoutConsumerUnitInput[]
+    deleteMany?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutFromNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutFromInput, CreditAllocationUncheckedCreateWithoutFromInput> | CreditAllocationCreateWithoutFromInput[] | CreditAllocationUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutFromInput | CreditAllocationCreateOrConnectWithoutFromInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutFromInput | CreditAllocationUpsertWithWhereUniqueWithoutFromInput[]
+    createMany?: CreditAllocationCreateManyFromInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutFromInput | CreditAllocationUpdateWithWhereUniqueWithoutFromInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutFromInput | CreditAllocationUpdateManyWithWhereWithoutFromInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutToNestedInput = {
+    create?: XOR<CreditAllocationCreateWithoutToInput, CreditAllocationUncheckedCreateWithoutToInput> | CreditAllocationCreateWithoutToInput[] | CreditAllocationUncheckedCreateWithoutToInput[]
+    connectOrCreate?: CreditAllocationCreateOrConnectWithoutToInput | CreditAllocationCreateOrConnectWithoutToInput[]
+    upsert?: CreditAllocationUpsertWithWhereUniqueWithoutToInput | CreditAllocationUpsertWithWhereUniqueWithoutToInput[]
+    createMany?: CreditAllocationCreateManyToInputEnvelope
+    set?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    disconnect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    delete?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+    update?: CreditAllocationUpdateWithWhereUniqueWithoutToInput | CreditAllocationUpdateWithWhereUniqueWithoutToInput[]
+    updateMany?: CreditAllocationUpdateManyWithWhereWithoutToInput | CreditAllocationUpdateManyWithWhereWithoutToInput[]
+    deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type ClientCreateNestedOneWithoutCreditAllocationsInput = {
+    create?: XOR<ClientCreateWithoutCreditAllocationsInput, ClientUncheckedCreateWithoutCreditAllocationsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutCreditAllocationsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type PlantCreateNestedOneWithoutCreditAllocationsInput = {
+    create?: XOR<PlantCreateWithoutCreditAllocationsInput, PlantUncheckedCreateWithoutCreditAllocationsInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutCreditAllocationsInput
+    connect?: PlantWhereUniqueInput
+  }
+
+  export type ConsumerUnitCreateNestedOneWithoutAllocationsFromInput = {
+    create?: XOR<ConsumerUnitCreateWithoutAllocationsFromInput, ConsumerUnitUncheckedCreateWithoutAllocationsFromInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutAllocationsFromInput
+    connect?: ConsumerUnitWhereUniqueInput
+  }
+
+  export type ConsumerUnitCreateNestedOneWithoutAllocationsToInput = {
+    create?: XOR<ConsumerUnitCreateWithoutAllocationsToInput, ConsumerUnitUncheckedCreateWithoutAllocationsToInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutAllocationsToInput
+    connect?: ConsumerUnitWhereUniqueInput
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type ClientUpdateOneRequiredWithoutCreditAllocationsNestedInput = {
+    create?: XOR<ClientCreateWithoutCreditAllocationsInput, ClientUncheckedCreateWithoutCreditAllocationsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutCreditAllocationsInput
+    upsert?: ClientUpsertWithoutCreditAllocationsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutCreditAllocationsInput, ClientUpdateWithoutCreditAllocationsInput>, ClientUncheckedUpdateWithoutCreditAllocationsInput>
+  }
+
+  export type PlantUpdateOneRequiredWithoutCreditAllocationsNestedInput = {
+    create?: XOR<PlantCreateWithoutCreditAllocationsInput, PlantUncheckedCreateWithoutCreditAllocationsInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutCreditAllocationsInput
+    upsert?: PlantUpsertWithoutCreditAllocationsInput
+    connect?: PlantWhereUniqueInput
+    update?: XOR<XOR<PlantUpdateToOneWithWhereWithoutCreditAllocationsInput, PlantUpdateWithoutCreditAllocationsInput>, PlantUncheckedUpdateWithoutCreditAllocationsInput>
+  }
+
+  export type ConsumerUnitUpdateOneRequiredWithoutAllocationsFromNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutAllocationsFromInput, ConsumerUnitUncheckedCreateWithoutAllocationsFromInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutAllocationsFromInput
+    upsert?: ConsumerUnitUpsertWithoutAllocationsFromInput
+    connect?: ConsumerUnitWhereUniqueInput
+    update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutAllocationsFromInput, ConsumerUnitUpdateWithoutAllocationsFromInput>, ConsumerUnitUncheckedUpdateWithoutAllocationsFromInput>
+  }
+
+  export type ConsumerUnitUpdateOneRequiredWithoutAllocationsToNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutAllocationsToInput, ConsumerUnitUncheckedCreateWithoutAllocationsToInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutAllocationsToInput
+    upsert?: ConsumerUnitUpsertWithoutAllocationsToInput
+    connect?: ConsumerUnitWhereUniqueInput
+    update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutAllocationsToInput, ConsumerUnitUpdateWithoutAllocationsToInput>, ConsumerUnitUncheckedUpdateWithoutAllocationsToInput>
+  }
+
   export type InverterCreateNestedOneWithoutGenerationUnitsInput = {
     create?: XOR<InverterCreateWithoutGenerationUnitsInput, InverterUncheckedCreateWithoutGenerationUnitsInput>
     connectOrCreate?: InverterCreateOrConnectWithoutGenerationUnitsInput
     connect?: InverterWhereUniqueInput
+  }
+
+  export type EnumGenerationUnitTypeFieldUpdateOperationsInput = {
+    set?: $Enums.GenerationUnitType
   }
 
   export type InverterUpdateOneRequiredWithoutGenerationUnitsNestedInput = {
@@ -17098,6 +27566,48 @@ export namespace Prisma {
     upsert?: ClientUpsertWithoutConsumptionsInput
     connect?: ClientWhereUniqueInput
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutConsumptionsInput, ClientUpdateWithoutConsumptionsInput>, ClientUncheckedUpdateWithoutConsumptionsInput>
+  }
+
+  export type ClientCreateNestedOneWithoutEnergyBillsInput = {
+    create?: XOR<ClientCreateWithoutEnergyBillsInput, ClientUncheckedCreateWithoutEnergyBillsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutEnergyBillsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type PlantCreateNestedOneWithoutEnergyBillsInput = {
+    create?: XOR<PlantCreateWithoutEnergyBillsInput, PlantUncheckedCreateWithoutEnergyBillsInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutEnergyBillsInput
+    connect?: PlantWhereUniqueInput
+  }
+
+  export type ConsumerUnitCreateNestedOneWithoutEnergyBillsInput = {
+    create?: XOR<ConsumerUnitCreateWithoutEnergyBillsInput, ConsumerUnitUncheckedCreateWithoutEnergyBillsInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutEnergyBillsInput
+    connect?: ConsumerUnitWhereUniqueInput
+  }
+
+  export type ClientUpdateOneRequiredWithoutEnergyBillsNestedInput = {
+    create?: XOR<ClientCreateWithoutEnergyBillsInput, ClientUncheckedCreateWithoutEnergyBillsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutEnergyBillsInput
+    upsert?: ClientUpsertWithoutEnergyBillsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutEnergyBillsInput, ClientUpdateWithoutEnergyBillsInput>, ClientUncheckedUpdateWithoutEnergyBillsInput>
+  }
+
+  export type PlantUpdateOneRequiredWithoutEnergyBillsNestedInput = {
+    create?: XOR<PlantCreateWithoutEnergyBillsInput, PlantUncheckedCreateWithoutEnergyBillsInput>
+    connectOrCreate?: PlantCreateOrConnectWithoutEnergyBillsInput
+    upsert?: PlantUpsertWithoutEnergyBillsInput
+    connect?: PlantWhereUniqueInput
+    update?: XOR<XOR<PlantUpdateToOneWithWhereWithoutEnergyBillsInput, PlantUpdateWithoutEnergyBillsInput>, PlantUncheckedUpdateWithoutEnergyBillsInput>
+  }
+
+  export type ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutEnergyBillsInput, ConsumerUnitUncheckedCreateWithoutEnergyBillsInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutEnergyBillsInput
+    upsert?: ConsumerUnitUpsertWithoutEnergyBillsInput
+    connect?: ConsumerUnitWhereUniqueInput
+    update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutEnergyBillsInput, ConsumerUnitUpdateWithoutEnergyBillsInput>, ConsumerUnitUncheckedUpdateWithoutEnergyBillsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -17318,6 +27828,116 @@ export namespace Prisma {
     _max?: NestedEnumClientStatusFilter<$PrismaModel>
   }
 
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedEnumGenerationUnitTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenerationUnitType | EnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenerationUnitTypeFilter<$PrismaModel> | $Enums.GenerationUnitType
+  }
+
+  export type NestedEnumGenerationUnitTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenerationUnitType | EnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenerationUnitType[] | ListEnumGenerationUnitTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenerationUnitTypeWithAggregatesFilter<$PrismaModel> | $Enums.GenerationUnitType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGenerationUnitTypeFilter<$PrismaModel>
+    _max?: NestedEnumGenerationUnitTypeFilter<$PrismaModel>
+  }
+
   export type NestedEnumIndicationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.IndicationStatus | EnumIndicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.IndicationStatus[] | ListEnumIndicationStatusFieldRefInput<$PrismaModel>
@@ -17400,12 +28020,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutUsersInput = {
@@ -17423,12 +28047,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutUsersInput = {
@@ -17462,12 +28090,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutUsersInput = {
@@ -17485,50 +28117,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
-  }
-
-  export type InverterCreateWithoutClientInput = {
-    id?: string
-    name?: string | null
-    provider: string
-    providerId: string
-    providerApiKey?: string | null
-    providerApiSecret?: string | null
-    providerUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    generationUnits?: GenerationUnitCreateNestedManyWithoutInverterInput
-  }
-
-  export type InverterUncheckedCreateWithoutClientInput = {
-    id?: string
-    name?: string | null
-    provider: string
-    providerId: string
-    providerApiKey?: string | null
-    providerApiSecret?: string | null
-    providerUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    generationUnits?: GenerationUnitUncheckedCreateNestedManyWithoutInverterInput
-  }
-
-  export type InverterCreateOrConnectWithoutClientInput = {
-    where: InverterWhereUniqueInput
-    create: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput>
-  }
-
-  export type InverterCreateManyClientInputEnvelope = {
-    data: InverterCreateManyClientInput | InverterCreateManyClientInput[]
-    skipDuplicates?: boolean
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutClientInput = {
@@ -17725,37 +28323,382 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type InverterUpsertWithWhereUniqueWithoutClientInput = {
+  export type EnergyBillCreateWithoutClientInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    plant: PlantCreateNestedOneWithoutEnergyBillsInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutEnergyBillsInput
+  }
+
+  export type EnergyBillUncheckedCreateWithoutClientInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    plantId: string
+    consumerUnitId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyBillCreateOrConnectWithoutClientInput = {
+    where: EnergyBillWhereUniqueInput
+    create: XOR<EnergyBillCreateWithoutClientInput, EnergyBillUncheckedCreateWithoutClientInput>
+  }
+
+  export type EnergyBillCreateManyClientInputEnvelope = {
+    data: EnergyBillCreateManyClientInput | EnergyBillCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PlantCreateWithoutClientInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantUncheckedCreateWithoutClientInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantCreateOrConnectWithoutClientInput = {
+    where: PlantWhereUniqueInput
+    create: XOR<PlantCreateWithoutClientInput, PlantUncheckedCreateWithoutClientInput>
+  }
+
+  export type PlantCreateManyClientInputEnvelope = {
+    data: PlantCreateManyClientInput | PlantCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InverterCreateWithoutClientInput = {
+    id?: string
+    name?: string | null
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    plant?: PlantCreateNestedOneWithoutInvertersInput
+    generationUnits?: GenerationUnitCreateNestedManyWithoutInverterInput
+  }
+
+  export type InverterUncheckedCreateWithoutClientInput = {
+    id?: string
+    name?: string | null
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
+    plantId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    generationUnits?: GenerationUnitUncheckedCreateNestedManyWithoutInverterInput
+  }
+
+  export type InverterCreateOrConnectWithoutClientInput = {
     where: InverterWhereUniqueInput
-    update: XOR<InverterUpdateWithoutClientInput, InverterUncheckedUpdateWithoutClientInput>
     create: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput>
   }
 
-  export type InverterUpdateWithWhereUniqueWithoutClientInput = {
-    where: InverterWhereUniqueInput
-    data: XOR<InverterUpdateWithoutClientInput, InverterUncheckedUpdateWithoutClientInput>
+  export type InverterCreateManyClientInputEnvelope = {
+    data: InverterCreateManyClientInput | InverterCreateManyClientInput[]
+    skipDuplicates?: boolean
   }
 
-  export type InverterUpdateManyWithWhereWithoutClientInput = {
-    where: InverterScalarWhereInput
-    data: XOR<InverterUpdateManyMutationInput, InverterUncheckedUpdateManyWithoutClientInput>
+  export type ConsumerUnitCreateWithoutClientInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
   }
 
-  export type InverterScalarWhereInput = {
-    AND?: InverterScalarWhereInput | InverterScalarWhereInput[]
-    OR?: InverterScalarWhereInput[]
-    NOT?: InverterScalarWhereInput | InverterScalarWhereInput[]
-    id?: StringFilter<"Inverter"> | string
-    name?: StringNullableFilter<"Inverter"> | string | null
-    provider?: StringFilter<"Inverter"> | string
-    providerId?: StringFilter<"Inverter"> | string
-    providerApiKey?: StringNullableFilter<"Inverter"> | string | null
-    providerApiSecret?: StringNullableFilter<"Inverter"> | string | null
-    providerUrl?: StringNullableFilter<"Inverter"> | string | null
-    clientId?: StringFilter<"Inverter"> | string
-    createdAt?: DateTimeFilter<"Inverter"> | Date | string
-    updatedAt?: DateTimeFilter<"Inverter"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+  export type ConsumerUnitUncheckedCreateWithoutClientInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutClientInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutClientInput, ConsumerUnitUncheckedCreateWithoutClientInput>
+  }
+
+  export type ConsumerUnitCreateManyClientInputEnvelope = {
+    data: ConsumerUnitCreateManyClientInput | ConsumerUnitCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CreditAllocationCreateWithoutClientInput = {
+    id?: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    plant: PlantCreateNestedOneWithoutCreditAllocationsInput
+    from: ConsumerUnitCreateNestedOneWithoutAllocationsFromInput
+    to: ConsumerUnitCreateNestedOneWithoutAllocationsToInput
+  }
+
+  export type CreditAllocationUncheckedCreateWithoutClientInput = {
+    id?: string
+    plantId: string
+    fromId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationCreateOrConnectWithoutClientInput = {
+    where: CreditAllocationWhereUniqueInput
+    create: XOR<CreditAllocationCreateWithoutClientInput, CreditAllocationUncheckedCreateWithoutClientInput>
+  }
+
+  export type CreditAllocationCreateManyClientInputEnvelope = {
+    data: CreditAllocationCreateManyClientInput | CreditAllocationCreateManyClientInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithWhereUniqueWithoutClientInput = {
@@ -17931,6 +28874,770 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"OfferRedemption"> | Date | string
   }
 
+  export type EnergyBillUpsertWithWhereUniqueWithoutClientInput = {
+    where: EnergyBillWhereUniqueInput
+    update: XOR<EnergyBillUpdateWithoutClientInput, EnergyBillUncheckedUpdateWithoutClientInput>
+    create: XOR<EnergyBillCreateWithoutClientInput, EnergyBillUncheckedCreateWithoutClientInput>
+  }
+
+  export type EnergyBillUpdateWithWhereUniqueWithoutClientInput = {
+    where: EnergyBillWhereUniqueInput
+    data: XOR<EnergyBillUpdateWithoutClientInput, EnergyBillUncheckedUpdateWithoutClientInput>
+  }
+
+  export type EnergyBillUpdateManyWithWhereWithoutClientInput = {
+    where: EnergyBillScalarWhereInput
+    data: XOR<EnergyBillUpdateManyMutationInput, EnergyBillUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type EnergyBillScalarWhereInput = {
+    AND?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+    OR?: EnergyBillScalarWhereInput[]
+    NOT?: EnergyBillScalarWhereInput | EnergyBillScalarWhereInput[]
+    id?: StringFilter<"EnergyBill"> | string
+    billFileUrl?: StringNullableFilter<"EnergyBill"> | string | null
+    rawBillFileKey?: StringNullableFilter<"EnergyBill"> | string | null
+    rawBillFileSize?: IntNullableFilter<"EnergyBill"> | number | null
+    clientId?: StringFilter<"EnergyBill"> | string
+    plantId?: StringFilter<"EnergyBill"> | string
+    consumerUnitId?: StringFilter<"EnergyBill"> | string
+    competenceDate?: DateTimeFilter<"EnergyBill"> | Date | string
+    referenceMonth?: IntFilter<"EnergyBill"> | number
+    referenceYear?: IntFilter<"EnergyBill"> | number
+    accountHolder?: StringNullableFilter<"EnergyBill"> | string | null
+    accountNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    clientNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    instalationNumber?: StringNullableFilter<"EnergyBill"> | string | null
+    distributor?: StringNullableFilter<"EnergyBill"> | string | null
+    consumerClass?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffModality?: StringNullableFilter<"EnergyBill"> | string | null
+    connectionType?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffPeriod?: StringNullableFilter<"EnergyBill"> | string | null
+    billingDays?: IntNullableFilter<"EnergyBill"> | number | null
+    readingPeriodFrom?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    readingPeriodTo?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    creditExpiryDate?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    monitoredGenerationKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    energyCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: StringNullableFilter<"EnergyBill"> | string | null
+    tariffFlagCost?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: StringNullableFilter<"EnergyBill"> | string | null
+    aiExplanations?: JsonNullableFilter<"EnergyBill">
+    aiRecommendations?: JsonNullableFilter<"EnergyBill">
+    alerts?: JsonNullableFilter<"EnergyBill">
+    extraCharges?: JsonNullableFilter<"EnergyBill">
+    billingItems?: JsonNullableFilter<"EnergyBill">
+    creditSummary?: JsonNullableFilter<"EnergyBill">
+    billScore?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    status?: StringNullableFilter<"EnergyBill"> | string | null
+    createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
+    updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
+  }
+
+  export type PlantUpsertWithWhereUniqueWithoutClientInput = {
+    where: PlantWhereUniqueInput
+    update: XOR<PlantUpdateWithoutClientInput, PlantUncheckedUpdateWithoutClientInput>
+    create: XOR<PlantCreateWithoutClientInput, PlantUncheckedCreateWithoutClientInput>
+  }
+
+  export type PlantUpdateWithWhereUniqueWithoutClientInput = {
+    where: PlantWhereUniqueInput
+    data: XOR<PlantUpdateWithoutClientInput, PlantUncheckedUpdateWithoutClientInput>
+  }
+
+  export type PlantUpdateManyWithWhereWithoutClientInput = {
+    where: PlantScalarWhereInput
+    data: XOR<PlantUpdateManyMutationInput, PlantUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type PlantScalarWhereInput = {
+    AND?: PlantScalarWhereInput | PlantScalarWhereInput[]
+    OR?: PlantScalarWhereInput[]
+    NOT?: PlantScalarWhereInput | PlantScalarWhereInput[]
+    id?: StringFilter<"Plant"> | string
+    clientId?: StringFilter<"Plant"> | string
+    name?: StringNullableFilter<"Plant"> | string | null
+    provider?: StringNullableFilter<"Plant"> | string | null
+    providerStatus?: StringNullableFilter<"Plant"> | string | null
+    providerPlantId?: StringNullableFilter<"Plant"> | string | null
+    installedPowerKw?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    address?: StringNullableFilter<"Plant"> | string | null
+    city?: StringNullableFilter<"Plant"> | string | null
+    state?: StringNullableFilter<"Plant"> | string | null
+    timezone?: StringNullableFilter<"Plant"> | string | null
+    latitude?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    longitude?: DecimalNullableFilter<"Plant"> | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: JsonNullableFilter<"Plant">
+    createdAt?: DateTimeFilter<"Plant"> | Date | string
+    updatedAt?: DateTimeFilter<"Plant"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
+  }
+
+  export type InverterUpsertWithWhereUniqueWithoutClientInput = {
+    where: InverterWhereUniqueInput
+    update: XOR<InverterUpdateWithoutClientInput, InverterUncheckedUpdateWithoutClientInput>
+    create: XOR<InverterCreateWithoutClientInput, InverterUncheckedCreateWithoutClientInput>
+  }
+
+  export type InverterUpdateWithWhereUniqueWithoutClientInput = {
+    where: InverterWhereUniqueInput
+    data: XOR<InverterUpdateWithoutClientInput, InverterUncheckedUpdateWithoutClientInput>
+  }
+
+  export type InverterUpdateManyWithWhereWithoutClientInput = {
+    where: InverterScalarWhereInput
+    data: XOR<InverterUpdateManyMutationInput, InverterUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type InverterScalarWhereInput = {
+    AND?: InverterScalarWhereInput | InverterScalarWhereInput[]
+    OR?: InverterScalarWhereInput[]
+    NOT?: InverterScalarWhereInput | InverterScalarWhereInput[]
+    id?: StringFilter<"Inverter"> | string
+    name?: StringNullableFilter<"Inverter"> | string | null
+    provider?: StringFilter<"Inverter"> | string
+    providerId?: StringFilter<"Inverter"> | string
+    providerApiKey?: StringNullableFilter<"Inverter"> | string | null
+    providerApiSecret?: StringNullableFilter<"Inverter"> | string | null
+    providerUrl?: StringNullableFilter<"Inverter"> | string | null
+    providerPlantId?: StringNullableFilter<"Inverter"> | string | null
+    providerPlantName?: StringNullableFilter<"Inverter"> | string | null
+    providerStatus?: StringNullableFilter<"Inverter"> | string | null
+    providerConfig?: JsonNullableFilter<"Inverter">
+    providerMetadata?: JsonNullableFilter<"Inverter">
+    serialNumber?: StringNullableFilter<"Inverter"> | string | null
+    manufacturer?: StringNullableFilter<"Inverter"> | string | null
+    modelName?: StringNullableFilter<"Inverter"> | string | null
+    firmwareVersion?: StringNullableFilter<"Inverter"> | string | null
+    nominalPowerKw?: DecimalNullableFilter<"Inverter"> | Decimal | DecimalJsLike | number | string | null
+    timezone?: StringNullableFilter<"Inverter"> | string | null
+    syncEnabled?: BoolFilter<"Inverter"> | boolean
+    syncIntervalMinutes?: IntNullableFilter<"Inverter"> | number | null
+    lastSyncAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    lastSuccessfulSyncAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    lastSyncStatus?: StringNullableFilter<"Inverter"> | string | null
+    lastSyncError?: StringNullableFilter<"Inverter"> | string | null
+    installedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    commissionedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+    clientId?: StringFilter<"Inverter"> | string
+    plantId?: StringNullableFilter<"Inverter"> | string | null
+    createdAt?: DateTimeFilter<"Inverter"> | Date | string
+    updatedAt?: DateTimeFilter<"Inverter"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Inverter"> | Date | string | null
+  }
+
+  export type ConsumerUnitUpsertWithWhereUniqueWithoutClientInput = {
+    where: ConsumerUnitWhereUniqueInput
+    update: XOR<ConsumerUnitUpdateWithoutClientInput, ConsumerUnitUncheckedUpdateWithoutClientInput>
+    create: XOR<ConsumerUnitCreateWithoutClientInput, ConsumerUnitUncheckedCreateWithoutClientInput>
+  }
+
+  export type ConsumerUnitUpdateWithWhereUniqueWithoutClientInput = {
+    where: ConsumerUnitWhereUniqueInput
+    data: XOR<ConsumerUnitUpdateWithoutClientInput, ConsumerUnitUncheckedUpdateWithoutClientInput>
+  }
+
+  export type ConsumerUnitUpdateManyWithWhereWithoutClientInput = {
+    where: ConsumerUnitScalarWhereInput
+    data: XOR<ConsumerUnitUpdateManyMutationInput, ConsumerUnitUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type ConsumerUnitScalarWhereInput = {
+    AND?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+    OR?: ConsumerUnitScalarWhereInput[]
+    NOT?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+    id?: StringFilter<"ConsumerUnit"> | string
+    clientId?: StringFilter<"ConsumerUnit"> | string
+    name?: StringNullableFilter<"ConsumerUnit"> | string | null
+    isGenerator?: BoolFilter<"ConsumerUnit"> | boolean
+    isConsumer?: BoolFilter<"ConsumerUnit"> | boolean
+    accountHolder?: StringNullableFilter<"ConsumerUnit"> | string | null
+    accountNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    clientNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    installationNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    distributor?: StringNullableFilter<"ConsumerUnit"> | string | null
+    address?: StringNullableFilter<"ConsumerUnit"> | string | null
+    city?: StringNullableFilter<"ConsumerUnit"> | string | null
+    state?: StringNullableFilter<"ConsumerUnit"> | string | null
+    status?: StringNullableFilter<"ConsumerUnit"> | string | null
+    plantId?: StringFilter<"ConsumerUnit"> | string
+    createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
+  }
+
+  export type CreditAllocationUpsertWithWhereUniqueWithoutClientInput = {
+    where: CreditAllocationWhereUniqueInput
+    update: XOR<CreditAllocationUpdateWithoutClientInput, CreditAllocationUncheckedUpdateWithoutClientInput>
+    create: XOR<CreditAllocationCreateWithoutClientInput, CreditAllocationUncheckedCreateWithoutClientInput>
+  }
+
+  export type CreditAllocationUpdateWithWhereUniqueWithoutClientInput = {
+    where: CreditAllocationWhereUniqueInput
+    data: XOR<CreditAllocationUpdateWithoutClientInput, CreditAllocationUncheckedUpdateWithoutClientInput>
+  }
+
+  export type CreditAllocationUpdateManyWithWhereWithoutClientInput = {
+    where: CreditAllocationScalarWhereInput
+    data: XOR<CreditAllocationUpdateManyMutationInput, CreditAllocationUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type CreditAllocationScalarWhereInput = {
+    AND?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+    OR?: CreditAllocationScalarWhereInput[]
+    NOT?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+    id?: StringFilter<"CreditAllocation"> | string
+    clientId?: StringFilter<"CreditAllocation"> | string
+    plantId?: StringFilter<"CreditAllocation"> | string
+    fromId?: StringFilter<"CreditAllocation"> | string
+    toId?: StringFilter<"CreditAllocation"> | string
+    allocationPercentage?: DecimalFilter<"CreditAllocation"> | Decimal | DecimalJsLike | number | string
+    startsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    endsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    isActive?: BoolFilter<"CreditAllocation"> | boolean
+    createdAt?: DateTimeFilter<"CreditAllocation"> | Date | string
+    updatedAt?: DateTimeFilter<"CreditAllocation"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+  }
+
+  export type ClientCreateWithoutPlantsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutPlantsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutPlantsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutPlantsInput, ClientUncheckedCreateWithoutPlantsInput>
+  }
+
+  export type InverterCreateWithoutPlantInput = {
+    id?: string
+    name?: string | null
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutInvertersInput
+    generationUnits?: GenerationUnitCreateNestedManyWithoutInverterInput
+  }
+
+  export type InverterUncheckedCreateWithoutPlantInput = {
+    id?: string
+    name?: string | null
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
+    clientId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    generationUnits?: GenerationUnitUncheckedCreateNestedManyWithoutInverterInput
+  }
+
+  export type InverterCreateOrConnectWithoutPlantInput = {
+    where: InverterWhereUniqueInput
+    create: XOR<InverterCreateWithoutPlantInput, InverterUncheckedCreateWithoutPlantInput>
+  }
+
+  export type InverterCreateManyPlantInputEnvelope = {
+    data: InverterCreateManyPlantInput | InverterCreateManyPlantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ConsumerUnitCreateWithoutPlantInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutPlantInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutPlantInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutPlantInput, ConsumerUnitUncheckedCreateWithoutPlantInput>
+  }
+
+  export type ConsumerUnitCreateManyPlantInputEnvelope = {
+    data: ConsumerUnitCreateManyPlantInput | ConsumerUnitCreateManyPlantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CreditAllocationCreateWithoutPlantInput = {
+    id?: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutCreditAllocationsInput
+    from: ConsumerUnitCreateNestedOneWithoutAllocationsFromInput
+    to: ConsumerUnitCreateNestedOneWithoutAllocationsToInput
+  }
+
+  export type CreditAllocationUncheckedCreateWithoutPlantInput = {
+    id?: string
+    clientId: string
+    fromId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationCreateOrConnectWithoutPlantInput = {
+    where: CreditAllocationWhereUniqueInput
+    create: XOR<CreditAllocationCreateWithoutPlantInput, CreditAllocationUncheckedCreateWithoutPlantInput>
+  }
+
+  export type CreditAllocationCreateManyPlantInputEnvelope = {
+    data: CreditAllocationCreateManyPlantInput | CreditAllocationCreateManyPlantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EnergyBillCreateWithoutPlantInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutEnergyBillsInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutEnergyBillsInput
+  }
+
+  export type EnergyBillUncheckedCreateWithoutPlantInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    clientId: string
+    consumerUnitId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyBillCreateOrConnectWithoutPlantInput = {
+    where: EnergyBillWhereUniqueInput
+    create: XOR<EnergyBillCreateWithoutPlantInput, EnergyBillUncheckedCreateWithoutPlantInput>
+  }
+
+  export type EnergyBillCreateManyPlantInputEnvelope = {
+    data: EnergyBillCreateManyPlantInput | EnergyBillCreateManyPlantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClientUpsertWithoutPlantsInput = {
+    update: XOR<ClientUpdateWithoutPlantsInput, ClientUncheckedUpdateWithoutPlantsInput>
+    create: XOR<ClientCreateWithoutPlantsInput, ClientUncheckedCreateWithoutPlantsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutPlantsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutPlantsInput, ClientUncheckedUpdateWithoutPlantsInput>
+  }
+
+  export type ClientUpdateWithoutPlantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutPlantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type InverterUpsertWithWhereUniqueWithoutPlantInput = {
+    where: InverterWhereUniqueInput
+    update: XOR<InverterUpdateWithoutPlantInput, InverterUncheckedUpdateWithoutPlantInput>
+    create: XOR<InverterCreateWithoutPlantInput, InverterUncheckedCreateWithoutPlantInput>
+  }
+
+  export type InverterUpdateWithWhereUniqueWithoutPlantInput = {
+    where: InverterWhereUniqueInput
+    data: XOR<InverterUpdateWithoutPlantInput, InverterUncheckedUpdateWithoutPlantInput>
+  }
+
+  export type InverterUpdateManyWithWhereWithoutPlantInput = {
+    where: InverterScalarWhereInput
+    data: XOR<InverterUpdateManyMutationInput, InverterUncheckedUpdateManyWithoutPlantInput>
+  }
+
+  export type ConsumerUnitUpsertWithWhereUniqueWithoutPlantInput = {
+    where: ConsumerUnitWhereUniqueInput
+    update: XOR<ConsumerUnitUpdateWithoutPlantInput, ConsumerUnitUncheckedUpdateWithoutPlantInput>
+    create: XOR<ConsumerUnitCreateWithoutPlantInput, ConsumerUnitUncheckedCreateWithoutPlantInput>
+  }
+
+  export type ConsumerUnitUpdateWithWhereUniqueWithoutPlantInput = {
+    where: ConsumerUnitWhereUniqueInput
+    data: XOR<ConsumerUnitUpdateWithoutPlantInput, ConsumerUnitUncheckedUpdateWithoutPlantInput>
+  }
+
+  export type ConsumerUnitUpdateManyWithWhereWithoutPlantInput = {
+    where: ConsumerUnitScalarWhereInput
+    data: XOR<ConsumerUnitUpdateManyMutationInput, ConsumerUnitUncheckedUpdateManyWithoutPlantInput>
+  }
+
+  export type CreditAllocationUpsertWithWhereUniqueWithoutPlantInput = {
+    where: CreditAllocationWhereUniqueInput
+    update: XOR<CreditAllocationUpdateWithoutPlantInput, CreditAllocationUncheckedUpdateWithoutPlantInput>
+    create: XOR<CreditAllocationCreateWithoutPlantInput, CreditAllocationUncheckedCreateWithoutPlantInput>
+  }
+
+  export type CreditAllocationUpdateWithWhereUniqueWithoutPlantInput = {
+    where: CreditAllocationWhereUniqueInput
+    data: XOR<CreditAllocationUpdateWithoutPlantInput, CreditAllocationUncheckedUpdateWithoutPlantInput>
+  }
+
+  export type CreditAllocationUpdateManyWithWhereWithoutPlantInput = {
+    where: CreditAllocationScalarWhereInput
+    data: XOR<CreditAllocationUpdateManyMutationInput, CreditAllocationUncheckedUpdateManyWithoutPlantInput>
+  }
+
+  export type EnergyBillUpsertWithWhereUniqueWithoutPlantInput = {
+    where: EnergyBillWhereUniqueInput
+    update: XOR<EnergyBillUpdateWithoutPlantInput, EnergyBillUncheckedUpdateWithoutPlantInput>
+    create: XOR<EnergyBillCreateWithoutPlantInput, EnergyBillUncheckedCreateWithoutPlantInput>
+  }
+
+  export type EnergyBillUpdateWithWhereUniqueWithoutPlantInput = {
+    where: EnergyBillWhereUniqueInput
+    data: XOR<EnergyBillUpdateWithoutPlantInput, EnergyBillUncheckedUpdateWithoutPlantInput>
+  }
+
+  export type EnergyBillUpdateManyWithWhereWithoutPlantInput = {
+    where: EnergyBillScalarWhereInput
+    data: XOR<EnergyBillUpdateManyMutationInput, EnergyBillUncheckedUpdateManyWithoutPlantInput>
+  }
+
   export type ClientCreateWithoutInvertersInput = {
     id?: string
     name: string
@@ -17952,6 +29659,10 @@ export namespace Prisma {
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutInvertersInput = {
@@ -17975,6 +29686,10 @@ export namespace Prisma {
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutInvertersInput = {
@@ -17982,11 +29697,67 @@ export namespace Prisma {
     create: XOR<ClientCreateWithoutInvertersInput, ClientUncheckedCreateWithoutInvertersInput>
   }
 
+  export type PlantCreateWithoutInvertersInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutPlantsInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantUncheckedCreateWithoutInvertersInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantCreateOrConnectWithoutInvertersInput = {
+    where: PlantWhereUniqueInput
+    create: XOR<PlantCreateWithoutInvertersInput, PlantUncheckedCreateWithoutInvertersInput>
+  }
+
   export type GenerationUnitCreateWithoutInverterInput = {
     id?: string
     power: number
     energy: number
-    generationUnitType?: string
+    generationUnitType?: $Enums.GenerationUnitType
+    source?: string | null
+    providerRecordId?: string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17997,7 +29768,10 @@ export namespace Prisma {
     id?: string
     power: number
     energy: number
-    generationUnitType?: string
+    generationUnitType?: $Enums.GenerationUnitType
+    source?: string | null
+    providerRecordId?: string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18046,6 +29820,10 @@ export namespace Prisma {
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutInvertersInput = {
@@ -18069,6 +29847,69 @@ export namespace Prisma {
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type PlantUpsertWithoutInvertersInput = {
+    update: XOR<PlantUpdateWithoutInvertersInput, PlantUncheckedUpdateWithoutInvertersInput>
+    create: XOR<PlantCreateWithoutInvertersInput, PlantUncheckedCreateWithoutInvertersInput>
+    where?: PlantWhereInput
+  }
+
+  export type PlantUpdateToOneWithWhereWithoutInvertersInput = {
+    where?: PlantWhereInput
+    data: XOR<PlantUpdateWithoutInvertersInput, PlantUncheckedUpdateWithoutInvertersInput>
+  }
+
+  export type PlantUpdateWithoutInvertersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantUncheckedUpdateWithoutInvertersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
   }
 
   export type GenerationUnitUpsertWithWhereUniqueWithoutInverterInput = {
@@ -18094,12 +29935,975 @@ export namespace Prisma {
     id?: StringFilter<"GenerationUnit"> | string
     power?: FloatFilter<"GenerationUnit"> | number
     energy?: FloatFilter<"GenerationUnit"> | number
-    generationUnitType?: StringFilter<"GenerationUnit"> | string
+    generationUnitType?: EnumGenerationUnitTypeFilter<"GenerationUnit"> | $Enums.GenerationUnitType
+    source?: StringNullableFilter<"GenerationUnit"> | string | null
+    providerRecordId?: StringNullableFilter<"GenerationUnit"> | string | null
+    rawPayload?: JsonNullableFilter<"GenerationUnit">
     timestamp?: DateTimeFilter<"GenerationUnit"> | Date | string
     inverterId?: StringFilter<"GenerationUnit"> | string
     createdAt?: DateTimeFilter<"GenerationUnit"> | Date | string
     updatedAt?: DateTimeFilter<"GenerationUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"GenerationUnit"> | Date | string | null
+  }
+
+  export type ClientCreateWithoutConsumerUnitsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutConsumerUnitsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutConsumerUnitsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutConsumerUnitsInput, ClientUncheckedCreateWithoutConsumerUnitsInput>
+  }
+
+  export type PlantCreateWithoutConsumerUnitsInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutPlantsInput
+    inverters?: InverterCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantUncheckedCreateWithoutConsumerUnitsInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantCreateOrConnectWithoutConsumerUnitsInput = {
+    where: PlantWhereUniqueInput
+    create: XOR<PlantCreateWithoutConsumerUnitsInput, PlantUncheckedCreateWithoutConsumerUnitsInput>
+  }
+
+  export type EnergyBillCreateWithoutConsumerUnitInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutEnergyBillsInput
+    plant: PlantCreateNestedOneWithoutEnergyBillsInput
+  }
+
+  export type EnergyBillUncheckedCreateWithoutConsumerUnitInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    clientId: string
+    plantId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyBillCreateOrConnectWithoutConsumerUnitInput = {
+    where: EnergyBillWhereUniqueInput
+    create: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput>
+  }
+
+  export type EnergyBillCreateManyConsumerUnitInputEnvelope = {
+    data: EnergyBillCreateManyConsumerUnitInput | EnergyBillCreateManyConsumerUnitInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CreditAllocationCreateWithoutFromInput = {
+    id?: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutCreditAllocationsInput
+    plant: PlantCreateNestedOneWithoutCreditAllocationsInput
+    to: ConsumerUnitCreateNestedOneWithoutAllocationsToInput
+  }
+
+  export type CreditAllocationUncheckedCreateWithoutFromInput = {
+    id?: string
+    clientId: string
+    plantId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationCreateOrConnectWithoutFromInput = {
+    where: CreditAllocationWhereUniqueInput
+    create: XOR<CreditAllocationCreateWithoutFromInput, CreditAllocationUncheckedCreateWithoutFromInput>
+  }
+
+  export type CreditAllocationCreateManyFromInputEnvelope = {
+    data: CreditAllocationCreateManyFromInput | CreditAllocationCreateManyFromInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CreditAllocationCreateWithoutToInput = {
+    id?: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutCreditAllocationsInput
+    plant: PlantCreateNestedOneWithoutCreditAllocationsInput
+    from: ConsumerUnitCreateNestedOneWithoutAllocationsFromInput
+  }
+
+  export type CreditAllocationUncheckedCreateWithoutToInput = {
+    id?: string
+    clientId: string
+    plantId: string
+    fromId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationCreateOrConnectWithoutToInput = {
+    where: CreditAllocationWhereUniqueInput
+    create: XOR<CreditAllocationCreateWithoutToInput, CreditAllocationUncheckedCreateWithoutToInput>
+  }
+
+  export type CreditAllocationCreateManyToInputEnvelope = {
+    data: CreditAllocationCreateManyToInput | CreditAllocationCreateManyToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClientUpsertWithoutConsumerUnitsInput = {
+    update: XOR<ClientUpdateWithoutConsumerUnitsInput, ClientUncheckedUpdateWithoutConsumerUnitsInput>
+    create: XOR<ClientCreateWithoutConsumerUnitsInput, ClientUncheckedCreateWithoutConsumerUnitsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutConsumerUnitsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutConsumerUnitsInput, ClientUncheckedUpdateWithoutConsumerUnitsInput>
+  }
+
+  export type ClientUpdateWithoutConsumerUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutConsumerUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type PlantUpsertWithoutConsumerUnitsInput = {
+    update: XOR<PlantUpdateWithoutConsumerUnitsInput, PlantUncheckedUpdateWithoutConsumerUnitsInput>
+    create: XOR<PlantCreateWithoutConsumerUnitsInput, PlantUncheckedCreateWithoutConsumerUnitsInput>
+    where?: PlantWhereInput
+  }
+
+  export type PlantUpdateToOneWithWhereWithoutConsumerUnitsInput = {
+    where?: PlantWhereInput
+    data: XOR<PlantUpdateWithoutConsumerUnitsInput, PlantUncheckedUpdateWithoutConsumerUnitsInput>
+  }
+
+  export type PlantUpdateWithoutConsumerUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
+    inverters?: InverterUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantUncheckedUpdateWithoutConsumerUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
+  }
+
+  export type EnergyBillUpsertWithWhereUniqueWithoutConsumerUnitInput = {
+    where: EnergyBillWhereUniqueInput
+    update: XOR<EnergyBillUpdateWithoutConsumerUnitInput, EnergyBillUncheckedUpdateWithoutConsumerUnitInput>
+    create: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput>
+  }
+
+  export type EnergyBillUpdateWithWhereUniqueWithoutConsumerUnitInput = {
+    where: EnergyBillWhereUniqueInput
+    data: XOR<EnergyBillUpdateWithoutConsumerUnitInput, EnergyBillUncheckedUpdateWithoutConsumerUnitInput>
+  }
+
+  export type EnergyBillUpdateManyWithWhereWithoutConsumerUnitInput = {
+    where: EnergyBillScalarWhereInput
+    data: XOR<EnergyBillUpdateManyMutationInput, EnergyBillUncheckedUpdateManyWithoutConsumerUnitInput>
+  }
+
+  export type CreditAllocationUpsertWithWhereUniqueWithoutFromInput = {
+    where: CreditAllocationWhereUniqueInput
+    update: XOR<CreditAllocationUpdateWithoutFromInput, CreditAllocationUncheckedUpdateWithoutFromInput>
+    create: XOR<CreditAllocationCreateWithoutFromInput, CreditAllocationUncheckedCreateWithoutFromInput>
+  }
+
+  export type CreditAllocationUpdateWithWhereUniqueWithoutFromInput = {
+    where: CreditAllocationWhereUniqueInput
+    data: XOR<CreditAllocationUpdateWithoutFromInput, CreditAllocationUncheckedUpdateWithoutFromInput>
+  }
+
+  export type CreditAllocationUpdateManyWithWhereWithoutFromInput = {
+    where: CreditAllocationScalarWhereInput
+    data: XOR<CreditAllocationUpdateManyMutationInput, CreditAllocationUncheckedUpdateManyWithoutFromInput>
+  }
+
+  export type CreditAllocationUpsertWithWhereUniqueWithoutToInput = {
+    where: CreditAllocationWhereUniqueInput
+    update: XOR<CreditAllocationUpdateWithoutToInput, CreditAllocationUncheckedUpdateWithoutToInput>
+    create: XOR<CreditAllocationCreateWithoutToInput, CreditAllocationUncheckedCreateWithoutToInput>
+  }
+
+  export type CreditAllocationUpdateWithWhereUniqueWithoutToInput = {
+    where: CreditAllocationWhereUniqueInput
+    data: XOR<CreditAllocationUpdateWithoutToInput, CreditAllocationUncheckedUpdateWithoutToInput>
+  }
+
+  export type CreditAllocationUpdateManyWithWhereWithoutToInput = {
+    where: CreditAllocationScalarWhereInput
+    data: XOR<CreditAllocationUpdateManyMutationInput, CreditAllocationUncheckedUpdateManyWithoutToInput>
+  }
+
+  export type ClientCreateWithoutCreditAllocationsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutCreditAllocationsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutCreditAllocationsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutCreditAllocationsInput, ClientUncheckedCreateWithoutCreditAllocationsInput>
+  }
+
+  export type PlantCreateWithoutCreditAllocationsInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutPlantsInput
+    inverters?: InverterCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantUncheckedCreateWithoutCreditAllocationsInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantCreateOrConnectWithoutCreditAllocationsInput = {
+    where: PlantWhereUniqueInput
+    create: XOR<PlantCreateWithoutCreditAllocationsInput, PlantUncheckedCreateWithoutCreditAllocationsInput>
+  }
+
+  export type ConsumerUnitCreateWithoutAllocationsFromInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutAllocationsFromInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutAllocationsFromInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutAllocationsFromInput, ConsumerUnitUncheckedCreateWithoutAllocationsFromInput>
+  }
+
+  export type ConsumerUnitCreateWithoutAllocationsToInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutAllocationsToInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutAllocationsToInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutAllocationsToInput, ConsumerUnitUncheckedCreateWithoutAllocationsToInput>
+  }
+
+  export type ClientUpsertWithoutCreditAllocationsInput = {
+    update: XOR<ClientUpdateWithoutCreditAllocationsInput, ClientUncheckedUpdateWithoutCreditAllocationsInput>
+    create: XOR<ClientCreateWithoutCreditAllocationsInput, ClientUncheckedCreateWithoutCreditAllocationsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutCreditAllocationsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutCreditAllocationsInput, ClientUncheckedUpdateWithoutCreditAllocationsInput>
+  }
+
+  export type ClientUpdateWithoutCreditAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutCreditAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type PlantUpsertWithoutCreditAllocationsInput = {
+    update: XOR<PlantUpdateWithoutCreditAllocationsInput, PlantUncheckedUpdateWithoutCreditAllocationsInput>
+    create: XOR<PlantCreateWithoutCreditAllocationsInput, PlantUncheckedCreateWithoutCreditAllocationsInput>
+    where?: PlantWhereInput
+  }
+
+  export type PlantUpdateToOneWithWhereWithoutCreditAllocationsInput = {
+    where?: PlantWhereInput
+    data: XOR<PlantUpdateWithoutCreditAllocationsInput, PlantUncheckedUpdateWithoutCreditAllocationsInput>
+  }
+
+  export type PlantUpdateWithoutCreditAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
+    inverters?: InverterUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantUncheckedUpdateWithoutCreditAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
+  }
+
+  export type ConsumerUnitUpsertWithoutAllocationsFromInput = {
+    update: XOR<ConsumerUnitUpdateWithoutAllocationsFromInput, ConsumerUnitUncheckedUpdateWithoutAllocationsFromInput>
+    create: XOR<ConsumerUnitCreateWithoutAllocationsFromInput, ConsumerUnitUncheckedCreateWithoutAllocationsFromInput>
+    where?: ConsumerUnitWhereInput
+  }
+
+  export type ConsumerUnitUpdateToOneWithWhereWithoutAllocationsFromInput = {
+    where?: ConsumerUnitWhereInput
+    data: XOR<ConsumerUnitUpdateWithoutAllocationsFromInput, ConsumerUnitUncheckedUpdateWithoutAllocationsFromInput>
+  }
+
+  export type ConsumerUnitUpdateWithoutAllocationsFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutAllocationsFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUpsertWithoutAllocationsToInput = {
+    update: XOR<ConsumerUnitUpdateWithoutAllocationsToInput, ConsumerUnitUncheckedUpdateWithoutAllocationsToInput>
+    create: XOR<ConsumerUnitCreateWithoutAllocationsToInput, ConsumerUnitUncheckedCreateWithoutAllocationsToInput>
+    where?: ConsumerUnitWhereInput
+  }
+
+  export type ConsumerUnitUpdateToOneWithWhereWithoutAllocationsToInput = {
+    where?: ConsumerUnitWhereInput
+    data: XOR<ConsumerUnitUpdateWithoutAllocationsToInput, ConsumerUnitUncheckedUpdateWithoutAllocationsToInput>
+  }
+
+  export type ConsumerUnitUpdateWithoutAllocationsToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutAllocationsToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
   }
 
   export type InverterCreateWithoutGenerationUnitsInput = {
@@ -18110,10 +30914,30 @@ export namespace Prisma {
     providerApiKey?: string | null
     providerApiSecret?: string | null
     providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutInvertersInput
+    plant?: PlantCreateNestedOneWithoutInvertersInput
   }
 
   export type InverterUncheckedCreateWithoutGenerationUnitsInput = {
@@ -18124,7 +30948,27 @@ export namespace Prisma {
     providerApiKey?: string | null
     providerApiSecret?: string | null
     providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
     clientId: string
+    plantId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -18154,10 +30998,30 @@ export namespace Prisma {
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
     providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
     providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutInvertersNestedInput
+    plant?: PlantUpdateOneWithoutInvertersNestedInput
   }
 
   export type InverterUncheckedUpdateWithoutGenerationUnitsInput = {
@@ -18168,7 +31032,27 @@ export namespace Prisma {
     providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
     providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
     providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18189,12 +31073,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferrerInput = {
@@ -18212,12 +31100,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferrerInput = {
@@ -18240,12 +31132,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferredInput = {
@@ -18263,12 +31159,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferredInput = {
@@ -18302,12 +31202,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferrerInput = {
@@ -18325,12 +31229,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUpsertWithoutIndicationsAsReferredInput = {
@@ -18359,12 +31267,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferredInput = {
@@ -18382,12 +31294,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type OfferRedemptionCreateWithoutOfferInput = {
@@ -18494,12 +31410,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutOfferRedemptionsInput = {
@@ -18517,12 +31437,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutOfferRedemptionsInput = {
@@ -18601,12 +31525,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutOfferRedemptionsInput = {
@@ -18624,12 +31552,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutTransactionsInput = {
@@ -18647,12 +31579,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutTransactionsInput = {
@@ -18670,12 +31606,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
     consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutTransactionsInput = {
@@ -18709,12 +31649,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutTransactionsInput = {
@@ -18732,12 +31676,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
     consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutConsumptionsInput = {
@@ -18755,12 +31703,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterCreateNestedManyWithoutClientInput
     users?: UserCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
     transactions?: TransactionCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutConsumptionsInput = {
@@ -18778,12 +31730,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     users?: UserUncheckedCreateNestedManyWithoutClientInput
     indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
     indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
     offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutConsumptionsInput = {
@@ -18817,12 +31773,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUpdateManyWithoutClientNestedInput
     users?: UserUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutConsumptionsInput = {
@@ -18840,25 +31800,360 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     users?: UserUncheckedUpdateManyWithoutClientNestedInput
     indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
     indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
     offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
   }
 
-  export type InverterCreateManyClientInput = {
+  export type ClientCreateWithoutEnergyBillsInput = {
     id?: string
-    name?: string | null
-    provider: string
-    providerId: string
-    providerApiKey?: string | null
-    providerApiSecret?: string | null
-    providerUrl?: string | null
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutEnergyBillsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutEnergyBillsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutEnergyBillsInput, ClientUncheckedCreateWithoutEnergyBillsInput>
+  }
+
+  export type PlantCreateWithoutEnergyBillsInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutPlantsInput
+    inverters?: InverterCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantUncheckedCreateWithoutEnergyBillsInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
+  }
+
+  export type PlantCreateOrConnectWithoutEnergyBillsInput = {
+    where: PlantWhereUniqueInput
+    create: XOR<PlantCreateWithoutEnergyBillsInput, PlantUncheckedCreateWithoutEnergyBillsInput>
+  }
+
+  export type ConsumerUnitCreateWithoutEnergyBillsInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutEnergyBillsInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutEnergyBillsInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutEnergyBillsInput, ConsumerUnitUncheckedCreateWithoutEnergyBillsInput>
+  }
+
+  export type ClientUpsertWithoutEnergyBillsInput = {
+    update: XOR<ClientUpdateWithoutEnergyBillsInput, ClientUncheckedUpdateWithoutEnergyBillsInput>
+    create: XOR<ClientCreateWithoutEnergyBillsInput, ClientUncheckedCreateWithoutEnergyBillsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutEnergyBillsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutEnergyBillsInput, ClientUncheckedUpdateWithoutEnergyBillsInput>
+  }
+
+  export type ClientUpdateWithoutEnergyBillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutEnergyBillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type PlantUpsertWithoutEnergyBillsInput = {
+    update: XOR<PlantUpdateWithoutEnergyBillsInput, PlantUncheckedUpdateWithoutEnergyBillsInput>
+    create: XOR<PlantCreateWithoutEnergyBillsInput, PlantUncheckedCreateWithoutEnergyBillsInput>
+    where?: PlantWhereInput
+  }
+
+  export type PlantUpdateToOneWithWhereWithoutEnergyBillsInput = {
+    where?: PlantWhereInput
+    data: XOR<PlantUpdateWithoutEnergyBillsInput, PlantUncheckedUpdateWithoutEnergyBillsInput>
+  }
+
+  export type PlantUpdateWithoutEnergyBillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
+    inverters?: InverterUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantUncheckedUpdateWithoutEnergyBillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
+  }
+
+  export type ConsumerUnitUpsertWithoutEnergyBillsInput = {
+    update: XOR<ConsumerUnitUpdateWithoutEnergyBillsInput, ConsumerUnitUncheckedUpdateWithoutEnergyBillsInput>
+    create: XOR<ConsumerUnitCreateWithoutEnergyBillsInput, ConsumerUnitUncheckedCreateWithoutEnergyBillsInput>
+    where?: ConsumerUnitWhereInput
+  }
+
+  export type ConsumerUnitUpdateToOneWithWhereWithoutEnergyBillsInput = {
+    where?: ConsumerUnitWhereInput
+    data: XOR<ConsumerUnitUpdateWithoutEnergyBillsInput, ConsumerUnitUncheckedUpdateWithoutEnergyBillsInput>
+  }
+
+  export type ConsumerUnitUpdateWithoutEnergyBillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutEnergyBillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
   }
 
   export type UserCreateManyClientInput = {
@@ -18928,45 +32223,160 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type InverterUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
-    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    generationUnits?: GenerationUnitUpdateManyWithoutInverterNestedInput
+  export type EnergyBillCreateManyClientInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    plantId: string
+    consumerUnitId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type InverterUncheckedUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
-    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    generationUnits?: GenerationUnitUncheckedUpdateManyWithoutInverterNestedInput
+  export type PlantCreateManyClientInput = {
+    id?: string
+    name?: string | null
+    provider?: string | null
+    providerStatus?: string | null
+    providerPlantId?: string | null
+    installedPowerKw?: Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    timezone?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
-  export type InverterUncheckedUpdateManyWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
-    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type InverterCreateManyClientInput = {
+    id?: string
+    name?: string | null
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
+    plantId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ConsumerUnitCreateManyClientInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationCreateManyClientInput = {
+    id?: string
+    plantId: string
+    fromId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type UserUpdateWithoutClientInput = {
@@ -19170,11 +32580,1050 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EnergyBillUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput
+  }
+
+  export type EnergyBillUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyBillUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlantUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
+  }
+
+  export type PlantUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    installedPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    plant?: PlantUpdateOneWithoutInvertersNestedInput
+    generationUnits?: GenerationUnitUpdateManyWithoutInverterNestedInput
+  }
+
+  export type InverterUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    plantId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generationUnits?: GenerationUnitUncheckedUpdateManyWithoutInverterNestedInput
+  }
+
+  export type InverterUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    plantId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConsumerUnitUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    plant?: PlantUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    from?: ConsumerUnitUpdateOneRequiredWithoutAllocationsFromNestedInput
+    to?: ConsumerUnitUpdateOneRequiredWithoutAllocationsToNestedInput
+  }
+
+  export type CreditAllocationUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InverterCreateManyPlantInput = {
+    id?: string
+    name?: string | null
+    provider: string
+    providerId: string
+    providerApiKey?: string | null
+    providerApiSecret?: string | null
+    providerUrl?: string | null
+    providerPlantId?: string | null
+    providerPlantName?: string | null
+    providerStatus?: string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: string | null
+    manufacturer?: string | null
+    modelName?: string | null
+    firmwareVersion?: string | null
+    nominalPowerKw?: Decimal | DecimalJsLike | number | string | null
+    timezone?: string | null
+    syncEnabled?: boolean
+    syncIntervalMinutes?: number | null
+    lastSyncAt?: Date | string | null
+    lastSuccessfulSyncAt?: Date | string | null
+    lastSyncStatus?: string | null
+    lastSyncError?: string | null
+    installedAt?: Date | string | null
+    commissionedAt?: Date | string | null
+    clientId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ConsumerUnitCreateManyPlantInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationCreateManyPlantInput = {
+    id?: string
+    clientId: string
+    fromId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EnergyBillCreateManyPlantInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    clientId: string
+    consumerUnitId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InverterUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutInvertersNestedInput
+    generationUnits?: GenerationUnitUpdateManyWithoutInverterNestedInput
+  }
+
+  export type InverterUncheckedUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generationUnits?: GenerationUnitUncheckedUpdateManyWithoutInverterNestedInput
+  }
+
+  export type InverterUncheckedUpdateManyWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    providerId?: StringFieldUpdateOperationsInput | string
+    providerApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    providerApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    providerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerPlantName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    providerConfig?: NullableJsonNullValueInput | InputJsonValue
+    providerMetadata?: NullableJsonNullValueInput | InputJsonValue
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    modelName?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    nominalPowerKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    syncEnabled?: BoolFieldUpdateOperationsInput | boolean
+    syncIntervalMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSuccessfulSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSyncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncError?: NullableStringFieldUpdateOperationsInput | string | null
+    installedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    commissionedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConsumerUnitUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateManyWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    from?: ConsumerUnitUpdateOneRequiredWithoutAllocationsFromNestedInput
+    to?: ConsumerUnitUpdateOneRequiredWithoutAllocationsToNestedInput
+  }
+
+  export type CreditAllocationUncheckedUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EnergyBillUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput
+  }
+
+  export type EnergyBillUncheckedUpdateWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyBillUncheckedUpdateManyWithoutPlantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GenerationUnitCreateManyInverterInput = {
     id?: string
     power: number
     energy: number
-    generationUnitType?: string
+    generationUnitType?: $Enums.GenerationUnitType
+    source?: string | null
+    providerRecordId?: string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19185,7 +33634,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     power?: FloatFieldUpdateOperationsInput | number
     energy?: FloatFieldUpdateOperationsInput | number
-    generationUnitType?: StringFieldUpdateOperationsInput | string
+    generationUnitType?: EnumGenerationUnitTypeFieldUpdateOperationsInput | $Enums.GenerationUnitType
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19196,7 +33648,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     power?: FloatFieldUpdateOperationsInput | number
     energy?: FloatFieldUpdateOperationsInput | number
-    generationUnitType?: StringFieldUpdateOperationsInput | string
+    generationUnitType?: EnumGenerationUnitTypeFieldUpdateOperationsInput | $Enums.GenerationUnitType
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19207,8 +33662,399 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     power?: FloatFieldUpdateOperationsInput | number
     energy?: FloatFieldUpdateOperationsInput | number
-    generationUnitType?: StringFieldUpdateOperationsInput | string
+    generationUnitType?: EnumGenerationUnitTypeFieldUpdateOperationsInput | $Enums.GenerationUnitType
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: NullableJsonNullValueInput | InputJsonValue
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EnergyBillCreateManyConsumerUnitInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    clientId: string
+    plantId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CreditAllocationCreateManyFromInput = {
+    id?: string
+    clientId: string
+    plantId: string
+    toId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CreditAllocationCreateManyToInput = {
+    id?: string
+    clientId: string
+    plantId: string
+    fromId: string
+    allocationPercentage: Decimal | DecimalJsLike | number | string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EnergyBillUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
+  }
+
+  export type EnergyBillUncheckedUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyBillUncheckedUpdateManyWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CreditAllocationUpdateWithoutFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    to?: ConsumerUnitUpdateOneRequiredWithoutAllocationsToNestedInput
+  }
+
+  export type CreditAllocationUncheckedUpdateWithoutFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUpdateWithoutToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutCreditAllocationsNestedInput
+    from?: ConsumerUnitUpdateOneRequiredWithoutAllocationsFromNestedInput
+  }
+
+  export type CreditAllocationUncheckedUpdateWithoutToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CreditAllocationUncheckedUpdateManyWithoutToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+    allocationPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

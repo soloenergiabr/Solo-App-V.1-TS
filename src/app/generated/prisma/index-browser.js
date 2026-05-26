@@ -152,6 +152,27 @@ exports.Prisma.ClientScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
+exports.Prisma.PlantScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  name: 'name',
+  provider: 'provider',
+  providerStatus: 'providerStatus',
+  providerPlantId: 'providerPlantId',
+  installedPowerKw: 'installedPowerKw',
+  totalEnergyKwh: 'totalEnergyKwh',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  timezone: 'timezone',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  providerMetadata: 'providerMetadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
 exports.Prisma.InverterScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -160,7 +181,63 @@ exports.Prisma.InverterScalarFieldEnum = {
   providerApiKey: 'providerApiKey',
   providerApiSecret: 'providerApiSecret',
   providerUrl: 'providerUrl',
+  providerPlantId: 'providerPlantId',
+  providerPlantName: 'providerPlantName',
+  providerStatus: 'providerStatus',
+  providerConfig: 'providerConfig',
+  providerMetadata: 'providerMetadata',
+  serialNumber: 'serialNumber',
+  manufacturer: 'manufacturer',
+  modelName: 'modelName',
+  firmwareVersion: 'firmwareVersion',
+  nominalPowerKw: 'nominalPowerKw',
+  timezone: 'timezone',
+  syncEnabled: 'syncEnabled',
+  syncIntervalMinutes: 'syncIntervalMinutes',
+  lastSyncAt: 'lastSyncAt',
+  lastSuccessfulSyncAt: 'lastSuccessfulSyncAt',
+  lastSyncStatus: 'lastSyncStatus',
+  lastSyncError: 'lastSyncError',
+  installedAt: 'installedAt',
+  commissionedAt: 'commissionedAt',
   clientId: 'clientId',
+  plantId: 'plantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ConsumerUnitScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  name: 'name',
+  isGenerator: 'isGenerator',
+  isConsumer: 'isConsumer',
+  accountHolder: 'accountHolder',
+  accountNumber: 'accountNumber',
+  clientNumber: 'clientNumber',
+  installationNumber: 'installationNumber',
+  distributor: 'distributor',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  status: 'status',
+  plantId: 'plantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.CreditAllocationScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  plantId: 'plantId',
+  fromId: 'fromId',
+  toId: 'toId',
+  allocationPercentage: 'allocationPercentage',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -171,6 +248,9 @@ exports.Prisma.GenerationUnitScalarFieldEnum = {
   power: 'power',
   energy: 'energy',
   generationUnitType: 'generationUnitType',
+  source: 'source',
+  providerRecordId: 'providerRecordId',
+  rawPayload: 'rawPayload',
   timestamp: 'timestamp',
   inverterId: 'inverterId',
   createdAt: 'createdAt',
@@ -252,9 +332,84 @@ exports.Prisma.ConsumptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EnergyBillScalarFieldEnum = {
+  id: 'id',
+  billFileUrl: 'billFileUrl',
+  rawBillFileKey: 'rawBillFileKey',
+  rawBillFileSize: 'rawBillFileSize',
+  clientId: 'clientId',
+  plantId: 'plantId',
+  consumerUnitId: 'consumerUnitId',
+  competenceDate: 'competenceDate',
+  referenceMonth: 'referenceMonth',
+  referenceYear: 'referenceYear',
+  accountHolder: 'accountHolder',
+  accountNumber: 'accountNumber',
+  clientNumber: 'clientNumber',
+  instalationNumber: 'instalationNumber',
+  distributor: 'distributor',
+  consumerClass: 'consumerClass',
+  tariffModality: 'tariffModality',
+  connectionType: 'connectionType',
+  tariffPeriod: 'tariffPeriod',
+  billingDays: 'billingDays',
+  readingPeriodFrom: 'readingPeriodFrom',
+  readingPeriodTo: 'readingPeriodTo',
+  creditExpiryDate: 'creditExpiryDate',
+  monitoredGenerationKwh: 'monitoredGenerationKwh',
+  billedConsumptionKwh: 'billedConsumptionKwh',
+  consumptionKwh: 'consumptionKwh',
+  realConsumptionKwh: 'realConsumptionKwh',
+  injectedEnergyKwh: 'injectedEnergyKwh',
+  compensatedEnergyKwh: 'compensatedEnergyKwh',
+  previousCreditsKwh: 'previousCreditsKwh',
+  currentCreditsKwh: 'currentCreditsKwh',
+  expectedGenerationKwh: 'expectedGenerationKwh',
+  generationEfficiency: 'generationEfficiency',
+  meterReadingCurrent: 'meterReadingCurrent',
+  meterReadingPrevious: 'meterReadingPrevious',
+  demandContractedKw: 'demandContractedKw',
+  demandMeasuredKw: 'demandMeasuredKw',
+  totalBillValue: 'totalBillValue',
+  totalAmount: 'totalAmount',
+  energyCost: 'energyCost',
+  availabilityCost: 'availabilityCost',
+  publicLightingCost: 'publicLightingCost',
+  icmsCost: 'icmsCost',
+  pisCost: 'pisCost',
+  cofinsCost: 'cofinsCost',
+  pisCofinsCost: 'pisCofinsCost',
+  tariffPerKwh: 'tariffPerKwh',
+  tariffTeValue: 'tariffTeValue',
+  tariffTusdValue: 'tariffTusdValue',
+  tariffFlag: 'tariffFlag',
+  tariffFlagCost: 'tariffFlagCost',
+  sectoralCharges: 'sectoralCharges',
+  fineAmount: 'fineAmount',
+  interestAmount: 'interestAmount',
+  otherCharges: 'otherCharges',
+  estimatedSavings: 'estimatedSavings',
+  aiAnalysis: 'aiAnalysis',
+  aiExplanations: 'aiExplanations',
+  aiRecommendations: 'aiRecommendations',
+  alerts: 'alerts',
+  extraCharges: 'extraCharges',
+  billingItems: 'billingItems',
+  creditSummary: 'creditSummary',
+  billScore: 'billScore',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -266,10 +421,23 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.ClientStatus = exports.$Enums.ClientStatus = {
   lead: 'lead',
   client: 'client',
   inactive: 'inactive'
+};
+
+exports.GenerationUnitType = exports.$Enums.GenerationUnitType = {
+  real_time: 'real_time',
+  day: 'day',
+  month: 'month',
+  year: 'year'
 };
 
 exports.IndicationStatus = exports.$Enums.IndicationStatus = {
@@ -294,14 +462,18 @@ exports.TransactionType = exports.$Enums.TransactionType = {
 exports.Prisma.ModelName = {
   User: 'User',
   Client: 'Client',
+  Plant: 'Plant',
   Inverter: 'Inverter',
+  ConsumerUnit: 'ConsumerUnit',
+  CreditAllocation: 'CreditAllocation',
   GenerationUnit: 'GenerationUnit',
   Indication: 'Indication',
   Offer: 'Offer',
   OfferRedemption: 'OfferRedemption',
   FAQ: 'FAQ',
   Transaction: 'Transaction',
-  Consumption: 'Consumption'
+  Consumption: 'Consumption',
+  EnergyBill: 'EnergyBill'
 };
 
 /**

@@ -17,6 +17,22 @@ const createInverterSchema = z.object({
     providerApiKey: z.string().optional(),
     providerApiSecret: z.string().optional(),
     providerUrl: z.string().optional(),
+    plantId: z.string().optional(),
+    providerPlantId: z.string().optional(),
+    providerPlantName: z.string().optional(),
+    providerStatus: z.string().optional(),
+    providerConfig: z.unknown().optional(),
+    providerMetadata: z.unknown().optional(),
+    serialNumber: z.string().optional(),
+    manufacturer: z.string().optional(),
+    modelName: z.string().optional(),
+    firmwareVersion: z.string().optional(),
+    nominalPowerKw: z.coerce.number().min(0).optional(),
+    timezone: z.string().optional(),
+    syncEnabled: z.boolean().optional(),
+    syncIntervalMinutes: z.coerce.number().int().positive().optional(),
+    installedAt: z.coerce.date().optional(),
+    commissionedAt: z.coerce.date().optional(),
 });
 
 import { withHandle } from '@/app/api/api-utils';
@@ -27,11 +43,25 @@ import { withHandle } from '@/app/api/api-utils';
 
 const createInverter = async (request: NextRequest) => {
     // Verify authentication and master role
-    const userContext = await AuthMiddleware.extractUserContext(request);
+    await AuthMiddleware.extractUserContext(request);
     // TODO: Explicit master role check
 
     const body = await request.json();
     const validatedData = createInverterSchema.parse(body);
+
+    if (validatedData.plantId) {
+        const plant = await prisma.plant.findFirst({
+            where: {
+                id: validatedData.plantId,
+                clientId: validatedData.clientId,
+                deletedAt: null,
+            },
+        });
+
+        if (!plant) {
+            return NextResponse.json({ success: false, message: 'Usina não encontrada para este cliente' }, { status: 400 });
+        }
+    }
 
     const inverter = new InverterModel(
         uuid(),
@@ -41,7 +71,25 @@ const createInverter = async (request: NextRequest) => {
         validatedData.providerApiKey,
         validatedData.providerApiSecret,
         validatedData.providerUrl,
-        validatedData.clientId
+        validatedData.clientId,
+        {
+            plantId: validatedData.plantId,
+            providerPlantId: validatedData.providerPlantId ?? validatedData.providerId,
+            providerPlantName: validatedData.providerPlantName,
+            providerStatus: validatedData.providerStatus,
+            providerConfig: validatedData.providerConfig,
+            providerMetadata: validatedData.providerMetadata,
+            serialNumber: validatedData.serialNumber,
+            manufacturer: validatedData.manufacturer,
+            modelName: validatedData.modelName,
+            firmwareVersion: validatedData.firmwareVersion,
+            nominalPowerKw: validatedData.nominalPowerKw,
+            timezone: validatedData.timezone,
+            syncEnabled: validatedData.syncEnabled,
+            syncIntervalMinutes: validatedData.syncIntervalMinutes,
+            installedAt: validatedData.installedAt,
+            commissionedAt: validatedData.commissionedAt,
+        }
     );
 
     await inverterRepository.create(inverter);

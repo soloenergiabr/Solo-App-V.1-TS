@@ -21,6 +21,9 @@ export const GetGenerationUnitsByInverterIdResponseSchema = z.object({
         generationUnitType: z.enum(['real_time', 'day', 'month', 'year']),
         inverterId: z.string(),
         timestamp: z.date(),
+        source: z.string().optional(),
+        providerRecordId: z.string().optional(),
+        rawPayload: z.unknown().optional(),
     })),
     count: z.number(),
 });
@@ -87,6 +90,9 @@ export class GetGenerationUnitsByInverterIdUseCase {
                 generationUnitType: unit.generationUnitType,
                 inverterId: unit.inverterId,
                 timestamp: unit.timestamp,
+                source: unit.source,
+                providerRecordId: unit.providerRecordId,
+                rawPayload: unit.rawPayload,
             })),
             count: generationUnits.length,
         });

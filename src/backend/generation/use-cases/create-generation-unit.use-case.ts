@@ -12,6 +12,9 @@ export const CreateGenerationUnitRequestSchema = z.object({
         message: "Generation unit type must be one of: real_time, day, month, year"
     }),
     inverterId: z.string().min(1, "Inverter ID is required"),
+    source: z.string().optional(),
+    providerRecordId: z.string().optional(),
+    rawPayload: z.unknown().optional(),
 });
 
 // Response Schema
@@ -41,6 +44,9 @@ export class CreateGenerationUnitUseCase {
             energy: validatedRequest.energy,
             generationUnitType: validatedRequest.generationUnitType as GenerationUnitType,
             inverterId: validatedRequest.inverterId,
+            source: validatedRequest.source,
+            providerRecordId: validatedRequest.providerRecordId,
+            rawPayload: validatedRequest.rawPayload,
         });
 
         await this.generationUnitRepository.create(generationUnit);

@@ -18,6 +18,9 @@ export const GetLatestGenerationDataResponseSchema = z.object({
         generationUnitType: z.enum(['real_time', 'day', 'month', 'year']),
         inverterId: z.string(),
         timestamp: z.date(),
+        source: z.string().optional(),
+        providerRecordId: z.string().optional(),
+        rawPayload: z.unknown().optional(),
     }).nullable(),
 });
 
@@ -61,6 +64,9 @@ export class GetLatestGenerationDataUseCase {
                 generationUnitType: latestUnit.generationUnitType,
                 inverterId: latestUnit.inverterId,
                 timestamp: latestUnit.timestamp,
+                source: latestUnit.source,
+                providerRecordId: latestUnit.providerRecordId,
+                rawPayload: latestUnit.rawPayload,
             } : null,
         });
     }
