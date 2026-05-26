@@ -23,6 +23,7 @@ type HoymilesStation = {
     id?: number | string
     name?: string
     capacity?: number
+    capacitor?: number | string
     status?: number | string
     address?: string
     location_lat?: number
@@ -273,8 +274,8 @@ export class HoymilesInverterApiRepository extends InverterApiRepository {
         return {
             id: record?.id ? String(record.id) : randomUUID(),
             name: record?.name ?? 'Unknown Plant',
-            capacityKw: this.toNumber(record?.capacity) / 1000,
-            totalEnergy: 0,
+            capacityKw: this.toNumber(record?.capacitor ?? record?.capacity),
+            totalEnergy: 0, // Station list doesn't include energy; filled during real-time sync
             status: this.mapStatus(record?.status),
             location: this.buildLocation(record),
             createdAt: this.parseTimestamp(record?.create_time),
@@ -286,12 +287,18 @@ export class HoymilesInverterApiRepository extends InverterApiRepository {
         const value = typeof status === 'string' ? status.toUpperCase() : String(status ?? '')
         switch (value) {
             case '1':
+            case '10':
+            case '20':
             case 'ONLINE':
             case 'NORMAL':
                 return 'ACTIVE'
             case '0':
+            case '40':
             case 'OFFLINE':
                 return 'INACTIVE'
+            case '30':
+            case 'WARNING':
+                return 'WARNING'
             default:
                 return 'UNKNOWN'
         }
