@@ -1,0 +1,82 @@
+"use client"
+
+import { useId } from "react"
+import {
+    Area,
+    AreaChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts"
+import { cn } from "@/lib/utils"
+
+type Row = Record<string, string | number>
+
+export function GlowChart({
+    data,
+    dataKey,
+    xKey,
+    height = 300,
+    className,
+}: {
+    data: Row[]
+    dataKey: string
+    xKey: string
+    height?: number
+    className?: string
+}) {
+    const gradientId = useId()
+
+    if (data.length === 0) {
+        return (
+            <div
+                data-slot="glow-chart"
+                className={cn(
+                    "flex items-center justify-center rounded-2xl border bg-card text-sm text-muted-foreground",
+                    className,
+                )}
+                style={{ height }}
+            >
+                Sem dados no período
+            </div>
+        )
+    }
+
+    return (
+        <div
+            data-slot="glow-chart"
+            data-testid="glow-chart"
+            className={cn("rounded-2xl border bg-card p-2", className)}
+            style={{ height }}
+        >
+            <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data}>
+                    <defs>
+                        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#ff481e" stopOpacity={0.6} />
+                            <stop offset="100%" stopColor="#f5a623" stopOpacity={0.05} />
+                        </linearGradient>
+                    </defs>
+                    <XAxis dataKey={xKey} stroke="hsl(0 0% 60%)" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="hsl(0 0% 60%)" fontSize={12} tickLine={false} axisLine={false} width={36} />
+                    <Tooltip
+                        contentStyle={{
+                            background: "hsl(0 0% 11%)",
+                            border: "1px solid hsl(0 0% 16%)",
+                            borderRadius: "0.75rem",
+                            color: "hsl(48 9% 88%)",
+                        }}
+                    />
+                    <Area
+                        type="monotone"
+                        dataKey={dataKey}
+                        stroke="#ff481e"
+                        strokeWidth={2}
+                        fill={`url(#${gradientId})`}
+                    />
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
+    )
+}

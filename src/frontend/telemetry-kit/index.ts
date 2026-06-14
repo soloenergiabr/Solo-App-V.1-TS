@@ -1,0 +1,10 @@
+export { formatBRL, formatKwh, formatKw, formatPercent } from "./lib/format"
+export { calcPaybackPercent, calcSavings } from "./lib/calc"
+export { statusToColor, type TelemetryStatus } from "./lib/status"
+
+export { StatusRing } from "./components/status-ring"
+export { PaybackGauge } from "./components/payback-gauge"
+export { MetricTile } from "./components/metric-tile"
+export { CopyPixButton } from "./components/copy-pix-button"
+export { LiveBadge } from "./components/live-badge"
+export { GlowChart } from "./components/glow-chart"
