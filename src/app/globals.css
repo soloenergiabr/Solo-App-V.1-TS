@@ -23,6 +23,7 @@
   --color-chart-1: var(--chart-1);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-energy: var(--energy);
   --font-display: var(--font-display);
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -74,6 +75,13 @@
 
   --success: hsl(142 70% 45%);
   --warning: hsl(38 100% 54%);
+  --energy: #4ade80;
+  --card-border: hsl(0 0% 15%);
+
+  --brand-gradient-90: linear-gradient(90deg, #ff481e 0%, #f5a623 100%);
+  --glow-primary: 0 0 30px rgba(255, 72, 30, 0.25);
+  --glow-primary-sm: 0 0 14px rgba(255, 72, 30, 0.35);
+  --glow-energy: 0 0 24px rgba(74, 222, 128, 0.3);
 
   --chart-1: #ff481e;
   --chart-2: hsl(38 100% 54%);
@@ -113,5 +121,17 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+  .bg-brand-gradient-90 {
+    background-image: var(--brand-gradient-90);
+  }
+  .shadow-glow {
+    box-shadow: var(--glow-primary);
+  }
+  .shadow-glow-sm {
+    box-shadow: var(--glow-primary-sm);
+  }
+  .shadow-glow-energy {
+    box-shadow: var(--glow-energy);
   }
 }
