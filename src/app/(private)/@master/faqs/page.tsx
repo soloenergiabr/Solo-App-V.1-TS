@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { PageLayout } from '@/components/ui/page-layout';
+import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
 import { FAQsTable } from '@/frontend/admin/components/faqs-table';
 import { FAQDialog } from '@/frontend/admin/components/faq-dialog';
@@ -16,10 +16,10 @@ function FAQsPage() {
     return (
         <PageLayout
             header={
-                <div className="flex flex-row w-full justify-between items-center">
-                    <h1 className="text-2xl font-bold">Gerenciar FAQs</h1>
-                    <FAQDialog onSuccess={handleFAQCreated} />
-                </div>
+                <PageHeader
+                    title="Gerenciar FAQs"
+                    actions={<FAQDialog onSuccess={handleFAQCreated} />}
+                />
             }
         >
             <FAQsTable key={refreshKey} />
