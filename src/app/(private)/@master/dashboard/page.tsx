@@ -4,6 +4,8 @@ import { withAuth } from '@/frontend/auth/contexts/auth-context';
 import { useAuthContext } from '@/frontend/auth/contexts/auth-context';
 import { useInverters } from '@/frontend/generation/hooks/useInverters';
 import { useState } from 'react';
+import { PageHeader, PageLayout, PageEmpty } from '@/components/ui/page-layout';
+import { Inbox } from 'lucide-react';
 
 function DashboardPage() {
     const { user, logout } = useAuthContext();
@@ -26,172 +28,166 @@ function DashboardPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <header className="bg-white shadow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-6">
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-900">
-                                Solo Energy Dashboard
-                            </h1>
-                            <p className="text-gray-600">
-                                Bem-vindo, {user?.name}!
-                            </p>
-                        </div>
+        <PageLayout
+            header={
+                <PageHeader
+                    title="Solo Energy Dashboard"
+                    subtitle={`Bem-vindo, ${user?.name}!`}
+                    actions={
                         <button
                             onClick={logout}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+                            className="bg-destructive text-destructive-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity"
                         >
                             Logout
                         </button>
+                    }
+                />
+            }
+        >
+            <div className="space-y-6">
+                {/* User Info Card */}
+                <div className="bg-card overflow-hidden shadow rounded-lg">
+                    <div className="px-4 py-5 sm:p-6">
+                        <h3 className="text-lg leading-6 font-medium text-foreground">
+                            Informações do Usuário
+                        </h3>
+                        <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
+                            <div>
+                                <span className="text-sm font-medium text-muted-foreground">Email:</span>
+                                <p className="text-sm text-foreground">{user?.email}</p>
+                            </div>
+                            <div>
+                                <span className="text-sm font-medium text-muted-foreground">Roles:</span>
+                                <p className="text-sm text-foreground">{user?.roles.join(', ')}</p>
+                            </div>
+                            <div>
+                                <span className="text-sm font-medium text-muted-foreground">Client ID:</span>
+                                <p className="text-sm text-foreground">{user?.clientId || 'N/A'}</p>
+                            </div>
+                            <div>
+                                <span className="text-sm font-medium text-muted-foreground">Permissões:</span>
+                                <p className="text-sm text-foreground">{user?.permissions.join(', ')}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </header>
 
-            {/* Main Content */}
-            <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="px-4 py-6 sm:px-0">
-                    {/* User Info Card */}
-                    <div className="bg-white overflow-hidden shadow rounded-lg mb-6">
-                        <div className="px-4 py-5 sm:p-6">
-                            <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                Informações do Usuário
+                {/* Inverters Section */}
+                <div className="bg-card overflow-hidden shadow rounded-lg">
+                    <div className="px-4 py-5 sm:p-6">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg leading-6 font-medium text-foreground">
+                                Seus Inversores
                             </h3>
-                            <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Email:</span>
-                                    <p className="text-sm text-gray-900">{user?.email}</p>
-                                </div>
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Roles:</span>
-                                    <p className="text-sm text-gray-900">{user?.roles.join(', ')}</p>
-                                </div>
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Client ID:</span>
-                                    <p className="text-sm text-gray-900">{user?.clientId || 'N/A'}</p>
-                                </div>
-                                <div>
-                                    <span className="text-sm font-medium text-gray-500">Permissões:</span>
-                                    <p className="text-sm text-gray-900">{user?.permissions.join(', ')}</p>
-                                </div>
-                            </div>
+                            <button
+                                onClick={() => setShowCreateForm(!showCreateForm)}
+                                className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity"
+                            >
+                                {showCreateForm ? 'Cancelar' : 'Adicionar Inversor'}
+                            </button>
                         </div>
-                    </div>
 
-                    {/* Inverters Section */}
-                    <div className="bg-white overflow-hidden shadow rounded-lg">
-                        <div className="px-4 py-5 sm:p-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                    Seus Inversores
-                                </h3>
-                                <button
-                                    onClick={() => setShowCreateForm(!showCreateForm)}
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-                                >
-                                    {showCreateForm ? 'Cancelar' : 'Adicionar Inversor'}
-                                </button>
-                            </div>
-
-                            {/* Create Form */}
-                            {showCreateForm && (
-                                <form onSubmit={handleCreateInverter} className="mb-6 p-4 bg-gray-50 rounded-md">
-                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                Provider
-                                            </label>
-                                            <select
-                                                value={newInverter.provider}
-                                                onChange={(e) => setNewInverter(prev => ({ ...prev, provider: e.target.value }))}
-                                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                            >
-                                                <option value="solis">Solis</option>
-                                                <option value="growatt">Growatt</option>
-                                                <option value="solplanet">SolPlanet</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                Provider ID
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={newInverter.providerId}
-                                                onChange={(e) => setNewInverter(prev => ({ ...prev, providerId: e.target.value }))}
-                                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                API Key
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={newInverter.providerApiKey}
-                                                onChange={(e) => setNewInverter(prev => ({ ...prev, providerApiKey: e.target.value }))}
-                                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="mt-4">
-                                        <button
-                                            type="submit"
-                                            disabled={isLoading}
-                                            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors disabled:opacity-50"
+                        {/* Create Form */}
+                        {showCreateForm && (
+                            <form onSubmit={handleCreateInverter} className="mb-6 p-4 bg-muted rounded-md">
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                    <div>
+                                        <label className="block text-sm font-medium text-foreground">
+                                            Provider
+                                        </label>
+                                        <select
+                                            value={newInverter.provider}
+                                            onChange={(e) => setNewInverter(prev => ({ ...prev, provider: e.target.value }))}
+                                            className="mt-1 block w-full border-border rounded-md shadow-sm focus:ring-primary focus:border-primary"
                                         >
-                                            {isLoading ? 'Criando...' : 'Criar Inversor'}
-                                        </button>
+                                            <option value="solis">Solis</option>
+                                            <option value="growatt">Growatt</option>
+                                            <option value="solplanet">SolPlanet</option>
+                                        </select>
                                     </div>
-                                </form>
-                            )}
-
-                            {/* Error Display */}
-                            {error && (
-                                <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                                    {error}
+                                    <div>
+                                        <label className="block text-sm font-medium text-foreground">
+                                            Provider ID
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={newInverter.providerId}
+                                            onChange={(e) => setNewInverter(prev => ({ ...prev, providerId: e.target.value }))}
+                                            className="mt-1 block w-full border-border rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-foreground">
+                                            API Key
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={newInverter.providerApiKey}
+                                            onChange={(e) => setNewInverter(prev => ({ ...prev, providerApiKey: e.target.value }))}
+                                            className="mt-1 block w-full border-border rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                                        />
+                                    </div>
                                 </div>
-                            )}
-
-                            {/* Loading State */}
-                            {isLoading && (
-                                <div className="flex justify-center py-4">
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                <div className="mt-4">
+                                    <button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="bg-success text-white px-4 py-2 rounded-md hover:opacity-90 transition-opacity disabled:opacity-50"
+                                    >
+                                        {isLoading ? 'Criando...' : 'Criar Inversor'}
+                                    </button>
                                 </div>
-                            )}
+                            </form>
+                        )}
 
-                            {/* Inverters List */}
-                            {!isLoading && (
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                    {inverters.length === 0 ? (
-                                        <div className="col-span-full text-center py-8 text-gray-500">
-                                            Nenhum inversor encontrado. Adicione seu primeiro inversor!
+                        {/* Error Display */}
+                        {error && (
+                            <div className="mb-4 bg-destructive/10 border border-destructive text-destructive px-4 py-3 rounded">
+                                {error}
+                            </div>
+                        )}
+
+                        {/* Loading State */}
+                        {isLoading && (
+                            <div className="flex justify-center py-4">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                            </div>
+                        )}
+
+                        {/* Inverters List */}
+                        {!isLoading && (
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                {inverters.length === 0 ? (
+                                    <div className="col-span-full">
+                                        <PageEmpty
+                                            icon={<Inbox className="h-8 w-8 text-muted-foreground" />}
+                                            title="Nada por aqui ainda"
+                                            description="Nenhum inversor encontrado. Adicione seu primeiro inversor!"
+                                        />
+                                    </div>
+                                ) : (
+                                    inverters.map((inverter) => (
+                                        <div key={inverter.id} className="border border-border rounded-lg p-4">
+                                            <h4 className="font-medium text-foreground mb-2">
+                                                {inverter.provider.toUpperCase()}
+                                            </h4>
+                                            <p className="text-sm text-muted-foreground mb-1">
+                                                <span className="font-medium">ID:</span> {inverter.providerId}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground mb-1">
+                                                <span className="font-medium">Criado:</span>{' '}
+                                                {new Date(inverter.createdAt).toLocaleDateString('pt-BR')}
+                                            </p>
                                         </div>
-                                    ) : (
-                                        inverters.map((inverter) => (
-                                            <div key={inverter.id} className="border border-gray-200 rounded-lg p-4">
-                                                <h4 className="font-medium text-gray-900 mb-2">
-                                                    {inverter.provider.toUpperCase()}
-                                                </h4>
-                                                <p className="text-sm text-gray-600 mb-1">
-                                                    <span className="font-medium">ID:</span> {inverter.providerId}
-                                                </p>
-                                                <p className="text-sm text-gray-600 mb-1">
-                                                    <span className="font-medium">Criado:</span>{' '}
-                                                    {new Date(inverter.createdAt).toLocaleDateString('pt-BR')}
-                                                </p>
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
-                            )}
-                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </PageLayout>
     );
 }
 
