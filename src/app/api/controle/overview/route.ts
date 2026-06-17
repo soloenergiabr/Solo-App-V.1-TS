@@ -1,17 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware'
+import { resolveAccessibleUnitIds } from '@/backend/controle/scope'
 import { withHandle } from '@/app/api/api-utils'
 import type { ControleOverview } from '@/shared/controle/types'
 
 const getControleOverviewRoute = async (request: NextRequest): Promise<NextResponse> => {
     const userContext = await AuthMiddleware.requireAuth(request)
 
-    const clientId = userContext.clientId ?? new URL(request.url).searchParams.get('clientId') ?? undefined
+    // Server-enforced payer scope: payers see only the units they pay for.
+    const scope = await resolveAccessibleUnitIds(userContext.userId)
+
+    // Resolve the client. Titular/admin carry a clientId; a payer inherits it
+    // from their assigned units.
+    let clientId = userContext.clientId ?? new URL(request.url).searchParams.get('clientId') ?? undefined
+    if (scope !== 'all' && !clientId) {
+        const firstUnit = await prisma.consumerUnit.findFirst({
+            where: { id: { in: scope } },
+            select: { clientId: true },
+        })
+        clientId = firstUnit?.clientId ?? undefined
+    }
 
     if (!clientId) {
         return NextResponse.json({ success: false, message: 'unauthorized' }, { status: 401 })
     }
+
+    // Unit-level filter applied to every per-account query when the caller is a payer.
+    const unitScopeWhere = scope === 'all' ? {} : { consumerUnitId: { in: scope } }
 
     // Fetch latest investment for client
     const investment = await prisma.investment.findFirst({
@@ -19,9 +35,9 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
         orderBy: { createdAt: 'desc' },
     })
 
-    // Fetch all energy bills for client, newest first
+    // Fetch energy bills for the accessible scope, newest first
     const allBills = await prisma.energyBill.findMany({
-        where: { clientId },
+        where: { clientId, ...unitScopeWhere },
         orderBy: [{ referenceYear: 'desc' }, { referenceMonth: 'desc' }],
     })
 
@@ -132,7 +148,10 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
     // ── Accounts (consumer units) ──────────────────────────────────────────────
 
     const consumerUnits = await prisma.consumerUnit.findMany({
-        where: { clientId },
+        where: {
+            clientId,
+            ...(scope === 'all' ? {} : { id: { in: scope } }),
+        },
     })
 
     // Build a lookup of latest bill paymentStatus per consumerUnitId

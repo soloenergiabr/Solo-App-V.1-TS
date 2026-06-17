@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware'
+import { resolveAccessibleUnitIds } from '@/backend/controle/scope'
 import { withHandle } from '@/app/api/api-utils'
 import type { AccountBill } from '@/shared/controle/types'
 
@@ -11,16 +12,14 @@ const getEconomiaBillsRoute = async (request: NextRequest): Promise<NextResponse
     const year = Number(searchParams.get('year')) || new Date().getFullYear()
     const month = searchParams.get('month') ? Number(searchParams.get('month')) : undefined
 
-    const payerUnits = await prisma.consumerUnit.findMany({
-        where: { payerUserId: userContext.userId },
-        select: { id: true },
-    })
-    const payerUnitIds = payerUnits.map((u) => u.id)
+    // Server-enforced payer scope: payers are restricted to their own units;
+    // titular/admin ('all') are scoped to the client.
+    const scope = await resolveAccessibleUnitIds(userContext.userId)
 
     const clientId =
         userContext.clientId ?? searchParams.get('clientId') ?? undefined
 
-    if (payerUnitIds.length === 0 && !clientId) {
+    if (scope === 'all' && !clientId) {
         return NextResponse.json({ success: false, message: 'unauthorized' }, { status: 401 })
     }
 
@@ -28,9 +27,9 @@ const getEconomiaBillsRoute = async (request: NextRequest): Promise<NextResponse
         where: {
             referenceYear: year,
             ...(month ? { referenceMonth: month } : {}),
-            ...(payerUnitIds.length
-                ? { consumerUnitId: { in: payerUnitIds } }
-                : { clientId }),
+            ...(scope === 'all'
+                ? { clientId }
+                : { consumerUnitId: { in: scope } }),
         },
         include: { consumerUnit: true },
         orderBy: [{ referenceYear: 'desc' }, { referenceMonth: 'desc' }],
