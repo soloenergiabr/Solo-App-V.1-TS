@@ -72,6 +72,13 @@ const energyBillUpdateSchema = z.object({
     creditSummary: z.unknown().optional().nullable(),
     billScore: optionalNumber,
     status: z.string().optional().nullable(),
+    // Payment / Contas a pagar
+    paymentStatus: z.enum(['a_pagar', 'paga', 'vencida']).optional(),
+    dueDate: optionalDate,
+    paidAt: optionalDate,
+    amountDue: optionalNumber,
+    pixCode: z.string().optional().nullable(),
+    barcode: z.string().optional().nullable(),
 });
 
 async function assertBillRelations(clientId: string, plantId: string, consumerUnitId: string) {

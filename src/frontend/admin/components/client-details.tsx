@@ -34,6 +34,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { resolveBillStatus, statusToBadge } from '@/frontend/economia/lib/bill-status';
 import { ManualTransactionDialog } from './manual-transaction-dialog';
 import { useGenerationDashboard } from '@/frontend/generation/hooks/use-generation-dashboard';
 import { CompactMetrics } from '@/frontend/generation/components/dashboard/compact-metrics';
@@ -1000,6 +1001,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                                     <TableHead>Restante</TableHead>
                                                     <TableHead>Total</TableHead>
                                                     <TableHead>Status</TableHead>
+                                                    <TableHead>Pagamento</TableHead>
                                                     <TableHead className="text-right">Ações</TableHead>
                                                 </TableRow>
                                             </TableHeader>
@@ -1013,6 +1015,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                                         <TableCell>{kwh(remainingCredits(bill))}</TableCell>
                                                         <TableCell>{currency(bill.totalBillValue ?? bill.totalAmount)}</TableCell>
                                                         <TableCell><Badge variant={bill.status === 'reviewed' ? 'default' : 'secondary'}>{bill.status || 'pendente'}</Badge></TableCell>
+                                                        <TableCell><PaymentBadge bill={bill} /></TableCell>
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-1">
                                                                 {bill.billFileUrl && (
@@ -1023,6 +1026,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                                                 {bill.status !== 'reviewed' && (
                                                                     <Button variant="outline" size="sm" onClick={() => markReviewed(bill)}>Revisada</Button>
                                                                 )}
+                                                                <BillPaymentDialog clientId={clientId} bill={bill} />
                                                                 <Button variant="ghost" size="icon" onClick={() => remove(bill)}>
                                                                     <Trash2 className="h-4 w-4 text-destructive" />
                                                                 </Button>
@@ -1040,6 +1044,102 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                 )}
             </CardContent>
         </Card>
+    );
+}
+
+const PAYMENT_BADGE_VARIANT: Record<'success' | 'warning' | 'destructive', 'default' | 'secondary' | 'destructive'> = {
+    success: 'default',
+    warning: 'secondary',
+    destructive: 'destructive',
+};
+
+function PaymentBadge({ bill }: { bill: AdminEnergyBill }) {
+    const status = resolveBillStatus({
+        paymentStatus: bill.paymentStatus ?? 'a_pagar',
+        paidAt: bill.paidAt ?? null,
+        dueDate: bill.dueDate ?? null,
+    });
+    const badge = statusToBadge(status);
+    return <Badge variant={PAYMENT_BADGE_VARIANT[badge.tone]}>{badge.label}</Badge>;
+}
+
+function BillPaymentDialog({ clientId, bill }: { clientId: string; bill: AdminEnergyBill }) {
+    const bills = useAdminEnergyBills(clientId);
+    const [open, setOpen] = useState(false);
+    const [form, setForm] = useState({
+        paymentStatus: (bill.paymentStatus ?? 'a_pagar') as 'a_pagar' | 'paga' | 'vencida',
+        amountDue: bill.amountDue != null ? String(toNumber(bill.amountDue)) : '',
+        dueDate: toDateInput(bill.dueDate),
+        paidAt: toDateInput(bill.paidAt),
+        pixCode: bill.pixCode ?? '',
+        barcode: bill.barcode ?? '',
+    });
+
+    const persist = async (data: Partial<AdminEnergyBill>, successMessage: string) => {
+        try {
+            await bills.update.mutateAsync({ id: bill.id, data });
+            toast.success(successMessage);
+            setOpen(false);
+        } catch (error: unknown) {
+            toast.error(errorMessage(error, 'Erro ao atualizar pagamento'));
+        }
+    };
+
+    const save = () =>
+        persist(
+            {
+                paymentStatus: form.paymentStatus,
+                amountDue: form.amountDue ? Number(form.amountDue) : null,
+                dueDate: form.dueDate || null,
+                paidAt: form.paidAt || null,
+                pixCode: form.pixCode || null,
+                barcode: form.barcode || null,
+            } as Partial<AdminEnergyBill>,
+            'Pagamento atualizado'
+        );
+
+    const markPaid = () =>
+        persist(
+            { paymentStatus: 'paga', paidAt: new Date().toISOString().slice(0, 10) } as Partial<AdminEnergyBill>,
+            'Fatura marcada como paga'
+        );
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button variant="outline" size="sm"><BadgeDollarSign className="mr-1 h-4 w-4" />Pagamento</Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Pagamento da fatura {monthYear(bill)}</DialogTitle>
+                    <DialogDescription>Gerencie status, vencimento, valor e o código PIX exibido ao pagador.</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <SelectField
+                        label="Status"
+                        value={form.paymentStatus}
+                        onChange={value => setForm(prev => ({ ...prev, paymentStatus: value as 'a_pagar' | 'paga' | 'vencida' }))}
+                        options={[
+                            { value: 'a_pagar', label: 'A pagar' },
+                            { value: 'paga', label: 'Paga' },
+                            { value: 'vencida', label: 'Vencida' },
+                        ]}
+                    />
+                    <Field label="Valor (R$)" type="number" value={form.amountDue} onChange={value => setForm(prev => ({ ...prev, amountDue: value }))} />
+                    <Field label="Vencimento" type="date" value={form.dueDate} onChange={value => setForm(prev => ({ ...prev, dueDate: value }))} />
+                    <Field label="Pago em" type="date" value={form.paidAt} onChange={value => setForm(prev => ({ ...prev, paidAt: value }))} />
+                    <Field label="Código PIX" value={form.pixCode} onChange={value => setForm(prev => ({ ...prev, pixCode: value }))} />
+                    <Field label="Código de barras" value={form.barcode} onChange={value => setForm(prev => ({ ...prev, barcode: value }))} />
+                </div>
+                <DialogFooter className="gap-2 sm:justify-between">
+                    <Button variant="secondary" onClick={markPaid} disabled={bills.update.isPending}>Marcar como paga</Button>
+                    <Button onClick={save} disabled={bills.update.isPending}>
+                        {bills.update.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Salvar
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 }
 
