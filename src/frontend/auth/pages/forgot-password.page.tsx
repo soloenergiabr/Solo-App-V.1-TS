@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
@@ -16,100 +18,69 @@ export function ForgotPasswordPage() {
         setIsLoading(true);
         setMessage('');
         setMessageType(null);
-
         try {
             const response = await fetch('/api/auth/forgot-password', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
             });
-
             const data = await response.json();
-
             if (response.ok) {
                 setMessageType('success');
-                setMessage(data.message || 'If the email exists, a recovery link has been sent.');
-                setEmail(''); // Limpar o campo
+                setMessage(data.message || 'Se o email existir, enviamos um link de recuperação.');
+                setEmail('');
             } else {
                 setMessageType('error');
-                setMessage(data.message || 'An error occurred. Please try again.');
+                setMessage(data.message || 'Ocorreu um erro. Tente novamente.');
             }
-        } catch (error) {
+        } catch {
             setMessageType('error');
-            setMessage('An unexpected error occurred. Please try again.');
+            setMessage('Ocorreu um erro inesperado. Tente novamente.');
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat py-12 px-4 sm:px-6 lg:px-8 relative"
-            style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1613665813446-82a78c468a1d?ixlib?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&sat=-100')",
-            }}>
-            {/* Overlay escuro para melhorar legibilidade */}
-            <div className="absolute inset-0 bg-black/40"></div>
+        <div className="space-y-6">
+            <div className="space-y-1 text-center lg:text-left">
+                <h2 className="font-display text-2xl font-bold text-foreground">Recuperar senha</h2>
+                <p className="text-sm text-muted-foreground">
+                    Digite seu email para receber o link de redefinição
+                </p>
+            </div>
 
-            <div className="max-w-md w-full space-y-8 relative z-10 bg-white/20 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/30">
-                <div className="rounded-2xl p-4">
-                    <h2 className="text-center text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
-                        Recuperação de Senha
-                    </h2>
-                    <p className="mt-2 text-center text-sm text-white/90 drop-shadow-sm">
-                        Digite seu e-mail para receber o link de redefinição
-                    </p>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+                {message && (
+                    <Alert variant={messageType === 'error' ? 'destructive' : 'default'}>
+                        <AlertDescription>{message}</AlertDescription>
+                    </Alert>
+                )}
+
+                <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="seu@email.com"
+                    />
                 </div>
 
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                    {message && (
-                        <div className={`${messageType === 'success'
-                                ? 'bg-green-500/20 border-green-400/30 text-green-100'
-                                : 'bg-red-500/20 border-red-400/30 text-red-100'
-                            } backdrop-blur-sm border px-4 py-3 rounded-lg drop-shadow-sm`}>
-                            {message}
-                        </div>
-                    )}
+                <Button type="submit" disabled={isLoading} className="h-11 w-full">
+                    {isLoading ? 'Enviando...' : 'Enviar link'}
+                </Button>
 
-                    <div className="space-y-4">
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2 drop-shadow-sm">
-                                Email
-                            </label>
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="seu@email.com"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 focus:border-white/50"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <Button
-                            type="submit"
-                            disabled={isLoading}
-                            className='w-full h-12 sm:h-10 bg-primary hover:bg-primary/90 text-primary-foreground text-base sm:text-sm font-medium'
-                        >
-                            {isLoading ? 'Enviando...' : 'Enviar Link'}
-                        </Button>
-                    </div>
-
-                    <div className="text-center">
-                        <p className="text-sm text-white/80 drop-shadow-sm">
-                            Lembrou sua senha?{' '}
-                            <Link href="/login" className="font-medium text-white hover:text-white/80 transition-colors underline underline-offset-4">
-                                Voltar para Login
-                            </Link>
-                        </p>
-                    </div>
-                </form>
-            </div>
+                <p className="text-center text-sm text-muted-foreground">
+                    Lembrou sua senha?{' '}
+                    <Link href="/login" className="font-medium text-primary underline-offset-4 hover:underline">
+                        Voltar para login
+                    </Link>
+                </p>
+            </form>
         </div>
     );
 }
