@@ -109,6 +109,68 @@ function EmptyState({ icon: Icon, title, description }: { icon: ComponentType<{ 
     );
 }
 
+function PayerDialog({ clientId, unit }: { clientId: string; unit: AdminConsumerUnit }) {
+    const payers = useAdminPayers(clientId);
+    const [open, setOpen] = useState(false);
+    const [form, setForm] = useState({
+        payerName: unit.payerName ?? '',
+        payerEmail: unit.payerEmail ?? '',
+        payerPhone: unit.payerPhone ?? '',
+        payerUserId: unit.payerUserId ?? '',
+    });
+
+    const persist = async (data: typeof form, successMessage: string) => {
+        try {
+            await payers.assign.mutateAsync({
+                unitId: unit.id,
+                data: {
+                    payerName: data.payerName || null,
+                    payerEmail: data.payerEmail || null,
+                    payerPhone: data.payerPhone || null,
+                    payerUserId: data.payerUserId || null,
+                },
+            });
+            toast.success(successMessage);
+            setOpen(false);
+        } catch (error: unknown) {
+            toast.error(errorMessage(error, 'Erro ao atualizar pagador'));
+        }
+    };
+
+    const clear = () => {
+        const empty = { payerName: '', payerEmail: '', payerPhone: '', payerUserId: '' };
+        setForm(empty);
+        void persist(empty, 'Pagador removido');
+    };
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" title="Pagador"><UserCog className="h-4 w-4" /></Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Pagador de {unit.name || unit.clientNumber || 'unidade'}</DialogTitle>
+                    <DialogDescription>Quem paga esta conta. Vincule o ID do login do pagador para restringir o acesso a esta unidade.</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <Field label="Nome do pagador" value={form.payerName} onChange={value => setForm(prev => ({ ...prev, payerName: value }))} />
+                    <Field label="Email" value={form.payerEmail} onChange={value => setForm(prev => ({ ...prev, payerEmail: value }))} />
+                    <Field label="Telefone" value={form.payerPhone} onChange={value => setForm(prev => ({ ...prev, payerPhone: value }))} />
+                    <Field label="ID do login (acesso restrito)" value={form.payerUserId} onChange={value => setForm(prev => ({ ...prev, payerUserId: value }))} />
+                </div>
+                <DialogFooter className="gap-2 sm:justify-between">
+                    <Button variant="secondary" onClick={clear} disabled={payers.assign.isPending}>Remover pagador</Button>
+                    <Button onClick={() => persist(form, 'Pagador atualizado')} disabled={payers.assign.isPending}>
+                        {payers.assign.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Salvar
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 function PlantUnitsSection({ plant, units, clientId }: { plant: AdminPlant; units: AdminConsumerUnit[]; clientId: string }) {
     const unitMutations = useAdminConsumerUnits(clientId);
     const [open, setOpen] = useState(false);
@@ -193,6 +255,7 @@ function PlantUnitsSection({ plant, units, clientId }: { plant: AdminPlant; unit
                             <TableHead>Cliente</TableHead>
                             <TableHead>Instalação</TableHead>
                             <TableHead>Tipo</TableHead>
+                            <TableHead>Pagador</TableHead>
                             <TableHead className="text-right">Ações</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -208,10 +271,14 @@ function PlantUnitsSection({ plant, units, clientId }: { plant: AdminPlant; unit
                                         {unit.isConsumer && <Badge variant="outline">Consumidora</Badge>}
                                     </div>
                                 </TableCell>
+                                <TableCell className="text-sm text-muted-foreground">{unit.payerName || '—'}</TableCell>
                                 <TableCell className="text-right">
-                                    <Button variant="ghost" size="icon" onClick={() => remove(unit)}>
-                                        <Trash2 className="h-4 w-4 text-destructive" />
-                                    </Button>
+                                    <div className="flex justify-end gap-1">
+                                        <PayerDialog clientId={clientId} unit={unit} />
+                                        <Button variant="ghost" size="icon" onClick={() => remove(unit)}>
+                                            <Trash2 className="h-4 w-4 text-destructive" />
+                                        </Button>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}
