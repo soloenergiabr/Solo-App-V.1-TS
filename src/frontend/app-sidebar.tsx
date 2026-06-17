@@ -23,7 +23,7 @@ const vendedorSections: SidebarSection[] = [
     {
         title: 'Principal',
         items: [
-            { label: 'Minha geração', mobileLabel: 'Geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
+            { label: 'Geração', mobileLabel: 'Geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
             { label: 'Economia', mobileLabel: 'Economia', href: '/economy-dashboard', icon: <DollarSign className="w-5 h-5" /> },
             { label: 'Clube Solo', mobileLabel: 'Clube', href: '/club', icon: <Gift className="w-5 h-5" /> },
             { label: 'Meus Vouchers', mobileLabel: 'Vouchers', href: '/vouchers', icon: <Ticket className="w-5 h-5" /> },
@@ -49,7 +49,8 @@ export function AppSidebar() {
 
     const sections = sectionsMapper[role as keyof typeof sectionsMapper] || vendedorSections;
 
-    const logoSrc = resolvedTheme === 'dark' ? '/logo-white-text.png' : '/logo-black-text.png';
+    // App is dark-first; brand wordmark reads on dark surfaces.
+    const logoSrc = resolvedTheme === 'light' ? '/logo-black-text.png' : '/brand/wordmark-light.png';
 
     return (
         <Sidebar

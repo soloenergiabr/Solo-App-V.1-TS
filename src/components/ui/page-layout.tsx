@@ -191,7 +191,7 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
         >
             <div className="flex items-center justify-between">
                 <motion.div variants={titleVariants as any}>
-                    <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+                    <h1 className="font-display text-2xl font-bold text-foreground">{title}</h1>
                     {subtitle && (
                         <p className="text-sm text-muted-foreground">{subtitle}</p>
                     )}
