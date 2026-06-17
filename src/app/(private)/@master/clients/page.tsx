@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { PageLayout } from '@/components/ui/page-layout';
+import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 import { ClientsTable } from '@/frontend/admin/components/clients-table';
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
 import { CreateClientDialog } from '@/frontend/admin/components/create-client-dialog';
@@ -16,10 +16,10 @@ function ClientsPage() {
     return (
         <PageLayout
             header={
-                <div className="flex flex-row w-full justify-between items-center">
-                    <h1 className="text-2xl font-bold">Clientes</h1>
-                    <CreateClientDialog onSuccess={handleClientCreated} />
-                </div>
+                <PageHeader
+                    title="Clientes"
+                    actions={<CreateClientDialog onSuccess={handleClientCreated} />}
+                />
             }
         >
             <ClientsTable key={refreshKey} />
