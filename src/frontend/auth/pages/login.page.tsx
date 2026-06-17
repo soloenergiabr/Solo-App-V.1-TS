@@ -25,7 +25,7 @@ export function LoginPage() {
         try {
             const result = await login({ email, password });
             if (result.success) {
-                router.push('/dashboard');
+                router.push('/controle');
             } else {
                 setError(result.error || 'Não foi possível entrar');
             }
