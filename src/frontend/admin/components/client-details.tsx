@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import {
     ArrowLeft,
+    BadgeDollarSign,
     Battery,
     Building2,
     Cable,
@@ -16,6 +17,8 @@ import {
     Split,
     Trash2,
     Upload,
+    UserCog,
+    Wallet,
     Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -48,6 +51,8 @@ import {
     useAdminCreditAllocations,
     useAdminEnergyBills,
     useAdminInverters,
+    useAdminInvestment,
+    useAdminPayers,
     useAdminPlants,
     useAdminProviderPlants,
 } from '@/frontend/admin/hooks/use-admin-energy-management';
@@ -548,6 +553,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
 
                 <TabsContent value="resumo" className="mt-6 space-y-6">
                     <SummaryTab
+                        clientId={clientId}
                         client={client}
                         balance={clientDetails.data.balance}
                         plants={plants.plants}
@@ -594,7 +600,76 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
     );
 }
 
+function toDateInput(value?: string | null): string {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return date.toISOString().slice(0, 10);
+}
+
+function InvestmentSection({ clientId }: { clientId: string }) {
+    const investment = useAdminInvestment(clientId);
+    const [form, setForm] = useState({ totalInvested: '', startDate: '', expectedPayoff: '', monthlyReturn: '' });
+    const [hydrated, setHydrated] = useState(false);
+
+    // Hydrate the form once from the loaded investment.
+    if (!hydrated && investment.data !== undefined) {
+        if (investment.data) {
+            setForm({
+                totalInvested: String(toNumber(investment.data.totalInvested) || ''),
+                startDate: toDateInput(investment.data.startDate),
+                expectedPayoff: toDateInput(investment.data.expectedPayoff),
+                monthlyReturn: investment.data.monthlyReturn != null ? String(toNumber(investment.data.monthlyReturn)) : '',
+            });
+        }
+        setHydrated(true);
+    }
+
+    const save = async () => {
+        if (!form.totalInvested || !form.startDate) {
+            toast.error('Informe o valor investido e a data de início');
+            return;
+        }
+        try {
+            await investment.save.mutateAsync({
+                totalInvested: Number(form.totalInvested),
+                startDate: form.startDate,
+                expectedPayoff: form.expectedPayoff || null,
+                monthlyReturn: form.monthlyReturn ? Number(form.monthlyReturn) : null,
+            } as never);
+            toast.success('Investimento salvo com sucesso');
+        } catch (error: unknown) {
+            toast.error(errorMessage(error, 'Erro ao salvar investimento'));
+        }
+    };
+
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex items-center gap-2">
+                    <Wallet className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle>Investimento</CardTitle>
+                </div>
+                <CardDescription>Define o custo do sistema que alimenta o payback do cliente.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <Field label="Valor investido (R$)" type="number" value={form.totalInvested} onChange={value => setForm(prev => ({ ...prev, totalInvested: value }))} />
+                    <Field label="Data de início" type="date" value={form.startDate} onChange={value => setForm(prev => ({ ...prev, startDate: value }))} />
+                    <Field label="Payback esperado" type="date" value={form.expectedPayoff} onChange={value => setForm(prev => ({ ...prev, expectedPayoff: value }))} />
+                    <Field label="Retorno mensal (R$, opcional)" type="number" value={form.monthlyReturn} onChange={value => setForm(prev => ({ ...prev, monthlyReturn: value }))} />
+                </div>
+                <Button onClick={save} disabled={investment.save.isPending}>
+                    {investment.save.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Salvar investimento
+                </Button>
+            </CardContent>
+        </Card>
+    );
+}
+
 function SummaryTab({
+    clientId,
     client,
     balance,
     plants,
@@ -602,6 +677,7 @@ function SummaryTab({
     bills,
     inverters,
 }: {
+    clientId: string;
     client: AdminClientDetails['client'];
     balance: number;
     plants: AdminPlant[];
@@ -669,6 +745,8 @@ function SummaryTab({
                     <Info label="Atualizado em" value={new Date(client.updatedAt).toLocaleDateString('pt-BR')} />
                 </CardContent>
             </Card>
+
+            <InvestmentSection clientId={clientId} />
         </>
     );
 }

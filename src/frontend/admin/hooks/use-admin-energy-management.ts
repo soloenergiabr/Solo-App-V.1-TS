@@ -56,6 +56,10 @@ export type AdminConsumerUnit = {
     city?: string | null;
     state?: string | null;
     status?: string | null;
+    payerName?: string | null;
+    payerEmail?: string | null;
+    payerPhone?: string | null;
+    payerUserId?: string | null;
     plant?: Pick<AdminPlant, 'id' | 'name' | 'providerPlantId'>;
 };
 
@@ -72,6 +76,15 @@ export type AdminCreditAllocation = {
     plant?: Pick<AdminPlant, 'id' | 'name'>;
     from?: Pick<AdminConsumerUnit, 'id' | 'name' | 'clientNumber' | 'installationNumber'>;
     to?: Pick<AdminConsumerUnit, 'id' | 'name' | 'clientNumber' | 'installationNumber'>;
+};
+
+export type AdminInvestment = {
+    id: string;
+    clientId: string;
+    totalInvested: number | string;
+    startDate: string;
+    expectedPayoff?: string | null;
+    monthlyReturn?: number | string | null;
 };
 
 export type AdminEnergyBill = {
@@ -98,6 +111,12 @@ export type AdminEnergyBill = {
     alerts?: unknown;
     aiRecommendations?: unknown;
     status?: string | null;
+    paymentStatus?: 'a_pagar' | 'paga' | 'vencida' | null;
+    dueDate?: string | null;
+    paidAt?: string | null;
+    amountDue?: number | string | null;
+    pixCode?: string | null;
+    barcode?: string | null;
     plant?: Pick<AdminPlant, 'id' | 'name'>;
     consumerUnit?: Pick<AdminConsumerUnit, 'id' | 'name' | 'clientNumber' | 'installationNumber'>;
 };
@@ -158,6 +177,7 @@ const adminEnergyKeys = {
     consumerUnits: (clientId: string) => ['admin-client-consumer-units', clientId] as const,
     allocations: (clientId: string) => ['admin-client-credit-allocations', clientId] as const,
     bills: (clientId: string) => ['admin-client-energy-bills', clientId] as const,
+    investment: (clientId: string) => ['admin-client-investment', clientId] as const,
     providerPlants: (provider?: string) => ['admin-provider-plants', provider || ''] as const,
 };
 
@@ -170,6 +190,7 @@ function useInvalidateClientEnergy(clientId: string) {
         queryClient.invalidateQueries({ queryKey: adminEnergyKeys.consumerUnits(clientId) }),
         queryClient.invalidateQueries({ queryKey: adminEnergyKeys.allocations(clientId) }),
         queryClient.invalidateQueries({ queryKey: adminEnergyKeys.bills(clientId) }),
+        queryClient.invalidateQueries({ queryKey: adminEnergyKeys.investment(clientId) }),
         queryClient.invalidateQueries({ queryKey: ['generation-dashboard'] }),
         queryClient.invalidateQueries({ queryKey: ['consumption-dashboard'] }),
     ]);
@@ -353,6 +374,46 @@ export function useAdminInverters(clientId: string) {
     });
 
     return { create, update, remove };
+}
+
+export function useAdminInvestment(clientId: string) {
+    const api = useAuthenticatedApi();
+    const invalidate = useInvalidateClientEnergy(clientId);
+
+    const query = useQuery({
+        queryKey: adminEnergyKeys.investment(clientId),
+        queryFn: async () => {
+            const response = await api.get<ApiEnvelope<AdminInvestment | null>>(`/admin/clients/${clientId}/investment`);
+            return response.data.data;
+        },
+        enabled: api.isAuthenticated && Boolean(clientId),
+    });
+
+    const save = useMutation({
+        mutationFn: async (data: Partial<AdminInvestment>) => (
+            unwrapMutation<AdminInvestment>(api.put(`/admin/clients/${clientId}/investment`, data))
+        ),
+        onSuccess: invalidate,
+    });
+
+    return { ...query, investment: query.data ?? null, save };
+}
+
+export function useAdminPayers(clientId: string) {
+    const api = useAuthenticatedApi();
+    const invalidate = useInvalidateClientEnergy(clientId);
+
+    const assign = useMutation({
+        mutationFn: async ({ unitId, data }: {
+            unitId: string;
+            data: { payerName?: string | null; payerEmail?: string | null; payerPhone?: string | null; payerUserId?: string | null };
+        }) => (
+            unwrapMutation<AdminConsumerUnit>(api.put(`/admin/clients/${clientId}/payers`, { unitId, ...data }))
+        ),
+        onSuccess: invalidate,
+    });
+
+    return { assign };
 }
 
 export function useAdminProviderPlants(provider?: string) {
