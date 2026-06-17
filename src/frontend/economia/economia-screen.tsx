@@ -1,0 +1,135 @@
+'use client'
+
+import { useState } from 'react'
+import { useEconomia } from './hooks/use-economia'
+import { aggregateEconomy } from './lib/aggregate'
+import { ContasAPagar } from './components/contas-a-pagar'
+import { AccountCard } from './components/account-card'
+import { RateioBar } from './components/rateio-bar'
+import { ConsolidadoSummary } from './components/consolidado-summary'
+import { CostBreakdown } from './components/cost-breakdown'
+import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout'
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { AccountBill } from '@/shared/controle/types'
+
+type Tab = 'consolidado' | 'por-conta'
+
+export function EconomiaScreen() {
+    const currentYear = new Date().getFullYear()
+    const [year] = useState(currentYear)
+    const [tab, setTab] = useState<Tab>('consolidado')
+    const [selectedId, setSelectedId] = useState<string | null>(null)
+
+    const { bills, isLoading, error } = useEconomia({ year })
+
+    const consolidated = aggregateEconomy(bills ?? [])
+    const selected: AccountBill | undefined =
+        selectedId != null ? (bills ?? []).find((b) => b.id === selectedId) : undefined
+
+    return (
+        <PageLayout
+            header={
+                <PageHeader
+                    title="Economia"
+                    subtitle={String(year)}
+                    actions={
+                        <div className="flex items-center gap-1 rounded-lg border bg-card p-0.5 text-sm">
+                            <button
+                                onClick={() => setTab('consolidado')}
+                                className={
+                                    'rounded-md px-3 py-1 transition-colors ' +
+                                    (tab === 'consolidado'
+                                        ? 'bg-primary text-primary-foreground font-medium'
+                                        : 'text-muted-foreground hover:text-foreground')
+                                }
+                            >
+                                Consolidado
+                            </button>
+                            <button
+                                onClick={() => setTab('por-conta')}
+                                className={
+                                    'rounded-md px-3 py-1 transition-colors ' +
+                                    (tab === 'por-conta'
+                                        ? 'bg-primary text-primary-foreground font-medium'
+                                        : 'text-muted-foreground hover:text-foreground')
+                                }
+                            >
+                                Por conta
+                            </button>
+                        </div>
+                    }
+                />
+            }
+        >
+            {/* Loading state */}
+            {isLoading && (
+                <div className="space-y-3">
+                    <Skeleton className="h-16 w-full" />
+                    <Skeleton className="h-24 w-full" />
+                    <Skeleton className="h-24 w-full" />
+                </div>
+            )}
+
+            {/* Error state */}
+            {!isLoading && error && (
+                <Alert variant="destructive">
+                    <AlertTitle>Erro ao carregar faturas</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            )}
+
+            {/* Empty state */}
+            {!isLoading && !error && bills !== null && bills.length === 0 && (
+                <PageEmpty
+                    title="Nenhuma conta ainda"
+                    description="As faturas do período aparecerão aqui assim que forem registradas."
+                />
+            )}
+
+            {/* Content */}
+            {!isLoading && !error && bills && bills.length > 0 && (
+                <div className="space-y-4">
+                    {/* Contas a pagar — always visible */}
+                    <ContasAPagar bills={bills} />
+
+                    {tab === 'consolidado' && (
+                        <div className="space-y-3">
+                            <ConsolidadoSummary data={consolidated} />
+                            {/* TODO: wire rateio slices from credit-allocations */}
+                            <RateioBar slices={[]} />
+                        </div>
+                    )}
+
+                    {tab === 'por-conta' && (
+                        <div className="space-y-4">
+                            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                                {bills.map((b) => (
+                                    <button
+                                        key={b.id}
+                                        type="button"
+                                        onClick={() =>
+                                            setSelectedId((prev) => (prev === b.id ? null : b.id))
+                                        }
+                                        className={
+                                            'text-left rounded-2xl transition-shadow ' +
+                                            (selectedId === b.id
+                                                ? 'ring-2 ring-primary'
+                                                : 'hover:ring-1 hover:ring-border')
+                                        }
+                                    >
+                                        <AccountCard bill={b} />
+                                    </button>
+                                ))}
+                            </div>
+
+                            {selected && (
+                                <CostBreakdown bill={selected} />
+                            )}
+                        </div>
+                    )}
+                </div>
+            )}
+        </PageLayout>
+    )
+}

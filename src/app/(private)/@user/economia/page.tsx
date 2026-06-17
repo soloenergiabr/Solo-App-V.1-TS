@@ -5,7 +5,7 @@ import { useAuth } from "@/frontend/auth/hooks/useAuth";
 import { PageLayout, PageHeader } from "@/components/ui/page-layout";
 import { Loader2 } from "lucide-react";
 
-export default function EconomyDashboardPage() {
+export default function EconomiaPage() {
     const { user } = useAuth();
 
     if (!user || !user.clientId) {
