@@ -23,8 +23,8 @@ const neueMontreal = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Solo App",
-  description: "Aplicativo de monitoramento solar da Solo Energia.",
+  title: { default: "Solo Energia — Você no controle da sua energia", template: "%s · Solo Energia" },
+  description: "Acompanhe sua geração, economia e o retorno do seu investimento em energia solar.",
 };
 
 export default function RootLayout({
