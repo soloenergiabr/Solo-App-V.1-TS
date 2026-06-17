@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, Filter, Zap, Activity, TrendingUp, Database } from "lucide-react";
 import { PageHeader, PageLayout } from '@/components/ui/page-layout';
+import { EfficiencyGauge } from '@/frontend/generation/components/dashboard/efficiency-gauge';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
@@ -59,6 +60,10 @@ function GenerationDashboardPage() {
         energia: point.energy,
     }));
 
+    const efficiencyPct = analytics
+        ? Math.min(100, Math.round((analytics.overview.averagePower / Math.max(1, analytics.overview.peakPower)) * 100))
+        : 0;
+
     if (error) {
         return (
             <div className="container mx-auto p-6">
@@ -104,7 +109,7 @@ function GenerationDashboardPage() {
                             )}
 
                             {/* Métricas Compactas */}
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
                                 {isRealTime ? (
                                     <>
                                         <MetricTile
@@ -131,6 +136,7 @@ function GenerationDashboardPage() {
                                             sublabel="online"
                                             icon={<Database className="size-4 text-primary" />}
                                         />
+                                        <EfficiencyGauge percent={efficiencyPct} />
                                     </>
                                 ) : (
                                     <>
