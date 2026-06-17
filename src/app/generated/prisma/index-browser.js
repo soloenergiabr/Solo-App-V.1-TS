@@ -222,6 +222,10 @@ exports.Prisma.ConsumerUnitScalarFieldEnum = {
   city: 'city',
   state: 'state',
   status: 'status',
+  payerName: 'payerName',
+  payerEmail: 'payerEmail',
+  payerPhone: 'payerPhone',
+  payerUserId: 'payerUserId',
   plantId: 'plantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -398,8 +402,26 @@ exports.Prisma.EnergyBillScalarFieldEnum = {
   creditSummary: 'creditSummary',
   billScore: 'billScore',
   status: 'status',
+  paymentStatus: 'paymentStatus',
+  dueDate: 'dueDate',
+  paidAt: 'paidAt',
+  amountDue: 'amountDue',
+  pixCode: 'pixCode',
+  barcode: 'barcode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InvestmentScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  totalInvested: 'totalInvested',
+  startDate: 'startDate',
+  expectedPayoff: 'expectedPayoff',
+  monthlyReturn: 'monthlyReturn',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -459,6 +481,12 @@ exports.TransactionType = exports.$Enums.TransactionType = {
   manual_adjustment: 'manual_adjustment'
 };
 
+exports.BillPaymentStatus = exports.$Enums.BillPaymentStatus = {
+  a_pagar: 'a_pagar',
+  paga: 'paga',
+  vencida: 'vencida'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Client: 'Client',
@@ -473,7 +501,8 @@ exports.Prisma.ModelName = {
   FAQ: 'FAQ',
   Transaction: 'Transaction',
   Consumption: 'Consumption',
-  EnergyBill: 'EnergyBill'
+  EnergyBill: 'EnergyBill',
+  Investment: 'Investment'
 };
 
 /**

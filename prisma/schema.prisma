@@ -56,6 +56,8 @@ model User {
 
   client Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
+  payerUnits ConsumerUnit[] @relation("PayerUnits")
+
   @@index([email])
   @@index([clientId])
   @@index([email, isActive])
@@ -93,6 +95,7 @@ model Client {
   inverters         Inverter[]
   consumerUnits     ConsumerUnit[]
   creditAllocations CreditAllocation[]
+  investments       Investment[]
 
   @@index([email])
   @@index([cpfCnpj])
@@ -205,6 +208,13 @@ model ConsumerUnit {
   state              String?
   status             String?
 
+  // Payer (scoped login who pays this UC)
+  payerName  String?
+  payerEmail String?
+  payerPhone String?
+  payerUser   User?   @relation("PayerUnits", fields: [payerUserId], references: [id])
+  payerUserId String?
+
   plant   Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
   plantId String
 
@@ -221,6 +231,7 @@ model ConsumerUnit {
   @@index([plantId])
   @@index([clientId, plantId])
   @@index([clientId, clientNumber])
+  @@index([payerUserId])
   @@map("consumer_unit")
 }
 
@@ -338,6 +349,12 @@ enum RedemptionStatus {
   pending
   used
   expired
+}
+
+enum BillPaymentStatus {
+  a_pagar
+  paga
+  vencida
 }
 
 model OfferRedemption {
@@ -509,6 +526,14 @@ model EnergyBill {
   billScore         Decimal? @db.Decimal(5, 2)
   status            String?
 
+  // Payment / Contas a pagar
+  paymentStatus BillPaymentStatus @default(a_pagar)
+  dueDate       DateTime?         @db.Date
+  paidAt        DateTime?
+  amountDue     Decimal?          @db.Decimal(14, 2)
+  pixCode       String?
+  barcode       String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -519,5 +544,25 @@ model EnergyBill {
   @@index([referenceYear, referenceMonth])
   @@index([clientId, referenceYear, referenceMonth])
   @@index([status])
+  @@index([clientId, paymentStatus])
   @@map("energy_bill")
+}
+
+model Investment {
+  id String @id @default(dbgenerated("(concat('investment_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  totalInvested   Decimal   @db.Decimal(14, 2)
+  startDate       DateTime  @db.Date
+  expectedPayoff  DateTime? @db.Date
+  monthlyReturn   Decimal?  @db.Decimal(14, 2) // optional override; else derived from bills savings
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([clientId])
+  @@map("investment")
 }

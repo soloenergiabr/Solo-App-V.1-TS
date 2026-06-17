@@ -83,6 +83,11 @@ export type Consumption = $Result.DefaultSelection<Prisma.$ConsumptionPayload>
  * 
  */
 export type EnergyBill = $Result.DefaultSelection<Prisma.$EnergyBillPayload>
+/**
+ * Model Investment
+ * 
+ */
+export type Investment = $Result.DefaultSelection<Prisma.$InvestmentPayload>
 
 /**
  * Enums
@@ -134,6 +139,15 @@ export const RedemptionStatus: {
 
 export type RedemptionStatus = (typeof RedemptionStatus)[keyof typeof RedemptionStatus]
 
+
+export const BillPaymentStatus: {
+  a_pagar: 'a_pagar',
+  paga: 'paga',
+  vencida: 'vencida'
+};
+
+export type BillPaymentStatus = (typeof BillPaymentStatus)[keyof typeof BillPaymentStatus]
+
 }
 
 export type ClientStatus = $Enums.ClientStatus
@@ -155,6 +169,10 @@ export const GenerationUnitType: typeof $Enums.GenerationUnitType
 export type RedemptionStatus = $Enums.RedemptionStatus
 
 export const RedemptionStatus: typeof $Enums.RedemptionStatus
+
+export type BillPaymentStatus = $Enums.BillPaymentStatus
+
+export const BillPaymentStatus: typeof $Enums.BillPaymentStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -413,6 +431,16 @@ export class PrismaClient<
     * ```
     */
   get energyBill(): Prisma.EnergyBillDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.investment`: Exposes CRUD operations for the **Investment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Investments
+    * const investments = await prisma.investment.findMany()
+    * ```
+    */
+  get investment(): Prisma.InvestmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -866,7 +894,8 @@ export namespace Prisma {
     FAQ: 'FAQ',
     Transaction: 'Transaction',
     Consumption: 'Consumption',
-    EnergyBill: 'EnergyBill'
+    EnergyBill: 'EnergyBill',
+    Investment: 'Investment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -885,7 +914,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill"
+      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "investment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1925,6 +1954,80 @@ export namespace Prisma {
           }
         }
       }
+      Investment: {
+        payload: Prisma.$InvestmentPayload<ExtArgs>
+        fields: Prisma.InvestmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InvestmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InvestmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>
+          }
+          findFirst: {
+            args: Prisma.InvestmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InvestmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>
+          }
+          findMany: {
+            args: Prisma.InvestmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>[]
+          }
+          create: {
+            args: Prisma.InvestmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>
+          }
+          createMany: {
+            args: Prisma.InvestmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InvestmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>[]
+          }
+          delete: {
+            args: Prisma.InvestmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>
+          }
+          update: {
+            args: Prisma.InvestmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.InvestmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InvestmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InvestmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.InvestmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvestmentPayload>
+          }
+          aggregate: {
+            args: Prisma.InvestmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInvestment>
+          }
+          groupBy: {
+            args: Prisma.InvestmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InvestmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InvestmentCountArgs<ExtArgs>
+            result: $Utils.Optional<InvestmentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2035,6 +2138,7 @@ export namespace Prisma {
     transaction?: TransactionOmit
     consumption?: ConsumptionOmit
     energyBill?: EnergyBillOmit
+    investment?: InvestmentOmit
   }
 
   /* Types for Logging */
@@ -2111,6 +2215,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    payerUnits: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payerUnits?: boolean | UserCountOutputTypeCountPayerUnitsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPayerUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsumerUnitWhereInput
+  }
+
+
+  /**
    * Count Type ClientCountOutputType
    */
 
@@ -2126,6 +2261,7 @@ export namespace Prisma {
     inverters: number
     consumerUnits: number
     creditAllocations: number
+    investments: number
   }
 
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2140,6 +2276,7 @@ export namespace Prisma {
     inverters?: boolean | ClientCountOutputTypeCountInvertersArgs
     consumerUnits?: boolean | ClientCountOutputTypeCountConsumerUnitsArgs
     creditAllocations?: boolean | ClientCountOutputTypeCountCreditAllocationsArgs
+    investments?: boolean | ClientCountOutputTypeCountInvestmentsArgs
   }
 
   // Custom InputTypes
@@ -2228,6 +2365,13 @@ export namespace Prisma {
    */
   export type ClientCountOutputTypeCountCreditAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CreditAllocationWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountInvestmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvestmentWhereInput
   }
 
 
@@ -2617,6 +2761,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | User$clientArgs<ExtArgs>
+    payerUnits?: boolean | User$payerUnitsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2669,6 +2815,8 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "password" | "roles" | "permissions" | "clientId" | "isActive" | "resetPasswordToken" | "resetPasswordExpires" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | User$clientArgs<ExtArgs>
+    payerUnits?: boolean | User$payerUnitsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | User$clientArgs<ExtArgs>
@@ -2681,6 +2829,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       client: Prisma.$ClientPayload<ExtArgs> | null
+      payerUnits: Prisma.$ConsumerUnitPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3090,6 +3239,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     client<T extends User$clientArgs<ExtArgs> = {}>(args?: Subset<T, User$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    payerUnits<T extends User$payerUnitsArgs<ExtArgs> = {}>(args?: Subset<T, User$payerUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3546,6 +3696,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.payerUnits
+   */
+  export type User$payerUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsumerUnit
+     */
+    select?: ConsumerUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsumerUnit
+     */
+    omit?: ConsumerUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsumerUnitInclude<ExtArgs> | null
+    where?: ConsumerUnitWhereInput
+    orderBy?: ConsumerUnitOrderByWithRelationInput | ConsumerUnitOrderByWithRelationInput[]
+    cursor?: ConsumerUnitWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConsumerUnitScalarFieldEnum | ConsumerUnitScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3849,6 +4023,7 @@ export namespace Prisma {
     inverters?: boolean | Client$invertersArgs<ExtArgs>
     consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
     creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
+    investments?: boolean | Client$investmentsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -3916,6 +4091,7 @@ export namespace Prisma {
     inverters?: boolean | Client$invertersArgs<ExtArgs>
     consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
     creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
+    investments?: boolean | Client$investmentsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3935,6 +4111,7 @@ export namespace Prisma {
       inverters: Prisma.$InverterPayload<ExtArgs>[]
       consumerUnits: Prisma.$ConsumerUnitPayload<ExtArgs>[]
       creditAllocations: Prisma.$CreditAllocationPayload<ExtArgs>[]
+      investments: Prisma.$InvestmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4356,6 +4533,7 @@ export namespace Prisma {
     inverters<T extends Client$invertersArgs<ExtArgs> = {}>(args?: Subset<T, Client$invertersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InverterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     consumerUnits<T extends Client$consumerUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Client$consumerUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     creditAllocations<T extends Client$creditAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, Client$creditAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    investments<T extends Client$investmentsArgs<ExtArgs> = {}>(args?: Subset<T, Client$investmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5048,6 +5226,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * Client.investments
+   */
+  export type Client$investmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    where?: InvestmentWhereInput
+    orderBy?: InvestmentOrderByWithRelationInput | InvestmentOrderByWithRelationInput[]
+    cursor?: InvestmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvestmentScalarFieldEnum | InvestmentScalarFieldEnum[]
   }
 
   /**
@@ -7960,6 +8162,10 @@ export namespace Prisma {
     city: string | null
     state: string | null
     status: string | null
+    payerName: string | null
+    payerEmail: string | null
+    payerPhone: string | null
+    payerUserId: string | null
     plantId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7981,6 +8187,10 @@ export namespace Prisma {
     city: string | null
     state: string | null
     status: string | null
+    payerName: string | null
+    payerEmail: string | null
+    payerPhone: string | null
+    payerUserId: string | null
     plantId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8002,6 +8212,10 @@ export namespace Prisma {
     city: number
     state: number
     status: number
+    payerName: number
+    payerEmail: number
+    payerPhone: number
+    payerUserId: number
     plantId: number
     createdAt: number
     updatedAt: number
@@ -8025,6 +8239,10 @@ export namespace Prisma {
     city?: true
     state?: true
     status?: true
+    payerName?: true
+    payerEmail?: true
+    payerPhone?: true
+    payerUserId?: true
     plantId?: true
     createdAt?: true
     updatedAt?: true
@@ -8046,6 +8264,10 @@ export namespace Prisma {
     city?: true
     state?: true
     status?: true
+    payerName?: true
+    payerEmail?: true
+    payerPhone?: true
+    payerUserId?: true
     plantId?: true
     createdAt?: true
     updatedAt?: true
@@ -8067,6 +8289,10 @@ export namespace Prisma {
     city?: true
     state?: true
     status?: true
+    payerName?: true
+    payerEmail?: true
+    payerPhone?: true
+    payerUserId?: true
     plantId?: true
     createdAt?: true
     updatedAt?: true
@@ -8161,6 +8387,10 @@ export namespace Prisma {
     city: string | null
     state: string | null
     status: string | null
+    payerName: string | null
+    payerEmail: string | null
+    payerPhone: string | null
+    payerUserId: string | null
     plantId: string
     createdAt: Date
     updatedAt: Date
@@ -8199,11 +8429,16 @@ export namespace Prisma {
     city?: boolean
     state?: boolean
     status?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    payerPhone?: boolean
+    payerUserId?: boolean
     plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
     energyBills?: boolean | ConsumerUnit$energyBillsArgs<ExtArgs>
     allocationsFrom?: boolean | ConsumerUnit$allocationsFromArgs<ExtArgs>
@@ -8226,11 +8461,16 @@ export namespace Prisma {
     city?: boolean
     state?: boolean
     status?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    payerPhone?: boolean
+    payerUserId?: boolean
     plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["consumerUnit"]>
 
@@ -8249,11 +8489,16 @@ export namespace Prisma {
     city?: boolean
     state?: boolean
     status?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    payerPhone?: boolean
+    payerUserId?: boolean
     plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["consumerUnit"]>
 
@@ -8272,15 +8517,20 @@ export namespace Prisma {
     city?: boolean
     state?: boolean
     status?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    payerPhone?: boolean
+    payerUserId?: boolean
     plantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "plantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["consumerUnit"]>
+  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["consumerUnit"]>
   export type ConsumerUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
     energyBills?: boolean | ConsumerUnit$energyBillsArgs<ExtArgs>
     allocationsFrom?: boolean | ConsumerUnit$allocationsFromArgs<ExtArgs>
@@ -8289,10 +8539,12 @@ export namespace Prisma {
   }
   export type ConsumerUnitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
   }
   export type ConsumerUnitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
+    payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
   }
 
@@ -8300,6 +8552,7 @@ export namespace Prisma {
     name: "ConsumerUnit"
     objects: {
       client: Prisma.$ClientPayload<ExtArgs>
+      payerUser: Prisma.$UserPayload<ExtArgs> | null
       plant: Prisma.$PlantPayload<ExtArgs>
       energyBills: Prisma.$EnergyBillPayload<ExtArgs>[]
       allocationsFrom: Prisma.$CreditAllocationPayload<ExtArgs>[]
@@ -8320,6 +8573,10 @@ export namespace Prisma {
       city: string | null
       state: string | null
       status: string | null
+      payerName: string | null
+      payerEmail: string | null
+      payerPhone: string | null
+      payerUserId: string | null
       plantId: string
       createdAt: Date
       updatedAt: Date
@@ -8719,6 +8976,7 @@ export namespace Prisma {
   export interface Prisma__ConsumerUnitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    payerUser<T extends ConsumerUnit$payerUserArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$payerUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     plant<T extends PlantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlantDefaultArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     energyBills<T extends ConsumerUnit$energyBillsArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$energyBillsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocationsFrom<T extends ConsumerUnit$allocationsFromArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$allocationsFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8766,6 +9024,10 @@ export namespace Prisma {
     readonly city: FieldRef<"ConsumerUnit", 'String'>
     readonly state: FieldRef<"ConsumerUnit", 'String'>
     readonly status: FieldRef<"ConsumerUnit", 'String'>
+    readonly payerName: FieldRef<"ConsumerUnit", 'String'>
+    readonly payerEmail: FieldRef<"ConsumerUnit", 'String'>
+    readonly payerPhone: FieldRef<"ConsumerUnit", 'String'>
+    readonly payerUserId: FieldRef<"ConsumerUnit", 'String'>
     readonly plantId: FieldRef<"ConsumerUnit", 'String'>
     readonly createdAt: FieldRef<"ConsumerUnit", 'DateTime'>
     readonly updatedAt: FieldRef<"ConsumerUnit", 'DateTime'>
@@ -9163,6 +9425,25 @@ export namespace Prisma {
      * Limit how many ConsumerUnits to delete.
      */
     limit?: number
+  }
+
+  /**
+   * ConsumerUnit.payerUser
+   */
+  export type ConsumerUnit$payerUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -18499,6 +18780,7 @@ export namespace Prisma {
     otherCharges: Decimal | null
     estimatedSavings: Decimal | null
     billScore: Decimal | null
+    amountDue: Decimal | null
   }
 
   export type EnergyBillSumAggregateOutputType = {
@@ -18539,6 +18821,7 @@ export namespace Prisma {
     otherCharges: Decimal | null
     estimatedSavings: Decimal | null
     billScore: Decimal | null
+    amountDue: Decimal | null
   }
 
   export type EnergyBillMinAggregateOutputType = {
@@ -18601,6 +18884,12 @@ export namespace Prisma {
     aiAnalysis: string | null
     billScore: Decimal | null
     status: string | null
+    paymentStatus: $Enums.BillPaymentStatus | null
+    dueDate: Date | null
+    paidAt: Date | null
+    amountDue: Decimal | null
+    pixCode: string | null
+    barcode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18665,6 +18954,12 @@ export namespace Prisma {
     aiAnalysis: string | null
     billScore: Decimal | null
     status: string | null
+    paymentStatus: $Enums.BillPaymentStatus | null
+    dueDate: Date | null
+    paidAt: Date | null
+    amountDue: Decimal | null
+    pixCode: string | null
+    barcode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18735,6 +19030,12 @@ export namespace Prisma {
     creditSummary: number
     billScore: number
     status: number
+    paymentStatus: number
+    dueDate: number
+    paidAt: number
+    amountDue: number
+    pixCode: number
+    barcode: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -18779,6 +19080,7 @@ export namespace Prisma {
     otherCharges?: true
     estimatedSavings?: true
     billScore?: true
+    amountDue?: true
   }
 
   export type EnergyBillSumAggregateInputType = {
@@ -18819,6 +19121,7 @@ export namespace Prisma {
     otherCharges?: true
     estimatedSavings?: true
     billScore?: true
+    amountDue?: true
   }
 
   export type EnergyBillMinAggregateInputType = {
@@ -18881,6 +19184,12 @@ export namespace Prisma {
     aiAnalysis?: true
     billScore?: true
     status?: true
+    paymentStatus?: true
+    dueDate?: true
+    paidAt?: true
+    amountDue?: true
+    pixCode?: true
+    barcode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -18945,6 +19254,12 @@ export namespace Prisma {
     aiAnalysis?: true
     billScore?: true
     status?: true
+    paymentStatus?: true
+    dueDate?: true
+    paidAt?: true
+    amountDue?: true
+    pixCode?: true
+    barcode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19015,6 +19330,12 @@ export namespace Prisma {
     creditSummary?: true
     billScore?: true
     status?: true
+    paymentStatus?: true
+    dueDate?: true
+    paidAt?: true
+    amountDue?: true
+    pixCode?: true
+    barcode?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -19172,6 +19493,12 @@ export namespace Prisma {
     creditSummary: JsonValue | null
     billScore: Decimal | null
     status: string | null
+    paymentStatus: $Enums.BillPaymentStatus
+    dueDate: Date | null
+    paidAt: Date | null
+    amountDue: Decimal | null
+    pixCode: string | null
+    barcode: string | null
     createdAt: Date
     updatedAt: Date
     _count: EnergyBillCountAggregateOutputType | null
@@ -19261,6 +19588,12 @@ export namespace Prisma {
     creditSummary?: boolean
     billScore?: boolean
     status?: boolean
+    paymentStatus?: boolean
+    dueDate?: boolean
+    paidAt?: boolean
+    amountDue?: boolean
+    pixCode?: boolean
+    barcode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -19334,6 +19667,12 @@ export namespace Prisma {
     creditSummary?: boolean
     billScore?: boolean
     status?: boolean
+    paymentStatus?: boolean
+    dueDate?: boolean
+    paidAt?: boolean
+    amountDue?: boolean
+    pixCode?: boolean
+    barcode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -19407,6 +19746,12 @@ export namespace Prisma {
     creditSummary?: boolean
     billScore?: boolean
     status?: boolean
+    paymentStatus?: boolean
+    dueDate?: boolean
+    paidAt?: boolean
+    amountDue?: boolean
+    pixCode?: boolean
+    barcode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -19480,11 +19825,17 @@ export namespace Prisma {
     creditSummary?: boolean
     billScore?: boolean
     status?: boolean
+    paymentStatus?: boolean
+    dueDate?: boolean
+    paidAt?: boolean
+    amountDue?: boolean
+    pixCode?: boolean
+    barcode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EnergyBillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "billFileUrl" | "rawBillFileKey" | "rawBillFileSize" | "clientId" | "plantId" | "consumerUnitId" | "competenceDate" | "referenceMonth" | "referenceYear" | "accountHolder" | "accountNumber" | "clientNumber" | "instalationNumber" | "distributor" | "consumerClass" | "tariffModality" | "connectionType" | "tariffPeriod" | "billingDays" | "readingPeriodFrom" | "readingPeriodTo" | "creditExpiryDate" | "monitoredGenerationKwh" | "billedConsumptionKwh" | "consumptionKwh" | "realConsumptionKwh" | "injectedEnergyKwh" | "compensatedEnergyKwh" | "previousCreditsKwh" | "currentCreditsKwh" | "expectedGenerationKwh" | "generationEfficiency" | "meterReadingCurrent" | "meterReadingPrevious" | "demandContractedKw" | "demandMeasuredKw" | "totalBillValue" | "totalAmount" | "energyCost" | "availabilityCost" | "publicLightingCost" | "icmsCost" | "pisCost" | "cofinsCost" | "pisCofinsCost" | "tariffPerKwh" | "tariffTeValue" | "tariffTusdValue" | "tariffFlag" | "tariffFlagCost" | "sectoralCharges" | "fineAmount" | "interestAmount" | "otherCharges" | "estimatedSavings" | "aiAnalysis" | "aiExplanations" | "aiRecommendations" | "alerts" | "extraCharges" | "billingItems" | "creditSummary" | "billScore" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["energyBill"]>
+  export type EnergyBillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "billFileUrl" | "rawBillFileKey" | "rawBillFileSize" | "clientId" | "plantId" | "consumerUnitId" | "competenceDate" | "referenceMonth" | "referenceYear" | "accountHolder" | "accountNumber" | "clientNumber" | "instalationNumber" | "distributor" | "consumerClass" | "tariffModality" | "connectionType" | "tariffPeriod" | "billingDays" | "readingPeriodFrom" | "readingPeriodTo" | "creditExpiryDate" | "monitoredGenerationKwh" | "billedConsumptionKwh" | "consumptionKwh" | "realConsumptionKwh" | "injectedEnergyKwh" | "compensatedEnergyKwh" | "previousCreditsKwh" | "currentCreditsKwh" | "expectedGenerationKwh" | "generationEfficiency" | "meterReadingCurrent" | "meterReadingPrevious" | "demandContractedKw" | "demandMeasuredKw" | "totalBillValue" | "totalAmount" | "energyCost" | "availabilityCost" | "publicLightingCost" | "icmsCost" | "pisCost" | "cofinsCost" | "pisCofinsCost" | "tariffPerKwh" | "tariffTeValue" | "tariffTusdValue" | "tariffFlag" | "tariffFlagCost" | "sectoralCharges" | "fineAmount" | "interestAmount" | "otherCharges" | "estimatedSavings" | "aiAnalysis" | "aiExplanations" | "aiRecommendations" | "alerts" | "extraCharges" | "billingItems" | "creditSummary" | "billScore" | "status" | "paymentStatus" | "dueDate" | "paidAt" | "amountDue" | "pixCode" | "barcode" | "createdAt" | "updatedAt", ExtArgs["result"]["energyBill"]>
   export type EnergyBillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -19574,6 +19925,12 @@ export namespace Prisma {
       creditSummary: Prisma.JsonValue | null
       billScore: Prisma.Decimal | null
       status: string | null
+      paymentStatus: $Enums.BillPaymentStatus
+      dueDate: Date | null
+      paidAt: Date | null
+      amountDue: Prisma.Decimal | null
+      pixCode: string | null
+      barcode: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["energyBill"]>
@@ -20067,6 +20424,12 @@ export namespace Prisma {
     readonly creditSummary: FieldRef<"EnergyBill", 'Json'>
     readonly billScore: FieldRef<"EnergyBill", 'Decimal'>
     readonly status: FieldRef<"EnergyBill", 'String'>
+    readonly paymentStatus: FieldRef<"EnergyBill", 'BillPaymentStatus'>
+    readonly dueDate: FieldRef<"EnergyBill", 'DateTime'>
+    readonly paidAt: FieldRef<"EnergyBill", 'DateTime'>
+    readonly amountDue: FieldRef<"EnergyBill", 'Decimal'>
+    readonly pixCode: FieldRef<"EnergyBill", 'String'>
+    readonly barcode: FieldRef<"EnergyBill", 'String'>
     readonly createdAt: FieldRef<"EnergyBill", 'DateTime'>
     readonly updatedAt: FieldRef<"EnergyBill", 'DateTime'>
   }
@@ -20484,6 +20847,1154 @@ export namespace Prisma {
 
 
   /**
+   * Model Investment
+   */
+
+  export type AggregateInvestment = {
+    _count: InvestmentCountAggregateOutputType | null
+    _avg: InvestmentAvgAggregateOutputType | null
+    _sum: InvestmentSumAggregateOutputType | null
+    _min: InvestmentMinAggregateOutputType | null
+    _max: InvestmentMaxAggregateOutputType | null
+  }
+
+  export type InvestmentAvgAggregateOutputType = {
+    totalInvested: Decimal | null
+    monthlyReturn: Decimal | null
+  }
+
+  export type InvestmentSumAggregateOutputType = {
+    totalInvested: Decimal | null
+    monthlyReturn: Decimal | null
+  }
+
+  export type InvestmentMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    totalInvested: Decimal | null
+    startDate: Date | null
+    expectedPayoff: Date | null
+    monthlyReturn: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type InvestmentMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    totalInvested: Decimal | null
+    startDate: Date | null
+    expectedPayoff: Date | null
+    monthlyReturn: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type InvestmentCountAggregateOutputType = {
+    id: number
+    clientId: number
+    totalInvested: number
+    startDate: number
+    expectedPayoff: number
+    monthlyReturn: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type InvestmentAvgAggregateInputType = {
+    totalInvested?: true
+    monthlyReturn?: true
+  }
+
+  export type InvestmentSumAggregateInputType = {
+    totalInvested?: true
+    monthlyReturn?: true
+  }
+
+  export type InvestmentMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    totalInvested?: true
+    startDate?: true
+    expectedPayoff?: true
+    monthlyReturn?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type InvestmentMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    totalInvested?: true
+    startDate?: true
+    expectedPayoff?: true
+    monthlyReturn?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type InvestmentCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    totalInvested?: true
+    startDate?: true
+    expectedPayoff?: true
+    monthlyReturn?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type InvestmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Investment to aggregate.
+     */
+    where?: InvestmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Investments to fetch.
+     */
+    orderBy?: InvestmentOrderByWithRelationInput | InvestmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InvestmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Investments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Investments
+    **/
+    _count?: true | InvestmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InvestmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InvestmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InvestmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InvestmentMaxAggregateInputType
+  }
+
+  export type GetInvestmentAggregateType<T extends InvestmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateInvestment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInvestment[P]>
+      : GetScalarType<T[P], AggregateInvestment[P]>
+  }
+
+
+
+
+  export type InvestmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvestmentWhereInput
+    orderBy?: InvestmentOrderByWithAggregationInput | InvestmentOrderByWithAggregationInput[]
+    by: InvestmentScalarFieldEnum[] | InvestmentScalarFieldEnum
+    having?: InvestmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InvestmentCountAggregateInputType | true
+    _avg?: InvestmentAvgAggregateInputType
+    _sum?: InvestmentSumAggregateInputType
+    _min?: InvestmentMinAggregateInputType
+    _max?: InvestmentMaxAggregateInputType
+  }
+
+  export type InvestmentGroupByOutputType = {
+    id: string
+    clientId: string
+    totalInvested: Decimal
+    startDate: Date
+    expectedPayoff: Date | null
+    monthlyReturn: Decimal | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: InvestmentCountAggregateOutputType | null
+    _avg: InvestmentAvgAggregateOutputType | null
+    _sum: InvestmentSumAggregateOutputType | null
+    _min: InvestmentMinAggregateOutputType | null
+    _max: InvestmentMaxAggregateOutputType | null
+  }
+
+  type GetInvestmentGroupByPayload<T extends InvestmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InvestmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InvestmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InvestmentGroupByOutputType[P]>
+            : GetScalarType<T[P], InvestmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InvestmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    totalInvested?: boolean
+    startDate?: boolean
+    expectedPayoff?: boolean
+    monthlyReturn?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["investment"]>
+
+  export type InvestmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    totalInvested?: boolean
+    startDate?: boolean
+    expectedPayoff?: boolean
+    monthlyReturn?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["investment"]>
+
+  export type InvestmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    totalInvested?: boolean
+    startDate?: boolean
+    expectedPayoff?: boolean
+    monthlyReturn?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["investment"]>
+
+  export type InvestmentSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    totalInvested?: boolean
+    startDate?: boolean
+    expectedPayoff?: boolean
+    monthlyReturn?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type InvestmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "totalInvested" | "startDate" | "expectedPayoff" | "monthlyReturn" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["investment"]>
+  export type InvestmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type InvestmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type InvestmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+
+  export type $InvestmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Investment"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      totalInvested: Prisma.Decimal
+      startDate: Date
+      expectedPayoff: Date | null
+      monthlyReturn: Prisma.Decimal | null
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["investment"]>
+    composites: {}
+  }
+
+  type InvestmentGetPayload<S extends boolean | null | undefined | InvestmentDefaultArgs> = $Result.GetResult<Prisma.$InvestmentPayload, S>
+
+  type InvestmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InvestmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InvestmentCountAggregateInputType | true
+    }
+
+  export interface InvestmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Investment'], meta: { name: 'Investment' } }
+    /**
+     * Find zero or one Investment that matches the filter.
+     * @param {InvestmentFindUniqueArgs} args - Arguments to find a Investment
+     * @example
+     * // Get one Investment
+     * const investment = await prisma.investment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InvestmentFindUniqueArgs>(args: SelectSubset<T, InvestmentFindUniqueArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Investment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InvestmentFindUniqueOrThrowArgs} args - Arguments to find a Investment
+     * @example
+     * // Get one Investment
+     * const investment = await prisma.investment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InvestmentFindUniqueOrThrowArgs>(args: SelectSubset<T, InvestmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Investment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvestmentFindFirstArgs} args - Arguments to find a Investment
+     * @example
+     * // Get one Investment
+     * const investment = await prisma.investment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InvestmentFindFirstArgs>(args?: SelectSubset<T, InvestmentFindFirstArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Investment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvestmentFindFirstOrThrowArgs} args - Arguments to find a Investment
+     * @example
+     * // Get one Investment
+     * const investment = await prisma.investment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InvestmentFindFirstOrThrowArgs>(args?: SelectSubset<T, InvestmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Investments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvestmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Investments
+     * const investments = await prisma.investment.findMany()
+     * 
+     * // Get first 10 Investments
+     * const investments = await prisma.investment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const investmentWithIdOnly = await prisma.investment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InvestmentFindManyArgs>(args?: SelectSubset<T, InvestmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Investment.
+     * @param {InvestmentCreateArgs} args - Arguments to create a Investment.
+     * @example
+     * // Create one Investment
+     * const Investment = await prisma.investment.create({
+     *   data: {
+     *     // ... data to create a Investment
+     *   }
+     * })
+     * 
+     */
+    create<T extends InvestmentCreateArgs>(args: SelectSubset<T, InvestmentCreateArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Investments.
+     * @param {InvestmentCreateManyArgs} args - Arguments to create many Investments.
+     * @example
+     * // Create many Investments
+     * const investment = await prisma.investment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InvestmentCreateManyArgs>(args?: SelectSubset<T, InvestmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Investments and returns the data saved in the database.
+     * @param {InvestmentCreateManyAndReturnArgs} args - Arguments to create many Investments.
+     * @example
+     * // Create many Investments
+     * const investment = await prisma.investment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Investments and only return the `id`
+     * const investmentWithIdOnly = await prisma.investment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InvestmentCreateManyAndReturnArgs>(args?: SelectSubset<T, InvestmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Investment.
+     * @param {InvestmentDeleteArgs} args - Arguments to delete one Investment.
+     * @example
+     * // Delete one Investment
+     * const Investment = await prisma.investment.delete({
+     *   where: {
+     *     // ... filter to delete one Investment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InvestmentDeleteArgs>(args: SelectSubset<T, InvestmentDeleteArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Investment.
+     * @param {InvestmentUpdateArgs} args - Arguments to update one Investment.
+     * @example
+     * // Update one Investment
+     * const investment = await prisma.investment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InvestmentUpdateArgs>(args: SelectSubset<T, InvestmentUpdateArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Investments.
+     * @param {InvestmentDeleteManyArgs} args - Arguments to filter Investments to delete.
+     * @example
+     * // Delete a few Investments
+     * const { count } = await prisma.investment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InvestmentDeleteManyArgs>(args?: SelectSubset<T, InvestmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Investments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvestmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Investments
+     * const investment = await prisma.investment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InvestmentUpdateManyArgs>(args: SelectSubset<T, InvestmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Investments and returns the data updated in the database.
+     * @param {InvestmentUpdateManyAndReturnArgs} args - Arguments to update many Investments.
+     * @example
+     * // Update many Investments
+     * const investment = await prisma.investment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Investments and only return the `id`
+     * const investmentWithIdOnly = await prisma.investment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InvestmentUpdateManyAndReturnArgs>(args: SelectSubset<T, InvestmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Investment.
+     * @param {InvestmentUpsertArgs} args - Arguments to update or create a Investment.
+     * @example
+     * // Update or create a Investment
+     * const investment = await prisma.investment.upsert({
+     *   create: {
+     *     // ... data to create a Investment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Investment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InvestmentUpsertArgs>(args: SelectSubset<T, InvestmentUpsertArgs<ExtArgs>>): Prisma__InvestmentClient<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Investments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvestmentCountArgs} args - Arguments to filter Investments to count.
+     * @example
+     * // Count the number of Investments
+     * const count = await prisma.investment.count({
+     *   where: {
+     *     // ... the filter for the Investments we want to count
+     *   }
+     * })
+    **/
+    count<T extends InvestmentCountArgs>(
+      args?: Subset<T, InvestmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InvestmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Investment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvestmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InvestmentAggregateArgs>(args: Subset<T, InvestmentAggregateArgs>): Prisma.PrismaPromise<GetInvestmentAggregateType<T>>
+
+    /**
+     * Group by Investment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvestmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InvestmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InvestmentGroupByArgs['orderBy'] }
+        : { orderBy?: InvestmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InvestmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInvestmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Investment model
+   */
+  readonly fields: InvestmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Investment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InvestmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Investment model
+   */
+  interface InvestmentFieldRefs {
+    readonly id: FieldRef<"Investment", 'String'>
+    readonly clientId: FieldRef<"Investment", 'String'>
+    readonly totalInvested: FieldRef<"Investment", 'Decimal'>
+    readonly startDate: FieldRef<"Investment", 'DateTime'>
+    readonly expectedPayoff: FieldRef<"Investment", 'DateTime'>
+    readonly monthlyReturn: FieldRef<"Investment", 'Decimal'>
+    readonly createdAt: FieldRef<"Investment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Investment", 'DateTime'>
+    readonly deletedAt: FieldRef<"Investment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Investment findUnique
+   */
+  export type InvestmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Investment to fetch.
+     */
+    where: InvestmentWhereUniqueInput
+  }
+
+  /**
+   * Investment findUniqueOrThrow
+   */
+  export type InvestmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Investment to fetch.
+     */
+    where: InvestmentWhereUniqueInput
+  }
+
+  /**
+   * Investment findFirst
+   */
+  export type InvestmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Investment to fetch.
+     */
+    where?: InvestmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Investments to fetch.
+     */
+    orderBy?: InvestmentOrderByWithRelationInput | InvestmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Investments.
+     */
+    cursor?: InvestmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Investments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Investments.
+     */
+    distinct?: InvestmentScalarFieldEnum | InvestmentScalarFieldEnum[]
+  }
+
+  /**
+   * Investment findFirstOrThrow
+   */
+  export type InvestmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Investment to fetch.
+     */
+    where?: InvestmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Investments to fetch.
+     */
+    orderBy?: InvestmentOrderByWithRelationInput | InvestmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Investments.
+     */
+    cursor?: InvestmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Investments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Investments.
+     */
+    distinct?: InvestmentScalarFieldEnum | InvestmentScalarFieldEnum[]
+  }
+
+  /**
+   * Investment findMany
+   */
+  export type InvestmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Investments to fetch.
+     */
+    where?: InvestmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Investments to fetch.
+     */
+    orderBy?: InvestmentOrderByWithRelationInput | InvestmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Investments.
+     */
+    cursor?: InvestmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Investments.
+     */
+    skip?: number
+    distinct?: InvestmentScalarFieldEnum | InvestmentScalarFieldEnum[]
+  }
+
+  /**
+   * Investment create
+   */
+  export type InvestmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Investment.
+     */
+    data: XOR<InvestmentCreateInput, InvestmentUncheckedCreateInput>
+  }
+
+  /**
+   * Investment createMany
+   */
+  export type InvestmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Investments.
+     */
+    data: InvestmentCreateManyInput | InvestmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Investment createManyAndReturn
+   */
+  export type InvestmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Investments.
+     */
+    data: InvestmentCreateManyInput | InvestmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Investment update
+   */
+  export type InvestmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Investment.
+     */
+    data: XOR<InvestmentUpdateInput, InvestmentUncheckedUpdateInput>
+    /**
+     * Choose, which Investment to update.
+     */
+    where: InvestmentWhereUniqueInput
+  }
+
+  /**
+   * Investment updateMany
+   */
+  export type InvestmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Investments.
+     */
+    data: XOR<InvestmentUpdateManyMutationInput, InvestmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Investments to update
+     */
+    where?: InvestmentWhereInput
+    /**
+     * Limit how many Investments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Investment updateManyAndReturn
+   */
+  export type InvestmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * The data used to update Investments.
+     */
+    data: XOR<InvestmentUpdateManyMutationInput, InvestmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Investments to update
+     */
+    where?: InvestmentWhereInput
+    /**
+     * Limit how many Investments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Investment upsert
+   */
+  export type InvestmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Investment to update in case it exists.
+     */
+    where: InvestmentWhereUniqueInput
+    /**
+     * In case the Investment found by the `where` argument doesn't exist, create a new Investment with this data.
+     */
+    create: XOR<InvestmentCreateInput, InvestmentUncheckedCreateInput>
+    /**
+     * In case the Investment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InvestmentUpdateInput, InvestmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Investment delete
+   */
+  export type InvestmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+    /**
+     * Filter which Investment to delete.
+     */
+    where: InvestmentWhereUniqueInput
+  }
+
+  /**
+   * Investment deleteMany
+   */
+  export type InvestmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Investments to delete
+     */
+    where?: InvestmentWhereInput
+    /**
+     * Limit how many Investments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Investment without action
+   */
+  export type InvestmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Investment
+     */
+    select?: InvestmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Investment
+     */
+    omit?: InvestmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvestmentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -20611,6 +22122,10 @@ export namespace Prisma {
     city: 'city',
     state: 'state',
     status: 'status',
+    payerName: 'payerName',
+    payerEmail: 'payerEmail',
+    payerPhone: 'payerPhone',
+    payerUserId: 'payerUserId',
     plantId: 'plantId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -20814,11 +22329,32 @@ export namespace Prisma {
     creditSummary: 'creditSummary',
     billScore: 'billScore',
     status: 'status',
+    paymentStatus: 'paymentStatus',
+    dueDate: 'dueDate',
+    paidAt: 'paidAt',
+    amountDue: 'amountDue',
+    pixCode: 'pixCode',
+    barcode: 'barcode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type EnergyBillScalarFieldEnum = (typeof EnergyBillScalarFieldEnum)[keyof typeof EnergyBillScalarFieldEnum]
+
+
+  export const InvestmentScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    totalInvested: 'totalInvested',
+    startDate: 'startDate',
+    expectedPayoff: 'expectedPayoff',
+    monthlyReturn: 'monthlyReturn',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type InvestmentScalarFieldEnum = (typeof InvestmentScalarFieldEnum)[keyof typeof InvestmentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -21026,6 +22562,20 @@ export namespace Prisma {
    */
   export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType[]'>
     
+
+
+  /**
+   * Reference to a field of type 'BillPaymentStatus'
+   */
+  export type EnumBillPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillPaymentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'BillPaymentStatus[]'
+   */
+  export type ListEnumBillPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillPaymentStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -21048,6 +22598,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    payerUnits?: ConsumerUnitListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -21064,6 +22615,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     client?: ClientOrderByWithRelationInput
+    payerUnits?: ConsumerUnitOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -21083,6 +22635,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    payerUnits?: ConsumerUnitListRelationFilter
   }, "id" | "email" | "resetPasswordToken">
 
   export type UserOrderByWithAggregationInput = {
@@ -21150,6 +22703,7 @@ export namespace Prisma {
     inverters?: InverterListRelationFilter
     consumerUnits?: ConsumerUnitListRelationFilter
     creditAllocations?: CreditAllocationListRelationFilter
+    investments?: InvestmentListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
@@ -21178,6 +22732,7 @@ export namespace Prisma {
     inverters?: InverterOrderByRelationAggregateInput
     consumerUnits?: ConsumerUnitOrderByRelationAggregateInput
     creditAllocations?: CreditAllocationOrderByRelationAggregateInput
+    investments?: InvestmentOrderByRelationAggregateInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
@@ -21209,6 +22764,7 @@ export namespace Prisma {
     inverters?: InverterListRelationFilter
     consumerUnits?: ConsumerUnitListRelationFilter
     creditAllocations?: CreditAllocationListRelationFilter
+    investments?: InvestmentListRelationFilter
   }, "id" | "email" | "cpfCnpj" | "indicationCode">
 
   export type ClientOrderByWithAggregationInput = {
@@ -21598,11 +23154,16 @@ export namespace Prisma {
     city?: StringNullableFilter<"ConsumerUnit"> | string | null
     state?: StringNullableFilter<"ConsumerUnit"> | string | null
     status?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerName?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerEmail?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerPhone?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerUserId?: StringNullableFilter<"ConsumerUnit"> | string | null
     plantId?: StringFilter<"ConsumerUnit"> | string
     createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
     energyBills?: EnergyBillListRelationFilter
     allocationsFrom?: CreditAllocationListRelationFilter
@@ -21624,11 +23185,16 @@ export namespace Prisma {
     city?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    payerName?: SortOrderInput | SortOrder
+    payerEmail?: SortOrderInput | SortOrder
+    payerPhone?: SortOrderInput | SortOrder
+    payerUserId?: SortOrderInput | SortOrder
     plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
+    payerUser?: UserOrderByWithRelationInput
     plant?: PlantOrderByWithRelationInput
     energyBills?: EnergyBillOrderByRelationAggregateInput
     allocationsFrom?: CreditAllocationOrderByRelationAggregateInput
@@ -21653,11 +23219,16 @@ export namespace Prisma {
     city?: StringNullableFilter<"ConsumerUnit"> | string | null
     state?: StringNullableFilter<"ConsumerUnit"> | string | null
     status?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerName?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerEmail?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerPhone?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerUserId?: StringNullableFilter<"ConsumerUnit"> | string | null
     plantId?: StringFilter<"ConsumerUnit"> | string
     createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
     energyBills?: EnergyBillListRelationFilter
     allocationsFrom?: CreditAllocationListRelationFilter
@@ -21679,6 +23250,10 @@ export namespace Prisma {
     city?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    payerName?: SortOrderInput | SortOrder
+    payerEmail?: SortOrderInput | SortOrder
+    payerPhone?: SortOrderInput | SortOrder
+    payerUserId?: SortOrderInput | SortOrder
     plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21706,6 +23281,10 @@ export namespace Prisma {
     city?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
     state?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
     status?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    payerName?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    payerEmail?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    payerPhone?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    payerUserId?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
     plantId?: StringWithAggregatesFilter<"ConsumerUnit"> | string
     createdAt?: DateTimeWithAggregatesFilter<"ConsumerUnit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ConsumerUnit"> | Date | string
@@ -22447,6 +24026,12 @@ export namespace Prisma {
     creditSummary?: JsonNullableFilter<"EnergyBill">
     billScore?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     status?: StringNullableFilter<"EnergyBill"> | string | null
+    paymentStatus?: EnumBillPaymentStatusFilter<"EnergyBill"> | $Enums.BillPaymentStatus
+    dueDate?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    amountDue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pixCode?: StringNullableFilter<"EnergyBill"> | string | null
+    barcode?: StringNullableFilter<"EnergyBill"> | string | null
     createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
@@ -22520,6 +24105,12 @@ export namespace Prisma {
     creditSummary?: SortOrderInput | SortOrder
     billScore?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    amountDue?: SortOrderInput | SortOrder
+    pixCode?: SortOrderInput | SortOrder
+    barcode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     client?: ClientOrderByWithRelationInput
@@ -22597,6 +24188,12 @@ export namespace Prisma {
     creditSummary?: JsonNullableFilter<"EnergyBill">
     billScore?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     status?: StringNullableFilter<"EnergyBill"> | string | null
+    paymentStatus?: EnumBillPaymentStatusFilter<"EnergyBill"> | $Enums.BillPaymentStatus
+    dueDate?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    amountDue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pixCode?: StringNullableFilter<"EnergyBill"> | string | null
+    barcode?: StringNullableFilter<"EnergyBill"> | string | null
     createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
@@ -22670,6 +24267,12 @@ export namespace Prisma {
     creditSummary?: SortOrderInput | SortOrder
     billScore?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    amountDue?: SortOrderInput | SortOrder
+    pixCode?: SortOrderInput | SortOrder
+    barcode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EnergyBillCountOrderByAggregateInput
@@ -22748,8 +24351,91 @@ export namespace Prisma {
     creditSummary?: JsonNullableWithAggregatesFilter<"EnergyBill">
     billScore?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     status?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    paymentStatus?: EnumBillPaymentStatusWithAggregatesFilter<"EnergyBill"> | $Enums.BillPaymentStatus
+    dueDate?: DateTimeNullableWithAggregatesFilter<"EnergyBill"> | Date | string | null
+    paidAt?: DateTimeNullableWithAggregatesFilter<"EnergyBill"> | Date | string | null
+    amountDue?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pixCode?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    barcode?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
+  }
+
+  export type InvestmentWhereInput = {
+    AND?: InvestmentWhereInput | InvestmentWhereInput[]
+    OR?: InvestmentWhereInput[]
+    NOT?: InvestmentWhereInput | InvestmentWhereInput[]
+    id?: StringFilter<"Investment"> | string
+    clientId?: StringFilter<"Investment"> | string
+    totalInvested?: DecimalFilter<"Investment"> | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFilter<"Investment"> | Date | string
+    expectedPayoff?: DateTimeNullableFilter<"Investment"> | Date | string | null
+    monthlyReturn?: DecimalNullableFilter<"Investment"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"Investment"> | Date | string
+    updatedAt?: DateTimeFilter<"Investment"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Investment"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }
+
+  export type InvestmentOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    totalInvested?: SortOrder
+    startDate?: SortOrder
+    expectedPayoff?: SortOrderInput | SortOrder
+    monthlyReturn?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+  }
+
+  export type InvestmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: InvestmentWhereInput | InvestmentWhereInput[]
+    OR?: InvestmentWhereInput[]
+    NOT?: InvestmentWhereInput | InvestmentWhereInput[]
+    clientId?: StringFilter<"Investment"> | string
+    totalInvested?: DecimalFilter<"Investment"> | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFilter<"Investment"> | Date | string
+    expectedPayoff?: DateTimeNullableFilter<"Investment"> | Date | string | null
+    monthlyReturn?: DecimalNullableFilter<"Investment"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"Investment"> | Date | string
+    updatedAt?: DateTimeFilter<"Investment"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Investment"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }, "id">
+
+  export type InvestmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    totalInvested?: SortOrder
+    startDate?: SortOrder
+    expectedPayoff?: SortOrderInput | SortOrder
+    monthlyReturn?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: InvestmentCountOrderByAggregateInput
+    _avg?: InvestmentAvgOrderByAggregateInput
+    _max?: InvestmentMaxOrderByAggregateInput
+    _min?: InvestmentMinOrderByAggregateInput
+    _sum?: InvestmentSumOrderByAggregateInput
+  }
+
+  export type InvestmentScalarWhereWithAggregatesInput = {
+    AND?: InvestmentScalarWhereWithAggregatesInput | InvestmentScalarWhereWithAggregatesInput[]
+    OR?: InvestmentScalarWhereWithAggregatesInput[]
+    NOT?: InvestmentScalarWhereWithAggregatesInput | InvestmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Investment"> | string
+    clientId?: StringWithAggregatesFilter<"Investment"> | string
+    totalInvested?: DecimalWithAggregatesFilter<"Investment"> | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeWithAggregatesFilter<"Investment"> | Date | string
+    expectedPayoff?: DateTimeNullableWithAggregatesFilter<"Investment"> | Date | string | null
+    monthlyReturn?: DecimalNullableWithAggregatesFilter<"Investment"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Investment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Investment"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Investment"> | Date | string | null
   }
 
   export type UserCreateInput = {
@@ -22765,6 +24451,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutUsersInput
+    payerUnits?: ConsumerUnitCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -22780,6 +24467,7 @@ export namespace Prisma {
     resetPasswordExpires?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserUpdateInput = {
@@ -22795,6 +24483,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutUsersNestedInput
+    payerUnits?: ConsumerUnitUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -22810,6 +24499,7 @@ export namespace Prisma {
     resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -22882,6 +24572,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
@@ -22910,6 +24601,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
@@ -22938,6 +24630,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
@@ -22966,6 +24659,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
@@ -23435,10 +25129,14 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
@@ -23460,6 +25158,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     plantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23483,10 +25185,14 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
@@ -23508,6 +25214,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     plantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23532,6 +25242,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     plantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23552,6 +25266,9 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23572,6 +25289,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     plantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24362,6 +26083,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
@@ -24435,6 +26162,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24502,6 +26235,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -24575,6 +26314,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24645,6 +26390,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24712,6 +26463,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24782,8 +26539,97 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvestmentCreateInput = {
+    id?: string
+    totalInvested: Decimal | DecimalJsLike | number | string
+    startDate: Date | string
+    expectedPayoff?: Date | string | null
+    monthlyReturn?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutInvestmentsInput
+  }
+
+  export type InvestmentUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    totalInvested: Decimal | DecimalJsLike | number | string
+    startDate: Date | string
+    expectedPayoff?: Date | string | null
+    monthlyReturn?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InvestmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalInvested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expectedPayoff?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monthlyReturn?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutInvestmentsNestedInput
+  }
+
+  export type InvestmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    totalInvested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expectedPayoff?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monthlyReturn?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InvestmentCreateManyInput = {
+    id?: string
+    clientId: string
+    totalInvested: Decimal | DecimalJsLike | number | string
+    startDate: Date | string
+    expectedPayoff?: Date | string | null
+    monthlyReturn?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InvestmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalInvested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expectedPayoff?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monthlyReturn?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InvestmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    totalInvested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expectedPayoff?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monthlyReturn?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -24856,9 +26702,19 @@ export namespace Prisma {
     isNot?: ClientWhereInput | null
   }
 
+  export type ConsumerUnitListRelationFilter = {
+    every?: ConsumerUnitWhereInput
+    some?: ConsumerUnitWhereInput
+    none?: ConsumerUnitWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type ConsumerUnitOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -25051,16 +26907,16 @@ export namespace Prisma {
     none?: InverterWhereInput
   }
 
-  export type ConsumerUnitListRelationFilter = {
-    every?: ConsumerUnitWhereInput
-    some?: ConsumerUnitWhereInput
-    none?: ConsumerUnitWhereInput
-  }
-
   export type CreditAllocationListRelationFilter = {
     every?: CreditAllocationWhereInput
     some?: CreditAllocationWhereInput
     none?: CreditAllocationWhereInput
+  }
+
+  export type InvestmentListRelationFilter = {
+    every?: InvestmentWhereInput
+    some?: InvestmentWhereInput
+    none?: InvestmentWhereInput
   }
 
   export type UserOrderByRelationAggregateInput = {
@@ -25095,11 +26951,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ConsumerUnitOrderByRelationAggregateInput = {
+  export type CreditAllocationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type CreditAllocationOrderByRelationAggregateInput = {
+  export type InvestmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25512,6 +27368,11 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type PlantScalarRelationFilter = {
     is?: PlantWhereInput
     isNot?: PlantWhereInput
@@ -25532,6 +27393,10 @@ export namespace Prisma {
     city?: SortOrder
     state?: SortOrder
     status?: SortOrder
+    payerName?: SortOrder
+    payerEmail?: SortOrder
+    payerPhone?: SortOrder
+    payerUserId?: SortOrder
     plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25553,6 +27418,10 @@ export namespace Prisma {
     city?: SortOrder
     state?: SortOrder
     status?: SortOrder
+    payerName?: SortOrder
+    payerEmail?: SortOrder
+    payerPhone?: SortOrder
+    payerUserId?: SortOrder
     plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25574,6 +27443,10 @@ export namespace Prisma {
     city?: SortOrder
     state?: SortOrder
     status?: SortOrder
+    payerName?: SortOrder
+    payerEmail?: SortOrder
+    payerPhone?: SortOrder
+    payerUserId?: SortOrder
     plantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26096,6 +27969,13 @@ export namespace Prisma {
     totalBillValue?: SortOrder
   }
 
+  export type EnumBillPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillPaymentStatus | EnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBillPaymentStatusFilter<$PrismaModel> | $Enums.BillPaymentStatus
+  }
+
   export type EnergyBillConsumerUnitIdReferenceMonthReferenceYearCompoundUniqueInput = {
     consumerUnitId: string
     referenceMonth: number
@@ -26168,6 +28048,12 @@ export namespace Prisma {
     creditSummary?: SortOrder
     billScore?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
+    dueDate?: SortOrder
+    paidAt?: SortOrder
+    amountDue?: SortOrder
+    pixCode?: SortOrder
+    barcode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -26210,6 +28096,7 @@ export namespace Prisma {
     otherCharges?: SortOrder
     estimatedSavings?: SortOrder
     billScore?: SortOrder
+    amountDue?: SortOrder
   }
 
   export type EnergyBillMaxOrderByAggregateInput = {
@@ -26272,6 +28159,12 @@ export namespace Prisma {
     aiAnalysis?: SortOrder
     billScore?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
+    dueDate?: SortOrder
+    paidAt?: SortOrder
+    amountDue?: SortOrder
+    pixCode?: SortOrder
+    barcode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -26336,6 +28229,12 @@ export namespace Prisma {
     aiAnalysis?: SortOrder
     billScore?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
+    dueDate?: SortOrder
+    paidAt?: SortOrder
+    amountDue?: SortOrder
+    pixCode?: SortOrder
+    barcode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -26378,6 +28277,63 @@ export namespace Prisma {
     otherCharges?: SortOrder
     estimatedSavings?: SortOrder
     billScore?: SortOrder
+    amountDue?: SortOrder
+  }
+
+  export type EnumBillPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillPaymentStatus | EnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBillPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.BillPaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBillPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumBillPaymentStatusFilter<$PrismaModel>
+  }
+
+  export type InvestmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    totalInvested?: SortOrder
+    startDate?: SortOrder
+    expectedPayoff?: SortOrder
+    monthlyReturn?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type InvestmentAvgOrderByAggregateInput = {
+    totalInvested?: SortOrder
+    monthlyReturn?: SortOrder
+  }
+
+  export type InvestmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    totalInvested?: SortOrder
+    startDate?: SortOrder
+    expectedPayoff?: SortOrder
+    monthlyReturn?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type InvestmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    totalInvested?: SortOrder
+    startDate?: SortOrder
+    expectedPayoff?: SortOrder
+    monthlyReturn?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type InvestmentSumOrderByAggregateInput = {
+    totalInvested?: SortOrder
+    monthlyReturn?: SortOrder
   }
 
   export type UserCreaterolesInput = {
@@ -26392,6 +28348,20 @@ export namespace Prisma {
     create?: XOR<ClientCreateWithoutUsersInput, ClientUncheckedCreateWithoutUsersInput>
     connectOrCreate?: ClientCreateOrConnectWithoutUsersInput
     connect?: ClientWhereUniqueInput
+  }
+
+  export type ConsumerUnitCreateNestedManyWithoutPayerUserInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput> | ConsumerUnitCreateWithoutPayerUserInput[] | ConsumerUnitUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerUserInput | ConsumerUnitCreateOrConnectWithoutPayerUserInput[]
+    createMany?: ConsumerUnitCreateManyPayerUserInputEnvelope
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+  }
+
+  export type ConsumerUnitUncheckedCreateNestedManyWithoutPayerUserInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput> | ConsumerUnitCreateWithoutPayerUserInput[] | ConsumerUnitUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerUserInput | ConsumerUnitCreateOrConnectWithoutPayerUserInput[]
+    createMany?: ConsumerUnitCreateManyPayerUserInputEnvelope
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -26432,6 +28402,34 @@ export namespace Prisma {
     delete?: ClientWhereInput | boolean
     connect?: ClientWhereUniqueInput
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutUsersInput, ClientUpdateWithoutUsersInput>, ClientUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type ConsumerUnitUpdateManyWithoutPayerUserNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput> | ConsumerUnitCreateWithoutPayerUserInput[] | ConsumerUnitUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerUserInput | ConsumerUnitCreateOrConnectWithoutPayerUserInput[]
+    upsert?: ConsumerUnitUpsertWithWhereUniqueWithoutPayerUserInput | ConsumerUnitUpsertWithWhereUniqueWithoutPayerUserInput[]
+    createMany?: ConsumerUnitCreateManyPayerUserInputEnvelope
+    set?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    disconnect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    delete?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    update?: ConsumerUnitUpdateWithWhereUniqueWithoutPayerUserInput | ConsumerUnitUpdateWithWhereUniqueWithoutPayerUserInput[]
+    updateMany?: ConsumerUnitUpdateManyWithWhereWithoutPayerUserInput | ConsumerUnitUpdateManyWithWhereWithoutPayerUserInput[]
+    deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+  }
+
+  export type ConsumerUnitUncheckedUpdateManyWithoutPayerUserNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput> | ConsumerUnitCreateWithoutPayerUserInput[] | ConsumerUnitUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerUserInput | ConsumerUnitCreateOrConnectWithoutPayerUserInput[]
+    upsert?: ConsumerUnitUpsertWithWhereUniqueWithoutPayerUserInput | ConsumerUnitUpsertWithWhereUniqueWithoutPayerUserInput[]
+    createMany?: ConsumerUnitCreateManyPayerUserInputEnvelope
+    set?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    disconnect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    delete?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+    update?: ConsumerUnitUpdateWithWhereUniqueWithoutPayerUserInput | ConsumerUnitUpdateWithWhereUniqueWithoutPayerUserInput[]
+    updateMany?: ConsumerUnitUpdateManyWithWhereWithoutPayerUserInput | ConsumerUnitUpdateManyWithWhereWithoutPayerUserInput[]
+    deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutClientInput = {
@@ -26511,6 +28509,13 @@ export namespace Prisma {
     connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
   }
 
+  export type InvestmentCreateNestedManyWithoutClientInput = {
+    create?: XOR<InvestmentCreateWithoutClientInput, InvestmentUncheckedCreateWithoutClientInput> | InvestmentCreateWithoutClientInput[] | InvestmentUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InvestmentCreateOrConnectWithoutClientInput | InvestmentCreateOrConnectWithoutClientInput[]
+    createMany?: InvestmentCreateManyClientInputEnvelope
+    connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutClientInput = {
     create?: XOR<UserCreateWithoutClientInput, UserUncheckedCreateWithoutClientInput> | UserCreateWithoutClientInput[] | UserUncheckedCreateWithoutClientInput[]
     connectOrCreate?: UserCreateOrConnectWithoutClientInput | UserCreateOrConnectWithoutClientInput[]
@@ -26586,6 +28591,13 @@ export namespace Prisma {
     connectOrCreate?: CreditAllocationCreateOrConnectWithoutClientInput | CreditAllocationCreateOrConnectWithoutClientInput[]
     createMany?: CreditAllocationCreateManyClientInputEnvelope
     connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type InvestmentUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<InvestmentCreateWithoutClientInput, InvestmentUncheckedCreateWithoutClientInput> | InvestmentCreateWithoutClientInput[] | InvestmentUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InvestmentCreateOrConnectWithoutClientInput | InvestmentCreateOrConnectWithoutClientInput[]
+    createMany?: InvestmentCreateManyClientInputEnvelope
+    connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -26762,6 +28774,20 @@ export namespace Prisma {
     deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
   }
 
+  export type InvestmentUpdateManyWithoutClientNestedInput = {
+    create?: XOR<InvestmentCreateWithoutClientInput, InvestmentUncheckedCreateWithoutClientInput> | InvestmentCreateWithoutClientInput[] | InvestmentUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InvestmentCreateOrConnectWithoutClientInput | InvestmentCreateOrConnectWithoutClientInput[]
+    upsert?: InvestmentUpsertWithWhereUniqueWithoutClientInput | InvestmentUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: InvestmentCreateManyClientInputEnvelope
+    set?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    disconnect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    delete?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    update?: InvestmentUpdateWithWhereUniqueWithoutClientInput | InvestmentUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: InvestmentUpdateManyWithWhereWithoutClientInput | InvestmentUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutClientNestedInput = {
     create?: XOR<UserCreateWithoutClientInput, UserUncheckedCreateWithoutClientInput> | UserCreateWithoutClientInput[] | UserUncheckedCreateWithoutClientInput[]
     connectOrCreate?: UserCreateOrConnectWithoutClientInput | UserCreateOrConnectWithoutClientInput[]
@@ -26914,6 +28940,20 @@ export namespace Prisma {
     update?: CreditAllocationUpdateWithWhereUniqueWithoutClientInput | CreditAllocationUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: CreditAllocationUpdateManyWithWhereWithoutClientInput | CreditAllocationUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type InvestmentUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<InvestmentCreateWithoutClientInput, InvestmentUncheckedCreateWithoutClientInput> | InvestmentCreateWithoutClientInput[] | InvestmentUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: InvestmentCreateOrConnectWithoutClientInput | InvestmentCreateOrConnectWithoutClientInput[]
+    upsert?: InvestmentUpsertWithWhereUniqueWithoutClientInput | InvestmentUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: InvestmentCreateManyClientInputEnvelope
+    set?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    disconnect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    delete?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+    update?: InvestmentUpdateWithWhereUniqueWithoutClientInput | InvestmentUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: InvestmentUpdateManyWithWhereWithoutClientInput | InvestmentUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
   }
 
   export type ClientCreateNestedOneWithoutPlantsInput = {
@@ -27192,6 +29232,12 @@ export namespace Prisma {
     connect?: ClientWhereUniqueInput
   }
 
+  export type UserCreateNestedOneWithoutPayerUnitsInput = {
+    create?: XOR<UserCreateWithoutPayerUnitsInput, UserUncheckedCreateWithoutPayerUnitsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPayerUnitsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type PlantCreateNestedOneWithoutConsumerUnitsInput = {
     create?: XOR<PlantCreateWithoutConsumerUnitsInput, PlantUncheckedCreateWithoutConsumerUnitsInput>
     connectOrCreate?: PlantCreateOrConnectWithoutConsumerUnitsInput
@@ -27246,6 +29292,16 @@ export namespace Prisma {
     upsert?: ClientUpsertWithoutConsumerUnitsInput
     connect?: ClientWhereUniqueInput
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutConsumerUnitsInput, ClientUpdateWithoutConsumerUnitsInput>, ClientUncheckedUpdateWithoutConsumerUnitsInput>
+  }
+
+  export type UserUpdateOneWithoutPayerUnitsNestedInput = {
+    create?: XOR<UserCreateWithoutPayerUnitsInput, UserUncheckedCreateWithoutPayerUnitsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPayerUnitsInput
+    upsert?: UserUpsertWithoutPayerUnitsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPayerUnitsInput, UserUpdateWithoutPayerUnitsInput>, UserUncheckedUpdateWithoutPayerUnitsInput>
   }
 
   export type PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput = {
@@ -27586,6 +29642,10 @@ export namespace Prisma {
     connect?: ConsumerUnitWhereUniqueInput
   }
 
+  export type EnumBillPaymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.BillPaymentStatus
+  }
+
   export type ClientUpdateOneRequiredWithoutEnergyBillsNestedInput = {
     create?: XOR<ClientCreateWithoutEnergyBillsInput, ClientUncheckedCreateWithoutEnergyBillsInput>
     connectOrCreate?: ClientCreateOrConnectWithoutEnergyBillsInput
@@ -27608,6 +29668,20 @@ export namespace Prisma {
     upsert?: ConsumerUnitUpsertWithoutEnergyBillsInput
     connect?: ConsumerUnitWhereUniqueInput
     update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutEnergyBillsInput, ConsumerUnitUpdateWithoutEnergyBillsInput>, ConsumerUnitUncheckedUpdateWithoutEnergyBillsInput>
+  }
+
+  export type ClientCreateNestedOneWithoutInvestmentsInput = {
+    create?: XOR<ClientCreateWithoutInvestmentsInput, ClientUncheckedCreateWithoutInvestmentsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutInvestmentsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type ClientUpdateOneRequiredWithoutInvestmentsNestedInput = {
+    create?: XOR<ClientCreateWithoutInvestmentsInput, ClientUncheckedCreateWithoutInvestmentsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutInvestmentsInput
+    upsert?: ClientUpsertWithoutInvestmentsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutInvestmentsInput, ClientUpdateWithoutInvestmentsInput>, ClientUncheckedUpdateWithoutInvestmentsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -28005,6 +30079,23 @@ export namespace Prisma {
     _max?: NestedEnumTransactionTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumBillPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillPaymentStatus | EnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBillPaymentStatusFilter<$PrismaModel> | $Enums.BillPaymentStatus
+  }
+
+  export type NestedEnumBillPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillPaymentStatus | EnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BillPaymentStatus[] | ListEnumBillPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBillPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.BillPaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBillPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumBillPaymentStatusFilter<$PrismaModel>
+  }
+
   export type ClientCreateWithoutUsersInput = {
     id?: string
     name: string
@@ -28030,6 +30121,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutUsersInput = {
@@ -28057,11 +30149,76 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutUsersInput = {
     where: ClientWhereUniqueInput
     create: XOR<ClientCreateWithoutUsersInput, ClientUncheckedCreateWithoutUsersInput>
+  }
+
+  export type ConsumerUnitCreateWithoutPayerUserInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutPayerUserInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutPayerUserInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput>
+  }
+
+  export type ConsumerUnitCreateManyPayerUserInputEnvelope = {
+    data: ConsumerUnitCreateManyPayerUserInput | ConsumerUnitCreateManyPayerUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type ClientUpsertWithoutUsersInput = {
@@ -28100,6 +30257,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutUsersInput = {
@@ -28127,6 +30285,51 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ConsumerUnitUpsertWithWhereUniqueWithoutPayerUserInput = {
+    where: ConsumerUnitWhereUniqueInput
+    update: XOR<ConsumerUnitUpdateWithoutPayerUserInput, ConsumerUnitUncheckedUpdateWithoutPayerUserInput>
+    create: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput>
+  }
+
+  export type ConsumerUnitUpdateWithWhereUniqueWithoutPayerUserInput = {
+    where: ConsumerUnitWhereUniqueInput
+    data: XOR<ConsumerUnitUpdateWithoutPayerUserInput, ConsumerUnitUncheckedUpdateWithoutPayerUserInput>
+  }
+
+  export type ConsumerUnitUpdateManyWithWhereWithoutPayerUserInput = {
+    where: ConsumerUnitScalarWhereInput
+    data: XOR<ConsumerUnitUpdateManyMutationInput, ConsumerUnitUncheckedUpdateManyWithoutPayerUserInput>
+  }
+
+  export type ConsumerUnitScalarWhereInput = {
+    AND?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+    OR?: ConsumerUnitScalarWhereInput[]
+    NOT?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+    id?: StringFilter<"ConsumerUnit"> | string
+    clientId?: StringFilter<"ConsumerUnit"> | string
+    name?: StringNullableFilter<"ConsumerUnit"> | string | null
+    isGenerator?: BoolFilter<"ConsumerUnit"> | boolean
+    isConsumer?: BoolFilter<"ConsumerUnit"> | boolean
+    accountHolder?: StringNullableFilter<"ConsumerUnit"> | string | null
+    accountNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    clientNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    installationNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
+    distributor?: StringNullableFilter<"ConsumerUnit"> | string | null
+    address?: StringNullableFilter<"ConsumerUnit"> | string | null
+    city?: StringNullableFilter<"ConsumerUnit"> | string | null
+    state?: StringNullableFilter<"ConsumerUnit"> | string | null
+    status?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerName?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerEmail?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerPhone?: StringNullableFilter<"ConsumerUnit"> | string | null
+    payerUserId?: StringNullableFilter<"ConsumerUnit"> | string | null
+    plantId?: StringFilter<"ConsumerUnit"> | string
+    createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
   }
 
   export type UserCreateWithoutClientInput = {
@@ -28141,6 +30344,7 @@ export namespace Prisma {
     resetPasswordExpires?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payerUnits?: ConsumerUnitCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserUncheckedCreateWithoutClientInput = {
@@ -28155,6 +30359,7 @@ export namespace Prisma {
     resetPasswordExpires?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserCreateOrConnectWithoutClientInput = {
@@ -28386,6 +30591,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     plant: PlantCreateNestedOneWithoutEnergyBillsInput
@@ -28457,6 +30668,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28621,9 +30838,13 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
@@ -28644,6 +30865,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     plantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28698,6 +30923,38 @@ export namespace Prisma {
 
   export type CreditAllocationCreateManyClientInputEnvelope = {
     data: CreditAllocationCreateManyClientInput | CreditAllocationCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InvestmentCreateWithoutClientInput = {
+    id?: string
+    totalInvested: Decimal | DecimalJsLike | number | string
+    startDate: Date | string
+    expectedPayoff?: Date | string | null
+    monthlyReturn?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InvestmentUncheckedCreateWithoutClientInput = {
+    id?: string
+    totalInvested: Decimal | DecimalJsLike | number | string
+    startDate: Date | string
+    expectedPayoff?: Date | string | null
+    monthlyReturn?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type InvestmentCreateOrConnectWithoutClientInput = {
+    where: InvestmentWhereUniqueInput
+    create: XOR<InvestmentCreateWithoutClientInput, InvestmentUncheckedCreateWithoutClientInput>
+  }
+
+  export type InvestmentCreateManyClientInputEnvelope = {
+    data: InvestmentCreateManyClientInput | InvestmentCreateManyClientInput[]
     skipDuplicates?: boolean
   }
 
@@ -28959,6 +31216,12 @@ export namespace Prisma {
     creditSummary?: JsonNullableFilter<"EnergyBill">
     billScore?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     status?: StringNullableFilter<"EnergyBill"> | string | null
+    paymentStatus?: EnumBillPaymentStatusFilter<"EnergyBill"> | $Enums.BillPaymentStatus
+    dueDate?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"EnergyBill"> | Date | string | null
+    amountDue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
+    pixCode?: StringNullableFilter<"EnergyBill"> | string | null
+    barcode?: StringNullableFilter<"EnergyBill"> | string | null
     createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
   }
@@ -29072,30 +31335,6 @@ export namespace Prisma {
     data: XOR<ConsumerUnitUpdateManyMutationInput, ConsumerUnitUncheckedUpdateManyWithoutClientInput>
   }
 
-  export type ConsumerUnitScalarWhereInput = {
-    AND?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
-    OR?: ConsumerUnitScalarWhereInput[]
-    NOT?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
-    id?: StringFilter<"ConsumerUnit"> | string
-    clientId?: StringFilter<"ConsumerUnit"> | string
-    name?: StringNullableFilter<"ConsumerUnit"> | string | null
-    isGenerator?: BoolFilter<"ConsumerUnit"> | boolean
-    isConsumer?: BoolFilter<"ConsumerUnit"> | boolean
-    accountHolder?: StringNullableFilter<"ConsumerUnit"> | string | null
-    accountNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
-    clientNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
-    installationNumber?: StringNullableFilter<"ConsumerUnit"> | string | null
-    distributor?: StringNullableFilter<"ConsumerUnit"> | string | null
-    address?: StringNullableFilter<"ConsumerUnit"> | string | null
-    city?: StringNullableFilter<"ConsumerUnit"> | string | null
-    state?: StringNullableFilter<"ConsumerUnit"> | string | null
-    status?: StringNullableFilter<"ConsumerUnit"> | string | null
-    plantId?: StringFilter<"ConsumerUnit"> | string
-    createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
-    updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
-  }
-
   export type CreditAllocationUpsertWithWhereUniqueWithoutClientInput = {
     where: CreditAllocationWhereUniqueInput
     update: XOR<CreditAllocationUpdateWithoutClientInput, CreditAllocationUncheckedUpdateWithoutClientInput>
@@ -29130,6 +31369,37 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
   }
 
+  export type InvestmentUpsertWithWhereUniqueWithoutClientInput = {
+    where: InvestmentWhereUniqueInput
+    update: XOR<InvestmentUpdateWithoutClientInput, InvestmentUncheckedUpdateWithoutClientInput>
+    create: XOR<InvestmentCreateWithoutClientInput, InvestmentUncheckedCreateWithoutClientInput>
+  }
+
+  export type InvestmentUpdateWithWhereUniqueWithoutClientInput = {
+    where: InvestmentWhereUniqueInput
+    data: XOR<InvestmentUpdateWithoutClientInput, InvestmentUncheckedUpdateWithoutClientInput>
+  }
+
+  export type InvestmentUpdateManyWithWhereWithoutClientInput = {
+    where: InvestmentScalarWhereInput
+    data: XOR<InvestmentUpdateManyMutationInput, InvestmentUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type InvestmentScalarWhereInput = {
+    AND?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
+    OR?: InvestmentScalarWhereInput[]
+    NOT?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
+    id?: StringFilter<"Investment"> | string
+    clientId?: StringFilter<"Investment"> | string
+    totalInvested?: DecimalFilter<"Investment"> | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFilter<"Investment"> | Date | string
+    expectedPayoff?: DateTimeNullableFilter<"Investment"> | Date | string | null
+    monthlyReturn?: DecimalNullableFilter<"Investment"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"Investment"> | Date | string
+    updatedAt?: DateTimeFilter<"Investment"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Investment"> | Date | string | null
+  }
+
   export type ClientCreateWithoutPlantsInput = {
     id?: string
     name: string
@@ -29155,6 +31425,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutPlantsInput = {
@@ -29182,6 +31453,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutPlantsInput = {
@@ -29281,10 +31553,14 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
@@ -29305,6 +31581,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -29424,6 +31704,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
@@ -29495,6 +31781,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29545,6 +31837,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutPlantsInput = {
@@ -29572,6 +31865,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type InverterUpsertWithWhereUniqueWithoutPlantInput = {
@@ -29663,6 +31957,7 @@ export namespace Prisma {
     plants?: PlantCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutInvertersInput = {
@@ -29690,6 +31985,7 @@ export namespace Prisma {
     plants?: PlantUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutInvertersInput = {
@@ -29824,6 +32120,7 @@ export namespace Prisma {
     plants?: PlantUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutInvertersInput = {
@@ -29851,6 +32148,7 @@ export namespace Prisma {
     plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PlantUpsertWithoutInvertersInput = {
@@ -29971,6 +32269,7 @@ export namespace Prisma {
     plants?: PlantCreateNestedManyWithoutClientInput
     inverters?: InverterCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutConsumerUnitsInput = {
@@ -29998,11 +32297,47 @@ export namespace Prisma {
     plants?: PlantUncheckedCreateNestedManyWithoutClientInput
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutConsumerUnitsInput = {
     where: ClientWhereUniqueInput
     create: XOR<ClientCreateWithoutConsumerUnitsInput, ClientUncheckedCreateWithoutConsumerUnitsInput>
+  }
+
+  export type UserCreateWithoutPayerUnitsInput = {
+    id?: string
+    email: string
+    name: string
+    password: string
+    roles?: UserCreaterolesInput | string[]
+    permissions?: UserCreatepermissionsInput | string[]
+    isActive?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client?: ClientCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutPayerUnitsInput = {
+    id?: string
+    email: string
+    name: string
+    password: string
+    roles?: UserCreaterolesInput | string[]
+    permissions?: UserCreatepermissionsInput | string[]
+    clientId?: string | null
+    isActive?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserCreateOrConnectWithoutPayerUnitsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPayerUnitsInput, UserUncheckedCreateWithoutPayerUnitsInput>
   }
 
   export type PlantCreateWithoutConsumerUnitsInput = {
@@ -30121,6 +32456,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
@@ -30192,6 +32533,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30318,6 +32665,7 @@ export namespace Prisma {
     plants?: PlantUpdateManyWithoutClientNestedInput
     inverters?: InverterUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutConsumerUnitsInput = {
@@ -30345,6 +32693,48 @@ export namespace Prisma {
     plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type UserUpsertWithoutPayerUnitsInput = {
+    update: XOR<UserUpdateWithoutPayerUnitsInput, UserUncheckedUpdateWithoutPayerUnitsInput>
+    create: XOR<UserCreateWithoutPayerUnitsInput, UserUncheckedCreateWithoutPayerUnitsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPayerUnitsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPayerUnitsInput, UserUncheckedUpdateWithoutPayerUnitsInput>
+  }
+
+  export type UserUpdateWithoutPayerUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    roles?: UserUpdaterolesInput | string[]
+    permissions?: UserUpdatepermissionsInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPayerUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    roles?: UserUpdaterolesInput | string[]
+    permissions?: UserUpdatepermissionsInput | string[]
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PlantUpsertWithoutConsumerUnitsInput = {
@@ -30479,6 +32869,7 @@ export namespace Prisma {
     plants?: PlantCreateNestedManyWithoutClientInput
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutCreditAllocationsInput = {
@@ -30506,6 +32897,7 @@ export namespace Prisma {
     plants?: PlantUncheckedCreateNestedManyWithoutClientInput
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutCreditAllocationsInput = {
@@ -30580,10 +32972,14 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
@@ -30604,6 +33000,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     plantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30631,10 +33031,14 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
@@ -30655,6 +33059,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     plantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30704,6 +33112,7 @@ export namespace Prisma {
     plants?: PlantUpdateManyWithoutClientNestedInput
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutCreditAllocationsInput = {
@@ -30731,6 +33140,7 @@ export namespace Prisma {
     plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PlantUpsertWithoutCreditAllocationsInput = {
@@ -30817,10 +33227,14 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
@@ -30841,6 +33255,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     plantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30874,10 +33292,14 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
@@ -30898,6 +33320,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     plantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31083,6 +33509,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferrerInput = {
@@ -31110,6 +33537,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferrerInput = {
@@ -31142,6 +33570,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferredInput = {
@@ -31169,6 +33598,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferredInput = {
@@ -31212,6 +33642,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferrerInput = {
@@ -31239,6 +33670,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUpsertWithoutIndicationsAsReferredInput = {
@@ -31277,6 +33709,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferredInput = {
@@ -31304,6 +33737,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type OfferRedemptionCreateWithoutOfferInput = {
@@ -31420,6 +33854,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutOfferRedemptionsInput = {
@@ -31447,6 +33882,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutOfferRedemptionsInput = {
@@ -31535,6 +33971,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutOfferRedemptionsInput = {
@@ -31562,6 +33999,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutTransactionsInput = {
@@ -31589,6 +34027,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutTransactionsInput = {
@@ -31616,6 +34055,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutTransactionsInput = {
@@ -31659,6 +34099,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutTransactionsInput = {
@@ -31686,6 +34127,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutConsumptionsInput = {
@@ -31713,6 +34155,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutConsumptionsInput = {
@@ -31740,6 +34183,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutConsumptionsInput = {
@@ -31783,6 +34227,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutConsumptionsInput = {
@@ -31810,6 +34255,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutEnergyBillsInput = {
@@ -31837,6 +34283,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutEnergyBillsInput = {
@@ -31864,6 +34311,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutEnergyBillsInput = {
@@ -31938,10 +34386,14 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
@@ -31962,6 +34414,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     plantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32011,6 +34467,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutEnergyBillsInput = {
@@ -32038,6 +34495,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PlantUpsertWithoutEnergyBillsInput = {
@@ -32124,10 +34582,14 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
@@ -32148,12 +34610,246 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     plantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+  }
+
+  export type ClientCreateWithoutInvestmentsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutInvestmentsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutInvestmentsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutInvestmentsInput, ClientUncheckedCreateWithoutInvestmentsInput>
+  }
+
+  export type ClientUpsertWithoutInvestmentsInput = {
+    update: XOR<ClientUpdateWithoutInvestmentsInput, ClientUncheckedUpdateWithoutInvestmentsInput>
+    create: XOR<ClientCreateWithoutInvestmentsInput, ClientUncheckedCreateWithoutInvestmentsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutInvestmentsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutInvestmentsInput, ClientUncheckedUpdateWithoutInvestmentsInput>
+  }
+
+  export type ClientUpdateWithoutInvestmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutInvestmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ConsumerUnitCreateManyPayerUserInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ConsumerUnitUpdateWithoutPayerUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutPayerUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateManyWithoutPayerUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserCreateManyClientInput = {
@@ -32288,6 +34984,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32359,6 +35061,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     plantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32379,6 +35085,17 @@ export namespace Prisma {
     deletedAt?: Date | string | null
   }
 
+  export type InvestmentCreateManyClientInput = {
+    id?: string
+    totalInvested: Decimal | DecimalJsLike | number | string
+    startDate: Date | string
+    expectedPayoff?: Date | string | null
+    monthlyReturn?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
   export type UserUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -32391,6 +35108,7 @@ export namespace Prisma {
     resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payerUnits?: ConsumerUnitUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientInput = {
@@ -32405,6 +35123,7 @@ export namespace Prisma {
     resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutClientInput = {
@@ -32643,6 +35362,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -32714,6 +35439,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32783,6 +35514,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32970,9 +35707,13 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
@@ -32993,6 +35734,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     plantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33016,6 +35761,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     plantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33059,6 +35808,39 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InvestmentUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalInvested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expectedPayoff?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monthlyReturn?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InvestmentUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalInvested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expectedPayoff?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monthlyReturn?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type InvestmentUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalInvested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expectedPayoff?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monthlyReturn?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33112,6 +35894,10 @@ export namespace Prisma {
     city?: string | null
     state?: string | null
     status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -33196,6 +35982,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33315,10 +36107,14 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
@@ -33339,6 +36135,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33362,6 +36162,10 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33472,6 +36276,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -33543,6 +36353,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33612,6 +36428,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33737,6 +36559,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: Decimal | DecimalJsLike | number | string | null
     status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33832,6 +36660,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -33903,6 +36737,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33972,6 +36812,12 @@ export namespace Prisma {
     creditSummary?: NullableJsonNullValueInput | InputJsonValue
     billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
