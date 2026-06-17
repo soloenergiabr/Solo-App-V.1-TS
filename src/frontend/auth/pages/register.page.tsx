@@ -159,20 +159,20 @@ export function RegisterPage() {
                             <Sun className="w-10 h-10 text-primary" />
                         </div>
                         <div>
-                            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 text-left">Energia Solar Inteligente</h3>
-                            <p className="text-white/90 text-base sm:text-lg leading-relaxed text-left">
+                            <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4 text-left">Energia Solar Inteligente</h3>
+                            <p className="text-foreground text-base sm:text-lg leading-relaxed text-left">
                                 Transforme sua energia solar em economia real. Monitore sua produção,
                                 otimize seu consumo e maximize seus ganhos com tecnologia de ponta.
                             </p>
                         </div>
                         <div className="grid grid-cols-2 gap-4 mt-8">
-                            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                            <div className="rounded-lg border bg-muted/50 p-4">
                                 <Zap className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                                <p className="text-white text-sm text-center">Monitoramento em Tempo Real</p>
+                                <p className="text-foreground text-sm text-center">Monitoramento em Tempo Real</p>
                             </div>
-                            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                            <div className="rounded-lg border bg-muted/50 p-4">
                                 <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                                <p className="text-white text-sm text-center">Economia Garantida</p>
+                                <p className="text-foreground text-sm text-center">Economia Garantida</p>
                             </div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@ export function RegisterPage() {
                 return (
                     <div className="text-left space-y-4">
                         <div>
-                            <Label htmlFor="name" className="text-white/90">Nome Completo</Label>
+                            <Label htmlFor="name" className="text-foreground">Nome Completo</Label>
                             <Input
                                 id="name"
                                 name="name"
@@ -190,11 +190,11 @@ export function RegisterPage() {
                                 value={formData.name}
                                 onChange={handleChange}
                                 placeholder="Seu nome completo"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 h-12 sm:h-10"
+                                className="h-12 sm:h-10"
                             />
                         </div>
                         <div>
-                            <Label htmlFor="email" className="text-white/90">Email</Label>
+                            <Label htmlFor="email" className="text-foreground">Email</Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -203,11 +203,11 @@ export function RegisterPage() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="seu@email.com"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 h-12 sm:h-10"
+                                className="h-12 sm:h-10"
                             />
                         </div>
                         <div>
-                            <Label htmlFor="cpfCnpj" className="text-white/90">CPF/CNPJ</Label>
+                            <Label htmlFor="cpfCnpj" className="text-foreground">CPF/CNPJ</Label>
                             <Input
                                 id="cpfCnpj"
                                 name="cpfCnpj"
@@ -216,7 +216,7 @@ export function RegisterPage() {
                                 value={formData.cpfCnpj}
                                 onChange={handleChange}
                                 placeholder="CPF ou CNPJ"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 h-12 sm:h-10"
+                                className="h-12 sm:h-10"
                             />
                         </div>
                     </div>
@@ -225,7 +225,7 @@ export function RegisterPage() {
                 return (
                     <div className="text-left space-y-4">
                         <div>
-                            <Label htmlFor="phone" className="text-white/90">Telefone</Label>
+                            <Label htmlFor="phone" className="text-foreground">Telefone</Label>
                             <Input
                                 id="phone"
                                 name="phone"
@@ -233,11 +233,11 @@ export function RegisterPage() {
                                 value={formData.phone}
                                 onChange={handleChange}
                                 placeholder="(11) 99999-9999"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 h-12 sm:h-10"
+                                className="h-12 sm:h-10"
                             />
                         </div>
                         <div>
-                            <Label htmlFor="address" className="text-white/90">Endereço</Label>
+                            <Label htmlFor="address" className="text-foreground">Endereço</Label>
                             <Input
                                 id="address"
                                 name="address"
@@ -245,7 +245,7 @@ export function RegisterPage() {
                                 value={formData.address}
                                 onChange={handleChange}
                                 placeholder="Rua, número, bairro, cidade"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 h-12 sm:h-10"
+                                className="h-12 sm:h-10"
                             />
                         </div>
                     </div>
@@ -254,7 +254,7 @@ export function RegisterPage() {
                 return (
                     <div className="text-left space-y-4">
                         <div>
-                            <Label htmlFor="avgEnergyCost" className="text-white/90">Custo Médio de Energia (R$/mês)</Label>
+                            <Label htmlFor="avgEnergyCost" className="text-foreground">Custo Médio de Energia (R$/mês)</Label>
                             <Input
                                 id="avgEnergyCost"
                                 name="avgEnergyCost"
@@ -263,20 +263,20 @@ export function RegisterPage() {
                                 value={formData.avgEnergyCost}
                                 onChange={handleChange}
                                 placeholder="Ex: 250.00"
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60 h-12 sm:h-10"
+                                className="h-12 sm:h-10"
                             />
                         </div>
                         <div>
-                            <Label htmlFor="enelInvoiceFile" className="text-white/90">Conta de Energia ENEL (opcional)</Label>
+                            <Label htmlFor="enelInvoiceFile" className="text-foreground">Conta de Energia ENEL (opcional)</Label>
                             <Input
                                 id="enelInvoiceFile"
                                 name="enelInvoiceFile"
                                 type="file"
                                 accept=".pdf,.jpg,.jpeg,.png"
                                 onChange={handleChange}
-                                className="bg-white/20 backdrop-blur-sm border-white/30 text-white file:bg-primary file:text-primary-foreground file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:font-medium h-12 sm:h-10"
+                                className="file:bg-primary file:text-primary-foreground file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:font-medium h-12 sm:h-10"
                             />
-                            <p className="text-white/60 text-sm mt-1">Envie uma foto ou PDF da sua última conta</p>
+                            <p className="text-muted-foreground text-sm mt-1">Envie uma foto ou PDF da sua última conta</p>
                         </div>
                     </div>
                 );
@@ -287,24 +287,18 @@ export function RegisterPage() {
 
     if (success) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat py-12 px-4 sm:px-6 lg:px-8 relative"
-                style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&sat=-100')",
-                }}>
-                <div className="absolute inset-0 bg-black/40"></div>
-                <Card className="w-full max-w-md relative z-10 bg-white/95 backdrop-blur-sm">
+            <div className="mx-auto w-full max-w-md">
+                <Card>
                     <CardHeader>
-                        <CardTitle className="text-center text-green-600">Cadastro Concluído!</CardTitle>
-                        <CardDescription className="text-center">
-                            {success}
-                        </CardDescription>
+                        <CardTitle className="text-center text-success">Cadastro concluído!</CardTitle>
+                        <CardDescription className="text-center">{success}</CardDescription>
                     </CardHeader>
-                    <CardContent className="text-center space-y-4">
+                    <CardContent className="space-y-4 text-center">
                         <p className="text-sm text-muted-foreground">
                             Em breve nossa equipe entrará em contato para análise do seu perfil.
                         </p>
                         <Button onClick={handleWhatsAppContact} className="w-full">
-                            Entrar em Contato pelo WhatsApp
+                            Entrar em contato pelo WhatsApp
                         </Button>
                     </CardContent>
                 </Card>
@@ -313,23 +307,16 @@ export function RegisterPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat py-12 px-4 sm:px-6 lg:px-8 relative"
-            style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&sat=-100')",
-            }}>
-            <div className="absolute inset-0 bg-black/40"></div>
-
-            <div className="max-w-2xl w-full space-y-6 sm:space-y-8 relative z-10">
-                {/* Progress Bar */}
-                <div className="bg-white/20 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30">
+        <div className="mx-auto w-full max-w-2xl space-y-6">
+            <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
                     <div className="flex items-center justify-between mb-8">
                         {steps.map((step, index) => (
                             <div key={step.id} className="flex items-center">
                                 <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${currentStep > step.id
-                                        ? 'bg-green-500 text-white'
+                                        ? 'bg-success text-white'
                                         : currentStep === step.id
                                             ? 'bg-primary text-primary-foreground'
-                                            : 'bg-white/20 text-white/60'
+                                            : 'bg-muted text-muted-foreground'
                                     }`}>
                                     {currentStep > step.id ? (
                                         <Check className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -338,7 +325,7 @@ export function RegisterPage() {
                                     )}
                                 </div>
                                 {index < steps.length - 1 && (
-                                    <div className={`w-8 sm:w-16 h-1 mx-1 sm:mx-2 rounded ${currentStep > step.id ? 'bg-green-500' : 'bg-white/20'
+                                    <div className={`w-8 sm:w-16 h-1 mx-1 sm:mx-2 rounded ${currentStep > step.id ? 'bg-success' : 'bg-muted'
                                         }`} />
                                 )}
                             </div>
@@ -347,14 +334,14 @@ export function RegisterPage() {
 
                     {/* Step Content */}
                     <div className="text-left mb-6 sm:mb-8">
-                        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{steps[currentStep - 1].title}</h2>
-                        <p className="text-white/90 text-sm sm:text-base">{steps[currentStep - 1].description}</p>
-                        <p className="text-white/70 text-xs sm:text-sm mt-2">{steps[currentStep - 1].content}</p>
+                        <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">{steps[currentStep - 1].title}</h2>
+                        <p className="text-muted-foreground text-sm sm:text-base">{steps[currentStep - 1].description}</p>
+                        <p className="text-muted-foreground/70 text-xs sm:text-sm mt-2">{steps[currentStep - 1].content}</p>
                     </div>
 
                     {/* Error Display */}
                     {error && (
-                        <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-red-100 px-4 py-3 rounded-lg mb-6">
+                        <div className="mb-6 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-destructive">
                             {error}
                         </div>
                     )}
@@ -371,7 +358,7 @@ export function RegisterPage() {
                             variant="outline"
                             onClick={prevStep}
                             disabled={currentStep === 1}
-                            className="flex items-center justify-center gap-2 bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 sm:h-10 text-base sm:text-sm"
+                            className="flex items-center justify-center gap-2 h-12 sm:h-10 text-base sm:text-sm"
                         >
                             <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
                             Anterior
@@ -401,13 +388,12 @@ export function RegisterPage() {
 
                 {/* Indication Code Display */}
                 {indicationCode && (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 text-center">
-                        <p className="text-white/90 text-sm">
+                    <div className="rounded-2xl border bg-card p-4 text-center">
+                        <p className="text-sm text-foreground">
                             Você foi indicado! Código: <span className="font-bold text-primary">{indicationCode}</span>
                         </p>
                     </div>
                 )}
-            </div>
         </div>
     );
 }
