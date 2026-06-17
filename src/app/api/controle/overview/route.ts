@@ -1,0 +1,205 @@
+import { NextRequest, NextResponse } from 'next/server'
+import prisma from '@/lib/prisma'
+import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware'
+import { withHandle } from '@/app/api/api-utils'
+import type { ControleOverview } from '@/shared/controle/types'
+
+const getControleOverviewRoute = async (request: NextRequest): Promise<NextResponse> => {
+    const userContext = await AuthMiddleware.requireAuth(request)
+
+    const clientId = userContext.clientId ?? new URL(request.url).searchParams.get('clientId') ?? undefined
+
+    if (!clientId) {
+        return NextResponse.json({ success: false, message: 'unauthorized' }, { status: 401 })
+    }
+
+    // Fetch latest investment for client
+    const investment = await prisma.investment.findFirst({
+        where: { clientId, deletedAt: null },
+        orderBy: { createdAt: 'desc' },
+    })
+
+    // Fetch all energy bills for client, newest first
+    const allBills = await prisma.energyBill.findMany({
+        where: { clientId },
+        orderBy: [{ referenceYear: 'desc' }, { referenceMonth: 'desc' }],
+    })
+
+    const now = new Date()
+    const currentMonth = now.getMonth() + 1
+    const currentYear = now.getFullYear()
+
+    // ── Investment summary ────────────────────────────────────────────────────
+
+    const totalInvested = Number(investment?.totalInvested ?? 0)
+
+    // monthsActive = full calendar months elapsed since startDate
+    let monthsActive = 0
+    if (investment?.startDate) {
+        const start = new Date(investment.startDate)
+        monthsActive = Math.max(
+            0,
+            (currentYear - start.getFullYear()) * 12 + (currentMonth - (start.getMonth() + 1))
+        )
+    }
+
+    // returned: use monthlyReturn override when available; else sum estimatedSavings
+    // from bills whose (referenceYear, referenceMonth) >= investment startDate
+    let returned = 0
+    if (investment?.monthlyReturn) {
+        returned = Number(investment.monthlyReturn) * monthsActive
+    } else if (investment?.startDate) {
+        const startYear = investment.startDate.getFullYear()
+        const startMonth = investment.startDate.getMonth() + 1
+        returned = allBills
+            .filter(
+                (b) =>
+                    b.referenceYear > startYear ||
+                    (b.referenceYear === startYear && b.referenceMonth >= startMonth)
+            )
+            .reduce((sum, b) => sum + Number(b.estimatedSavings ?? 0), 0)
+    }
+
+    // expectedPayoffLabel: Portuguese locale date string, e.g. "janeiro de 2027"
+    const expectedPayoffLabel =
+        investment?.expectedPayoff
+            ? new Date(investment.expectedPayoff).toLocaleDateString('pt-BR', {
+                  month: 'long',
+                  year: 'numeric',
+              })
+            : null
+
+    // ── Month summary ─────────────────────────────────────────────────────────
+
+    const currentMonthBills = allBills.filter(
+        (b) => b.referenceMonth === currentMonth && b.referenceYear === currentYear
+    )
+
+    const moneySaved = currentMonthBills.reduce(
+        (sum, b) => sum + Number(b.estimatedSavings ?? 0),
+        0
+    )
+    const energyGeneratedKwh = currentMonthBills.reduce(
+        (sum, b) => sum + Number(b.monitoredGenerationKwh ?? 0),
+        0
+    )
+    const energyConsumedKwh = currentMonthBills.reduce(
+        (sum, b) => sum + Number(b.consumptionKwh ?? 0),
+        0
+    )
+    const returnVsInvestment = moneySaved
+
+    // Previous month for percent change
+    let prevMonth = currentMonth - 1
+    let prevYear = currentYear
+    if (prevMonth === 0) {
+        prevMonth = 12
+        prevYear -= 1
+    }
+    const prevMonthBills = allBills.filter(
+        (b) => b.referenceMonth === prevMonth && b.referenceYear === prevYear
+    )
+    const prevMoneySaved = prevMonthBills.reduce(
+        (sum, b) => sum + Number(b.estimatedSavings ?? 0),
+        0
+    )
+    const monthChangePercent =
+        prevMoneySaved > 0
+            ? Math.round(((moneySaved - prevMoneySaved) / prevMoneySaved) * 100)
+            : 0
+
+    // ── Lifetime summary ──────────────────────────────────────────────────────
+
+    const totalGeneratedKwh = allBills.reduce(
+        (sum, b) => sum + Number(b.monitoredGenerationKwh ?? 0),
+        0
+    )
+    const totalReturn = allBills.reduce(
+        (sum, b) => sum + Number(b.estimatedSavings ?? 0),
+        0
+    )
+
+    // Use investment monthsActive if available; otherwise count distinct (year, month) pairs
+    const lifetimeMonthsActive =
+        investment
+            ? monthsActive
+            : new Set(allBills.map((b) => `${b.referenceYear}-${b.referenceMonth}`)).size
+
+    // Brazil grid emission factor: ~0.0817 kg CO2/kWh (MCTIC 2023 national average).
+    // Formula: totalGeneratedKwh * 0.0817 kg/kWh ÷ 1000 kg/ton
+    const co2AvoidedTons = (totalGeneratedKwh * 0.0817) / 1000
+
+    // ── Accounts (consumer units) ──────────────────────────────────────────────
+
+    const consumerUnits = await prisma.consumerUnit.findMany({
+        where: { clientId },
+    })
+
+    // Build a lookup of latest bill paymentStatus per consumerUnitId
+    const latestBillStatusByUnit = new Map<
+        string,
+        'ok' | 'warning' | 'critical' | 'unknown'
+    >()
+    for (const bill of allBills) {
+        // allBills is already ordered newest-first; first hit per unit is the latest
+        if (!latestBillStatusByUnit.has(bill.consumerUnitId)) {
+            let status: 'ok' | 'warning' | 'critical' | 'unknown'
+            switch (bill.paymentStatus) {
+                case 'paga':
+                    status = 'ok'
+                    break
+                case 'a_pagar':
+                    status = 'warning'
+                    break
+                case 'vencida':
+                    status = 'critical'
+                    break
+                default:
+                    status = 'unknown'
+            }
+            latestBillStatusByUnit.set(bill.consumerUnitId, status)
+        }
+    }
+
+    const accounts = consumerUnits.map((cu) => ({
+        id: cu.id,
+        name: cu.name ?? cu.clientNumber ?? 'Conta',
+        status: latestBillStatusByUnit.get(cu.id) ?? ('unknown' as const),
+    }))
+
+    // ── Live generation ───────────────────────────────────────────────────────
+    // liveGenerationKw defaults to 0 here; real-time inverter telemetry is
+    // sourced from the generation service and is out of scope for this read API.
+    const liveGenerationKw = 0
+
+    // ── Assemble response ─────────────────────────────────────────────────────
+
+    const data: ControleOverview = {
+        clientName: userContext.name ?? 'Cliente',
+        investment: {
+            totalInvested,
+            returned,
+            expectedPayoffLabel,
+            monthsActive,
+        },
+        month: {
+            moneySaved,
+            energyGeneratedKwh,
+            energyConsumedKwh,
+            returnVsInvestment,
+            monthChangePercent,
+        },
+        lifetime: {
+            totalGeneratedKwh,
+            totalReturn,
+            monthsActive: lifetimeMonthsActive,
+            co2AvoidedTons,
+        },
+        accounts,
+        liveGenerationKw,
+    }
+
+    return NextResponse.json({ success: true, data })
+}
+
+export const GET = withHandle(getControleOverviewRoute)
