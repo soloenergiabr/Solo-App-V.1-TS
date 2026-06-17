@@ -289,6 +289,45 @@ function PlantUnitsSection({ plant, units, clientId }: { plant: AdminPlant; unit
     );
 }
 
+function AllocationPercentCell({
+    allocation,
+    mutations,
+}: {
+    allocation: AdminCreditAllocation;
+    mutations: ReturnType<typeof useAdminCreditAllocations>;
+}) {
+    const original = String(toNumber(allocation.allocationPercentage));
+    const [value, setValue] = useState(original);
+    const dirty = value !== original && value !== '';
+
+    const save = async () => {
+        if (!dirty) return;
+        try {
+            await mutations.update.mutateAsync({ id: allocation.id, data: { allocationPercentage: Number(value) } });
+            toast.success('Percentual atualizado');
+        } catch (error: unknown) {
+            toast.error(errorMessage(error, 'Erro ao atualizar percentual'));
+        }
+    };
+
+    return (
+        <div className="flex items-center gap-1">
+            <Input
+                type="number"
+                value={value}
+                onChange={event => setValue(event.target.value)}
+                className="h-8 w-20"
+            />
+            <span className="text-muted-foreground">%</span>
+            {dirty && (
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={save} disabled={mutations.update.isPending}>
+                    <Check className="h-4 w-4 text-primary" />
+                </Button>
+            )}
+        </div>
+    );
+}
+
 function PlantAllocationsSection({
     plant,
     units,
@@ -387,7 +426,7 @@ function PlantAllocationsSection({
                             <TableRow key={allocation.id}>
                                 <TableCell>{allocation.from?.name || allocation.from?.clientNumber || allocation.fromId}</TableCell>
                                 <TableCell>{allocation.to?.name || allocation.to?.clientNumber || allocation.toId}</TableCell>
-                                <TableCell>{toNumber(allocation.allocationPercentage).toLocaleString('pt-BR')}%</TableCell>
+                                <TableCell><AllocationPercentCell allocation={allocation} mutations={allocationMutations} /></TableCell>
                                 <TableCell><Badge variant={allocation.isActive ? 'default' : 'secondary'}>{allocation.isActive ? 'Ativo' : 'Inativo'}</Badge></TableCell>
                                 <TableCell className="text-right">
                                     <Button variant="ghost" size="icon" onClick={() => remove(allocation)}>
