@@ -1,6 +1,5 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Table,
     TableBody,
@@ -12,9 +11,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DashboardAnalytics } from "../../hooks/use-generation-dashboard";
 import { TrendingUp, Zap, Activity } from "lucide-react";
+import { statusToColor, type TelemetryStatus } from "@/frontend/telemetry-kit";
 
 interface InvertersTableProps {
     analytics: DashboardAnalytics;
+}
+
+function deriveStatus(inverter: DashboardAnalytics['byInverter'][number]): TelemetryStatus {
+    if (!inverter.dataPoints) return 'unknown';
+    if (inverter.totalPower <= 0 && inverter.peakPower <= 0) return 'warning';
+    return 'ok';
 }
 
 export function InvertersTable({ analytics }: InvertersTableProps) {
@@ -24,68 +30,63 @@ export function InvertersTable({ analytics }: InvertersTableProps) {
         return new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(num);
     };
 
-    const getProviderColor = (provider: string) => {
-        const colors: Record<string, string> = {
-            solis: 'bg-blue-100 text-blue-800',
-            growatt: 'bg-green-100 text-green-800',
-            solplanet: 'bg-purple-100 text-purple-800',
-            mock: 'bg-gray-100 text-gray-800',
-        };
-        return colors[provider.toLowerCase()] || 'bg-gray-100 text-gray-800';
-    };
-
     return (
-        <Card className="col-span-full">
-            <CardHeader>
-                <CardTitle>Desempenho por Inversor</CardTitle>
-                <CardDescription>
-                    Métricas detalhadas de cada inversor
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                {byInverter.length === 0 ? (
-                    <div className="flex items-center justify-center h-[200px] text-muted-foreground">
-                        Nenhum inversor encontrado
-                    </div>
-                ) : (
-                    <div className="rounded-md border">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Inversor</TableHead>
-                                    <TableHead>Provider</TableHead>
-                                    <TableHead className="text-right">
-                                        <div className="flex items-center justify-end gap-1">
-                                            <Zap className="h-3 w-3" />
-                                            Energia Total
-                                        </div>
-                                    </TableHead>
-                                    <TableHead className="text-right">
-                                        <div className="flex items-center justify-end gap-1">
-                                            <Activity className="h-3 w-3" />
-                                            Potência Média
-                                        </div>
-                                    </TableHead>
-                                    <TableHead className="text-right">
-                                        <div className="flex items-center justify-end gap-1">
-                                            <TrendingUp className="h-3 w-3" />
-                                            Pico
-                                        </div>
-                                    </TableHead>
-                                    <TableHead className="text-right">Pontos</TableHead>
-                                    <TableHead>Última Atualização</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {byInverter.map((inverter) => (
+        <div className="col-span-full rounded-2xl border bg-card p-4">
+            <div className="mb-4">
+                <h2 className="font-display text-lg font-semibold text-foreground">Desempenho por Inversor</h2>
+                <p className="text-sm text-muted-foreground">Métricas detalhadas de cada inversor</p>
+            </div>
+            {byInverter.length === 0 ? (
+                <div className="flex items-center justify-center h-[200px] text-muted-foreground">
+                    Nenhum inversor encontrado
+                </div>
+            ) : (
+                <div className="rounded-md border border-border">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Inversor</TableHead>
+                                <TableHead>Provider</TableHead>
+                                <TableHead className="text-right">
+                                    <div className="flex items-center justify-end gap-1">
+                                        <Zap className="h-3 w-3" />
+                                        Energia Total
+                                    </div>
+                                </TableHead>
+                                <TableHead className="text-right">
+                                    <div className="flex items-center justify-end gap-1">
+                                        <Activity className="h-3 w-3" />
+                                        Potência Média
+                                    </div>
+                                </TableHead>
+                                <TableHead className="text-right">
+                                    <div className="flex items-center justify-end gap-1">
+                                        <TrendingUp className="h-3 w-3" />
+                                        Pico
+                                    </div>
+                                </TableHead>
+                                <TableHead className="text-right">Pontos</TableHead>
+                                <TableHead>Última Atualização</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {byInverter.map((inverter) => {
+                                const status = deriveStatus(inverter);
+                                return (
                                     <TableRow key={inverter.inverterId}>
                                         <TableCell className="font-medium">
-                                            {inverter.inverterName}
+                                            <div className="flex items-center gap-2">
+                                                <span
+                                                    className={`inline-block h-2 w-2 rounded-full bg-current ${statusToColor(status)}`}
+                                                    aria-hidden="true"
+                                                />
+                                                {inverter.inverterName}
+                                            </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge 
-                                                variant="secondary" 
-                                                className={getProviderColor(inverter.provider)}
+                                            <Badge
+                                                variant="secondary"
+                                                className="bg-muted text-muted-foreground"
                                             >
                                                 {inverter.provider.toUpperCase()}
                                             </Badge>
@@ -96,25 +97,25 @@ export function InvertersTable({ analytics }: InvertersTableProps) {
                                         <TableCell className="text-right">
                                             {formatNumber(inverter.averagePower)} W
                                         </TableCell>
-                                        <TableCell className="text-right text-green-600 font-medium">
+                                        <TableCell className="text-right font-medium text-foreground">
                                             {formatNumber(inverter.peakPower)} W
                                         </TableCell>
                                         <TableCell className="text-right text-muted-foreground">
                                             {inverter.dataPoints}
                                         </TableCell>
                                         <TableCell className="text-sm text-muted-foreground">
-                                            {inverter.lastUpdate 
+                                            {inverter.lastUpdate
                                                 ? new Date(inverter.lastUpdate).toLocaleString('pt-BR')
                                                 : 'N/A'
                                             }
                                         </TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-                )}
-            </CardContent>
-        </Card>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </div>
+            )}
+        </div>
     );
 }
