@@ -19,6 +19,14 @@ export interface AccountBill {
     titularName: string | null
     payerName: string | null
     aiAnalysis: string | null
+    // Cost breakdown fields (optional — populated when available from EnergyBill)
+    energyCost?: number | null
+    tariffTusdValue?: number | null
+    tariffTeValue?: number | null
+    icmsCost?: number | null
+    publicLightingCost?: number | null
+    tariffFlag?: string | null
+    tariffFlagCost?: number | null
 }
 
 export interface RateioSlice {

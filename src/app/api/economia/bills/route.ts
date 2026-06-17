@@ -55,6 +55,13 @@ const getEconomiaBillsRoute = async (request: NextRequest): Promise<NextResponse
         titularName: b.consumerUnit?.accountHolder ?? b.accountHolder ?? null,
         payerName: b.consumerUnit?.payerName ?? null,
         aiAnalysis: b.aiAnalysis ?? null,
+        energyCost: b.energyCost != null ? Number(b.energyCost) : null,
+        tariffTusdValue: b.tariffTusdValue != null ? Number(b.tariffTusdValue) : null,
+        tariffTeValue: b.tariffTeValue != null ? Number(b.tariffTeValue) : null,
+        icmsCost: b.icmsCost != null ? Number(b.icmsCost) : null,
+        publicLightingCost: b.publicLightingCost != null ? Number(b.publicLightingCost) : null,
+        tariffFlag: b.tariffFlag ?? null,
+        tariffFlagCost: b.tariffFlagCost != null ? Number(b.tariffFlagCost) : null,
     }))
 
     return NextResponse.json({ success: true, data })
