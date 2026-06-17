@@ -64,14 +64,14 @@ export default function VouchersPage() {
         switch (status) {
             case 'pending':
                 return (
-                    <Badge className="bg-yellow-500 hover:bg-yellow-600">
+                    <Badge className="bg-warning text-foreground hover:bg-warning/90">
                         <Clock className="h-3 w-3 mr-1" />
                         Pendente
                     </Badge>
                 );
             case 'used':
                 return (
-                    <Badge className="bg-green-500 hover:bg-green-600">
+                    <Badge className="bg-success text-white hover:bg-success/90">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         Usado
                     </Badge>
@@ -166,7 +166,7 @@ export default function VouchersPage() {
                                                         onClick={() => handleCopyCode(redemption.redemptionCode)}
                                                     >
                                                         {copiedCode === redemption.redemptionCode ? (
-                                                            <Check className="h-4 w-4 text-green-600" />
+                                                            <Check className="h-4 w-4 text-success" />
                                                         ) : (
                                                             <Copy className="h-4 w-4" />
                                                         )}
