@@ -73,6 +73,12 @@ export type AdminCreditAllocation = {
     startsAt?: string | null;
     endsAt?: string | null;
     isActive: boolean;
+    enelSyncStatus?: string | null;
+    requestedAt?: string | null;
+    appliedAt?: string | null;
+    effectiveDate?: string | null;
+    enelProtocol?: string | null;
+    syncError?: string | null;
     plant?: Pick<AdminPlant, 'id' | 'name'>;
     from?: Pick<AdminConsumerUnit, 'id' | 'name' | 'clientNumber' | 'installationNumber'>;
     to?: Pick<AdminConsumerUnit, 'id' | 'name' | 'clientNumber' | 'installationNumber'>;
@@ -300,12 +306,19 @@ export function useAdminCreditAllocations(clientId: string) {
         onSuccess: invalidate,
     });
 
+    const apply = useMutation({
+        mutationFn: async ({ id, data }: { id: string; data: { enelSyncStatus: 'applied' | 'failed'; appliedAt?: string; effectiveDate?: string; enelProtocol?: string; syncError?: string } }) => (
+            unwrapMutation<AdminCreditAllocation>(api.patch(`/admin/clients/${clientId}/credit-allocations/${id}`, data))
+        ),
+        onSuccess: invalidate,
+    });
+
     const remove = useMutation({
         mutationFn: async (id: string) => unwrapMutation<unknown>(api.delete(`/admin/clients/${clientId}/credit-allocations/${id}`)),
         onSuccess: invalidate,
     });
 
-    return { ...query, allocations: query.data ?? [], create, update, remove };
+    return { ...query, allocations: query.data ?? [], create, update, apply, remove };
 }
 
 export function useAdminEnergyBills(clientId: string) {

@@ -3,7 +3,7 @@
 import { Sidebar, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Ticket, Zap } from "lucide-react"
+import { Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Zap } from "lucide-react"
 import { useTheme } from "next-themes"
 
 const adminSections: SidebarSection[] = [
@@ -27,6 +27,7 @@ const vendedorSections: SidebarSection[] = [
             { label: 'Geração', mobileLabel: 'Geração', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
             { label: 'Minhas Usinas', mobileLabel: 'Usinas', href: '/plants/wizard', icon: <Zap className="w-5 h-5" /> },
             { label: 'Economia', mobileLabel: 'Economia', href: '/economia', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Rateio', mobileLabel: 'Rateio', href: '/rateio', icon: <Percent className="w-5 h-5" /> },
             { label: 'Clube Solo', mobileLabel: 'Clube', href: '/club', icon: <Gift className="w-5 h-5" /> },
             { label: 'Meus Vouchers', mobileLabel: 'Vouchers', href: '/vouchers', icon: <Ticket className="w-5 h-5" /> },
             { label: 'Solo Coins', mobileLabel: 'Coins', href: '/solo-coins', icon: <Coins className="w-5 h-5" /> },

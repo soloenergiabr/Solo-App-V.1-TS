@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { eventBus, EventType } from '@/backend/shared/event-bus';
 import prisma from '@/lib/prisma';
 
 const allocationSchema = z.object({
@@ -12,6 +13,14 @@ const allocationSchema = z.object({
     startsAt: z.coerce.date().optional().nullable(),
     endsAt: z.coerce.date().optional().nullable(),
     isActive: z.boolean().optional(),
+});
+
+const applySchema = z.object({
+    enelSyncStatus: z.enum(['applied', 'failed']),
+    appliedAt: z.coerce.date().optional().nullable(),
+    effectiveDate: z.coerce.date().optional().nullable(),
+    enelProtocol: z.string().optional().nullable(),
+    syncError: z.string().optional().nullable(),
 });
 
 async function validateAllocationOwnership(
@@ -87,3 +96,41 @@ const deleteCreditAllocation = async (
 
 export const PUT = withHandle(updateCreditAllocation);
 export const DELETE = withHandle(deleteCreditAllocation);
+
+const applyCreditAllocation = async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string; allocationId: string }> }
+) => {
+    const user = await AuthMiddleware.extractUserContext(request);
+    const { id: clientId, allocationId } = await params;
+    const data = applySchema.parse(await request.json());
+
+    const existing = await prisma.creditAllocation.findFirst({
+        where: { id: allocationId, clientId, deletedAt: null },
+    });
+    if (!existing) throw new Error('Rateio not found');
+
+    const allocation = await prisma.creditAllocation.update({
+        where: { id: allocationId },
+        data: {
+            enelSyncStatus: data.enelSyncStatus,
+            appliedAt: data.appliedAt ?? (data.enelSyncStatus === 'applied' ? new Date() : null),
+            effectiveDate: data.effectiveDate ?? undefined,
+            enelProtocol: data.enelProtocol ?? undefined,
+            syncError: data.syncError ?? undefined,
+            appliedByUserId: user.userId,
+        },
+    });
+
+    if (data.enelSyncStatus === 'applied') {
+        eventBus.emit(EventType.RATEIO_APPLIED, {
+            allocationId,
+            clientId,
+            appliedBy: user.userId,
+        });
+    }
+
+    return NextResponse.json({ success: true, message: 'Rateio atualizado com sucesso', data: allocation });
+};
+
+export const PATCH = withHandle(applyCreditAllocation);
