@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { FileText } from 'lucide-react'
@@ -40,6 +41,9 @@ export function AccountCard({ bill, className }: { bill: AccountBill; className?
 
             <div className="flex flex-wrap gap-2">
                 {status !== 'paga' && bill.pixCode ? <CopyPixButton code={bill.pixCode} /> : null}
+                <Link href={`/economia/${bill.id}`}>
+                    <Button variant="outline" size="sm">Ver analise</Button>
+                </Link>
                 {bill.billFileUrl ? (
                     <Button asChild variant="secondary" size="sm">
                         <a href={bill.billFileUrl} target="_blank" rel="noreferrer"><FileText className="size-4" /> PDF</a>
