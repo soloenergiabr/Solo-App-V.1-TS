@@ -20,7 +20,7 @@ export function RateioAuditList({ createdAt, requestedAt, appliedAt, enelSyncSta
     ];
 
     if (requestedAt) {
-        events.push({ label: 'Alteracao solicitada (Enel)', date: requestedAt, type: 'pending' });
+        events.push({ label: 'Alteração solicitada (Enel)', date: requestedAt, type: 'pending' });
     }
 
     if (appliedAt && enelSyncStatus === 'applied') {

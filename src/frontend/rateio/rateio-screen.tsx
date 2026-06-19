@@ -63,11 +63,11 @@ export function RateioScreen() {
         ]).then(([plantsRes, unitsRes]) => {
             if (plantsRes.data.success) {
                 setPlants(
-                    plantsRes.data.data.map((p: any) => ({ id: p.id, name: p.name ?? null }))
+                    plantsRes.data.data.map((p: PlantOption) => ({ id: p.id, name: p.name ?? null }))
                 );
             }
             if (unitsRes.data.success) {
-                const units: UnitOption[] = unitsRes.data.data.map((u: any) => ({
+                const units: UnitOption[] = unitsRes.data.data.map((u: UnitOption) => ({
                     id: u.id,
                     name: u.name ?? null,
                     clientNumber: u.clientNumber ?? null,
@@ -77,7 +77,12 @@ export function RateioScreen() {
                 setConsumerUnits(units);
             }
         }).finally(() => setEditorReady(true));
-    }, [api.isAuthenticated]);
+    }, [api, api.isAuthenticated]);
+
+    // Reset selected allocation when data refetches
+    useEffect(() => {
+        setSelectedAllocation(null);
+    }, [allocations]);
 
     // Group allocations by plant
     const plantsMap = new Map<string, PlantWithUnits>();
@@ -100,8 +105,8 @@ export function RateioScreen() {
         <PageLayout
             header={
                 <PageHeader
-                    title="Rateio de Creditos"
-                    subtitle="Acompanhe a distribuicao dos creditos de energia entre as unidades consumidoras"
+                    title="Rateio de Créditos"
+                    subtitle="Acompanhe a distribuição dos créditos de energia entre as unidades consumidoras"
                 />
             }
         >
@@ -128,7 +133,7 @@ export function RateioScreen() {
                     <PageEmpty
                         icon={Split}
                         title="Nenhum rateio configurado ainda"
-                        description="Os rateios de creditos aparecerao aqui quando forem configurados pelo administrador."
+                        description="Os rateios de créditos aparecerão aqui quando forem configurados pelo administrador."
                     />
                     <div className="flex justify-center pt-4">
                         {editorReady && (
@@ -191,9 +196,9 @@ export function RateioScreen() {
                                                     <TableHead>Para</TableHead>
                                                     <TableHead>Percentual</TableHead>
                                                     <TableHead>Status</TableHead>
-                                                    <TableHead>Data solicitacao</TableHead>
+                                                    <TableHead>Data de solicitação</TableHead>
                                                     <TableHead className="text-right">
-                                                        Acoes
+                                                        Ações
                                                     </TableHead>
                                                 </TableRow>
                                             </TableHeader>
@@ -286,7 +291,7 @@ export function RateioScreen() {
                                                     <Card>
                                                         <CardHeader>
                                                             <CardTitle className="text-sm">
-                                                                Historico de alteracoes
+                                                                Histórico de alterações
                                                             </CardTitle>
                                                         </CardHeader>
                                                         <CardContent>

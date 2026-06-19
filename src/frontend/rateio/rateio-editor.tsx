@@ -23,6 +23,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
+import { useCreateProposal, type ProposalInput } from './hooks/use-rateio';
 
 interface PlantOption {
     id: string;
@@ -44,10 +45,19 @@ interface RateioEditorProps {
     trigger?: React.ReactNode;
 }
 
+interface ExistingAllocation {
+    id: string | undefined;
+    plantId: string;
+    fromId: string;
+    toId: string;
+    isActive: boolean;
+    allocationPercentage: number;
+}
+
 export function RateioEditor({ plants, generatorUnits, consumerUnits, onSuccess, trigger }: RateioEditorProps) {
     const api = useAuthenticatedApi();
+    const createProposal = useCreateProposal();
     const [open, setOpen] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({
         plantId: '',
         fromId: '',
@@ -75,12 +85,12 @@ export function RateioEditor({ plants, generatorUnits, consumerUnits, onSuccess,
         try {
             const res = await api.get('/rateio');
             if (res.data.success) {
-                const existingAllocations = (res.data.data as any[]).filter(
-                    (a: any) => a.plantId === form.plantId && a.isActive && a.id !== undefined
+                const existingAllocations = (res.data.data as ExistingAllocation[]).filter(
+                    (a) => a.plantId === form.plantId && a.isActive && a.id !== undefined
                 );
                 const currentSum = existingAllocations
-                    .filter((a: any) => a.fromId !== form.fromId || a.toId !== form.toId)
-                    .reduce((sum: number, a: any) => sum + Number(a.allocationPercentage), 0);
+                    .filter((a) => a.fromId !== form.fromId || a.toId !== form.toId)
+                    .reduce((sum, a) => sum + Number(a.allocationPercentage), 0);
 
                 if (currentSum + percentage > 100) {
                     toast.error(`Soma dos rateios excede 100% (${currentSum}% + ${percentage}% = ${currentSum + percentage}%)`);
@@ -91,37 +101,38 @@ export function RateioEditor({ plants, generatorUnits, consumerUnits, onSuccess,
             // Continue even if validation fails
         }
 
-        setSubmitting(true);
         try {
-            await api.post('/rateio/proposals', {
+            await createProposal.mutateAsync({
                 plantId: form.plantId,
                 fromId: form.fromId,
                 toId: form.toId,
                 allocationPercentage: percentage,
                 startsAt: form.startsAt || undefined,
-            });
+            } satisfies ProposalInput);
             toast.success('Proposta de rateio enviada com sucesso');
             setOpen(false);
             setForm({ plantId: '', fromId: '', toId: '', allocationPercentage: '', startsAt: '' });
             onSuccess();
-        } catch (e: any) {
-            toast.error(e?.response?.data?.message || 'Erro ao enviar proposta de rateio');
-        } finally {
-            setSubmitting(false);
+        } catch (e: unknown) {
+            const message =
+                e && typeof e === 'object' && 'response' in e
+                    ? ((e as { response: { data: { message?: string } } }).response?.data?.message ?? 'Erro ao enviar proposta de rateio')
+                    : 'Erro ao enviar proposta de rateio';
+            toast.error(message);
         }
     };
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                {trigger ?? <Button variant="default">Propor alteracao</Button>}
+                {trigger ?? <Button variant="default">Propor alteração</Button>}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                    <DialogTitle>Propor alteracao de rateio</DialogTitle>
+                    <DialogTitle>Propor alteração de rateio</DialogTitle>
                     <DialogDescription>
-                        Defina a distribuicao de creditos entre unidades da mesma usina.
-                        A alteracao sera enviada para aprovacao.
+                        Defina a distribuição de créditos entre unidades da mesma usina.
+                        A alteração será enviada para aprovação.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
@@ -202,7 +213,7 @@ export function RateioEditor({ plants, generatorUnits, consumerUnits, onSuccess,
 
                     {/* Start date */}
                     <div className="space-y-2">
-                        <Label>Data de inicio (opcional)</Label>
+                        <Label>Data de início (opcional)</Label>
                         <Input
                             type="date"
                             value={form.startsAt}
@@ -217,11 +228,11 @@ export function RateioEditor({ plants, generatorUnits, consumerUnits, onSuccess,
                     )}
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => setOpen(false)} disabled={submitting}>
+                    <Button variant="outline" onClick={() => setOpen(false)} disabled={createProposal.isPending}>
                         Cancelar
                     </Button>
-                    <Button onClick={submit} disabled={submitting}>
-                        {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    <Button onClick={submit} disabled={createProposal.isPending}>
+                        {createProposal.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Enviar proposta
                     </Button>
                 </DialogFooter>
