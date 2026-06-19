@@ -94,10 +94,18 @@ const createInverter = async (request: NextRequest) => {
 
     await inverterRepository.create(inverter);
 
+    // Return success without exposing credentials
     return NextResponse.json({
         success: true,
         message: 'Inverter registered successfully',
-        data: inverter,
+        data: {
+            id: inverter.id,
+            name: inverter.name,
+            provider: inverter.provider,
+            providerId: inverter.providerId,
+            plantId: inverter.plantId,
+            serialNumber: inverter.serialNumber,
+        },
     });
 };
 

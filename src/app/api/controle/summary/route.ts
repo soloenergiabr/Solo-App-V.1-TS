@@ -8,6 +8,7 @@ export interface CockpitSummary {
     pendingBills: number
     activePlants: number
     pendingRateios: number
+    pendingValidations: number
     totalSavings: number
 }
 
@@ -42,10 +43,20 @@ const getCockpitSummaryRoute = async (request: NextRequest): Promise<NextRespons
         },
     })
 
-    // Count active plants (not deleted)
+    // Count active plants (confirmed, not deleted)
     const activePlants = await prisma.plant.count({
         where: {
             clientId,
+            deletedAt: null,
+            validationStatus: 'confirmed',
+        },
+    })
+
+    // Count pending validations
+    const pendingValidations = await prisma.plant.count({
+        where: {
+            clientId,
+            validationStatus: 'pending_review',
             deletedAt: null,
         },
     })
@@ -70,6 +81,7 @@ const getCockpitSummaryRoute = async (request: NextRequest): Promise<NextRespons
         pendingBills,
         activePlants,
         pendingRateios,
+        pendingValidations,
         totalSavings,
     }
 

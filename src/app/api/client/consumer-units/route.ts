@@ -54,6 +54,7 @@ const createConsumerUnit = async (request: NextRequest) => {
         data: {
             ...data,
             clientId,
+            validationStatus: 'pending_review',
         },
     });
 
