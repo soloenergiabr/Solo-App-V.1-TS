@@ -49,6 +49,7 @@ const createPlant = async (request: NextRequest) => {
         data: {
             ...data,
             clientId,
+            validationStatus: 'pending_review',
         },
     });
 

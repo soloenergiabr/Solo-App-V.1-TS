@@ -5315,6 +5315,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    validationStatus: string | null
   }
 
   export type PlantMaxAggregateOutputType = {
@@ -5335,6 +5336,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    validationStatus: string | null
   }
 
   export type PlantCountAggregateOutputType = {
@@ -5356,6 +5358,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     deletedAt: number
+    validationStatus: number
     _all: number
   }
 
@@ -5392,6 +5395,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    validationStatus?: true
   }
 
   export type PlantMaxAggregateInputType = {
@@ -5412,6 +5416,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    validationStatus?: true
   }
 
   export type PlantCountAggregateInputType = {
@@ -5433,6 +5438,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    validationStatus?: true
     _all?: true
   }
 
@@ -5541,6 +5547,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
+    validationStatus: string
     _count: PlantCountAggregateOutputType | null
     _avg: PlantAvgAggregateOutputType | null
     _sum: PlantSumAggregateOutputType | null
@@ -5581,6 +5588,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     inverters?: boolean | Plant$invertersArgs<ExtArgs>
     consumerUnits?: boolean | Plant$consumerUnitsArgs<ExtArgs>
@@ -5608,6 +5616,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["plant"]>
 
@@ -5630,6 +5639,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["plant"]>
 
@@ -5652,9 +5662,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
   }
 
-  export type PlantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "provider" | "providerStatus" | "providerPlantId" | "installedPowerKw" | "totalEnergyKwh" | "address" | "city" | "state" | "timezone" | "latitude" | "longitude" | "providerMetadata" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["plant"]>
+  export type PlantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "provider" | "providerStatus" | "providerPlantId" | "installedPowerKw" | "totalEnergyKwh" | "address" | "city" | "state" | "timezone" | "latitude" | "longitude" | "providerMetadata" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus", ExtArgs["result"]["plant"]>
   export type PlantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     inverters?: boolean | Plant$invertersArgs<ExtArgs>
@@ -5698,6 +5709,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
+      validationStatus: string
     }, ExtArgs["result"]["plant"]>
     composites: {}
   }
@@ -6144,6 +6156,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Plant", 'DateTime'>
     readonly updatedAt: FieldRef<"Plant", 'DateTime'>
     readonly deletedAt: FieldRef<"Plant", 'DateTime'>
+    readonly validationStatus: FieldRef<"Plant", 'String'>
   }
     
 
@@ -8170,6 +8183,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    validationStatus: string | null
   }
 
   export type ConsumerUnitMaxAggregateOutputType = {
@@ -8195,6 +8209,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    validationStatus: string | null
   }
 
   export type ConsumerUnitCountAggregateOutputType = {
@@ -8220,6 +8235,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     deletedAt: number
+    validationStatus: number
     _all: number
   }
 
@@ -8247,6 +8263,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    validationStatus?: true
   }
 
   export type ConsumerUnitMaxAggregateInputType = {
@@ -8272,6 +8289,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    validationStatus?: true
   }
 
   export type ConsumerUnitCountAggregateInputType = {
@@ -8297,6 +8315,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    validationStatus?: true
     _all?: true
   }
 
@@ -8395,6 +8414,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
+    validationStatus: string
     _count: ConsumerUnitCountAggregateOutputType | null
     _min: ConsumerUnitMinAggregateOutputType | null
     _max: ConsumerUnitMaxAggregateOutputType | null
@@ -8437,6 +8457,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -8469,6 +8490,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -8497,6 +8519,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -8525,9 +8548,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    validationStatus?: boolean
   }
 
-  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["consumerUnit"]>
+  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus", ExtArgs["result"]["consumerUnit"]>
   export type ConsumerUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
@@ -8581,6 +8605,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
+      validationStatus: string
     }, ExtArgs["result"]["consumerUnit"]>
     composites: {}
   }
@@ -9032,6 +9057,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"ConsumerUnit", 'DateTime'>
     readonly updatedAt: FieldRef<"ConsumerUnit", 'DateTime'>
     readonly deletedAt: FieldRef<"ConsumerUnit", 'DateTime'>
+    readonly validationStatus: FieldRef<"ConsumerUnit", 'String'>
   }
     
 
@@ -9567,6 +9593,14 @@ export namespace Prisma {
     startsAt: Date | null
     endsAt: Date | null
     isActive: boolean | null
+    enelSyncStatus: string | null
+    requestedAt: Date | null
+    appliedAt: Date | null
+    effectiveDate: Date | null
+    enelProtocol: string | null
+    syncError: string | null
+    requestedByUserId: string | null
+    appliedByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -9582,6 +9616,14 @@ export namespace Prisma {
     startsAt: Date | null
     endsAt: Date | null
     isActive: boolean | null
+    enelSyncStatus: string | null
+    requestedAt: Date | null
+    appliedAt: Date | null
+    effectiveDate: Date | null
+    enelProtocol: string | null
+    syncError: string | null
+    requestedByUserId: string | null
+    appliedByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -9597,6 +9639,14 @@ export namespace Prisma {
     startsAt: number
     endsAt: number
     isActive: number
+    enelSyncStatus: number
+    requestedAt: number
+    appliedAt: number
+    effectiveDate: number
+    enelProtocol: number
+    syncError: number
+    requestedByUserId: number
+    appliedByUserId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -9622,6 +9672,14 @@ export namespace Prisma {
     startsAt?: true
     endsAt?: true
     isActive?: true
+    enelSyncStatus?: true
+    requestedAt?: true
+    appliedAt?: true
+    effectiveDate?: true
+    enelProtocol?: true
+    syncError?: true
+    requestedByUserId?: true
+    appliedByUserId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -9637,6 +9695,14 @@ export namespace Prisma {
     startsAt?: true
     endsAt?: true
     isActive?: true
+    enelSyncStatus?: true
+    requestedAt?: true
+    appliedAt?: true
+    effectiveDate?: true
+    enelProtocol?: true
+    syncError?: true
+    requestedByUserId?: true
+    appliedByUserId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -9652,6 +9718,14 @@ export namespace Prisma {
     startsAt?: true
     endsAt?: true
     isActive?: true
+    enelSyncStatus?: true
+    requestedAt?: true
+    appliedAt?: true
+    effectiveDate?: true
+    enelProtocol?: true
+    syncError?: true
+    requestedByUserId?: true
+    appliedByUserId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -9754,6 +9828,14 @@ export namespace Prisma {
     startsAt: Date | null
     endsAt: Date | null
     isActive: boolean
+    enelSyncStatus: string
+    requestedAt: Date | null
+    appliedAt: Date | null
+    effectiveDate: Date | null
+    enelProtocol: string | null
+    syncError: string | null
+    requestedByUserId: string | null
+    appliedByUserId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -9788,6 +9870,14 @@ export namespace Prisma {
     startsAt?: boolean
     endsAt?: boolean
     isActive?: boolean
+    enelSyncStatus?: boolean
+    requestedAt?: boolean
+    appliedAt?: boolean
+    effectiveDate?: boolean
+    enelProtocol?: boolean
+    syncError?: boolean
+    requestedByUserId?: boolean
+    appliedByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -9807,6 +9897,14 @@ export namespace Prisma {
     startsAt?: boolean
     endsAt?: boolean
     isActive?: boolean
+    enelSyncStatus?: boolean
+    requestedAt?: boolean
+    appliedAt?: boolean
+    effectiveDate?: boolean
+    enelProtocol?: boolean
+    syncError?: boolean
+    requestedByUserId?: boolean
+    appliedByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -9826,6 +9924,14 @@ export namespace Prisma {
     startsAt?: boolean
     endsAt?: boolean
     isActive?: boolean
+    enelSyncStatus?: boolean
+    requestedAt?: boolean
+    appliedAt?: boolean
+    effectiveDate?: boolean
+    enelProtocol?: boolean
+    syncError?: boolean
+    requestedByUserId?: boolean
+    appliedByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -9845,12 +9951,20 @@ export namespace Prisma {
     startsAt?: boolean
     endsAt?: boolean
     isActive?: boolean
+    enelSyncStatus?: boolean
+    requestedAt?: boolean
+    appliedAt?: boolean
+    effectiveDate?: boolean
+    enelProtocol?: boolean
+    syncError?: boolean
+    requestedByUserId?: boolean
+    appliedByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type CreditAllocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "plantId" | "fromId" | "toId" | "allocationPercentage" | "startsAt" | "endsAt" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["creditAllocation"]>
+  export type CreditAllocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "plantId" | "fromId" | "toId" | "allocationPercentage" | "startsAt" | "endsAt" | "isActive" | "enelSyncStatus" | "requestedAt" | "appliedAt" | "effectiveDate" | "enelProtocol" | "syncError" | "requestedByUserId" | "appliedByUserId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["creditAllocation"]>
   export type CreditAllocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -9888,6 +10002,14 @@ export namespace Prisma {
       startsAt: Date | null
       endsAt: Date | null
       isActive: boolean
+      enelSyncStatus: string
+      requestedAt: Date | null
+      appliedAt: Date | null
+      effectiveDate: Date | null
+      enelProtocol: string | null
+      syncError: string | null
+      requestedByUserId: string | null
+      appliedByUserId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -10327,6 +10449,14 @@ export namespace Prisma {
     readonly startsAt: FieldRef<"CreditAllocation", 'DateTime'>
     readonly endsAt: FieldRef<"CreditAllocation", 'DateTime'>
     readonly isActive: FieldRef<"CreditAllocation", 'Boolean'>
+    readonly enelSyncStatus: FieldRef<"CreditAllocation", 'String'>
+    readonly requestedAt: FieldRef<"CreditAllocation", 'DateTime'>
+    readonly appliedAt: FieldRef<"CreditAllocation", 'DateTime'>
+    readonly effectiveDate: FieldRef<"CreditAllocation", 'DateTime'>
+    readonly enelProtocol: FieldRef<"CreditAllocation", 'String'>
+    readonly syncError: FieldRef<"CreditAllocation", 'String'>
+    readonly requestedByUserId: FieldRef<"CreditAllocation", 'String'>
+    readonly appliedByUserId: FieldRef<"CreditAllocation", 'String'>
     readonly createdAt: FieldRef<"CreditAllocation", 'DateTime'>
     readonly updatedAt: FieldRef<"CreditAllocation", 'DateTime'>
     readonly deletedAt: FieldRef<"CreditAllocation", 'DateTime'>
@@ -22064,7 +22194,8 @@ export namespace Prisma {
     providerMetadata: 'providerMetadata',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    validationStatus: 'validationStatus'
   };
 
   export type PlantScalarFieldEnum = (typeof PlantScalarFieldEnum)[keyof typeof PlantScalarFieldEnum]
@@ -22129,7 +22260,8 @@ export namespace Prisma {
     plantId: 'plantId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    validationStatus: 'validationStatus'
   };
 
   export type ConsumerUnitScalarFieldEnum = (typeof ConsumerUnitScalarFieldEnum)[keyof typeof ConsumerUnitScalarFieldEnum]
@@ -22145,6 +22277,14 @@ export namespace Prisma {
     startsAt: 'startsAt',
     endsAt: 'endsAt',
     isActive: 'isActive',
+    enelSyncStatus: 'enelSyncStatus',
+    requestedAt: 'requestedAt',
+    appliedAt: 'appliedAt',
+    effectiveDate: 'effectiveDate',
+    enelProtocol: 'enelProtocol',
+    syncError: 'syncError',
+    requestedByUserId: 'requestedByUserId',
+    appliedByUserId: 'appliedByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -22831,6 +22971,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Plant"> | Date | string
     updatedAt?: DateTimeFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
+    validationStatus?: StringFilter<"Plant"> | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     inverters?: InverterListRelationFilter
     consumerUnits?: ConsumerUnitListRelationFilter
@@ -22857,6 +22998,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    validationStatus?: SortOrder
     client?: ClientOrderByWithRelationInput
     inverters?: InverterOrderByRelationAggregateInput
     consumerUnits?: ConsumerUnitOrderByRelationAggregateInput
@@ -22886,6 +23028,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Plant"> | Date | string
     updatedAt?: DateTimeFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
+    validationStatus?: StringFilter<"Plant"> | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     inverters?: InverterListRelationFilter
     consumerUnits?: ConsumerUnitListRelationFilter
@@ -22912,6 +23055,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    validationStatus?: SortOrder
     _count?: PlantCountOrderByAggregateInput
     _avg?: PlantAvgOrderByAggregateInput
     _max?: PlantMaxOrderByAggregateInput
@@ -22941,6 +23085,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Plant"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Plant"> | Date | string | null
+    validationStatus?: StringWithAggregatesFilter<"Plant"> | string
   }
 
   export type InverterWhereInput = {
@@ -23162,6 +23307,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
+    validationStatus?: StringFilter<"ConsumerUnit"> | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -23193,6 +23339,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    validationStatus?: SortOrder
     client?: ClientOrderByWithRelationInput
     payerUser?: UserOrderByWithRelationInput
     plant?: PlantOrderByWithRelationInput
@@ -23227,6 +23374,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
+    validationStatus?: StringFilter<"ConsumerUnit"> | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -23258,6 +23406,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    validationStatus?: SortOrder
     _count?: ConsumerUnitCountOrderByAggregateInput
     _max?: ConsumerUnitMaxOrderByAggregateInput
     _min?: ConsumerUnitMinOrderByAggregateInput
@@ -23289,6 +23438,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ConsumerUnit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"ConsumerUnit"> | Date | string | null
+    validationStatus?: StringWithAggregatesFilter<"ConsumerUnit"> | string
   }
 
   export type CreditAllocationWhereInput = {
@@ -23304,6 +23454,14 @@ export namespace Prisma {
     startsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
     endsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
     isActive?: BoolFilter<"CreditAllocation"> | boolean
+    enelSyncStatus?: StringFilter<"CreditAllocation"> | string
+    requestedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    appliedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    effectiveDate?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    enelProtocol?: StringNullableFilter<"CreditAllocation"> | string | null
+    syncError?: StringNullableFilter<"CreditAllocation"> | string | null
+    requestedByUserId?: StringNullableFilter<"CreditAllocation"> | string | null
+    appliedByUserId?: StringNullableFilter<"CreditAllocation"> | string | null
     createdAt?: DateTimeFilter<"CreditAllocation"> | Date | string
     updatedAt?: DateTimeFilter<"CreditAllocation"> | Date | string
     deletedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
@@ -23323,6 +23481,14 @@ export namespace Prisma {
     startsAt?: SortOrderInput | SortOrder
     endsAt?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    enelSyncStatus?: SortOrder
+    requestedAt?: SortOrderInput | SortOrder
+    appliedAt?: SortOrderInput | SortOrder
+    effectiveDate?: SortOrderInput | SortOrder
+    enelProtocol?: SortOrderInput | SortOrder
+    syncError?: SortOrderInput | SortOrder
+    requestedByUserId?: SortOrderInput | SortOrder
+    appliedByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -23345,6 +23511,14 @@ export namespace Prisma {
     startsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
     endsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
     isActive?: BoolFilter<"CreditAllocation"> | boolean
+    enelSyncStatus?: StringFilter<"CreditAllocation"> | string
+    requestedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    appliedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    effectiveDate?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    enelProtocol?: StringNullableFilter<"CreditAllocation"> | string | null
+    syncError?: StringNullableFilter<"CreditAllocation"> | string | null
+    requestedByUserId?: StringNullableFilter<"CreditAllocation"> | string | null
+    appliedByUserId?: StringNullableFilter<"CreditAllocation"> | string | null
     createdAt?: DateTimeFilter<"CreditAllocation"> | Date | string
     updatedAt?: DateTimeFilter<"CreditAllocation"> | Date | string
     deletedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
@@ -23364,6 +23538,14 @@ export namespace Prisma {
     startsAt?: SortOrderInput | SortOrder
     endsAt?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    enelSyncStatus?: SortOrder
+    requestedAt?: SortOrderInput | SortOrder
+    appliedAt?: SortOrderInput | SortOrder
+    effectiveDate?: SortOrderInput | SortOrder
+    enelProtocol?: SortOrderInput | SortOrder
+    syncError?: SortOrderInput | SortOrder
+    requestedByUserId?: SortOrderInput | SortOrder
+    appliedByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -23387,6 +23569,14 @@ export namespace Prisma {
     startsAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
     endsAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
     isActive?: BoolWithAggregatesFilter<"CreditAllocation"> | boolean
+    enelSyncStatus?: StringWithAggregatesFilter<"CreditAllocation"> | string
+    requestedAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
+    appliedAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
+    effectiveDate?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
+    enelProtocol?: StringNullableWithAggregatesFilter<"CreditAllocation"> | string | null
+    syncError?: StringNullableWithAggregatesFilter<"CreditAllocation"> | string | null
+    requestedByUserId?: StringNullableWithAggregatesFilter<"CreditAllocation"> | string | null
+    appliedByUserId?: StringNullableWithAggregatesFilter<"CreditAllocation"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"CreditAllocation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"CreditAllocation"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"CreditAllocation"> | Date | string | null
@@ -24731,6 +24921,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
@@ -24757,6 +24948,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
@@ -24781,6 +24973,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
@@ -24807,6 +25000,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
@@ -24832,6 +25026,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
   }
 
   export type PlantUpdateManyMutationInput = {
@@ -24852,6 +25047,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type PlantUncheckedUpdateManyInput = {
@@ -24873,6 +25069,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type InverterCreateInput = {
@@ -25135,6 +25332,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -25166,6 +25364,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -25191,6 +25390,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -25222,6 +25422,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -25250,6 +25451,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
   }
 
   export type ConsumerUnitUpdateManyMutationInput = {
@@ -25272,6 +25474,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type ConsumerUnitUncheckedUpdateManyInput = {
@@ -25297,6 +25500,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type CreditAllocationCreateInput = {
@@ -25305,6 +25509,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -25324,6 +25536,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -25335,6 +25555,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -25354,6 +25582,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -25369,6 +25605,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -25380,6 +25624,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -25395,6 +25647,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -27120,6 +27380,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    validationStatus?: SortOrder
   }
 
   export type PlantAvgOrderByAggregateInput = {
@@ -27147,6 +27408,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    validationStatus?: SortOrder
   }
 
   export type PlantMinOrderByAggregateInput = {
@@ -27167,6 +27429,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    validationStatus?: SortOrder
   }
 
   export type PlantSumOrderByAggregateInput = {
@@ -27401,6 +27664,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    validationStatus?: SortOrder
   }
 
   export type ConsumerUnitMaxOrderByAggregateInput = {
@@ -27426,6 +27690,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    validationStatus?: SortOrder
   }
 
   export type ConsumerUnitMinOrderByAggregateInput = {
@@ -27451,6 +27716,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    validationStatus?: SortOrder
   }
 
   export type DecimalFilter<$PrismaModel = never> = {
@@ -27479,6 +27745,14 @@ export namespace Prisma {
     startsAt?: SortOrder
     endsAt?: SortOrder
     isActive?: SortOrder
+    enelSyncStatus?: SortOrder
+    requestedAt?: SortOrder
+    appliedAt?: SortOrder
+    effectiveDate?: SortOrder
+    enelProtocol?: SortOrder
+    syncError?: SortOrder
+    requestedByUserId?: SortOrder
+    appliedByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -27498,6 +27772,14 @@ export namespace Prisma {
     startsAt?: SortOrder
     endsAt?: SortOrder
     isActive?: SortOrder
+    enelSyncStatus?: SortOrder
+    requestedAt?: SortOrder
+    appliedAt?: SortOrder
+    effectiveDate?: SortOrder
+    enelProtocol?: SortOrder
+    syncError?: SortOrder
+    requestedByUserId?: SortOrder
+    appliedByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -27513,6 +27795,14 @@ export namespace Prisma {
     startsAt?: SortOrder
     endsAt?: SortOrder
     isActive?: SortOrder
+    enelSyncStatus?: SortOrder
+    requestedAt?: SortOrder
+    appliedAt?: SortOrder
+    effectiveDate?: SortOrder
+    enelProtocol?: SortOrder
+    syncError?: SortOrder
+    requestedByUserId?: SortOrder
+    appliedByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -30177,6 +30467,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -30206,6 +30497,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -30330,6 +30622,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
+    validationStatus?: StringFilter<"ConsumerUnit"> | string
   }
 
   export type UserCreateWithoutClientInput = {
@@ -30706,6 +30999,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
@@ -30730,6 +31024,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
@@ -30844,6 +31139,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -30873,6 +31169,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -30894,6 +31191,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -30911,6 +31216,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -31264,6 +31577,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Plant"> | Date | string
     updatedAt?: DateTimeFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
+    validationStatus?: StringFilter<"Plant"> | string
   }
 
   export type InverterUpsertWithWhereUniqueWithoutClientInput = {
@@ -31364,6 +31678,14 @@ export namespace Prisma {
     startsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
     endsAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
     isActive?: BoolFilter<"CreditAllocation"> | boolean
+    enelSyncStatus?: StringFilter<"CreditAllocation"> | string
+    requestedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    appliedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    effectiveDate?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
+    enelProtocol?: StringNullableFilter<"CreditAllocation"> | string | null
+    syncError?: StringNullableFilter<"CreditAllocation"> | string | null
+    requestedByUserId?: StringNullableFilter<"CreditAllocation"> | string | null
+    appliedByUserId?: StringNullableFilter<"CreditAllocation"> | string | null
     createdAt?: DateTimeFilter<"CreditAllocation"> | Date | string
     updatedAt?: DateTimeFilter<"CreditAllocation"> | Date | string
     deletedAt?: DateTimeNullableFilter<"CreditAllocation"> | Date | string | null
@@ -31559,6 +31881,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -31588,6 +31911,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -31609,6 +31933,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -31626,6 +31958,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -32011,6 +32351,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutPlantsInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
@@ -32036,6 +32377,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
@@ -32180,6 +32522,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
@@ -32205,6 +32548,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
     energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
@@ -32358,6 +32702,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
@@ -32383,6 +32728,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
@@ -32559,6 +32905,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -32576,6 +32930,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -32597,6 +32959,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -32614,6 +32984,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -32766,6 +33144,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
@@ -32791,6 +33170,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
     energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
@@ -32923,6 +33303,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
@@ -32948,6 +33329,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
@@ -32978,6 +33360,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -33008,6 +33391,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
   }
@@ -33037,6 +33421,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -33067,6 +33452,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
   }
@@ -33172,6 +33558,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
@@ -33197,6 +33584,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
@@ -33233,6 +33621,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -33263,6 +33652,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
   }
@@ -33298,6 +33688,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -33328,6 +33719,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
   }
@@ -34337,6 +34729,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
@@ -34362,6 +34755,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
@@ -34392,6 +34786,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -34422,6 +34817,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
   }
@@ -34527,6 +34923,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
@@ -34552,6 +34949,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
@@ -34588,6 +34986,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -34618,6 +35017,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
   }
@@ -34772,6 +35172,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
   }
 
   export type ConsumerUnitUpdateWithoutPayerUserInput = {
@@ -34794,6 +35195,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -34823,6 +35225,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -34850,6 +35253,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserCreateManyClientInput = {
@@ -35012,6 +35416,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
   }
 
   export type InverterCreateManyClientInput = {
@@ -35069,6 +35474,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
   }
 
   export type CreditAllocationCreateManyClientInput = {
@@ -35080,6 +35486,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -35542,6 +35956,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
@@ -35566,6 +35981,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
@@ -35590,6 +36006,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type InverterUpdateWithoutClientInput = {
@@ -35713,6 +36130,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -35742,6 +36160,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -35769,6 +36188,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type CreditAllocationUpdateWithoutClientInput = {
@@ -35777,6 +36197,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35794,6 +36222,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35808,6 +36244,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35901,6 +36345,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    validationStatus?: string
   }
 
   export type CreditAllocationCreateManyPlantInput = {
@@ -35912,6 +36357,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36113,6 +36566,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -36142,6 +36596,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -36169,6 +36624,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type CreditAllocationUpdateWithoutPlantInput = {
@@ -36177,6 +36633,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36194,6 +36658,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36208,6 +36680,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36578,6 +37058,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36592,6 +37080,14 @@ export namespace Prisma {
     startsAt?: Date | string | null
     endsAt?: Date | string | null
     isActive?: boolean
+    enelSyncStatus?: string
+    requestedAt?: Date | string | null
+    appliedAt?: Date | string | null
+    effectiveDate?: Date | string | null
+    enelProtocol?: string | null
+    syncError?: string | null
+    requestedByUserId?: string | null
+    appliedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36828,6 +37324,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36845,6 +37349,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36859,6 +37371,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36870,6 +37390,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36887,6 +37415,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36901,6 +37437,14 @@ export namespace Prisma {
     startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    enelSyncStatus?: StringFieldUpdateOperationsInput | string
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enelProtocol?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    appliedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

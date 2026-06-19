@@ -9,15 +9,13 @@ export const GetInvertersRequestSchema = z.object({
     clientId: z.string().optional(),
 }).optional();
 
-// Response Schema
+// Response Schema (no credentials — redacted at the API boundary)
 export const GetInvertersResponseSchema = z.object({
     inverters: z.array(z.object({
         id: z.string(),
         name: z.string(),
         provider: z.string(),
         providerId: z.string(),
-        providerApiKey: z.string().optional(),
-        providerApiSecret: z.string().optional(),
         providerUrl: z.string().optional(),
         plantId: z.string().optional(),
         providerPlantId: z.string().optional(),
@@ -84,14 +82,14 @@ export class GetInvertersUseCase {
             }
         }
 
-        // Transform to response format
+        // Transform to response format (credentials redacted — never leak to frontend)
         const responseData = filteredInverters.map(inverter => ({
             id: inverter.id,
             name: inverter.name,
             provider: inverter.provider,
             providerId: inverter.providerId,
-            providerApiKey: inverter.providerApiKey,
-            providerApiSecret: inverter.providerApiSecret,
+            // providerApiKey — redacted
+            // providerApiSecret — redacted
             providerUrl: inverter.providerUrl,
             plantId: inverter.plantId,
             providerPlantId: inverter.providerPlantId,

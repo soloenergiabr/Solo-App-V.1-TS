@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
-import { encrypt } from '@/backend/crypto/encryption';
+import { PrismaInverterRepository } from '@/backend/generation/repositories/implementations/prisma.inverter.repository';
+import { InverterModel } from '@/backend/generation/models/inverter.model';
 import prisma from '@/lib/prisma';
+import { uuid } from '@/lib/uuid';
 
 const inverterSchema = z.object({
     plantId: z.string().min(1),
@@ -15,6 +17,8 @@ const inverterSchema = z.object({
     providerApiSecret: z.string().trim().optional(),
     providerUrl: z.string().trim().optional(),
 });
+
+const inverterRepository = new PrismaInverterRepository(prisma);
 
 const createInverter = async (request: NextRequest) => {
     const userContext = await AuthMiddleware.requireAuth(request);
@@ -29,20 +33,37 @@ const createInverter = async (request: NextRequest) => {
     });
     if (!plant) throw new Error('Usina nao encontrada');
 
-    // Encrypt sensitive credentials before storing
-    const encryptedData: Record<string, unknown> = { ...data };
-    if (data.providerApiKey) {
-        encryptedData.providerApiKey = encrypt(data.providerApiKey);
-    }
-    if (data.providerApiSecret) {
-        encryptedData.providerApiSecret = encrypt(data.providerApiSecret);
-    }
+    // Build inverter model — encryption is handled transparently by the repository
+    const inverter = new InverterModel(
+        uuid(),
+        data.name || `Inversor ${data.provider || ''} ${data.serialNumber || ''}`.trim(),
+        data.provider || 'other',
+        data.providerId || uuid(),
+        data.providerApiKey,
+        data.providerApiSecret,
+        data.providerUrl,
+        clientId,
+        {
+            plantId: data.plantId,
+            serialNumber: data.serialNumber,
+        }
+    );
 
-    const inverter = await prisma.inverter.create({
-        data: encryptedData as typeof data & { plantId: string },
-    });
+    await inverterRepository.create(inverter);
 
-    return NextResponse.json({ success: true, message: 'Inversor adicionado com sucesso', data: inverter }, { status: 201 });
+    // Return success without exposing credentials
+    return NextResponse.json({
+        success: true,
+        message: 'Inversor adicionado com sucesso',
+        data: {
+            id: inverter.id,
+            name: inverter.name,
+            provider: inverter.provider,
+            providerId: inverter.providerId,
+            plantId: inverter.plantId,
+            serialNumber: inverter.serialNumber,
+        },
+    }, { status: 201 });
 };
 
 export const POST = withHandle(createInverter);
