@@ -523,6 +523,7 @@ function PlantAllocationsSection({
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+                </section>
     );
 }
 
