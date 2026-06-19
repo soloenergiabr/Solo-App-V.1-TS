@@ -14,7 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
-import { useRateio, type RateioAllocation } from './hooks/use-rateio';
+import { useRateio, useCreateProposal, type RateioAllocation } from './hooks/use-rateio';
 import { EnelSyncBadge } from './enel-sync-badge';
 import { RateioEditor } from './rateio-editor';
 import { RateioStatusTimeline } from './rateio-status-timeline';
@@ -35,11 +35,18 @@ interface UnitOption {
     id: string;
     name: string | null;
     clientNumber: string | null;
+    plantId: string;
 }
 
 export function RateioScreen() {
     const api = useAuthenticatedApi();
-    const { allocations, isLoading, error, refetch } = useRateio();
+    const {
+        data: allocations,
+        isLoading,
+        error,
+        refetch,
+    } = useRateio();
+    const createProposal = useCreateProposal();
     const [expandedPlantId, setExpandedPlantId] = useState<string | null>(null);
     const [selectedAllocation, setSelectedAllocation] = useState<RateioAllocation | null>(null);
     const [plants, setPlants] = useState<PlantOption[]>([]);
@@ -64,6 +71,7 @@ export function RateioScreen() {
                     id: u.id,
                     name: u.name ?? null,
                     clientNumber: u.clientNumber ?? null,
+                    plantId: u.plantId,
                 }));
                 setGeneratorUnits(units);
                 setConsumerUnits(units);
@@ -110,7 +118,7 @@ export function RateioScreen() {
             {!isLoading && error && (
                 <Alert variant="destructive">
                     <AlertTitle>Erro ao carregar rateios</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
+                    <AlertDescription>{error?.message ?? 'Erro ao carregar rateios'}</AlertDescription>
                 </Alert>
             )}
 

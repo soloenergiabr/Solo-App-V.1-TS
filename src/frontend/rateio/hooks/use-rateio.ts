@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 
 export interface RateioAllocation {
@@ -28,27 +28,40 @@ export interface RateioAllocation {
     to: { id: string; name: string | null; clientNumber: string | null } | null;
 }
 
+export interface ProposalInput {
+    plantId: string;
+    fromId: string;
+    toId: string;
+    allocationPercentage: number;
+    startsAt?: string;
+}
+
 export function useRateio() {
     const api = useAuthenticatedApi();
-    const [allocations, setAllocations] = useState<RateioAllocation[] | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
-    const fetch = () => {
-        if (!api.isAuthenticated) return;
-        setIsLoading(true);
-        api.get('/rateio')
-            .then((res) => {
-                if (res.data.success) setAllocations(res.data.data);
-                else setError(res.data.message || 'Falha ao carregar rateios');
-            })
-            .catch((e) => setError(e?.response?.data?.message || 'Erro ao carregar rateios'))
-            .finally(() => setIsLoading(false));
-    };
+    return useQuery({
+        queryKey: ['rateio'],
+        queryFn: async () => {
+            const res = await api.get('/rateio');
+            if (!res.data.success) throw new Error(res.data.message || 'Falha ao carregar rateios');
+            return res.data.data as RateioAllocation[];
+        },
+        enabled: api.isAuthenticated,
+    });
+}
 
-    useEffect(() => {
-        fetch();
-    }, [api.isAuthenticated]);
+export function useCreateProposal() {
+    const queryClient = useQueryClient();
+    const api = useAuthenticatedApi();
 
-    return { allocations, isLoading, error, refetch: fetch };
+    return useMutation({
+        mutationFn: async (data: ProposalInput) => {
+            const res = await api.post('/rateio/proposals', data);
+            if (!res.data.success) throw new Error(res.data.message || 'Falha ao criar proposta');
+            return res.data.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['rateio'] });
+        },
+    });
 }

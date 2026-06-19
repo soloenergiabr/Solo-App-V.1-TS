@@ -62,6 +62,24 @@ const createProposal = async (request: NextRequest) => {
         },
     });
 
+    // Validate sum of percentages does not exceed 100%
+    const existingAllocations = await prisma.creditAllocation.findMany({
+        where: {
+            clientId: user.clientId,
+            plantId,
+            deletedAt: null,
+            isActive: true,
+            enelSyncStatus: { not: 'failed' },
+        },
+        select: { id: true, allocationPercentage: true },
+    });
+    const existingSum = existingAllocations
+        .filter((a) => a.id !== existing?.id)
+        .reduce((sum, a) => sum + Number(a.allocationPercentage), 0);
+    if (existingSum + allocationPercentage > 100) {
+        throw new Error('A soma dos percentuais de rateio nao pode ultrapassar 100%');
+    }
+
     let allocation;
     if (existing) {
         allocation = await prisma.creditAllocation.update({

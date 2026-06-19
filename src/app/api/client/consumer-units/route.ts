@@ -22,7 +22,14 @@ const listConsumerUnits = async (request: NextRequest) => {
 
     const units = await prisma.consumerUnit.findMany({
         where: { clientId, deletedAt: null },
-        include: {
+        select: {
+            id: true,
+            name: true,
+            clientNumber: true,
+            installationNumber: true,
+            isGenerator: true,
+            isConsumer: true,
+            plantId: true,
             plant: { select: { id: true, name: true } },
         },
         orderBy: [{ name: 'asc' }, { createdAt: 'desc' }],

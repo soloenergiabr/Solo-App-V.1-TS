@@ -33,6 +33,7 @@ interface UnitOption {
     id: string;
     name: string | null;
     clientNumber: string | null;
+    plantId: string;
 }
 
 interface RateioEditorProps {
@@ -55,15 +56,8 @@ export function RateioEditor({ plants, generatorUnits, consumerUnits, onSuccess,
         startsAt: '',
     });
 
-    const filteredGenerators = generatorUnits.filter((u) => {
-        const plant = plants.find((p) => p.id === form.plantId);
-        return plant !== undefined;
-    });
-
-    const filteredConsumers = consumerUnits.filter((u) => {
-        const plant = plants.find((p) => p.id === form.plantId);
-        return plant !== undefined;
-    });
+    const filteredGenerators = generatorUnits.filter((u) => u.plantId === form.plantId);
+    const filteredConsumers = consumerUnits.filter((u) => u.plantId === form.plantId);
 
     const submit = async () => {
         if (!form.plantId || !form.fromId || !form.toId || !form.allocationPercentage) {
