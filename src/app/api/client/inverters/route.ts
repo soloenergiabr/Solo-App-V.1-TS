@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { encrypt } from '@/backend/crypto/encryption';
 import prisma from '@/lib/prisma';
 
 const inverterSchema = z.object({
@@ -10,6 +11,9 @@ const inverterSchema = z.object({
     serialNumber: z.string().trim().optional(),
     provider: z.string().trim().optional(),
     providerId: z.string().trim().optional(),
+    providerApiKey: z.string().trim().optional(),
+    providerApiSecret: z.string().trim().optional(),
+    providerUrl: z.string().trim().optional(),
 });
 
 const createInverter = async (request: NextRequest) => {
@@ -25,11 +29,17 @@ const createInverter = async (request: NextRequest) => {
     });
     if (!plant) throw new Error('Usina nao encontrada');
 
+    // Encrypt sensitive credentials before storing
+    const encryptedData: Record<string, unknown> = { ...data };
+    if (data.providerApiKey) {
+        encryptedData.providerApiKey = encrypt(data.providerApiKey);
+    }
+    if (data.providerApiSecret) {
+        encryptedData.providerApiSecret = encrypt(data.providerApiSecret);
+    }
+
     const inverter = await prisma.inverter.create({
-        data: {
-            ...data,
-            plantId: data.plantId,
-        },
+        data: encryptedData as typeof data & { plantId: string },
     });
 
     return NextResponse.json({ success: true, message: 'Inversor adicionado com sucesso', data: inverter }, { status: 201 });
