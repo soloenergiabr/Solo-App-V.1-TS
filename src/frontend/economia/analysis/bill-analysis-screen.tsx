@@ -1,6 +1,7 @@
 'use client'
 
-import { FileText, ChevronLeft } from 'lucide-react'
+import { useState } from 'react'
+import { FileText, ChevronLeft, CheckCircle2, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -109,7 +110,35 @@ export function BillAnalysisScreen({
         )
     }
 
-    const badge = statusToBadge(resolveBillStatus(bill))
+    const [isConfirming, setIsConfirming] = useState(false)
+    const [confirmError, setConfirmError] = useState<string | null>(null)
+    const [confirmedPaidAt, setConfirmedPaidAt] = useState<string | null>(null)
+
+    // Allow local override once payment is confirmed in this session
+    const effectivePaymentStatus = confirmedPaidAt ? 'paga' : bill.paymentStatus
+    const effectivePaidAt = confirmedPaidAt ?? bill.paidAt
+
+    async function handleConfirmPayment() {
+        setIsConfirming(true)
+        setConfirmError(null)
+        try {
+            const res = await fetch(`/api/economia/bills/${bill.id}/confirm-payment`, {
+                method: 'POST',
+            })
+            const json = await res.json()
+            if (!res.ok || !json.success) {
+                setConfirmError(json.message ?? 'Falha ao confirmar pagamento')
+                return
+            }
+            setConfirmedPaidAt(json.data.paidAt ?? new Date().toISOString())
+        } catch (err) {
+            setConfirmError(err instanceof Error ? err.message : 'Erro inesperado')
+        } finally {
+            setIsConfirming(false)
+        }
+    }
+
+    const badge = statusToBadge(resolveBillStatus({ ...bill, paymentStatus: effectivePaymentStatus, paidAt: effectivePaidAt }))
     const refLabel = `${monthName(bill.referenceMonth)}/${bill.referenceYear}`
     const hasAiContent = bill.aiAnalysis || bill.aiExplanations || bill.alerts || bill.aiRecommendations
 
@@ -169,7 +198,7 @@ export function BillAnalysisScreen({
                 </div>
 
                 {/* Payment box */}
-                {(bill.pixCode || bill.barcode) && (
+                {(bill.pixCode || bill.barcode) && effectivePaymentStatus !== 'paga' && (
                     <div className="rounded-2xl border bg-card p-4 space-y-3">
                         <h3 className="font-display text-sm font-semibold text-foreground">Pagamento</h3>
                         <div className="flex flex-wrap gap-2">
@@ -184,6 +213,54 @@ export function BillAnalysisScreen({
                                 </Button>
                             )}
                         </div>
+                    </div>
+                )}
+
+                {/* Confirm payment button */}
+                {effectivePaymentStatus !== 'paga' && (
+                    <div className="rounded-2xl border bg-card p-4 space-y-3">
+                        <h3 className="font-display text-sm font-semibold text-foreground">Confirmar Pagamento</h3>
+                        <p className="text-xs text-muted-foreground">
+                            Ja pagou esta fatura? Confirme aqui para atualizar o status.
+                        </p>
+                        {confirmError && (
+                            <Alert variant="destructive" className="py-2">
+                                <AlertDescription className="text-xs">{confirmError}</AlertDescription>
+                            </Alert>
+                        )}
+                        <Button
+                            onClick={handleConfirmPayment}
+                            disabled={isConfirming}
+                            size="sm"
+                            variant="default"
+                        >
+                            {isConfirming ? (
+                                <>
+                                    <Loader2 className="size-4 animate-spin" />
+                                    Confirmando...
+                                </>
+                            ) : (
+                                <>
+                                    <CheckCircle2 className="size-4" />
+                                    Confirmar Pagamento
+                                </>
+                            )}
+                        </Button>
+                    </div>
+                )}
+
+                {/* Paid badge */}
+                {effectivePaymentStatus === 'paga' && (
+                    <div className="rounded-2xl border bg-success/10 border-success/20 p-4 space-y-2">
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="size-5 text-success" />
+                            <span className="font-display text-sm font-semibold text-success">Paga</span>
+                        </div>
+                        {effectivePaidAt && (
+                            <p className="text-xs text-muted-foreground">
+                                Paga em {new Date(effectivePaidAt).toLocaleDateString('pt-BR')}
+                            </p>
+                        )}
                     </div>
                 )}
 
