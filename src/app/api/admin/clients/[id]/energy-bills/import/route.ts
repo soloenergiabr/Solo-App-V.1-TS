@@ -239,7 +239,7 @@ Use null quando não encontrar um campo. Use números sem símbolo de moeda. Dat
         billingItems: extracted.billingItems ?? Prisma.JsonNull,
         creditSummary: extracted.creditSummary ?? Prisma.JsonNull,
         billScore: numberOrNull(extracted.billScore),
-        status: 'needs_review',
+        status: 'pending_review',
     };
 
     const bill = await prisma.energyBill.upsert({

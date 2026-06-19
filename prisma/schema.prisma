@@ -255,6 +255,15 @@ model CreditAllocation {
   endsAt               DateTime?
   isActive             Boolean   @default(true)
 
+  enelSyncStatus   String    @default("draft")
+  requestedAt      DateTime?
+  appliedAt        DateTime?
+  effectiveDate    DateTime? @db.Date
+  enelProtocol     String?
+  syncError        String?
+  requestedByUserId String?
+  appliedByUserId  String?
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
@@ -266,6 +275,7 @@ model CreditAllocation {
   @@index([clientId, plantId])
   @@index([clientId, isActive])
   @@index([fromId, toId])
+  @@index([enelSyncStatus])
   @@map("credit_allocation")
 }
 
