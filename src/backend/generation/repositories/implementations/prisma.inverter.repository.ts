@@ -1,19 +1,27 @@
 import { Prisma, PrismaClient } from "@/app/generated/prisma";
 import { InverterModel } from "../../models/inverter.model";
 import { InverterRepository } from "../inverter.repository";
+import { encrypt, decrypt, isEncrypted } from "@/backend/crypto/encryption";
 
 export class PrismaInverterRepository implements InverterRepository {
     constructor(private prisma: PrismaClient) { }
 
     async create(inverter: InverterModel): Promise<void> {
+        const encryptedApiKey = inverter.providerApiKey
+            ? (isEncrypted(inverter.providerApiKey) ? inverter.providerApiKey : encrypt(inverter.providerApiKey))
+            : undefined;
+        const encryptedApiSecret = inverter.providerApiSecret
+            ? (isEncrypted(inverter.providerApiSecret) ? inverter.providerApiSecret : encrypt(inverter.providerApiSecret))
+            : undefined;
+
         await this.prisma.inverter.create({
             data: {
                 id: inverter.id,
                 name: inverter.name,
                 provider: inverter.provider,
                 providerId: inverter.providerId,
-                providerApiKey: inverter.providerApiKey,
-                providerApiSecret: inverter.providerApiSecret,
+                providerApiKey: encryptedApiKey,
+                providerApiSecret: encryptedApiSecret,
                 providerUrl: inverter.providerUrl,
                 providerPlantId: inverter.providerPlantId,
                 providerPlantName: inverter.providerPlantName,
@@ -77,6 +85,13 @@ export class PrismaInverterRepository implements InverterRepository {
             throw new Error("Inverter not found");
         }
 
+        const encryptedApiKey = inverterModel.providerApiKey
+            ? (isEncrypted(inverterModel.providerApiKey) ? inverterModel.providerApiKey : encrypt(inverterModel.providerApiKey))
+            : undefined;
+        const encryptedApiSecret = inverterModel.providerApiSecret
+            ? (isEncrypted(inverterModel.providerApiSecret) ? inverterModel.providerApiSecret : encrypt(inverterModel.providerApiSecret))
+            : undefined;
+
         await this.prisma.inverter.update({
             where: {
                 id: inverterModel.id,
@@ -85,8 +100,8 @@ export class PrismaInverterRepository implements InverterRepository {
                 name: inverterModel.name,
                 provider: inverterModel.provider,
                 providerId: inverterModel.providerId,
-                providerApiKey: inverterModel.providerApiKey,
-                providerApiSecret: inverterModel.providerApiSecret,
+                providerApiKey: encryptedApiKey,
+                providerApiSecret: encryptedApiSecret,
                 providerUrl: inverterModel.providerUrl,
                 providerPlantId: inverterModel.providerPlantId,
                 providerPlantName: inverterModel.providerPlantName,
@@ -148,13 +163,20 @@ export class PrismaInverterRepository implements InverterRepository {
     }
 
     private toModel(inverter: Prisma.InverterGetPayload<{}>): InverterModel {
+        const decryptedApiKey = inverter.providerApiKey
+            ? (isEncrypted(inverter.providerApiKey) ? decrypt(inverter.providerApiKey) : inverter.providerApiKey)
+            : undefined;
+        const decryptedApiSecret = inverter.providerApiSecret
+            ? (isEncrypted(inverter.providerApiSecret) ? decrypt(inverter.providerApiSecret) : inverter.providerApiSecret)
+            : undefined;
+
         return new InverterModel(
             inverter.id,
             inverter.name || inverter.provider,
             inverter.provider,
             inverter.providerId,
-            inverter.providerApiKey || undefined,
-            inverter.providerApiSecret || undefined,
+            decryptedApiKey,
+            decryptedApiSecret,
             inverter.providerUrl || undefined,
             inverter.clientId || undefined,
             {

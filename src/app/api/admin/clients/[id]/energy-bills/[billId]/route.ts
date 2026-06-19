@@ -4,6 +4,7 @@ import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { Prisma } from '@/app/generated/prisma';
 import prisma from '@/lib/prisma';
+import { EnergyBillStatus } from '@/shared/economia/types';
 
 const optionalNumber = z.coerce.number().optional().nullable();
 const optionalDate = z.coerce.date().optional().nullable();
@@ -71,7 +72,7 @@ const energyBillUpdateSchema = z.object({
     billingItems: z.unknown().optional().nullable(),
     creditSummary: z.unknown().optional().nullable(),
     billScore: optionalNumber,
-    status: z.string().optional().nullable(),
+    status: z.enum(['draft', 'pending_review', 'confirmed', 'paid', 'rejected']).optional().nullable(),
     // Payment / Contas a pagar
     paymentStatus: z.enum(['a_pagar', 'paga', 'vencida']).optional(),
     dueDate: optionalDate,

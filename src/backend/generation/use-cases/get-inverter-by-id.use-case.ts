@@ -8,15 +8,13 @@ export const GetInverterByIdRequestSchema = z.object({
     inverterId: z.string().min(1, "Inverter ID is required"),
 });
 
-// Response Schema
+// Response Schema (no credentials — redacted at the API boundary)
 export const GetInverterByIdResponseSchema = z.object({
     inverter: z.object({
         id: z.string(),
         name: z.string(),
         provider: z.string(),
         providerId: z.string(),
-        providerApiKey: z.string().optional(),
-        providerApiSecret: z.string().optional(),
         providerUrl: z.string().optional(),
         plantId: z.string().optional(),
         providerPlantId: z.string().optional(),
@@ -71,15 +69,15 @@ export class GetInverterByIdUseCase {
             }
         }
 
-        // Transform to response format
+        // Transform to response format (credentials redacted — never leak to frontend)
         return GetInverterByIdResponseSchema.parse({
             inverter: {
                 id: inverter.id,
                 name: inverter.name,
                 provider: inverter.provider,
                 providerId: inverter.providerId,
-                providerApiKey: inverter.providerApiKey,
-                providerApiSecret: inverter.providerApiSecret,
+                // providerApiKey — redacted
+                // providerApiSecret — redacted
                 providerUrl: inverter.providerUrl,
                 plantId: inverter.plantId,
                 providerPlantId: inverter.providerPlantId,

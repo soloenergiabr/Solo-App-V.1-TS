@@ -62,5 +62,29 @@ const deleteConsumerUnit = async (
     return NextResponse.json({ success: true, message: 'Unidade consumidora removida com sucesso' });
 };
 
+const validationSchema = z.object({
+    validationStatus: z.enum(['confirmed', 'rejected']),
+});
+
+const validateConsumerUnit = async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string; unitId: string }> }
+) => {
+    await AuthMiddleware.extractUserContext(request);
+    const { id: clientId, unitId } = await params;
+    const { validationStatus } = validationSchema.parse(await request.json());
+
+    const existing = await prisma.consumerUnit.findFirst({ where: { id: unitId, clientId, deletedAt: null } });
+    if (!existing) throw new Error('Unidade consumidora not found');
+
+    const unit = await prisma.consumerUnit.update({
+        where: { id: unitId },
+        data: { validationStatus },
+    });
+
+    return NextResponse.json({ success: true, message: 'Status de validacao atualizado', data: unit });
+};
+
 export const PUT = withHandle(updateConsumerUnit);
 export const DELETE = withHandle(deleteConsumerUnit);
+export const PATCH = withHandle(validateConsumerUnit);

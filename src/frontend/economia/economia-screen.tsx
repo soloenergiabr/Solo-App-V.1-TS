@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useEconomia } from './hooks/use-economia'
 import { aggregateEconomy } from './lib/aggregate'
 import { ContasAPagar } from './components/contas-a-pagar'
@@ -11,7 +11,8 @@ import { CostBreakdown } from './components/cost-breakdown'
 import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { AccountBill } from '@/shared/controle/types'
+import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi'
+import type { AccountBill, RateioSlice } from '@/shared/controle/types'
 
 type Tab = 'consolidado' | 'por-conta'
 
@@ -22,6 +23,29 @@ export function EconomiaScreen() {
     const [selectedId, setSelectedId] = useState<string | null>(null)
 
     const { bills, isLoading, error } = useEconomia({ year })
+
+    const api = useAuthenticatedApi()
+    const [rateioSlices, setRateioSlices] = useState<RateioSlice[]>([])
+
+    useEffect(() => {
+        if (!api.isAuthenticated) return
+        api.get('/rateio')
+            .then((res) => {
+                if (!res.data.success) return
+                const allocations = res.data.data as any[]
+                const slices: RateioSlice[] = allocations
+                    .filter((a: any) => a.isActive && a.enelSyncStatus !== 'draft')
+                    .map((a: any) => ({
+                        toUnitId: a.toId,
+                        toUnitName: a.to?.name ?? a.toId,
+                        percentage: Number(a.allocationPercentage),
+                    }))
+                setRateioSlices(slices)
+            })
+            .catch(() => {
+                // non-critical, silently ignore
+            })
+    }, [api.isAuthenticated])
 
     const consolidated = aggregateEconomy(bills ?? [])
     const selected: AccountBill | undefined =
@@ -96,8 +120,8 @@ export function EconomiaScreen() {
                     {tab === 'consolidado' && (
                         <div className="space-y-3">
                             <ConsolidadoSummary data={consolidated} />
-                            {/* TODO: wire rateio slices from credit-allocations */}
-                            <RateioBar slices={[]} />
+                            {/* Wire rateio slices from credit-allocations */}
+                            <RateioBar slices={rateioSlices} />
                         </div>
                     )}
 

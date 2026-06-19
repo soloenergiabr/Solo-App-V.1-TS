@@ -1,0 +1,36 @@
+# 💰 Project Billing & Spending Tracker
+
+Tracks the cost of AI agents across sprints. **No token math, no dashboards** —
+every task is a flat tier, the tier sets the price.
+
+## 📋 How to log (Engineers)
+
+When you finish a task, add **one row** to the ledger below with your task's
+tier letter. The R$ comes from the table — you don't calculate anything.
+
+## 🎚️ Tier Price Table
+
+| Tier   | Typical work                                                 | Est. R$ |
+| :----- | :----------------------------------------------------------- | :------ |
+| **S**  | Copy edits, column deletes, mask audits, merges, doc updates | R$ 5    |
+| **M**  | One hook, one focused component change                       | R$ 12   |
+| **L**  | Hook + integration across several files                      | R$ 20   |
+| **XL** | Cross-cutting / architecture / atomic transactions           | R$ 28   |
+
+_Calibrated from real Sprint 4 / 5.5 history. Recalibrate the four numbers
+anytime — nothing else changes. (Flat tiers slightly overstate cost when a cheap
+model does an S task; that's intentional and conservative.)_
+
+## 💸 Cost Ledger
+
+| Date | Sprint | Task | Agent / Model | Tier | Est. R$ |
+| :--- | :----- | :--- | :------------ | :--- | :------ |
+| 2026-06-18 | Sprint 3 | Wave 1 - Data Contracts | claude (haiku) | M | R$ 12 |
+| 2026-06-18 | Sprint 3 | Wave 2 - Bill Analyzer | claude (sonnet) | L | R$ 20 |
+| 2026-06-19 | Sprint 3 | Wave 3 - Analise da Conta | claude (sonnet) | L | R$ 20 |
+| 2026-06-19 | Sprint 3 | Wave 4 - Upload & Validation | claude (sonnet) | L | R$ 20 |
+| 2026-06-19 | Sprint 3.1 | A1 - Remove stray dir | claude (haiku) | S | R$ 5 |
+| 2026-06-19 | Sprint 3.1 | A2 - Rateio migration | claude (sonnet) | M | R$ 12 |
+| 2026-06-19 | Sprint 3.1 | B1 - Inverter encryption fix | claude (sonnet) | L | R$ 20 |
+| 2026-06-19 | Sprint 3.1 | C1 - Validation status | claude (sonnet) | L | R$ 20 |
+| 2026-06-19 | Sprint 3.1 | D1 - Rateio UI polish | claude (haiku) | S | R$ 5 |

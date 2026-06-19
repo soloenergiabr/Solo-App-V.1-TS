@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import { formatBRL } from '@/frontend/telemetry-kit'
 import type { AccountBill } from '@/shared/controle/types'
 
@@ -46,6 +48,11 @@ export function CostBreakdown({ bill, className }: { bill: AccountBill; classNam
             {bill.aiAnalysis && (
                 <p className="rounded-lg bg-muted/50 p-2 text-xs text-muted-foreground">IA: {bill.aiAnalysis}</p>
             )}
+            <Link href={`/economia/${bill.id}`}>
+                <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+                    Ver analise completa &rarr;
+                </Button>
+            </Link>
         </div>
     )
 }

@@ -26,6 +26,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -342,8 +343,19 @@ function PlantAllocationsSection({
     const allocationMutations = useAdminCreditAllocations(clientId);
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState({ fromId: '', toId: '', allocationPercentage: '', startsAt: '', endsAt: '', isActive: true });
+    const [applyDialog, setApplyDialog] = useState<{ allocation: AdminCreditAllocation } | null>(null);
+    const [applyForm, setApplyForm] = useState({ enelSyncStatus: 'applied' as 'applied' | 'failed', effectiveDate: '', enelProtocol: '', syncError: '' });
     const generatorUnits = units.filter(unit => unit.isGenerator);
     const consumerUnits = units.filter(unit => unit.isConsumer);
+    const enelSyncBadge = (status: string | null | undefined) => {
+        switch (status) {
+            case 'draft': return <Badge variant="outline" className="bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">Rascunho</Badge>;
+            case 'pending_push': return <Badge variant="outline" className="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Pendente</Badge>;
+            case 'applied': return <Badge variant="outline" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Aplicado</Badge>;
+            case 'failed': return <Badge variant="outline" className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">Falhou</Badge>;
+            default: return <Badge variant="secondary">-</Badge>;
+        }
+    };
 
     const submit = async () => {
         try {
@@ -371,6 +383,26 @@ function PlantAllocationsSection({
             toast.success('Rateio removido');
         } catch (error: unknown) {
             toast.error(errorMessage(error, 'Erro ao remover rateio'));
+        }
+    };
+
+    const applySubmit = async () => {
+        if (!applyDialog) return;
+        try {
+            await allocationMutations.apply.mutateAsync({
+                id: applyDialog.allocation.id,
+                data: {
+                    enelSyncStatus: applyForm.enelSyncStatus,
+                    effectiveDate: applyForm.effectiveDate || undefined,
+                    enelProtocol: applyForm.enelProtocol || undefined,
+                    syncError: applyForm.syncError || undefined,
+                },
+            });
+            toast.success('Rateio aplicado com sucesso');
+            setApplyDialog(null);
+            setApplyForm({ enelSyncStatus: 'applied', effectiveDate: '', enelProtocol: '', syncError: '' });
+        } catch (error: unknown) {
+            toast.error(errorMessage(error, 'Erro ao aplicar rateio'));
         }
     };
 
@@ -418,6 +450,7 @@ function PlantAllocationsSection({
                             <TableHead>Destino</TableHead>
                             <TableHead>Percentual</TableHead>
                             <TableHead>Status</TableHead>
+                            <TableHead>Sync</TableHead>
                             <TableHead className="text-right">Ações</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -428,17 +461,69 @@ function PlantAllocationsSection({
                                 <TableCell>{allocation.to?.name || allocation.to?.clientNumber || allocation.toId}</TableCell>
                                 <TableCell><AllocationPercentCell allocation={allocation} mutations={allocationMutations} /></TableCell>
                                 <TableCell><Badge variant={allocation.isActive ? 'default' : 'secondary'}>{allocation.isActive ? 'Ativo' : 'Inativo'}</Badge></TableCell>
+                                <TableCell>{enelSyncBadge(allocation.enelSyncStatus)}</TableCell>
                                 <TableCell className="text-right">
-                                    <Button variant="ghost" size="icon" onClick={() => remove(allocation)}>
-                                        <Trash2 className="h-4 w-4 text-destructive" />
-                                    </Button>
+                                    <div className="flex items-center justify-end gap-1">
+                                        {(allocation.enelSyncStatus === 'pending_push' || !allocation.enelSyncStatus || allocation.enelSyncStatus === 'draft') && (
+                                            <Button variant="outline" size="sm" onClick={() => { setApplyDialog({ allocation }); setApplyForm({ enelSyncStatus: 'applied', effectiveDate: '', enelProtocol: '', syncError: '' }); }}>
+                                                Aplicar
+                                            </Button>
+                                        )}
+                                        <Button variant="ghost" size="icon" onClick={() => remove(allocation)}>
+                                            <Trash2 className="h-4 w-4 text-destructive" />
+                                        </Button>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             )}
-        </section>
+
+            {/* Apply dialog */}
+            <Dialog open={applyDialog !== null} onOpenChange={(open) => { if (!open) setApplyDialog(null); }}>
+                <DialogContent className="sm:max-w-[500px]">
+                    <DialogHeader>
+                        <DialogTitle>Aplicar rateio na distribuidora</DialogTitle>
+                        <DialogDescription>
+                            Confirme a aplicacao do rateio junto a Enel. Selecione o status e preencha os detalhes.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label>Status</Label>
+                            <Select value={applyForm.enelSyncStatus} onValueChange={(value: 'applied' | 'failed') => setApplyForm(prev => ({ ...prev, enelSyncStatus: value }))}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="applied">Aplicado</SelectItem>
+                                    <SelectItem value="failed">Falhou</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Data de efetivacao (opcional)</Label>
+                            <Input type="date" value={applyForm.effectiveDate} onChange={(e) => setApplyForm(prev => ({ ...prev, effectiveDate: e.target.value }))} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Protocolo Enel (opcional)</Label>
+                            <Input value={applyForm.enelProtocol} onChange={(e) => setApplyForm(prev => ({ ...prev, enelProtocol: e.target.value }))} placeholder="Ex: ENEL-123456" />
+                        </div>
+                        {applyForm.enelSyncStatus === 'failed' && (
+                            <div className="space-y-2">
+                                <Label>Erro</Label>
+                                <Input value={applyForm.syncError} onChange={(e) => setApplyForm(prev => ({ ...prev, syncError: e.target.value }))} placeholder="Descreva o motivo da falha" />
+                            </div>
+                        )}
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setApplyDialog(null)}>Cancelar</Button>
+                        <Button onClick={applySubmit} disabled={allocationMutations.apply?.isPending}>Confirmar</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+                </section>
     );
 }
 

@@ -127,9 +127,10 @@ model Plant {
   creditAllocations CreditAllocation[]
   energyBills       EnergyBill[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+  validationStatus String    @default("pending_review")
 
   @@index([clientId])
   @@index([providerPlantId])
@@ -209,9 +210,9 @@ model ConsumerUnit {
   status             String?
 
   // Payer (scoped login who pays this UC)
-  payerName  String?
-  payerEmail String?
-  payerPhone String?
+  payerName   String?
+  payerEmail  String?
+  payerPhone  String?
   payerUser   User?   @relation("PayerUnits", fields: [payerUserId], references: [id])
   payerUserId String?
 
@@ -223,9 +224,10 @@ model ConsumerUnit {
   allocationsFrom CreditAllocation[] @relation("CreditAllocationFrom")
   allocationsTo   CreditAllocation[] @relation("CreditAllocationTo")
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+  validationStatus String    @default("pending_review")
 
   @@index([clientId])
   @@index([plantId])
@@ -255,6 +257,15 @@ model CreditAllocation {
   endsAt               DateTime?
   isActive             Boolean   @default(true)
 
+  enelSyncStatus    String    @default("draft")
+  requestedAt       DateTime?
+  appliedAt         DateTime?
+  effectiveDate     DateTime? @db.Date
+  enelProtocol      String?
+  syncError         String?
+  requestedByUserId String?
+  appliedByUserId   String?
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
@@ -266,6 +277,7 @@ model CreditAllocation {
   @@index([clientId, plantId])
   @@index([clientId, isActive])
   @@index([fromId, toId])
+  @@index([enelSyncStatus])
   @@map("credit_allocation")
 }
 
@@ -554,10 +566,10 @@ model Investment {
   client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
 
-  totalInvested   Decimal   @db.Decimal(14, 2)
-  startDate       DateTime  @db.Date
-  expectedPayoff  DateTime? @db.Date
-  monthlyReturn   Decimal?  @db.Decimal(14, 2) // optional override; else derived from bills savings
+  totalInvested  Decimal   @db.Decimal(14, 2)
+  startDate      DateTime  @db.Date
+  expectedPayoff DateTime? @db.Date
+  monthlyReturn  Decimal?  @db.Decimal(14, 2) // optional override; else derived from bills savings
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

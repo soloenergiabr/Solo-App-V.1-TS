@@ -170,7 +170,8 @@ exports.Prisma.PlantScalarFieldEnum = {
   providerMetadata: 'providerMetadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  validationStatus: 'validationStatus'
 };
 
 exports.Prisma.InverterScalarFieldEnum = {
@@ -229,7 +230,8 @@ exports.Prisma.ConsumerUnitScalarFieldEnum = {
   plantId: 'plantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  validationStatus: 'validationStatus'
 };
 
 exports.Prisma.CreditAllocationScalarFieldEnum = {
@@ -242,6 +244,14 @@ exports.Prisma.CreditAllocationScalarFieldEnum = {
   startsAt: 'startsAt',
   endsAt: 'endsAt',
   isActive: 'isActive',
+  enelSyncStatus: 'enelSyncStatus',
+  requestedAt: 'requestedAt',
+  appliedAt: 'appliedAt',
+  effectiveDate: 'effectiveDate',
+  enelProtocol: 'enelProtocol',
+  syncError: 'syncError',
+  requestedByUserId: 'requestedByUserId',
+  appliedByUserId: 'appliedByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
