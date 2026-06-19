@@ -2,6 +2,7 @@
 
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
 import { useControleOverview } from '@/frontend/controle/hooks/use-controle-overview';
+import { CockpitSummary } from '@/frontend/controle/cockpit-summary';
 import { LifetimeStrip } from '@/frontend/controle/components/lifetime-strip';
 import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -46,6 +47,9 @@ function ControlePage() {
         >
             <div className="flex-1 overflow-y-auto">
                 <div className="space-y-4">
+                    {/* Cockpit Summary */}
+                    <CockpitSummary />
+
                     {/* Loading State */}
                     {isLoading && !overview ? (
                         <div className="space-y-4">
