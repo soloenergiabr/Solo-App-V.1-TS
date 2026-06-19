@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 /src/app/generated/prisma
+
+# local dev/build artifacts
+dev-server*.log
+*.log
+*.bak

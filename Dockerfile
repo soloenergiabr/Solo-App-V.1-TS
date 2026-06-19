@@ -36,7 +36,8 @@ FROM base AS runner
 WORKDIR /app
 
 # Instalar dependências necessárias para runtime
-RUN apk add --no-cache netcat-openbsd
+# bash incluído para comandos exec do Dokploy (terminal/hooks); a imagem alpine só traz sh por padrão
+RUN apk add --no-cache netcat-openbsd bash
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
