@@ -131,12 +131,12 @@ CREATE INDEX "credit_allocation_enelSyncStatus_idx" ON "public"."credit_allocati
 **Goal:** encryption must be transparent at the data-access boundary. Encrypt on **every** write; decrypt on **every** read that feeds provider calls; legacy plaintext rows must keep working.
 
 **Required design (present this as your plan for PM approval before coding):**
-- [ ] Centralize crypto at the **repository layer** (`PrismaInverterRepository`), not in individual routes — encrypt `providerApiKey`/`providerApiSecret` in `create`/`update`; decrypt in every read (`findById`, `findMany`, the model mappers at `prisma.inverter.repository.ts:15-16,88-89,156-157`).
-- [ ] Use the existing `isEncrypted()` / a `tryDecrypt()` guard so pre-existing **plaintext** rows pass through unchanged (no DB backfill required for v1).
-- [ ] Remove the duplicate ad-hoc `encrypt()` call from `src/app/api/client/inverters/route.ts` once the repository owns it (avoid double-encryption).
-- [ ] Either wire `src/backend/inverters/inverter.service.ts` into the read path or delete it — no orphan decrypt helpers.
-- [ ] **Round-trip integration test** (the acceptance proof): save an inverter with a known key via the repository → read it back via the generation read path → assert the **plaintext** credential is what reaches the provider repository (`this.data.providerApiKey`). Add a second test asserting a legacy plaintext row still reads correctly.
-- [ ] Confirm secrets are never returned to the frontend (admin/generation GET responses must not leak decrypted creds — redact).
+- [x] Centralize crypto at the **repository layer** (`PrismaInverterRepository`), not in individual routes — encrypt `providerApiKey`/`providerApiSecret` in `create`/`update`; decrypt in every read (`findById`, `findMany`, the model mappers at `prisma.inverter.repository.ts:15-16,88-89,156-157`).
+- [x] Use the existing `isEncrypted()` / a `tryDecrypt()` guard so pre-existing **plaintext** rows pass through unchanged (no DB backfill required for v1).
+- [x] Remove the duplicate ad-hoc `encrypt()` call from `src/app/api/client/inverters/route.ts` once the repository owns it (avoid double-encryption).
+- [x] Either wire `src/backend/inverters/inverter.service.ts` into the read path or delete it — no orphan decrypt helpers.
+- [x] **Round-trip integration test** (the acceptance proof): save an inverter with a known key via the repository → read it back via the generation read path → assert the **plaintext** credential is what reaches the provider repository (`this.data.providerApiKey`). Add a second test asserting a legacy plaintext row still reads correctly.
+- [x] Confirm secrets are never returned to the frontend (admin/generation GET responses must not leak decrypted creds — redact).
 
 **Owns:**
 - `src/backend/generation/repositories/implementations/prisma.inverter.repository.ts`
@@ -157,12 +157,12 @@ CREATE INDEX "credit_allocation_enelSyncStatus_idx" ON "public"."credit_allocati
 **Goal:** client-created plants/consumer-units land in a pending state; Solo/admin approves before they count as active.
 
 **Required design (present for PM approval before coding):**
-- [ ] Add a validation status to `Plant` and `ConsumerUnit` — string field, e.g. `validationStatus String @default("pending_review")` (mirror the bill lifecycle string-union pattern in `src/shared/economia/types.ts`; avoid an enum to dodge migration risk). Client-created records → `pending_review`; admin-created → `confirmed`.
-- [ ] **Prepare a second migration** for these columns following A2's method (hand-authored `migration.sql`, **not applied locally**).
-- [ ] Client plant/consumer-unit POST routes set `pending_review`.
-- [ ] Admin approval action (reuse an existing admin route if one fits; otherwise add a minimal `PATCH` to set `confirmed`/`rejected`).
-- [ ] Cockpit/admin surfaces the pending count (the cockpit summary already aggregates — extend it).
-- [ ] Tests: client create → `pending_review`; admin approve → `confirmed`; pending records excluded from "active" aggregates.
+- [x] Add a validation status to `Plant` and `ConsumerUnit` — string field, e.g. `validationStatus String @default("pending_review")` (mirror the bill lifecycle string-union pattern in `src/shared/economia/types.ts`; avoid an enum to dodge migration risk). Client-created records → `pending_review`; admin-created → `confirmed`.
+- [x] **Prepare a second migration** for these columns following A2's method (hand-authored `migration.sql`, **not applied locally**).
+- [x] Client plant/consumer-unit POST routes set `pending_review`.
+- [x] Admin approval action (reuse an existing admin route if one fits; otherwise add a minimal `PATCH` to set `confirmed`/`rejected`).
+- [x] Cockpit/admin surfaces the pending count (the cockpit summary already aggregates — extend it).
+- [x] Tests: client create → `pending_review`; admin approve → `confirmed`; pending records excluded from "active" aggregates.
 
 **Owns:** `prisma/schema.prisma` (Plant + ConsumerUnit), the new migration folder, `src/app/api/client/plants/route.ts`, `src/app/api/client/consumer-units/route.ts`, the admin approval route, `src/app/api/controle/summary/route.ts`, related tests.
 **Depends on:** A2 merged (establishes the prepared-migration pattern).
@@ -195,10 +195,10 @@ Wave 5 spec listed `POST /api/plants/[plantId]/inverters/test-sync` and a green/
 
 ## 5. Definition of Done — Sprint 3.1
 
-- [ ] A1: stray dir gone; `npm run build` clean.
-- [ ] A2: rateio migration committed, **not applied locally**; documented `prisma migrate deploy` for the VPS.
-- [ ] B1: all inverter write paths encrypt; generation read path decrypts; round-trip + legacy tests pass; no secret leaks to frontend.
-- [ ] C1: client-proposed plants/consumer-units are `pending_review` until Solo approves; second migration prepared.
+- [x] A1: stray dir gone; `npm run build` clean.
+- [x] A2: rateio migration committed, **not applied locally**; documented `prisma migrate deploy` for the VPS.
+- [x] B1: all inverter write paths encrypt; generation read path decrypts; round-trip + legacy tests pass; no secret leaks to frontend.
+- [x] C1: client-proposed plants/consumer-units are `pending_review` until Solo approves; second migration prepared.
 - [ ] D1: rateio UI minors resolved; lint clean.
 - [ ] No new build/type errors; targeted vitest suites green.
 - [ ] One billing row per task in `scripts/Planning/billing.md`.
