@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { encrypt, decrypt, isEncrypted } from '@/backend/crypto/encryption';
 
+// Ensure APP_ENCRYPTION_KEY is set for tests
+process.env.APP_ENCRYPTION_KEY = 'dev-encryption-key-change-in-production-min-32-chars';
+
 describe('Inverter encryption integration', () => {
     it('encrypts credentials before storage (verifiable via isEncrypted)', () => {
         const plaintext = 'my-api-key-12345';
