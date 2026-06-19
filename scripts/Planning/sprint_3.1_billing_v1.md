@@ -175,12 +175,12 @@ CREATE INDEX "credit_allocation_enelSyncStatus_idx" ON "public"."credit_allocati
 ### D1 — Rateio UI polish (M1–M6) · Tier S · no approval
 
 From the Sprint 3 handoff, all valid:
-- [ ] `EnelSyncBadge` → use the shared `<Badge>` component instead of a raw `<span>`.
-- [ ] Add missing Portuguese accents across `src/frontend/rateio/*`.
-- [ ] Reset `selectedAllocation` on data refetch (`rateio-screen.tsx`).
-- [ ] Wire the `useCreateProposal` mutation into `rateio-editor.tsx` (replace the inline `fetch`).
-- [ ] Remove the 7 `no-explicit-any` in rateio code.
-- [ ] Fix the `react-hooks/exhaustive-deps` warning at `rateio-screen.tsx:80`.
+- [x] `EnelSyncBadge` → use the shared `<Badge>` component instead of a raw `<span>`.
+- [x] Add missing Portuguese accents across `src/frontend/rateio/*`.
+- [x] Reset `selectedAllocation` on data refetch (`rateio-screen.tsx`).
+- [x] Wire the `useCreateProposal` mutation into `rateio-editor.tsx` (replace the inline `fetch`).
+- [x] Remove the 7 `no-explicit-any` in rateio code.
+- [x] Fix the `react-hooks/exhaustive-deps` warning at `rateio-screen.tsx:80`.
 
 **Owns:** `src/frontend/rateio/**`.
 **Done when:** lint clean for rateio; build clean.
@@ -199,7 +199,7 @@ Wave 5 spec listed `POST /api/plants/[plantId]/inverters/test-sync` and a green/
 - [x] A2: rateio migration committed, **not applied locally**; documented `prisma migrate deploy` for the VPS.
 - [x] B1: all inverter write paths encrypt; generation read path decrypts; round-trip + legacy tests pass; no secret leaks to frontend.
 - [x] C1: client-proposed plants/consumer-units are `pending_review` until Solo approves; second migration prepared.
-- [ ] D1: rateio UI minors resolved; lint clean.
+- [x] D1: rateio UI minors resolved; lint clean.
 - [ ] No new build/type errors; targeted vitest suites green.
 - [ ] One billing row per task in `scripts/Planning/billing.md`.
 - [ ] Each task handed off with the structured HANDOFF block.

@@ -33,3 +33,4 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-19 | Sprint 3.1 | A2 - Rateio migration | claude (sonnet) | M | R$ 12 |
 | 2026-06-19 | Sprint 3.1 | B1 - Inverter encryption fix | claude (sonnet) | L | R$ 20 |
 | 2026-06-19 | Sprint 3.1 | C1 - Validation status | claude (sonnet) | L | R$ 20 |
+| 2026-06-19 | Sprint 3.1 | D1 - Rateio UI polish | claude (haiku) | S | R$ 5 |
