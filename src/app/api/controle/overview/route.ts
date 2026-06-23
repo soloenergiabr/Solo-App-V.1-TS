@@ -45,6 +45,11 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
     const currentMonth = now.getMonth() + 1
     const currentYear = now.getFullYear()
 
+    // Active-bill filter: pending_review bills are excluded from aggregates.
+    // This status means the bill's data has not been validated yet.
+    const isActiveBill = (b: { status: string | null }) =>
+        b.status == null || b.status === 'confirmed' || b.status === 'paid'
+
     // ── Investment summary ────────────────────────────────────────────────────
 
     const totalInvested = Number(investment?.totalInvested ?? 0)
@@ -68,6 +73,7 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
         const startYear = investment.startDate.getFullYear()
         const startMonth = investment.startDate.getMonth() + 1
         returned = allBills
+            .filter(isActiveBill)
             .filter(
                 (b) =>
                     b.referenceYear > startYear ||
@@ -87,9 +93,11 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
 
     // ── Month summary ─────────────────────────────────────────────────────────
 
-    const currentMonthBills = allBills.filter(
-        (b) => b.referenceMonth === currentMonth && b.referenceYear === currentYear
-    )
+    const currentMonthBills = allBills
+        .filter(isActiveBill)
+        .filter(
+            (b) => b.referenceMonth === currentMonth && b.referenceYear === currentYear
+        )
 
     const moneySaved = currentMonthBills.reduce(
         (sum, b) => sum + Number(b.estimatedSavings ?? 0),
@@ -112,9 +120,11 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
         prevMonth = 12
         prevYear -= 1
     }
-    const prevMonthBills = allBills.filter(
-        (b) => b.referenceMonth === prevMonth && b.referenceYear === prevYear
-    )
+    const prevMonthBills = allBills
+        .filter(isActiveBill)
+        .filter(
+            (b) => b.referenceMonth === prevMonth && b.referenceYear === prevYear
+        )
     const prevMoneySaved = prevMonthBills.reduce(
         (sum, b) => sum + Number(b.estimatedSavings ?? 0),
         0
@@ -126,11 +136,15 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
 
     // ── Lifetime summary ──────────────────────────────────────────────────────
 
-    const totalGeneratedKwh = allBills.reduce(
+    const totalGeneratedKwh = allBills
+        .filter(isActiveBill)
+        .reduce(
         (sum, b) => sum + Number(b.monitoredGenerationKwh ?? 0),
         0
     )
-    const totalReturn = allBills.reduce(
+    const totalReturn = allBills
+        .filter(isActiveBill)
+        .reduce(
         (sum, b) => sum + Number(b.estimatedSavings ?? 0),
         0
     )
@@ -139,7 +153,7 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
     const lifetimeMonthsActive =
         investment
             ? monthsActive
-            : new Set(allBills.map((b) => `${b.referenceYear}-${b.referenceMonth}`)).size
+            : new Set(allBills.filter(isActiveBill).map((b) => `${b.referenceYear}-${b.referenceMonth}`)).size
 
     // Brazil grid emission factor: ~0.0817 kg CO2/kWh (MCTIC 2023 national average).
     // Formula: totalGeneratedKwh * 0.0817 kg/kWh ÷ 1000 kg/ton
@@ -159,8 +173,7 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
         string,
         'ok' | 'warning' | 'critical' | 'unknown'
     >()
-    for (const bill of allBills) {
-        // allBills is already ordered newest-first; first hit per unit is the latest
+    for (const bill of allBills.filter(isActiveBill)) {
         if (!latestBillStatusByUnit.has(bill.consumerUnitId)) {
             let status: 'ok' | 'warning' | 'critical' | 'unknown'
             switch (bill.paymentStatus) {
@@ -191,6 +204,25 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
     // sourced from the generation service and is out of scope for this read API.
     const liveGenerationKw = 0
 
+    // ── Pending validation count ─────────────────────────────────────────────
+    // Count bills with status = 'pending_review'
+    const pendingReviewBillCount = allBills.filter(
+        (b) => b.status === 'pending_review'
+    ).length
+
+    // Count generation units with source = 'manual_pending' for this client's inverters
+    const clientInverters = await prisma.inverter.findMany({
+        where: { plant: { clientId } },
+        select: { id: true },
+    })
+    const pendingGenCount = await prisma.generationUnit.count({
+        where: {
+            inverterId: { in: clientInverters.map((i) => i.id) },
+            source: 'manual_pending',
+        },
+    })
+    const pendingValidationCount = pendingReviewBillCount + pendingGenCount
+
     // ── Assemble response ─────────────────────────────────────────────────────
 
     const data: ControleOverview = {
@@ -216,6 +248,7 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
         },
         accounts,
         liveGenerationKw,
+        pendingValidationCount,
     }
 
     return NextResponse.json({ success: true, data })

@@ -68,4 +68,5 @@ export interface ControleOverview {
     }
     accounts: Array<{ id: string; name: string; status: 'ok' | 'warning' | 'critical' | 'unknown' }>
     liveGenerationKw: number
+    pendingValidationCount: number
 }
