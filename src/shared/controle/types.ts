@@ -52,6 +52,7 @@ export interface EconomyConsolidated {
 
 export interface ControleOverview {
     clientName: string
+    pendingValidationCount: number
     investment: InvestmentSummary
     month: {
         moneySaved: number

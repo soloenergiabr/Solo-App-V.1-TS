@@ -191,10 +191,20 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
     // sourced from the generation service and is out of scope for this read API.
     const liveGenerationKw = 0
 
+    // ── Pending validation count ──────────────────────────────────────────────
+    const pendingValidationCount = await prisma.plant.count({
+        where: {
+            clientId,
+            deletedAt: null,
+            validationStatus: { not: 'approved' },
+        },
+    })
+
     // ── Assemble response ─────────────────────────────────────────────────────
 
     const data: ControleOverview = {
         clientName: userContext.name ?? 'Cliente',
+        pendingValidationCount,
         investment: {
             totalInvested,
             returned,
