@@ -39,6 +39,7 @@ import { cn } from '@/lib/utils';
 import { resolveBillStatus, statusToBadge } from '@/frontend/economia/lib/bill-status';
 import { ManualTransactionDialog } from './manual-transaction-dialog';
 import { AddGenerationDialog } from './add-generation-dialog';
+import { AddBillDialog } from './add-bill-dialog';
 import { useGenerationDashboard } from '@/frontend/generation/hooks/use-generation-dashboard';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { CompactMetrics } from '@/frontend/generation/components/dashboard/compact-metrics';
@@ -1198,10 +1199,12 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                     <CardTitle>Faturas de Energia</CardTitle>
                     <CardDescription>Importe PDFs para preencher o EnergyBill canônico e revisar os campos extraídos por IA.</CardDescription>
                 </div>
-                <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger asChild>
-                        <Button size="sm" disabled={units.consumerUnits.length === 0}><Upload className="mr-2 h-4 w-4" />Importar PDF</Button>
-                    </DialogTrigger>
+                <div className="flex gap-2">
+                    <AddBillDialog clientId={clientId} onSuccess={() => { bills.refetch(); }} />
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>
+                            <Button size="sm" disabled={units.consumerUnits.length === 0}><Upload className="mr-2 h-4 w-4" />Importar PDF</Button>
+                        </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Importar Fatura</DialogTitle>
@@ -1227,6 +1230,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
+                </div>
             </CardHeader>
             <CardContent>
                 {bills.bills.length === 0 ? (
