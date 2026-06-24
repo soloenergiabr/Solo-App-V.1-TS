@@ -45,3 +45,4 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-23 | Sprint 4 | D2 - Onboarding checklist | claude (sonnet) | L | R$ 20 |
 | 2026-06-24 | Sprint 5 | C1 - Extend bill-detail API + BillDetail type | deepseek-flash | S | R$ 5 |
 | 2026-06-24 | Sprint 5 | B1 - Rewire upload route | deepseek-flash | M | R$ 12 |
+| 2026-06-24 | Sprint 5 | B2 - Bill chat API route | deepseek-flash | M | R$ 12 |
