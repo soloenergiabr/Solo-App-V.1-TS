@@ -9,6 +9,7 @@ import { RateioBar } from './components/rateio-bar'
 import { ConsolidadoSummary } from './components/consolidado-summary'
 import { CostBreakdown } from './components/cost-breakdown'
 import { AddBillForm } from './components/add-bill-form'
+import { AddGenerationForm } from './components/add-generation-form'
 import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -85,6 +86,7 @@ export function EconomiaScreen() {
                                 </button>
                             </div>
                             <AddBillForm />
+                            <AddGenerationForm />
                         </div>
                     }
                 />
