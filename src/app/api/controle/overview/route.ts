@@ -227,6 +227,7 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
 
     const data: ControleOverview = {
         clientName: userContext.name ?? 'Cliente',
+        pendingValidationCount,
         investment: {
             totalInvested,
             returned,
