@@ -9,8 +9,14 @@ const mockEventBusEmit = vi.fn();
 
 // Mock the analyzer
 const mockExtract = vi.fn();
+const mockAnalyze = vi.fn();
 vi.mock('@/backend/economia/analyzer', () => ({
-    createGeminiBillAnalyzer: () => ({ extract: mockExtract }),
+    getBillAnalyzer: () => ({
+        extract: mockExtract,
+        analyze: mockAnalyze,
+        chat: vi.fn(),
+        name: 'claude',
+    }),
     computeDeterministicFlags: vi.fn(() => ({
         minimumKwh: 30,
         solarCoveredMinimum: true,
@@ -18,6 +24,14 @@ vi.mock('@/backend/economia/analyzer', () => ({
         estimatedSavings: 85,
         billScore: 80,
         connectionType: 'monofasico',
+    })),
+}));
+
+vi.mock('@/backend/economia/analyzer/mapping', () => ({
+    mapRawToBillJson: vi.fn(() => ({
+        billingItems: [],
+        creditSummary: {},
+        extraCharges: [],
     })),
 }));
 
@@ -113,6 +127,14 @@ describe('POST /api/client/energy-bills/upload', () => {
             billingItems: [],
             creditSummary: {},
             extraCharges: [],
+        });
+        mockAnalyze.mockResolvedValue({
+            aiAnalysis: 'Analise detalhada',
+            aiExplanations: {},
+            aiRecommendations: [],
+            alerts: [],
+            billScore: 80,
+            estimatedSavings: 85,
         });
         mockUpsert.mockResolvedValue(mockBillResult);
     });
@@ -233,6 +255,7 @@ describe('POST /api/client/energy-bills/upload', () => {
             expect(mockExtract).toHaveBeenCalledWith(
                 expect.objectContaining({ mimeType: 'application/pdf' }),
             );
+            expect(mockAnalyze).toHaveBeenCalledOnce();
         });
 
         it('saves bill with status draft', async () => {
