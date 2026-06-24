@@ -1,6 +1,35 @@
 import { Buffer } from 'buffer';
 
 /* ------------------------------------------------------------------ */
+/*  Sub-types for structured bill data                                 */
+/* ------------------------------------------------------------------ */
+
+export interface RawBillLineItem {
+  description: string
+  quantity_kwh?: number | null
+  unit_price?: number | null
+  total_value: number
+  icms_base?: number | null
+  icms_rate?: number | null
+  icms_value?: number | null
+  is_credit?: boolean | null
+}
+
+export interface RawCreditSummary {
+  injected_kwh?: number | null
+  used_kwh?: number | null
+  balance_kwh?: number | null
+  expiring_kwh?: number | null
+}
+
+export interface RawExtraCharge {
+  description: string
+  value: number
+  type: 'service' | 'installment'
+  remaining_installments?: number | null
+}
+
+/* ------------------------------------------------------------------ */
 /*  Raw data extracted from a bill PDF                                */
 /* ------------------------------------------------------------------ */
 
@@ -54,10 +83,19 @@ export interface RawBillData {
   interestAmount: number | null
   otherCharges: number | null
   estimatedSavings: number | null
-  billingItems: unknown[]
-  creditSummary: Record<string, unknown>
-  extraCharges: unknown[]
+  // Typed structured fields (canonical — populated by mapRawToBillJson or AI analysis)
+  billingItems: RawBillLineItem[]
+  creditSummary: RawCreditSummary
+  extraCharges: RawExtraCharge[]
   alerts: unknown[]
+  // Raw snake_case source fields extracted verbatim by the model (used by mapRawToBillJson)
+  billing_table_items?: RawBillLineItem[]
+  scee_injected_kwh?: number | null
+  scee_used_kwh?: number | null
+  scee_balance_kwh?: number | null
+  scee_expiring_kwh?: number | null
+  service_items?: Array<{ description: string; value: number }>
+  installment_items?: Array<{ description: string; value: number; remaining_installments?: number | null }>
   aiAnalysis: string | null
   aiExplanations: Record<string, unknown>
   aiRecommendations: unknown[]
