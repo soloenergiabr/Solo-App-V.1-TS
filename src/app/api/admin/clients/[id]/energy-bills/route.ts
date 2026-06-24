@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withHandle } from '@/app/api/api-utils';
+import { computeFallbackSavings } from '@/backend/economia/manual-bill-savings';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { Prisma } from '@/app/generated/prisma';
 import prisma from '@/lib/prisma';
@@ -126,6 +127,13 @@ const createEnergyBill = async (
     await AuthMiddleware.extractUserContext(request);
     const { id: clientId } = await params;
     const data = energyBillSchema.parse(await request.json());
+
+    data.estimatedSavings = computeFallbackSavings({
+        estimatedSavings: data.estimatedSavings,
+        consumptionKwh: data.consumptionKwh,
+        tariffPerKwh: data.tariffPerKwh,
+        totalBillValue: data.totalBillValue,
+    });
 
     await assertBillRelations(clientId, data.plantId, data.consumerUnitId);
 
