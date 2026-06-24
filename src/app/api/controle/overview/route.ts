@@ -219,6 +219,7 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
         where: {
             inverterId: { in: clientInverters.map((i) => i.id) },
             source: 'manual_pending',
+            deletedAt: null,
         },
     })
     const pendingValidationCount = pendingReviewBillCount + pendingGenCount
@@ -249,7 +250,6 @@ const getControleOverviewRoute = async (request: NextRequest): Promise<NextRespo
         },
         accounts,
         liveGenerationKw,
-        pendingValidationCount,
     }
 
     return NextResponse.json({ success: true, data })

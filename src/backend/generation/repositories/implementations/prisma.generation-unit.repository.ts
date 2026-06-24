@@ -2,6 +2,11 @@ import { Prisma, PrismaClient } from "@/app/generated/prisma";
 import { GenerationUnitModel, GenerationUnitType } from "../../models/generation-unit.model";
 import { GenerationUnitRepository } from "../generation-unit.repository";
 
+// Unapproved client-proposed manual readings (source = 'manual_pending') must
+// not appear in active generation aggregates until Solo validates them.
+// Excluding the single source value keeps null + provider + approved 'manual'.
+const EXCLUDE_PENDING = { source: { not: 'manual_pending' as const } };
+
 export class PrismaGenerationUnitRepository implements GenerationUnitRepository {
     constructor(private prisma: PrismaClient) { }
 
@@ -26,6 +31,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             where: {
                 inverterId,
                 deletedAt: null,
+                ...EXCLUDE_PENDING,
             },
             orderBy: {
                 timestamp: 'desc',
@@ -85,6 +91,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
                 inverterId,
                 generationUnitType: type,
                 deletedAt: null,
+                ...EXCLUDE_PENDING,
             },
             orderBy: {
                 timestamp: 'desc',
@@ -107,6 +114,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
                     lte: endDate,
                 },
                 deletedAt: null,
+                ...EXCLUDE_PENDING,
             },
             orderBy: {
                 timestamp: 'desc',
@@ -144,6 +152,7 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             where: {
                 inverterId,
                 deletedAt: null,
+                ...EXCLUDE_PENDING,
             },
             orderBy: {
                 timestamp: 'desc',

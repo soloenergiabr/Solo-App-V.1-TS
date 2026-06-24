@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import prisma from '@/lib/prisma';
+import { recordManualGeneration } from '@/backend/generation/manual-generation.service';
 
 const createGenerationSchema = z.object({
     plantId: z.string().min(1, 'Usina é obrigatória'),
@@ -18,62 +19,21 @@ const createGeneration = async (request: NextRequest) => {
 
     const data = createGenerationSchema.parse(await request.json());
 
-    // Validate plant belongs to client
+    // Server-enforced scope: the plant must belong to the authenticated client.
     const plant = await prisma.plant.findFirst({
         where: { id: data.plantId, clientId, deletedAt: null },
     });
     if (!plant) throw new Error('Usina não encontrada');
 
-    // Find-or-create manual inverter for this plant
-    let inverter = await prisma.inverter.findFirst({
-        where: {
-            clientId,
-            plantId: data.plantId,
-            provider: 'manual',
-            deletedAt: null,
-        },
-    });
-
-    if (!inverter) {
-        inverter = await prisma.inverter.create({
-            data: {
-                clientId,
-                plantId: data.plantId,
-                provider: 'manual',
-                providerId: 'manual',
-                name: 'Entrada Manual',
-                syncEnabled: false,
-            },
-        });
-    }
-
-    const providerRecordId = `${data.referenceYear}-${data.referenceMonth}`;
-    const timestamp = new Date(data.referenceYear, data.referenceMonth - 1, 1);
-
-    // Upsert GenerationUnit using the @@unique constraint
-    const generationUnit = await prisma.generationUnit.upsert({
-        where: {
-            inverterId_generationUnitType_providerRecordId: {
-                inverterId: inverter.id,
-                generationUnitType: 'month',
-                providerRecordId,
-            },
-        },
-        create: {
-            inverterId: inverter.id,
-            generationUnitType: 'month',
-            energy: data.energyKwh,
-            power: 0,
-            source: 'manual_pending',
-            providerRecordId,
-            timestamp,
-        },
-        update: {
-            energy: data.energyKwh,
-            power: 0,
-            source: 'manual_pending',
-            timestamp,
-        },
+    // Client proposals land as manual_pending and are excluded from active
+    // generation aggregates until Solo validates them.
+    const generationUnit = await recordManualGeneration({
+        clientId,
+        plantId: data.plantId,
+        referenceYear: data.referenceYear,
+        referenceMonth: data.referenceMonth,
+        energyKwh: data.energyKwh,
+        source: 'manual_pending',
     });
 
     return NextResponse.json(

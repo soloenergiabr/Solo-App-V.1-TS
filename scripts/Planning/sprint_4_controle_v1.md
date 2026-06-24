@@ -195,13 +195,13 @@ const manualGenerationSchema = z.object({
 ```
 
 **Logic (steps):**
-- [ ] Write failing test: calling the service twice for the same `(plantId, 2026, 5)` creates exactly **one** placeholder inverter and **one** `GenerationUnit` (upsert overwrites `energy`), with `generationUnitType='month'`, `source='manual'`, `providerRecordId='manual-2026-05'`, `timestamp = 2026-05-01T00:00:00Z`.
-- [ ] Run it → fails (service not implemented).
-- [ ] Implement the find-or-create helper (§3.2) + upsert (§3.1) in the service.
-- [ ] Add a second test: `source='manual_pending'` is persisted as given (used by the client form in C2).
-- [ ] Run tests → pass.
-- [ ] Wire the admin route to the service (route forces `source='manual'`, ignores any client-supplied source). Validate `plant` belongs to `clientId` (mirror `assertBillRelations` in the energy-bills route).
-- [ ] `npm.cmd run build` clean. Commit.
+- [x] Write failing test: calling the service twice for the same `(plantId, 2026, 5)` creates exactly **one** placeholder inverter and **one** `GenerationUnit` (upsert overwrites `energy`), with `generationUnitType='month'`, `source='manual'`, `providerRecordId='manual-2026-05'`, `timestamp = 2026-05-01T00:00:00Z`.
+- [x] Run it → fails (service not implemented).
+- [x] Implement the find-or-create helper (§3.2) + upsert (§3.1) in the service.
+- [x] Add a second test: `source='manual_pending'` is persisted as given (used by the client form in C2).
+- [x] Run tests → pass.
+- [x] Wire the admin route to the service (route forces `source='manual'`, ignores any client-supplied source). Validate `plant` belongs to `clientId` (mirror `assertBillRelations` in the energy-bills route).
+- [x] `npm.cmd run build` clean. Commit.
 
 **Done when:** service + admin route exist; idempotent upsert proven by test; placeholder inverter is `syncEnabled:false`; build clean. **No schema migration.**
 
@@ -223,12 +223,12 @@ pendingValidationCount: number   // bills status='pending_review' + generation s
 ```
 
 **Logic (steps):**
-- [ ] Write failing test: given 3 bills for the current month — one `confirmed`, one `pending_review`, one `status=null` — `month.moneySaved` and `month.energyGeneratedKwh` include the `confirmed` and `null` bills but **exclude** the `pending_review` one; and `pendingValidationCount` is `1`.
-- [ ] Run it → fails.
-- [ ] In `overview/route.ts`, define `const isActiveBill = (b) => b.status == null || b.status === 'confirmed' || b.status === 'paid'`. Apply it everywhere `allBills` is reduced for **active** aggregates (month, lifetime, returned-from-bills, per-account status). Keep the raw `allBills` fetch as-is.
-- [ ] Compute `pendingValidationCount`: count `allBills` with `status==='pending_review'`, plus a `prisma.generationUnit.count` where the inverter belongs to the client and `source==='manual_pending'`. Add it to the `data` payload.
-- [ ] Add the field to `ControleOverview` in `src/shared/controle/types.ts`.
-- [ ] Run tests → pass. `npm.cmd run build` clean. Commit.
+- [x] Write failing test: given 3 bills for the current month — one `confirmed`, one `pending_review`, one `status=null` — `month.moneySaved` and `month.energyGeneratedKwh` include the `confirmed` and `null` bills but **exclude** the `pending_review` one; and `pendingValidationCount` is `1`.
+- [x] Run it → fails.
+- [x] In `overview/route.ts`, define `const isActiveBill = (b) => b.status == null || b.status === 'confirmed' || b.status === 'paid'`. Apply it everywhere `allBills` is reduced for **active** aggregates (month, lifetime, returned-from-bills, per-account status). Keep the raw `allBills` fetch as-is.
+- [x] Compute `pendingValidationCount`: count `allBills` with `status==='pending_review'`, plus a `prisma.generationUnit.count` where the inverter belongs to the client and `source==='manual_pending'`. Add it to the `data` payload.
+- [x] Add the field to `ControleOverview` in `src/shared/controle/types.ts`.
+- [x] Run tests → pass. `npm.cmd run build` clean. Commit.
 
 **Done when:** un-validated bills no longer inflate the cockpit; `pendingValidationCount` exposed; tests pass; build clean.
 
@@ -257,10 +257,10 @@ export function computeFallbackSavings(input: {
 ```
 
 **Logic (steps):**
-- [ ] Write failing tests: (a) explicit `estimatedSavings` passed through unchanged; (b) `consumptionKwh=500, tariffPerKwh=0.9, totalBillValue=180` → `270`; (c) negative result clamps to `0`; (d) missing tariff → `null`.
-- [ ] Run → fail. Implement the pure function. Run → pass.
-- [ ] In `createEnergyBill`, before the upsert, set `data.estimatedSavings = computeFallbackSavings(data)`.
-- [ ] Run the existing energy-bills route tests + new tests. Build clean. Commit.
+- [x] Write failing tests: (a) explicit `estimatedSavings` passed through unchanged; (b) `consumptionKwh=500, tariffPerKwh=0.9, totalBillValue=180` → `270`; (c) negative result clamps to `0`; (d) missing tariff → `null`.
+- [x] Run → fail. Implement the pure function. Run → pass.
+- [x] In `createEnergyBill`, before the upsert, set `data.estimatedSavings = computeFallbackSavings(data)`.
+- [x] Run the existing energy-bills route tests + new tests. Build clean. Commit.
 
 **Done when:** manual bills get non-zero savings when computable; explicit values respected; tests pass; build clean.
 
@@ -364,10 +364,10 @@ deepseek-flash is weak at front-end. Every FE task MUST:
 - relevant test file(s).
 
 **Logic (steps):**
-- [ ] Read the existing `pending-review` route + `bill-validation-queue.tsx` — reuse whatever already approves bills; only add what's missing.
-- [ ] Add generation approval: `PATCH` sets `source` from `manual_pending` to `manual` (validate admin + ownership).
-- [ ] Test: approve generation → `source='manual'` and it now appears in active aggregates / `pendingValidationCount` drops.
-- [ ] Build clean. Commit.
+- [x] Read the existing `pending-review` route + `bill-validation-queue.tsx` — reuse whatever already approves bills; only add what's missing.
+- [x] Add generation approval: `PATCH` sets `source` from `manual_pending` to `manual` (validate admin + ownership).
+- [x] Test: approve generation → `source='manual'` and it now appears in active aggregates / `pendingValidationCount` drops.
+- [x] Build clean. Commit.
 
 **Done when:** admin can approve both proposal types; approved items enter active aggregates; `pendingValidationCount` decreases; tests pass; build clean.
 
@@ -398,21 +398,21 @@ After A–D are merged, **one** review pass runs on a frontier model (Opus / equ
 ### E1 — Backend review · frontier model
 
 Review the **correctness and safety** of the backend that juniors shipped. Checklist:
-- [ ] **Financial truth (A2/A3):** re-derive the cockpit aggregation by hand on a sample dataset and confirm the numbers match — `isActiveBill` filter correct, `pendingValidationCount` correct, savings fallback formula correct and clamped.
-- [ ] **Scope/security (C1/C2):** every client route derives `clientId` from `userContext` (never trusts a body/param `clientId`); a client cannot write a bill/generation/plant for a UC or plant they don't own. Confirm the negative tests actually exercise a foreign-client id.
-- [ ] **Gate integrity (D1):** approval only flips `pending_review→confirmed` / `manual_pending→manual`; rejected/foreign items can't be promoted.
-- [ ] **Data model:** no schema migration slipped in unflagged; placeholder inverter stays `syncEnabled:false` and is excluded from sync + client inverter lists.
-- [ ] **Idempotency:** re-submitting the same month upserts (no duplicate rows); unique constraints hold.
-- [ ] Use `superpowers:requesting-code-review` / the `/code-review` flow. File findings as fix-tasks (tier S/M) for a junior, or fix inline if trivial.
+- [x] **Financial truth (A2/A3):** re-derive the cockpit aggregation by hand on a sample dataset and confirm the numbers match — `isActiveBill` filter correct, `pendingValidationCount` correct, savings fallback formula correct and clamped.
+- [x] **Scope/security (C1/C2):** every client route derives `clientId` from `userContext` (never trusts a body/param `clientId`); a client cannot write a bill/generation/plant for a UC or plant they don't own. Confirm the negative tests actually exercise a foreign-client id.
+- [x] **Gate integrity (D1):** approval only flips `pending_review→confirmed` / `manual_pending→manual`; rejected/foreign items can't be promoted.
+- [x] **Data model:** no schema migration slipped in unflagged; placeholder inverter stays `syncEnabled:false` and is excluded from sync + client inverter lists.
+- [x] **Idempotency:** re-submitting the same month upserts (no duplicate rows); unique constraints hold.
+- [x] Use `superpowers:requesting-code-review` / the `/code-review` flow. File findings as fix-tasks (tier S/M) for a junior, or fix inline if trivial.
 
 ### E2 — Frontend refinement · frontier model
 
 Take the structurally-correct forms/cockpit the juniors built (correct fields, copy, states) and **raise them to the brand bar** — this is where the Tesla/McLaren polish the juniors can't do happens. Within the existing design system only (no scope creep into the deferred redesign in `todo.md`):
-- [ ] Visual consistency: spacing, typography hierarchy, `font-mono` for kWh/R$ values, alignment, responsive/mobile-first behavior across B1/B2/C1/C2/D2.
-- [ ] Interaction polish: loading/disabled/error states feel intentional; toasts and the `Aguardando validação` badges are consistent; focus/keyboard order on the forms.
-- [ ] Copy + accents audited (pt-BR) across every new surface.
-- [ ] The cockpit onboarding checklist + pending banner sit cleanly above the existing cockpit without layout shift.
-- [ ] Confirm against each FE task's screenshot from its HANDOFF block; capture an after screenshot.
+- [x] Visual consistency: spacing, typography hierarchy, `font-mono` for kWh/R$ values, alignment, responsive/mobile-first behavior across B1/B2/C1/C2/D2.
+- [x] Interaction polish: loading/disabled/error states feel intentional; toasts and the `Aguardando validação` badges are consistent; focus/keyboard order on the forms.
+- [x] Copy + accents audited (pt-BR) across every new surface.
+- [x] The cockpit onboarding checklist + pending banner sit cleanly above the existing cockpit without layout shift.
+- [x] Confirm against each FE task's screenshot from its HANDOFF block; capture an after screenshot.
 
 **Phase E output:** a short review note appended to this file (findings + what was fixed) and any follow-up fix-tasks. Sprint 4 is **done** when E1 and E2 are complete and the DoD below is fully ticked.
 
@@ -420,14 +420,14 @@ Take the structurally-correct forms/cockpit the juniors built (correct fields, c
 
 ## 7. Definition of Done — Sprint 4 (the contract)
 
-- [ ] **DoD-1 — Manual generation:** Solo (A1/B1) and clients (C2) can record monthly generation per plant with no inverter API; stored per §3.1 on a `syncEnabled:false` placeholder inverter; idempotent per month.
-- [ ] **DoD-2 — Manual billing:** Solo (B2) and clients (C1) can enter a full bill by hand; `estimatedSavings` is non-zero when computable (A3).
-- [ ] **DoD-3 — Cockpit truth:** the Controle cockpit shows correct payback / monthly savings / lifetime / per-account status from manually-entered data, and **excludes** un-validated proposals (A2).
-- [ ] **DoD-4 — Propose → validate:** client-entered bills are `pending_review` and generation is `manual_pending`; Solo approval (D1) promotes them into active aggregates.
-- [ ] **DoD-5 — Onboarding visibility:** the cockpit shows a pending-validation banner and a completeness checklist (D2).
-- [ ] **DoD-6 — Quality gates:** `npm run build` clean; each task's focused vitest suite green; **zero schema migrations** added (or, if one was truly unavoidable, it was PM-approved and hand-authored per §0, not applied locally).
-- [ ] **DoD-7 — Ledger:** one billing row per task in `scripts/Planning/billing.md`; every task handed off with the structured HANDOFF block.
-- [ ] **DoD-8 — Phase E:** frontier-model backend review (E1) passed with findings fixed; frontier-model frontend refinement (E2) applied; review note appended to this file.
+- [x] **DoD-1 — Manual generation:** Solo (A1/B1) and clients (C2) can record monthly generation per plant with no inverter API; stored per §3.1 on a `syncEnabled:false` placeholder inverter; idempotent per month.
+- [x] **DoD-2 — Manual billing:** Solo (B2) and clients (C1) can enter a full bill by hand; `estimatedSavings` is non-zero when computable (A3).
+- [x] **DoD-3 — Cockpit truth:** the Controle cockpit shows correct payback / monthly savings / lifetime / per-account status from manually-entered data, and **excludes** un-validated proposals (A2).
+- [x] **DoD-4 — Propose → validate:** client-entered bills are `pending_review` and generation is `manual_pending`; Solo approval (D1) promotes them into active aggregates.
+- [x] **DoD-5 — Onboarding visibility:** the cockpit shows a pending-validation banner and a completeness checklist (D2).
+- [x] **DoD-6 — Quality gates:** `npm run build` clean; each task's focused vitest suite green; **zero schema migrations** added (or, if one was truly unavoidable, it was PM-approved and hand-authored per §0, not applied locally).
+- [x] **DoD-7 — Ledger:** one billing row per task in `scripts/Planning/billing.md`; every task handed off with the structured HANDOFF block.
+- [x] **DoD-8 — Phase E:** frontier-model backend review (E1) passed with findings fixed; frontier-model frontend refinement (E2) applied; review note appended to this file.
 
 **Merge gate (lightweight, no stop):** the PM merges a finished task's branch once it builds, its focused tests pass, and the touched files match the ownership table — branches merge as they land so the next wave opens. The **only** deep review is **Phase E**, run once by a frontier model after all feature work is merged.
 
@@ -443,3 +443,42 @@ Each engineer, on their branch:
 ---
 
 _PM authored this plan from the brainstorm in `pré_sprint_4_controle_v1.md`. Deferred vision items live in `scripts/Planning/todo.md`. Engineers: acknowledge these rules, read your task + the files it owns, confirm your tier, then wait for the PM to open your wave._
+
+---
+
+## 9. Phase E — Review & Refinement Note (frontier model, Opus)
+
+Ran on `sprint4/integration` over the full sprint diff. **The juniors' handoff overstated completion** — E1 found one task never built and several correctness/gate defects. All fixed; build clean; **220 backend tests pass**.
+
+### E1 — Backend review: findings & fixes
+
+| # | Severity | Finding | Fix |
+|---|----------|---------|-----|
+| 1 | 🔴 Critical | **A1 was never built.** The A1 branch contained only planning docs — no `manual-generation.service.ts`, no admin `generation` create route. Admin manual-generation entry (a core DoD-1 deliverable) did not exist, and **B1's form POSTed to a 404**. | Built `src/backend/generation/manual-generation.service.ts` (find-or-create placeholder inverter, idempotent monthly upsert) + `src/app/api/admin/clients/[id]/generation/route.ts` (GET/POST, `source='manual'`). |
+| 2 | 🔴 Critical | **C2 reimplemented A1 inline** with spec deviations: `providerId: 'manual'` constant (cross-plant), `providerRecordId` = `YYYY-M` (not `manual-YYYY-MM`, unpadded), local-time timestamp. | Refactored `client/generation/route.ts` to call the shared service. Service uses `providerId: 'manual-${plantId}'`, `providerRecordId: 'manual-YYYY-MM'` (zero-padded), **UTC** timestamp. |
+| 3 | 🔴 Gate (DoD-4) | **Generation aggregation never filtered `source`** — unapproved `manual_pending` (and rejected) readings leaked into the Energia/generation dashboard. | Added `source != 'manual_pending'` to the four read methods in `prisma.generation-unit.repository.ts`. |
+| 4 | 🟠 Gate (D1) | **Reject set `source: null`** — the row lingered and could still be counted. | D1 reject now **soft-deletes** (`deletedAt`), excluded everywhere by the standard `deletedAt: null` filter. Overview `pendingGenCount` also gained `deletedAt: null`. |
+| 5 | 🟠 Correctness | **`pendingValidationCount` duplicated** in `overview/route.ts` payload and in the `ControleOverview` type. | De-duplicated both. |
+
+New tests: `manual-generation.service.test.ts` (4) and admin `generation-route.test.ts` (5 — covers `source='manual'`, scope rejection, approve→`manual`, reject→soft-delete, foreign-client refusal).
+
+### E2 — Frontend refinement: findings & fixes
+
+| # | Finding | Fix |
+|---|---------|-----|
+| 1 | **B1 admin form field mismatch** — sent `generationKwh`, route expects `energyKwh` (would 400 even once the route existed). | Renamed to `energyKwh` throughout `add-generation-dialog.tsx`. |
+| 2 | 🔴 **Client bills always saved `estimatedSavings: 0`** — the form's `default(0)` defeated the A3 fallback (`0 != null`), so DoD-2 silently failed for client entries. | `add-bill-form.tsx` now omits `estimatedSavings` unless the user typed a positive value; added "Deixe em branco para calcular automaticamente." helper. |
+| 3 | **Client UC was a free-text id input** — clients can't know UC ids. | Replaced with a **cascading `Select`** populated from `/client/consumer-units`, filtered to the chosen plant, auto-clearing a stale selection. |
+| 4 | **No refetch after submit** — new bills/generation didn't appear until reload. | `useEconomia` now exposes `refetch()`; the screen passes `onSuccess={refetch}` to both client forms. |
+
+B2 (admin bill dialog) was already correct (optional savings, sent only when provided; route applies the fallback) — left unchanged.
+
+### Verification
+- `npm run build` → clean (0 TS errors); `/controle`, `/economia`, admin generation route all compile.
+- `npx vitest run` over generation + economia + controle + client + admin/clients → **26 files, 220 tests passing**.
+- Zero schema migrations added (design held).
+
+### Carry-over / follow-ups (not blockers)
+- **C1 re-submission** of a month already `confirmed` reverts it to `pending_review` (re-enters Solo review). Acceptable for v1; revisit if admins want to lock confirmed bills.
+- Admin **B1 generation list** / **B2** selects could show friendlier empty states (minor polish).
+- The Energia dashboard does not yet *show* approved manual generation distinctly from synced data (cosmetic; data is correct).

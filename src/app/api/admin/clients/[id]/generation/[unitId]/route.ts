@@ -50,11 +50,15 @@ const patchGenerationUnit = async (
         );
     }
 
+    // Approve: promote to active ('manual'). Reject: soft-delete so the reading
+    // is excluded from every aggregate and from the pending-validation count by
+    // the standard `deletedAt: null` filters (no lingering orphaned row).
     const updated = await prisma.generationUnit.update({
         where: { id: unitId },
-        data: {
-            source: action === 'approve' ? 'manual' : null,
-        },
+        data:
+            action === 'approve'
+                ? { source: 'manual' }
+                : { deletedAt: new Date() },
     });
 
     return NextResponse.json({

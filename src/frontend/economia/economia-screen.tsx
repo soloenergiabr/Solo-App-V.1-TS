@@ -24,7 +24,7 @@ export function EconomiaScreen() {
     const [tab, setTab] = useState<Tab>('consolidado')
     const [selectedId, setSelectedId] = useState<string | null>(null)
 
-    const { bills, isLoading, error } = useEconomia({ year })
+    const { bills, isLoading, error, refetch } = useEconomia({ year })
 
     const api = useAuthenticatedApi()
     const [rateioSlices, setRateioSlices] = useState<RateioSlice[]>([])
@@ -85,8 +85,8 @@ export function EconomiaScreen() {
                                     Por conta
                                 </button>
                             </div>
-                            <AddBillForm />
-                            <AddGenerationForm />
+                            <AddBillForm onSuccess={refetch} />
+                            <AddGenerationForm onSuccess={refetch} />
                         </div>
                     }
                 />

@@ -63,7 +63,11 @@ interface PlantOption {
     name: string;
 }
 
-export function AddGenerationForm() {
+interface AddGenerationFormProps {
+    onSuccess?: () => void;
+}
+
+export function AddGenerationForm({ onSuccess }: AddGenerationFormProps = {}) {
     const [open, setOpen] = useState(false);
     const [plants, setPlants] = useState<PlantOption[]>([]);
     const [loadingPlants, setLoadingPlants] = useState(false);
@@ -110,6 +114,7 @@ export function AddGenerationForm() {
                 toast.success('Geração registrada para revisão!');
                 setOpen(false);
                 form.reset();
+                onSuccess?.();
             } else {
                 toast.error(response.data.message || 'Erro ao registrar geração');
             }

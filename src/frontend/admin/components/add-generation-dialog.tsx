@@ -38,7 +38,7 @@ const generationSchema = z.object({
     plantId: z.string().min(1, 'Usina é obrigatória'),
     referenceMonth: z.coerce.number().min(1, 'Mês inválido').max(12, 'Mês inválido'),
     referenceYear: z.coerce.number().min(2020, 'Ano inválido').max(2100, 'Ano inválido'),
-    generationKwh: z.coerce.number().min(0, 'Geração deve ser positiva'),
+    energyKwh: z.coerce.number().min(0, 'Geração deve ser positiva'),
 });
 
 type GenerationFormValues = z.infer<typeof generationSchema>;
@@ -68,7 +68,7 @@ export function AddGenerationDialog({ clientId, onSuccess }: AddGenerationDialog
             plantId: '',
             referenceMonth: new Date().getMonth() + 1,
             referenceYear: currentYear,
-            generationKwh: 0,
+            energyKwh: 0,
         },
     });
 
@@ -95,7 +95,7 @@ export function AddGenerationDialog({ clientId, onSuccess }: AddGenerationDialog
                 plantId: data.plantId,
                 referenceMonth: data.referenceMonth,
                 referenceYear: data.referenceYear,
-                generationKwh: data.generationKwh,
+                energyKwh: data.energyKwh,
             });
 
             if (response.data.success) {
@@ -203,7 +203,7 @@ export function AddGenerationDialog({ clientId, onSuccess }: AddGenerationDialog
                         </div>
                         <FormField
                             control={form.control}
-                            name="generationKwh"
+                            name="energyKwh"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Geração (kWh)</FormLabel>

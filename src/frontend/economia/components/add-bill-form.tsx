@@ -43,7 +43,7 @@ const PAYMENT_STATUSES = [
 
 const billFormSchema = z.object({
     plantId: z.string().min(1, 'Selecione uma usina'),
-    consumerUnitId: z.string().min(1, 'ID da unidade consumidora é obrigatório'),
+    consumerUnitId: z.string().min(1, 'Selecione uma unidade consumidora'),
     competenceDate: z.string().min(1, 'Mês de referência é obrigatório'),
     referenceMonth: z.coerce.number().int().min(1).max(12),
     referenceYear: z.coerce.number().int().min(2020, 'Ano inválido'),
@@ -63,10 +63,23 @@ interface PlantOption {
     name: string;
 }
 
-export function AddBillForm() {
+interface UnitOption {
+    id: string;
+    name: string | null;
+    clientNumber: string | null;
+    plantId: string | null;
+}
+
+interface AddBillFormProps {
+    onSuccess?: () => void;
+}
+
+export function AddBillForm({ onSuccess }: AddBillFormProps = {}) {
     const [open, setOpen] = useState(false);
     const [plants, setPlants] = useState<PlantOption[]>([]);
     const [loadingPlants, setLoadingPlants] = useState(false);
+    const [units, setUnits] = useState<UnitOption[]>([]);
+    const [loadingUnits, setLoadingUnits] = useState(false);
     const api = useAuthenticatedApi();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -92,6 +105,8 @@ export function AddBillForm() {
 
     // Watch competenceDate to auto-fill referenceMonth/referenceYear
     const watchedCompetenceDate = form.watch('competenceDate');
+    // Watch plantId so the UC select only offers units of the chosen plant.
+    const watchedPlantId = form.watch('plantId');
 
     useEffect(() => {
         if (watchedCompetenceDate) {
@@ -103,7 +118,7 @@ export function AddBillForm() {
         }
     }, [watchedCompetenceDate, form]);
 
-    // Fetch client plants on mount
+    // Fetch client plants + consumer units when the dialog opens
     useEffect(() => {
         if (!api.isAuthenticated || !open) return;
         setLoadingPlants(true);
@@ -115,21 +130,54 @@ export function AddBillForm() {
             })
             .catch(() => toast.error('Erro ao carregar usinas'))
             .finally(() => setLoadingPlants(false));
+
+        setLoadingUnits(true);
+        api.get('/client/consumer-units')
+            .then((res) => {
+                if (res.data.success) {
+                    setUnits(
+                        res.data.data.map((u: any) => ({
+                            id: u.id,
+                            name: u.name,
+                            clientNumber: u.clientNumber,
+                            plantId: u.plantId,
+                        })),
+                    );
+                }
+            })
+            .catch(() => toast.error('Erro ao carregar unidades consumidoras'))
+            .finally(() => setLoadingUnits(false));
     }, [api.isAuthenticated, open]);
+
+    // Only show UCs that belong to the selected plant; clear a stale selection.
+    const unitsForPlant = units.filter((u) => !watchedPlantId || u.plantId === watchedPlantId);
+    useEffect(() => {
+        const current = form.getValues('consumerUnitId');
+        if (current && !unitsForPlant.some((u) => u.id === current)) {
+            form.setValue('consumerUnitId', '');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [watchedPlantId]);
 
     const onSubmit = async (data: BillFormValues) => {
         setIsSubmitting(true);
         try {
             const fullDate = new Date(`${data.competenceDate}-01T12:00:00Z`).toISOString();
-            const response = await api.post('/client/energy-bills', {
-                ...data,
-                competenceDate: fullDate,
-            });
+            const { estimatedSavings, ...rest } = data;
+            const payload: Record<string, unknown> = { ...rest, competenceDate: fullDate };
+            // Only send an explicit savings value when the user typed a positive
+            // number; leaving it blank/0 lets the server compute it from
+            // consumption × tariff − total (A3 fallback).
+            if (estimatedSavings && estimatedSavings > 0) {
+                payload.estimatedSavings = estimatedSavings;
+            }
+            const response = await api.post('/client/energy-bills', payload);
 
             if (response.data.success) {
                 toast.success('Fatura enviada para revisão com sucesso!');
                 setOpen(false);
                 form.reset();
+                onSuccess?.();
             } else {
                 toast.error(response.data.message || 'Erro ao enviar fatura');
             }
@@ -193,9 +241,32 @@ export function AddBillForm() {
                                 name="consumerUnitId"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>ID da UC</FormLabel>
+                                        <FormLabel>Unidade consumidora</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="ID da unidade consumidora" {...field} />
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                                disabled={loadingUnits || !watchedPlantId}
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue
+                                                        placeholder={
+                                                            !watchedPlantId
+                                                                ? 'Selecione a usina primeiro'
+                                                                : unitsForPlant.length === 0
+                                                                    ? 'Nenhuma UC nesta usina'
+                                                                    : 'Selecione...'
+                                                        }
+                                                    />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {unitsForPlant.map((u) => (
+                                                        <SelectItem key={u.id} value={u.id}>
+                                                            {u.name || u.clientNumber || u.id}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -327,6 +398,9 @@ export function AddBillForm() {
                                         <FormControl>
                                             <Input type="number" step="0.01" {...field} />
                                         </FormControl>
+                                        <p className="text-xs text-muted-foreground">
+                                            Deixe em branco para calcular automaticamente.
+                                        </p>
                                         <FormMessage />
                                     </FormItem>
                                 )}
