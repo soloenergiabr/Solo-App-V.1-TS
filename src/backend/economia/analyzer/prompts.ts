@@ -78,15 +78,6 @@ Identifique cobranças extras: serviços contratados (seguros, doações) e parc
   "otherCharges": soma de outras cobranças não categorizadas em R$ ou null,
   "estimatedSavings": economia estimada pelo solar este mês em R$ ou null,
 
-  "billingItems": [],
-  "creditSummary": {},
-  "extraCharges": [],
-  "alerts": [],
-  "aiAnalysis": null,
-  "aiExplanations": {},
-  "aiRecommendations": [],
-  "billScore": null,
-
   "billing_table_items": [
     {
       "description": "NOME EXATO da linha como aparece na tabela DESCRIÇÃO DO FATURAMENTO (ex: Energia Consumida Faturada TE, Energia Atv Inj TE mUC, Custo de Disponibilidade, etc)",
