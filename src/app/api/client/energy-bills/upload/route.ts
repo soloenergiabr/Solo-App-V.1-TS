@@ -4,7 +4,8 @@ import prisma from '@/lib/prisma';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { uploadObject } from '@/lib/object-storage';
-import { createGeminiBillAnalyzer, computeDeterministicFlags } from '@/backend/economia/analyzer';
+import { getBillAnalyzer, computeDeterministicFlags } from '@/backend/economia/analyzer';
+import { mapRawToBillJson } from '@/backend/economia/analyzer/mapping';
 import { eventBus, EventType } from '@/backend/shared/event-bus';
 
 function cleanJsonText(text: string): string {
@@ -94,7 +95,7 @@ const uploadClientBill = async (request: NextRequest) => {
     });
 
     // Run analyzer
-    const analyzer = createGeminiBillAnalyzer();
+    const analyzer = getBillAnalyzer();
     const rawData = await analyzer.extract({ buffer, mimeType });
 
     const referenceMonth = Number(rawData.referenceMonth) || new Date().getMonth() + 1;
@@ -102,6 +103,12 @@ const uploadClientBill = async (request: NextRequest) => {
     const competenceDate = inferCompetenceDate(referenceMonth, referenceYear, rawData.competenceDate);
 
     const flags = computeDeterministicFlags(rawData);
+
+    // Run AI analysis
+    const analysis = await analyzer.analyze({ raw: rawData, flags });
+
+    // Map raw data to JSON columns
+    const jsonColumns = mapRawToBillJson(rawData);
 
     const billData = {
         clientId,
@@ -158,15 +165,15 @@ const uploadClientBill = async (request: NextRequest) => {
         fineAmount: numberOrNull(rawData.fineAmount),
         interestAmount: numberOrNull(rawData.interestAmount),
         otherCharges: numberOrNull(rawData.otherCharges),
-        estimatedSavings: flags.estimatedSavings ?? numberOrNull(rawData.estimatedSavings),
-        aiAnalysis: stringOrNull(rawData.aiAnalysis),
-        aiExplanations: rawData.aiExplanations ?? Prisma.JsonNull,
-        aiRecommendations: rawData.aiRecommendations ?? Prisma.JsonNull,
-        alerts: rawData.alerts ?? Prisma.JsonNull,
-        extraCharges: rawData.extraCharges ?? Prisma.JsonNull,
-        billingItems: rawData.billingItems ?? Prisma.JsonNull,
-        creditSummary: rawData.creditSummary ?? Prisma.JsonNull,
-        billScore: flags.billScore ?? numberOrNull(rawData.billScore),
+        estimatedSavings: analysis.estimatedSavings ?? flags.estimatedSavings ?? numberOrNull(rawData.estimatedSavings),
+        aiAnalysis: analysis.aiAnalysis ?? stringOrNull(rawData.aiAnalysis),
+        aiExplanations: analysis.aiExplanations ?? Prisma.JsonNull,
+        aiRecommendations: analysis.aiRecommendations ?? Prisma.JsonNull,
+        alerts: analysis.alerts ?? Prisma.JsonNull,
+        extraCharges: jsonColumns.extraCharges,
+        billingItems: jsonColumns.billingItems,
+        creditSummary: jsonColumns.creditSummary,
+        billScore: analysis.billScore ?? flags.billScore ?? numberOrNull(rawData.billScore),
         status: 'draft',
     };
 
