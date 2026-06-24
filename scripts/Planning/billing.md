@@ -34,3 +34,12 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-19 | Sprint 3.1 | B1 - Inverter encryption fix | claude (sonnet) | L | R$ 20 |
 | 2026-06-19 | Sprint 3.1 | C1 - Validation status | claude (sonnet) | L | R$ 20 |
 | 2026-06-19 | Sprint 3.1 | D1 - Rateio UI polish | claude (haiku) | S | R$ 5 |
+| 2026-06-23 | Sprint 4 | A1 - Manual-generation backend | claude (sonnet) | M | R$ 12 |
+| 2026-06-23 | Sprint 4 | A2 - Cockpit correctness | claude (sonnet) | M | R$ 12 |
+| 2026-06-23 | Sprint 4 | A3 - Savings fallback | claude (sonnet) | M | R$ 12 |
+| 2026-06-23 | Sprint 4 | B1 - Admin generation form | claude (sonnet) | L | R$ 20 |
+| 2026-06-23 | Sprint 4 | B2 - Admin bill form | claude (sonnet) | L | R$ 20 |
+| 2026-06-23 | Sprint 4 | C1 - Client bill entry | claude (sonnet) | L | R$ 20 |
+| 2026-06-23 | Sprint 4 | C2 - Client generation form | claude (sonnet) | L | R$ 20 |
+| 2026-06-23 | Sprint 4 | D1 - Admin approval action | claude (sonnet) | M | R$ 12 |
+| 2026-06-23 | Sprint 4 | D2 - Onboarding checklist | claude (sonnet) | L | R$ 20 |
