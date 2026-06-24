@@ -141,6 +141,23 @@ export interface BillAnalyzer {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Provider-agnostic analyzer contract                                */
+/* ------------------------------------------------------------------ */
+
+export interface ChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+export interface BillAnalyzerProvider {
+  readonly name: 'claude' | 'gemini' | 'openai'
+  extract(input: { buffer: Buffer; mimeType: string }): Promise<RawBillData>
+  analyze(input: { raw: RawBillData; flags: DeterministicBillFlags }): Promise<SpecialistAnalysis>
+  // Streaming chat: resolves to a web ReadableStream<Uint8Array> of UTF-8 plain-text deltas.
+  chat(input: { system: string; messages: ChatMessage[] }): Promise<ReadableStream<Uint8Array>>
+}
+
+/* ------------------------------------------------------------------ */
 /*  Error type                                                         */
 /* ------------------------------------------------------------------ */
 
