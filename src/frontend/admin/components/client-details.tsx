@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentType, type ReactNode, useState } from 'react';
+import { type ComponentType, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import {
@@ -31,13 +31,17 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { resolveBillStatus, statusToBadge } from '@/frontend/economia/lib/bill-status';
 import { ManualTransactionDialog } from './manual-transaction-dialog';
+import { AddGenerationDialog } from './add-generation-dialog';
+import { AddBillDialog } from './add-bill-dialog';
 import { useGenerationDashboard } from '@/frontend/generation/hooks/use-generation-dashboard';
+import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { CompactMetrics } from '@/frontend/generation/components/dashboard/compact-metrics';
 import { PeriodTabs } from '@/frontend/generation/components/dashboard/period-tabs';
 import { AdaptiveChart } from '@/frontend/generation/components/dashboard/adaptive-chart';
@@ -695,6 +699,33 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
         goToToday,
         getCurrentPeriodLabel,
     } = useGenerationDashboard({ clientId });
+    const api = useAuthenticatedApi();
+    const [manualGeneration, setManualGeneration] = useState<any[]>([]);
+    const [manualGenerationLoading, setManualGenerationLoading] = useState(false);
+    const [manualGenerationError, setManualGenerationError] = useState<string | null>(null);
+
+    const fetchManualGeneration = useCallback(() => {
+        setManualGenerationLoading(true);
+        setManualGenerationError(null);
+        api.get<{ success: boolean; data: any[] }>(`/admin/clients/${clientId}/generation`)
+            .then(response => {
+                if (response.data.success) {
+                    setManualGeneration(response.data.data || []);
+                } else {
+                    setManualGenerationError(response.data.message || 'Erro ao carregar geração manual');
+                }
+            })
+            .catch(err => {
+                setManualGenerationError(err.response?.data?.message || 'Erro ao carregar geração manual');
+            })
+            .finally(() => {
+                setManualGenerationLoading(false);
+            });
+    }, [clientId, api]);
+
+    useEffect(() => {
+        fetchManualGeneration();
+    }, [fetchManualGeneration]);
 
     const isLoading = clientDetails.isLoading || plants.isLoading || units.isLoading || allocations.isLoading || bills.isLoading;
 
@@ -741,6 +772,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                     <TabsTrigger value="plants">Usinas e Estrutura</TabsTrigger>
                     <TabsTrigger value="bills">Faturas</TabsTrigger>
                     <TabsTrigger value="generation">Dashboard de Geração</TabsTrigger>
+                    <TabsTrigger value="manual-generation">Geração (manual)</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="resumo" className="mt-6 space-y-6">
@@ -785,6 +817,44 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                                 <p className="text-muted-foreground">O dashboard de geração aparecerá aqui após o registro dos inversores.</p>
                             </CardContent>
                         </Card>
+                    )}
+                </TabsContent>
+                <TabsContent value="manual-generation" className="space-y-4">
+                    <AddGenerationDialog clientId={clientId} onSuccess={fetchManualGeneration} />
+                    {manualGenerationLoading ? (
+                        <div className="flex h-32 items-center justify-center">
+                            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                        </div>
+                    ) : manualGenerationError ? (
+                        <Alert variant="destructive">
+                            <AlertTitle>Erro ao carregar geração manual</AlertTitle>
+                            <AlertDescription>{manualGenerationError}</AlertDescription>
+                        </Alert>
+                    ) : manualGeneration.length === 0 ? (
+                        <Card>
+                            <CardContent className="flex h-32 flex-col items-center justify-center py-8 text-center">
+                                <p className="text-muted-foreground">Nenhuma geração manual registrada para este cliente.</p>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Mês</TableHead>
+                                    <TableHead>Ano</TableHead>
+                                    <TableHead>Geração (kWh)</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {manualGeneration.map((item: any, index: number) => (
+                                    <TableRow key={item.id || index}>
+                                        <TableCell>{String(item.referenceMonth).padStart(2, '0')}</TableCell>
+                                        <TableCell>{item.referenceYear}</TableCell>
+                                        <TableCell>{Number(item.generationKwh).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     )}
                 </TabsContent>
             </Tabs>
@@ -1129,10 +1199,12 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                     <CardTitle>Faturas de Energia</CardTitle>
                     <CardDescription>Importe PDFs para preencher o EnergyBill canônico e revisar os campos extraídos por IA.</CardDescription>
                 </div>
-                <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger asChild>
-                        <Button size="sm" disabled={units.consumerUnits.length === 0}><Upload className="mr-2 h-4 w-4" />Importar PDF</Button>
-                    </DialogTrigger>
+                <div className="flex gap-2">
+                    <AddBillDialog clientId={clientId} onSuccess={() => { bills.refetch(); }} />
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>
+                            <Button size="sm" disabled={units.consumerUnits.length === 0}><Upload className="mr-2 h-4 w-4" />Importar PDF</Button>
+                        </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Importar Fatura</DialogTitle>
@@ -1158,6 +1230,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
+                </div>
             </CardHeader>
             <CardContent>
                 {bills.bills.length === 0 ? (
