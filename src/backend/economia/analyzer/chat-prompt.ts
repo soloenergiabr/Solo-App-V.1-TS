@@ -4,37 +4,44 @@
  * hallucinating numbers.
  */
 
-interface BillForChat {
+interface ChatBillContext {
   distributor: string | null
   totalBillValue: number | null
   referenceMonth: number | null
   referenceYear: number | null
+  amountDue: number | null
+  estimatedSavings: number | null
   availabilityCost: number | null
   publicLightingCost: number | null
   monitoredGenerationKwh: number | null
   injectedEnergyKwh: number | null
   compensatedEnergyKwh: number | null
-  estimatedSavings: number | null
-  consumptionKwh: number | null
+  currentCreditsKwh: number | null
+  previousCreditsKwh: number | null
   billedConsumptionKwh: number | null
-  tariffFlag: string | null
-  tariffFlagCost: number | null
+  expectedGenerationKwh: number | null
+  generationEfficiency: number | null
   icmsCost: number | null
-  pisCost: number | null
-  cofinsCost: number | null
   pisCofinsCost: number | null
-  energyCost: number | null
-  tariffTeValue: number | null
-  tariffTusdValue: number | null
-  tariffPerKwh: number | null
-  consumerUnit?: {
-    name: string | null
-    clientNumber: string | null
-    installationNumber: string | null
-  } | null
+  tariffFlag: string | null
+  fineAmount: number | null
+  otherCharges: number | null
+  connectionType: string | null
+  consumerClass: string | null
+  readingPeriodFrom: Date | string | null
+  readingPeriodTo: Date | string | null
+  // Legacy extraction fields (may be absent)
+  consumptionKwh?: number | null
+  energyCost?: number | null
+  tariffFlagCost?: number | null
+  pisCost?: number | null
+  cofinsCost?: number | null
+  tariffTeValue?: number | null
+  tariffTusdValue?: number | null
+  tariffPerKwh?: number | null
 }
 
-export function buildChatSystemPrompt(bill: BillForChat): string {
+export function buildChatSystemPrompt(bill: ChatBillContext): string {
   const dist = bill.distributor ?? 'Nao informada'
   const total = bill.totalBillValue ?? 0
   const refMonth = bill.referenceMonth ?? '?'

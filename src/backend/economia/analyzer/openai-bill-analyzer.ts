@@ -1,4 +1,5 @@
 import OpenAI from 'openai'
+import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
 import { AnalyzerError, BillAnalyzerProvider } from './types'
 
 /* ------------------------------------------------------------------ */
@@ -54,7 +55,7 @@ export function createOpenAIBillAnalyzer(): BillAnalyzerProvider {
         stream: true,
         messages: [
           { role: 'system', content: system },
-          ...messages.map((m) => ({ role: m.role, content: m.content })),
+          ...messages.map((m): ChatCompletionMessageParam => ({ role: m.role, content: m.content })),
         ],
       })
 
