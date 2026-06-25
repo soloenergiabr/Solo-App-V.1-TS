@@ -21,6 +21,7 @@ import { CostCompositionCard } from './clarifier/cost-composition-card'
 import { SolarEnergyCard } from './clarifier/solar-energy-card'
 import { SystemStatusCard } from './clarifier/system-status-card'
 import { ActionCard } from './clarifier/action-card'
+import { TechnicalDataViewer } from './technical-data-viewer'
 import { BillSummaryCard } from './clarifier/bill-summary-card'
 import { BillChatDrawer } from './chat/bill-chat-drawer'
 
@@ -359,15 +360,8 @@ export function BillAnalysisScreen({
                             expansionModules={clarifier.expansionModules}
                         />
 
-                        {/* F2 slot: Technical viewer will render here */}
-                        {bill.billingItems && Array.isArray(bill.billingItems) && bill.billingItems.length > 0 && (
-                            <div className="border border-border bg-card p-5 rounded-lg">
-                                <p className="solo-label mb-2">Dados Técnicos da Fatura</p>
-                                <p className="text-xs text-muted-foreground">
-                                    Painel detalhado em breve.
-                                </p>
-                            </div>
-                        )}
+                        {/* F2 slot: Technical viewer */}
+                        <TechnicalDataViewer bill={bill} />
                     </>
                 ) : null}
 
