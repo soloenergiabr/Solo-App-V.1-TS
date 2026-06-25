@@ -2,6 +2,7 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { motion } from 'framer-motion'
+import { formatBRL } from '@/frontend/telemetry-kit'
 
 interface CostPieChartProps {
   availabilityCost: number
@@ -22,8 +23,7 @@ const SEGMENTS = [
   { key: 'extras',        label: 'Serviços/Parcelas',      color: '#E36040' },
 ]
 
-const fmt = (v: number) =>
-  v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const fmt = (v: number) => formatBRL(v)
 
 const CustomTooltip = ({ active, payload, total }: any) => {
   if (!active || !payload?.length) return null

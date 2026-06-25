@@ -53,3 +53,7 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-24 | Sprint 5 | C3 - Bill chat dialog integration | deepseek-flash | M | R$ 12 |
 | 2026-06-25 | Sprint 5 | F1 - Consolidate dashboard + source math from computeClarifier | deepseek-flash | L | R$ 20 |
 | 2026-06-25 | Sprint 5 | F2 - Raw technical data viewer | deepseek-flash | M | R$ 12 |
+| 2026-06-25 | Sprint 5 | F3 - ActionCard CTA to /support | deepseek-flash | S | R$ 5 |
+| 2026-06-25 | Sprint 5 | F4 - UI/UX polish pass | deepseek-flash | M | R$ 12 |
+| 2026-06-25 | Sprint 5 | F5 - Backend hardening | deepseek-flash | S | R$ 5 |
+| 2026-06-25 | Sprint 5 | F6 - Render/integration test (reachability guard) | deepseek-flash | S | R$ 5 |

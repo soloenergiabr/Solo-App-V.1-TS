@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Sun, ArrowDown, Home, Zap } from 'lucide-react'
+import { formatKwh } from '@/frontend/telemetry-kit'
 
 interface SolarEnergyCardProps {
   generated: number
@@ -10,7 +11,7 @@ interface SolarEnergyCardProps {
   creditsBalance: number
 }
 
-const fmt = (n: number) => n.toLocaleString('pt-BR')
+const fmt = (n: number) => formatKwh(n)
 
 export function SolarEnergyCard({ generated, injected, compensated, creditsBalance }: SolarEnergyCardProps) {
   const selfConsumed = Math.max(0, generated - injected)

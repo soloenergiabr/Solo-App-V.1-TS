@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Info, Package, CreditCard } from 'lucide-react'
+import { formatBRL } from '@/frontend/telemetry-kit'
 
 interface ExtraCharge {
   description: string
@@ -24,8 +25,7 @@ const connectionTypeLabel: Record<string, string> = {
   trifasico: 'Trifásico · mín. 100 kWh',
 }
 
-const fmt = (v: number) =>
-  v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const fmt = (v: number) => formatBRL(v)
 
 export function CostCompositionCard({
   availabilityCost,

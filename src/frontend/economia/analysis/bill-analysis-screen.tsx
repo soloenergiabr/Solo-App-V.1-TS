@@ -211,7 +211,7 @@ export function BillAnalysisScreen({
                 <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-6">
                     <BillScoreRing score={bill.billScore} size="lg" />
                     <div className="text-center sm:text-left">
-                        <div className="font-display text-3xl font-bold text-foreground">
+                        <div className="font-display text-3xl font-bold text-foreground tabular-nums">
                             {formatBRL(bill.amountDue)}
                         </div>
                         {bill.estimatedSavings > 0 && (

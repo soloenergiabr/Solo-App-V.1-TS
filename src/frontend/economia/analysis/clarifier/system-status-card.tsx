@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { CheckCircle2, AlertTriangle, XCircle } from 'lucide-react'
+import { formatKwh } from '@/frontend/telemetry-kit'
 
 type SystemStatus = 'adequate' | 'slightly_below' | 'below_needed'
 
@@ -38,7 +39,7 @@ const statusConfig = {
   },
 }
 
-const fmt = (n: number) => n.toLocaleString('pt-BR')
+const fmt = (n: number) => formatKwh(n)
 
 export function SystemStatusCard({ expectedGeneration, actualGeneration, status }: SystemStatusCardProps) {
   const cfg = statusConfig[status]

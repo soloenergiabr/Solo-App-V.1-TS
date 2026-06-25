@@ -1,21 +1,21 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Plus, TrendingUp } from 'lucide-react'
+import { ArrowRight, MessageCircle, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { formatKwh, formatKw } from '@/frontend/telemetry-kit'
 
 interface ActionCardProps {
   extraGenerationNeeded: number
   expansionKwp?: number
   expansionModules?: number
-  onExpansionClick?: () => void
 }
 
 export function ActionCard({
   extraGenerationNeeded,
   expansionKwp,
   expansionModules,
-  onExpansionClick,
 }: ActionCardProps) {
   const needsExpansion = extraGenerationNeeded > 0 && expansionModules !== undefined && expansionModules > 0
 
@@ -58,14 +58,14 @@ export function ActionCard({
         <div className="flex justify-between items-center px-4 py-3 border-b border-border/60">
           <span className="text-sm text-muted-foreground">Falta gerar</span>
           <span className="text-sm font-semibold text-foreground tabular-nums">
-            {extraGenerationNeeded.toLocaleString('pt-BR')} kWh
+            {formatKwh(extraGenerationNeeded)}
           </span>
         </div>
         {expansionKwp !== undefined && (
           <div className="flex justify-between items-center px-4 py-3 border-b border-border/60">
             <span className="text-sm text-muted-foreground">Isso equivale a</span>
             <span className="text-sm font-semibold text-primary tabular-nums">
-              +{expansionKwp.toFixed(1)} kWp
+              +{formatKw(expansionKwp)}
             </span>
           </div>
         )}
@@ -79,15 +79,13 @@ export function ActionCard({
         )}
       </div>
 
-      <Button variant="default" className="w-full" onClick={onExpansionClick}>
-        <Plus className="h-4 w-4" />
-        Quero avaliar expansão
-        <ArrowRight className="h-4 w-4" />
-      </Button>
-
-      <p className="text-xs text-muted-foreground text-center">
-        Solicite um orçamento sem compromisso
-      </p>
+      <Link href="/support" className="w-full">
+        <Button variant="default" className="w-full">
+          <MessageCircle className="h-4 w-4" />
+          Falar com a Solo
+          <ArrowRight className="h-4 w-4" />
+        </Button>
+      </Link>
     </motion.div>
   )
 }

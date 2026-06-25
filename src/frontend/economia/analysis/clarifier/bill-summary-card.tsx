@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { formatBRL } from '@/frontend/telemetry-kit'
 
 interface BillSummaryCardProps {
   totalPaid: number
@@ -21,8 +22,7 @@ const connectionMinKwh: Record<string, number> = {
   trifasico: 100,
 }
 
-const fmt = (v: number) =>
-  v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const fmt = (v: number) => formatBRL(v)
 
 export function BillSummaryCard({
   totalPaid,
