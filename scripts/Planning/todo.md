@@ -68,4 +68,21 @@
 
 ---
 
+## 🔧 Sprint 5 — Carry-over & Follow-ups (added 2026-06-25)
+
+> Sprint 5 (`sprint_5_ai-analyzer_v1.md`) is **merged to `main`** (`f70574e`) and pushed. These are the open items it left.
+
+- [ ] **Deploy Sprint 5 to the VPS** — zero migrations, plain code deploy. **Must set `ANTHROPIC_API_KEY`** (default provider is now Claude) **or** `BILL_ANALYZER_PROVIDER=gemini`, else upload/chat fail. Steps in `PM_SPRINT-HANDOFF.md` §Deploy. _(S)_
+- [ ] **Validate the analyzer on real bills post-deploy** — extraction accuracy across distributors (Enel/Cemig/etc.), clarifier numbers, chat groundedness. _(S)_
+- [ ] **Repo-wide TypeScript cleanup** — 10 pre-existing `tsc --noEmit` errors in **non-Sprint-5** files masked by `next.config` `ignoreBuildErrors: true`: `admin/clients/[id]/plants/route.ts` (×2, `providerMetadata` Json), `generation/__tests__` solis + sync (×2, missing `syncEnabled`), `admin/components/bill-validation-queue.tsx` (`PendingItem.type`), `admin/components/client-details.tsx` (`.message`), `rateio/rateio-screen.tsx` (×2), `lib/object-storage.ts` (`Buffer` BodyInit). Clear them, then **flip `ignoreBuildErrors → false`** so the compiler gates merges. _(M)_
+- [ ] **Finish the OpenAI analyzer provider** — `extract()`/`analyze()` currently throw (PDF→image path not implemented); only `chat()` works. Claude + Gemini are complete. _(M)_
+- [ ] **(Optional) `rawExtraction Json?` column** for richer chat context — deferred; chat works off existing columns, only add if real-bill testing shows it's needed (requires a hand-authored migration). _(S)_
+
+## ➡️ Sprint 6 (next) — "Consumo" section (already scoped in Sprint 5 brainstorm)
+- [ ] **"Consumo" navigation consolidation** — merge `consumption` + `rateio` + `economia` into one section. _(L)_
+- [ ] **Multi-bill history / month-vs-month compare** in Consumo. _(M)_
+- [ ] **Contextual FAQ + educational** surfaces alongside the analyzer results. _(M)_
+
+---
+
 _Pulled from the Sprint 4 brainstorm so nothing from the vision is lost. Promote an item into a sprint file when it's next; keep this list as the running product backlog._

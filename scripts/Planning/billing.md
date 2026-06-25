@@ -43,3 +43,6 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-23 | Sprint 4 | C2 - Client generation form | claude (sonnet) | L | R$ 20 |
 | 2026-06-23 | Sprint 4 | D1 - Admin approval action | claude (sonnet) | M | R$ 12 |
 | 2026-06-23 | Sprint 4 | D2 - Onboarding checklist | claude (sonnet) | L | R$ 20 |
+| 2026-06-24 | Sprint 5 | A2 - Rich prompts + mapping | claude (sonnet) | M | R$ 12 |
+| 2026-06-24 | Sprint 5 | A1 - Provider abstraction | claude (opus) | L | R$ 20 |
+| 2026-06-24 | Sprint 5 | A3 - computeClarifier | claude (sonnet) | M | R$ 12 |
