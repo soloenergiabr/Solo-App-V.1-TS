@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { NextRequest } from 'next/server'
+import type { ChatBillContext } from '@/backend/economia/analyzer/chat-prompt'
 
 // -- Mocks --
 const mockFindUnique = vi.fn()
@@ -114,32 +115,43 @@ describe('buildChatSystemPrompt', () => {
             '@/backend/economia/analyzer/chat-prompt'
         )
 
-        const mockBill = {
+        const mockBill: ChatBillContext = {
             distributor: 'ENEL',
             totalBillValue: 200,
             referenceMonth: 4,
             referenceYear: 2026,
+            amountDue: 200,
             availabilityCost: 50,
             publicLightingCost: 15,
             monitoredGenerationKwh: 300,
             injectedEnergyKwh: 250,
             compensatedEnergyKwh: 200,
+            currentCreditsKwh: 0,
+            previousCreditsKwh: 0,
             estimatedSavings: 80,
             consumptionKwh: 400,
             billedConsumptionKwh: 150,
+            expectedGenerationKwh: 320,
+            generationEfficiency: 0.94,
             tariffFlag: 'verde',
             tariffFlagCost: 0,
             icmsCost: 0,
             pisCost: 3,
             cofinsCost: 12,
             pisCofinsCost: 15,
+            fineAmount: 0,
+            otherCharges: 0,
             energyCost: 250,
             tariffTeValue: 0.4,
             tariffTusdValue: 0.3,
             tariffPerKwh: 0.7,
+            connectionType: 'monofasico',
+            consumerClass: 'B1',
+            readingPeriodFrom: null,
+            readingPeriodTo: null,
         }
 
-        const prompt = buildChatSystemPrompt(mockBill as any)
+        const prompt = buildChatSystemPrompt(mockBill)
 
         expect(prompt).toContain('ENEL')
         expect(prompt).toContain('200')

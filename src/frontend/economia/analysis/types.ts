@@ -1,3 +1,5 @@
+import type { BillPaymentStatus } from '@/app/generated/prisma'
+
 export interface BillDetail {
     id: string
     consumerUnitId: string
@@ -7,7 +9,7 @@ export interface BillDetail {
     amountDue: number
     dueDate: string | null
     paidAt: string | null
-    paymentStatus: string
+    paymentStatus: BillPaymentStatus
     status: string | null
     pixCode: string | null
     barcode: string | null

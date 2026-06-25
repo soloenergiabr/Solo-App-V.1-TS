@@ -4,7 +4,7 @@
  * hallucinating numbers.
  */
 
-interface ChatBillContext {
+export interface ChatBillContext {
   distributor: string | null
   totalBillValue: number | null
   referenceMonth: number | null

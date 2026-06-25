@@ -115,9 +115,6 @@ export function BillAnalysisScreen({
     const [confirmError, setConfirmError] = useState<string | null>(null)
     const [confirmedPaidAt, setConfirmedPaidAt] = useState<string | null>(null)
 
-    const effectivePaymentStatus: BillPaymentStatus = confirmedPaidAt ? 'paga' : (bill?.paymentStatus as BillPaymentStatus)
-    const effectivePaidAt = confirmedPaidAt ?? (bill?.paidAt ?? null)
-
     async function handleConfirmPayment() {
         if (!bill) return
         setIsConfirming(true)
@@ -166,6 +163,9 @@ export function BillAnalysisScreen({
             </PageLayout>
         )
     }
+
+    const effectivePaymentStatus: BillPaymentStatus = confirmedPaidAt ? 'paga' : bill.paymentStatus
+    const effectivePaidAt = confirmedPaidAt ?? bill.paidAt
 
     const badge = statusToBadge(
         resolveBillStatus({ ...bill, paymentStatus: effectivePaymentStatus, paidAt: effectivePaidAt }),
