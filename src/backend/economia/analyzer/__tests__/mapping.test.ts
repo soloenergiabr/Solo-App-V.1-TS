@@ -123,7 +123,7 @@ describe('mapRawToBillJson — full data', () => {
 
   it('first billing item has correct shape', () => {
     const result = mapRawToBillJson(raw)
-    const items = result.billingItems as Array<Record<string, unknown>>
+    const items = result.billingItems as unknown as Array<Record<string, unknown>>
     expect(items[0].description).toBe('Energia Consumida Faturada TE')
     expect(items[0].quantity_kwh).toBe(150)
     expect(items[0].unit_price).toBe(0.45)
@@ -134,7 +134,7 @@ describe('mapRawToBillJson — full data', () => {
 
   it('second billing item is a credit', () => {
     const result = mapRawToBillJson(raw)
-    const items = result.billingItems as Array<Record<string, unknown>>
+    const items = result.billingItems as unknown as Array<Record<string, unknown>>
     expect(items[1].is_credit).toBe(true)
     expect(items[1].total_value).toBe(-36.0)
   })
@@ -150,13 +150,13 @@ describe('mapRawToBillJson — full data', () => {
 
   it('extraCharges has length 2 with both types', () => {
     const result = mapRawToBillJson(raw)
-    const charges = result.extraCharges as Array<Record<string, unknown>>
+    const charges = result.extraCharges as unknown as Array<Record<string, unknown>>
     expect(charges).toHaveLength(2)
   })
 
   it('service item is tagged type:service', () => {
     const result = mapRawToBillJson(raw)
-    const charges = result.extraCharges as Array<Record<string, unknown>>
+    const charges = result.extraCharges as unknown as Array<Record<string, unknown>>
     const service = charges.find((c) => c.type === 'service')
     expect(service).toBeDefined()
     expect(service?.description).toBe('Seguro Residencial')
@@ -165,7 +165,7 @@ describe('mapRawToBillJson — full data', () => {
 
   it('installment item is tagged type:installment with remaining_installments', () => {
     const result = mapRawToBillJson(raw)
-    const charges = result.extraCharges as Array<Record<string, unknown>>
+    const charges = result.extraCharges as unknown as Array<Record<string, unknown>>
     const installment = charges.find((c) => c.type === 'installment')
     expect(installment).toBeDefined()
     expect(installment?.description).toBe('Parcelamento Normal 3/12')
@@ -213,7 +213,7 @@ describe('mapRawToBillJson — typed billingItems fallback', () => {
       ],
     })
     const result = mapRawToBillJson(raw)
-    const items = result.billingItems as Array<Record<string, unknown>>
+    const items = result.billingItems as unknown as Array<Record<string, unknown>>
     expect(items).toHaveLength(1)
     expect(items[0].description).toBe('Custo de Disponibilidade')
   })

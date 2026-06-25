@@ -57,3 +57,6 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-25 | Sprint 5 | F4 - UI/UX polish pass | deepseek-flash | M | R$ 12 |
 | 2026-06-25 | Sprint 5 | F5 - Backend hardening | deepseek-flash | S | R$ 5 |
 | 2026-06-25 | Sprint 5 | F6 - Render/integration test (reachability guard) | deepseek-flash | S | R$ 5 |
+| 2026-06-25 | Sprint 5 | G1 - Fix invented variant + sibling audit | deepseek-flash | S | R$ 5 |
+| 2026-06-25 | Sprint 5 | G2 - Fix screen type errors (null-narrowing + payment enum) | deepseek-flash | S | R$ 5 |
+| 2026-06-25 | Sprint 5 | G3 - Add typecheck gate | deepseek-flash | S | R$ 5 |

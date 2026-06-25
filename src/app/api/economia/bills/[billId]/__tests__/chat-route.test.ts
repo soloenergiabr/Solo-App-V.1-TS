@@ -137,10 +137,9 @@ describe('buildChatSystemPrompt', () => {
             tariffTeValue: 0.4,
             tariffTusdValue: 0.3,
             tariffPerKwh: 0.7,
-            consumerUnit: null,
         }
 
-        const prompt = buildChatSystemPrompt(mockBill)
+        const prompt = buildChatSystemPrompt(mockBill as any)
 
         expect(prompt).toContain('ENEL')
         expect(prompt).toContain('200')

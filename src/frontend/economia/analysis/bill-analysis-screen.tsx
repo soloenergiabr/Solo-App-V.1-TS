@@ -9,6 +9,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { PageLayout, PageHeader } from '@/components/ui/page-layout'
 import { CopyPixButton, formatBRL } from '@/frontend/telemetry-kit'
 import { resolveBillStatus, statusToBadge } from '@/frontend/economia/lib/bill-status'
+import type { BillPaymentStatus } from '@/app/generated/prisma'
 import { BillScoreRing } from './bill-score-ring'
 import { LineItemExplanations } from './line-item-explanations'
 import { AlertsPanel } from './alerts-panel'
@@ -110,6 +111,34 @@ export function BillAnalysisScreen({
         )
     }
 
+    const [isConfirming, setIsConfirming] = useState(false)
+    const [confirmError, setConfirmError] = useState<string | null>(null)
+    const [confirmedPaidAt, setConfirmedPaidAt] = useState<string | null>(null)
+
+    const effectivePaymentStatus: BillPaymentStatus = confirmedPaidAt ? 'paga' : (bill?.paymentStatus as BillPaymentStatus)
+    const effectivePaidAt = confirmedPaidAt ?? (bill?.paidAt ?? null)
+
+    async function handleConfirmPayment() {
+        if (!bill) return
+        setIsConfirming(true)
+        setConfirmError(null)
+        try {
+            const res = await fetch(`/api/economia/bills/${bill.id}/confirm-payment`, {
+                method: 'POST',
+            })
+            const json = await res.json()
+            if (!res.ok || !json.success) {
+                setConfirmError(json.message ?? 'Falha ao confirmar pagamento')
+                return
+            }
+            setConfirmedPaidAt(json.data.paidAt ?? new Date().toISOString())
+        } catch (err) {
+            setConfirmError(err instanceof Error ? err.message : 'Erro inesperado')
+        } finally {
+            setIsConfirming(false)
+        }
+    }
+
     /* ---------- Empty / not found ---------- */
     if (!bill) {
         return (
@@ -136,33 +165,6 @@ export function BillAnalysisScreen({
                 </Alert>
             </PageLayout>
         )
-    }
-
-    const [isConfirming, setIsConfirming] = useState(false)
-    const [confirmError, setConfirmError] = useState<string | null>(null)
-    const [confirmedPaidAt, setConfirmedPaidAt] = useState<string | null>(null)
-
-    const effectivePaymentStatus = confirmedPaidAt ? 'paga' : bill.paymentStatus
-    const effectivePaidAt = confirmedPaidAt ?? bill.paidAt
-
-    async function handleConfirmPayment() {
-        setIsConfirming(true)
-        setConfirmError(null)
-        try {
-            const res = await fetch(`/api/economia/bills/${bill.id}/confirm-payment`, {
-                method: 'POST',
-            })
-            const json = await res.json()
-            if (!res.ok || !json.success) {
-                setConfirmError(json.message ?? 'Falha ao confirmar pagamento')
-                return
-            }
-            setConfirmedPaidAt(json.data.paidAt ?? new Date().toISOString())
-        } catch (err) {
-            setConfirmError(err instanceof Error ? err.message : 'Erro inesperado')
-        } finally {
-            setIsConfirming(false)
-        }
     }
 
     const badge = statusToBadge(

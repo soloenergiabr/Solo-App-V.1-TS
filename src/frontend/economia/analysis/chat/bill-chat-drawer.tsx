@@ -115,7 +115,7 @@ export function BillChatDrawer({ billId, distributor, referenceMonth, referenceY
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button
-          variant="gradient"
+          variant="default"
           size="lg"
           className="fixed bottom-6 right-6 h-14 px-5 shadow-lg z-50 gap-2 rounded-full"
         >
