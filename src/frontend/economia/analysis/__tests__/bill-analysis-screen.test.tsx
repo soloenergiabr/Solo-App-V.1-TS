@@ -41,6 +41,8 @@ vi.mock('@/components/ui/textarea', () => ({
 vi.mock('@/frontend/telemetry-kit', () => ({
   CopyPixButton: 'button',
   formatBRL: (v: number) => String(v),
+  formatKwh: (v: number) => `${v} kWh`,
+  formatKw: (v: number) => `${v} kWp`,
 }))
 
 // Mock next/link
