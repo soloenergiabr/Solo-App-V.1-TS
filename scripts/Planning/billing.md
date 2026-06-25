@@ -52,3 +52,4 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-24 | Sprint 5 | C2 - BillAnalyze clarifier dashboard | deepseek-flash | L | R$ 20 |
 | 2026-06-24 | Sprint 5 | C3 - Bill chat dialog integration | deepseek-flash | M | R$ 12 |
 | 2026-06-25 | Sprint 5 | F1 - Consolidate dashboard + source math from computeClarifier | deepseek-flash | L | R$ 20 |
+| 2026-06-25 | Sprint 5 | F2 - Raw technical data viewer | deepseek-flash | M | R$ 12 |
