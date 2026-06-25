@@ -15,6 +15,7 @@ import { BillSummaryCard } from '@/frontend/economia/analysis/clarifier/bill-sum
 import { CostCompositionCard } from '@/frontend/economia/analysis/clarifier/cost-composition-card'
 import { SystemStatusCard } from '@/frontend/economia/analysis/clarifier/system-status-card'
 import { ActionCard } from '@/frontend/economia/analysis/clarifier/action-card'
+import { BillChatDrawer } from '@/frontend/economia/analysis/chat/bill-chat-drawer'
 import { formatBRL } from '@/frontend/telemetry-kit'
 
 function monthName(m: number): string {
@@ -250,6 +251,14 @@ export default function AnalyzePage({ params }: { params: Promise<{ billId: stri
           </div>
         )}
       </div>
+
+      {/* Chat drawer */}
+      <BillChatDrawer
+        billId={billId}
+        distributor={bill.distributor}
+        referenceMonth={bill.referenceMonth}
+        referenceYear={bill.referenceYear}
+      />
     </PageLayout>
   )
 }
