@@ -65,6 +65,7 @@ const energyBillSchema = z.object({
     interestAmount: optionalNumber,
     otherCharges: optionalNumber,
     estimatedSavings: optionalNumber,
+    paymentStatus: z.enum(['a_pagar', 'paga', 'vencida']).optional().nullable(),
     aiAnalysis: z.string().optional().nullable(),
     aiExplanations: z.unknown().optional().nullable(),
     aiRecommendations: z.unknown().optional().nullable(),
