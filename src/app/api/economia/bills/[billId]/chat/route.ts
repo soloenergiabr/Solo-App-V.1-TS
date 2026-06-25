@@ -55,7 +55,7 @@ const chatRoute = async (
     }
 
     // Build system prompt from bill data
-    const system = buildChatSystemPrompt(bill)
+    const system = buildChatSystemPrompt(bill as any)
 
     // Stream chat response
     const analyzer = getBillAnalyzer()

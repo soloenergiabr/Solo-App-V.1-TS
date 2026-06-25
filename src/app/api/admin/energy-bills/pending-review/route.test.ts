@@ -6,6 +6,7 @@ const mockFindMany = vi.fn();
 const mockFindUnique = vi.fn();
 const mockUpdate = vi.fn();
 const mockEventBusEmit = vi.fn();
+const mockGenerationFindMany = vi.fn();
 
 vi.mock('@/lib/prisma', () => ({
     default: {
@@ -13,6 +14,9 @@ vi.mock('@/lib/prisma', () => ({
             findMany: mockFindMany,
             findUnique: mockFindUnique,
             update: mockUpdate,
+        },
+        generationUnit: {
+            findMany: mockGenerationFindMany,
         },
     },
 }));
@@ -83,6 +87,7 @@ describe('GET /api/admin/energy-bills/pending-review', () => {
             userId: 'admin-1',
             roles: ['master'],
         } as never);
+        mockGenerationFindMany.mockResolvedValue([]);
     });
 
     describe('authorization', () => {

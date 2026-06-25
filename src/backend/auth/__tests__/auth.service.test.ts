@@ -35,7 +35,7 @@ describe('AuthService', () => {
         mockUser = {
             id: 'user_123',
             email: 'test@example.com',
-            password: 'password123',
+            password: bcrypt.hashSync('password123', 10),
             name: 'Test User',
             roles: ['user'],
             permissions: ['read_inverters', 'create_inverter'],
@@ -52,7 +52,7 @@ describe('AuthService', () => {
 
             const loginRequest = {
                 email: mockUser.email,
-                password: mockUser.password,
+                password: 'password123',
             };
 
             const result = await authService.login(loginRequest);
@@ -188,7 +188,7 @@ describe('AuthService', () => {
 
             const { accessToken, refreshToken } = await authService.login({
                 email: mockUser.email,
-                password: mockUser.password,
+                password: 'password123',
             });
 
             const result = await authService.refreshToken(refreshToken);

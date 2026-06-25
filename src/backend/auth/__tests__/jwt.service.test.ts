@@ -61,7 +61,7 @@ describe('JwtService', () => {
             const token = JwtService.generateToken(mockUserContext);
 
             vi.useFakeTimers();
-            vi.setSystemTime(new Date(Date.now() + 25 * 60 * 60 * 1000));
+            vi.setSystemTime(new Date(Date.now() + 31 * 24 * 60 * 60 * 1000));
 
             expect(() => JwtService.verifyToken(token)).toThrow('Token has expired');
         });

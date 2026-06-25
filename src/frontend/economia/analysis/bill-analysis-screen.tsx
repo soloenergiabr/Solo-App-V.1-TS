@@ -13,14 +13,42 @@ import { BillScoreRing } from './bill-score-ring'
 import { LineItemExplanations } from './line-item-explanations'
 import { AlertsPanel } from './alerts-panel'
 import { RecommendationsPanel } from './recommendations-panel'
+import { computeClarifier } from '@/shared/economia/clarifier'
+import type { ClarifierResult } from '@/shared/economia/clarifier'
 import type { BillDetail } from './types'
+import { CostPieChart } from './clarifier/cost-pie-chart'
+import { CostCompositionCard } from './clarifier/cost-composition-card'
+import { SolarEnergyCard } from './clarifier/solar-energy-card'
+import { SystemStatusCard } from './clarifier/system-status-card'
+import { ActionCard } from './clarifier/action-card'
+import { BillSummaryCard } from './clarifier/bill-summary-card'
+import { BillChatDrawer } from './chat/bill-chat-drawer'
 
 function monthName(m: number): string {
     const names = [
-        'Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho',
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
     ]
     return names[m - 1] ?? String(m)
+}
+
+function buildClarifier(bill: BillDetail): ClarifierResult | null {
+    const hasData = bill.availabilityCost != null || bill.totalAmount != null
+    if (!hasData) return null
+    return computeClarifier({
+        totalPaid: bill.totalAmount ?? bill.amountDue,
+        availabilityCost: bill.availabilityCost ?? 0,
+        publicLightingCost: bill.publicLightingCost ?? 0,
+        extraCharges: (bill.extraCharges as Array<{ value: number }>) ?? [],
+        otherCharges: bill.otherCharges ?? 0,
+        monitoredGenerationKwh: bill.monitoredGenerationKwh ?? 0,
+        injectedEnergyKwh: bill.injectedEnergyKwh ?? 0,
+        compensatedEnergyKwh: bill.compensatedEnergyKwh ?? 0,
+        currentCreditsKwh: bill.currentCreditsKwh ?? 0,
+        billedConsumptionKwh: bill.billedConsumptionKwh ?? 0,
+        expectedGenerationKwh: bill.expectedGenerationKwh ?? 0,
+        connectionType: bill.connectionType,
+    })
 }
 
 export function BillAnalysisScreen({
@@ -37,20 +65,19 @@ export function BillAnalysisScreen({
         return (
             <PageLayout
                 header={
-                    <PageHeader
-                        title="Analise da Conta"
-                        subtitle="Carregando..."
-                    />
+                    <PageHeader title="Análise da Conta" subtitle="Carregando..." />
                 }
             >
-                <div className="space-y-4">
+                <div className="mx-auto max-w-4xl space-y-4">
                     <Skeleton className="h-8 w-48" />
                     <div className="flex justify-center">
                         <Skeleton className="size-32 rounded-full" />
                     </div>
-                    <Skeleton className="h-16 w-full" />
-                    <Skeleton className="h-24 w-full" />
-                    <Skeleton className="h-24 w-full" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Skeleton className="h-48 rounded-lg" />
+                        <Skeleton className="h-48 rounded-lg" />
+                    </div>
+                    <Skeleton className="h-24 w-full rounded-lg" />
                 </div>
             </PageLayout>
         )
@@ -62,7 +89,7 @@ export function BillAnalysisScreen({
             <PageLayout
                 header={
                     <PageHeader
-                        title="Analise da Conta"
+                        title="Análise da Conta"
                         subtitle="Erro ao carregar"
                         actions={
                             <Link href="/economia">
@@ -88,8 +115,8 @@ export function BillAnalysisScreen({
             <PageLayout
                 header={
                     <PageHeader
-                        title="Analise da Conta"
-                        subtitle="Fatura nao encontrada"
+                        title="Análise da Conta"
+                        subtitle="Fatura não encontrada"
                         actions={
                             <Link href="/economia">
                                 <Button variant="ghost" size="sm">
@@ -101,9 +128,9 @@ export function BillAnalysisScreen({
                 }
             >
                 <Alert>
-                    <AlertTitle>Fatura nao encontrada</AlertTitle>
+                    <AlertTitle>Fatura não encontrada</AlertTitle>
                     <AlertDescription>
-                        A fatura solicitada nao esta disponivel ou foi removida.
+                        A fatura solicitada não está disponível ou foi removida.
                     </AlertDescription>
                 </Alert>
             </PageLayout>
@@ -114,7 +141,6 @@ export function BillAnalysisScreen({
     const [confirmError, setConfirmError] = useState<string | null>(null)
     const [confirmedPaidAt, setConfirmedPaidAt] = useState<string | null>(null)
 
-    // Allow local override once payment is confirmed in this session
     const effectivePaymentStatus = confirmedPaidAt ? 'paga' : bill.paymentStatus
     const effectivePaidAt = confirmedPaidAt ?? bill.paidAt
 
@@ -138,15 +164,18 @@ export function BillAnalysisScreen({
         }
     }
 
-    const badge = statusToBadge(resolveBillStatus({ ...bill, paymentStatus: effectivePaymentStatus, paidAt: effectivePaidAt }))
+    const badge = statusToBadge(
+        resolveBillStatus({ ...bill, paymentStatus: effectivePaymentStatus, paidAt: effectivePaidAt }),
+    )
     const refLabel = `${monthName(bill.referenceMonth)}/${bill.referenceYear}`
     const hasAiContent = bill.aiAnalysis || bill.aiExplanations || bill.alerts || bill.aiRecommendations
+    const clarifier = buildClarifier(bill)
 
     return (
         <PageLayout
             header={
                 <PageHeader
-                    title="Analise da Conta"
+                    title="Análise da Conta"
                     subtitle={`${bill.consumerUnitName} — ${refLabel}`}
                     actions={
                         <Link href="/economia">
@@ -158,12 +187,10 @@ export function BillAnalysisScreen({
                 />
             }
         >
-            <div className="mx-auto max-w-2xl space-y-6">
+            <div className="mx-auto max-w-4xl space-y-6">
                 {/* Status badge + distributor */}
                 <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">
-                        {bill.distributor ?? '—'}
-                    </span>
+                    <span className="text-xs text-muted-foreground">{bill.distributor ?? '—'}</span>
                     <span
                         data-status={badge.tone}
                         className={
@@ -209,40 +236,33 @@ export function BillAnalysisScreen({
                                     size="sm"
                                     onClick={() => navigator.clipboard.writeText(bill.barcode!)}
                                 >
-                                    Copiar codigo de barras
+                                    Copiar código de barras
                                 </Button>
                             )}
                         </div>
                     </div>
                 )}
 
-                {/* Confirm payment button */}
+                {/* Confirm payment */}
                 {effectivePaymentStatus !== 'paga' && (
                     <div className="rounded-2xl border bg-card p-4 space-y-3">
                         <h3 className="font-display text-sm font-semibold text-foreground">Confirmar Pagamento</h3>
                         <p className="text-xs text-muted-foreground">
-                            Ja pagou esta fatura? Confirme aqui para atualizar o status.
+                            Já pagou esta fatura? Confirme aqui para atualizar o status.
                         </p>
                         {confirmError && (
                             <Alert variant="destructive" className="py-2">
                                 <AlertDescription className="text-xs">{confirmError}</AlertDescription>
                             </Alert>
                         )}
-                        <Button
-                            onClick={handleConfirmPayment}
-                            disabled={isConfirming}
-                            size="sm"
-                            variant="default"
-                        >
+                        <Button onClick={handleConfirmPayment} disabled={isConfirming} size="sm" variant="default">
                             {isConfirming ? (
                                 <>
-                                    <Loader2 className="size-4 animate-spin" />
-                                    Confirmando...
+                                    <Loader2 className="size-4 animate-spin" /> Confirmando...
                                 </>
                             ) : (
                                 <>
-                                    <CheckCircle2 className="size-4" />
-                                    Confirmar Pagamento
+                                    <CheckCircle2 className="size-4" /> Confirmar Pagamento
                                 </>
                             )}
                         </Button>
@@ -273,40 +293,121 @@ export function BillAnalysisScreen({
                     </Button>
                 )}
 
-                {/* AI Analysis section */}
+                {/* ───────── Clarifier dashboard ───────── */}
+                {clarifier ? (
+                    <>
+                        {/* Row 1: Summary tiles + Score gauge (compact) */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="border border-border bg-card p-5 rounded-lg flex items-center justify-center">
+                                <BillScoreRing score={bill.billScore} size="lg" />
+                            </div>
+                            <BillSummaryCard
+                                totalPaid={clarifier.totalPaid}
+                                minimumPossible={clarifier.minimumPossible}
+                                connectionType={bill.connectionType}
+                                extraChargesTotal={clarifier.extraChargesTotal}
+                            />
+                        </div>
+
+                        {/* Row 2: Pie + Cost composition */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <CostPieChart
+                                availabilityCost={clarifier.availabilityCost}
+                                publicLightingCost={clarifier.publicLightingCost}
+                                uncompensatedCost={clarifier.uncompensatedCost}
+                                icmsCost={bill.icmsCost ?? 0}
+                                pisCofins={bill.pisCofinsCost ?? 0}
+                                extraChargesTotal={clarifier.extraChargesTotal}
+                                totalPaid={clarifier.totalPaid}
+                            />
+                            <CostCompositionCard
+                                availabilityCost={clarifier.availabilityCost}
+                                publicLightingCost={clarifier.publicLightingCost}
+                                uncompensatedCost={clarifier.uncompensatedCost}
+                                extraCharges={bill.extraCharges as Array<{ description: string; value: number; type: 'service' | 'installment'; remaining_installments?: number }> | undefined}
+                                connectionType={bill.connectionType}
+                            />
+                        </div>
+
+                        {/* Row 3: Solar + System status */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <SolarEnergyCard
+                                generated={clarifier.generated}
+                                injected={clarifier.injected}
+                                compensated={clarifier.compensated}
+                                creditsBalance={clarifier.creditsBalance}
+                            />
+                            {bill.monitoredGenerationKwh != null ? (
+                                <SystemStatusCard
+                                    expectedGeneration={clarifier.expectedGeneration}
+                                    actualGeneration={clarifier.actualGeneration}
+                                    status={clarifier.systemStatus}
+                                />
+                            ) : (
+                                <div className="border border-border bg-card p-5 rounded-lg flex items-center justify-center">
+                                    <p className="text-sm text-muted-foreground">
+                                        Dados de geração insuficientes para análise do sistema.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Action card */}
+                        <ActionCard
+                            extraGenerationNeeded={clarifier.extraGenerationNeeded}
+                            expansionKwp={clarifier.expansionKwp}
+                            expansionModules={clarifier.expansionModules}
+                        />
+
+                        {/* F2 slot: Technical viewer will render here */}
+                        {bill.billingItems && Array.isArray(bill.billingItems) && bill.billingItems.length > 0 && (
+                            <div className="border border-border bg-card p-5 rounded-lg">
+                                <p className="solo-label mb-2">Dados Técnicos da Fatura</p>
+                                <p className="text-xs text-muted-foreground">
+                                    Painel detalhado em breve.
+                                </p>
+                            </div>
+                        )}
+                    </>
+                ) : null}
+
+                {/* ───────── AI Analysis ───────── */}
                 {hasAiContent ? (
                     <>
-                        {/* Executive summary */}
                         {bill.aiAnalysis && (
                             <div className="rounded-2xl border bg-card p-4">
                                 <h3 className="font-display text-sm font-semibold text-foreground mb-2">
-                                    Resumo da analise
+                                    Resumo da análise
                                 </h3>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {bill.aiAnalysis}
                                 </p>
                             </div>
                         )}
-
-                        {/* Explanations */}
                         <LineItemExplanations explanations={bill.aiExplanations} />
-
-                        {/* Alerts */}
                         <AlertsPanel alerts={bill.alerts} />
-
-                        {/* Recommendations */}
                         <RecommendationsPanel recommendations={bill.aiRecommendations} />
                     </>
                 ) : (
-                    <Alert>
-                        <AlertTitle>Analise em andamento</AlertTitle>
-                        <AlertDescription>
-                            Nossa inteligencia artificial esta analisando esta fatura. Assim que
-                            estiver disponivel, os detalhes aparecerao aqui.
-                        </AlertDescription>
-                    </Alert>
+                    !clarifier && (
+                        <Alert>
+                            <AlertTitle>Análise em andamento</AlertTitle>
+                            <AlertDescription>
+                                Nossa inteligência artificial está analisando esta fatura. Assim que
+                                estiver disponível, os detalhes aparecerão aqui.
+                            </AlertDescription>
+                        </Alert>
+                    )
                 )}
             </div>
+
+            {/* Chat drawer */}
+            <BillChatDrawer
+                billId={bill.id}
+                distributor={bill.distributor}
+                referenceMonth={bill.referenceMonth}
+                referenceYear={bill.referenceYear}
+            />
         </PageLayout>
     )
 }

@@ -43,8 +43,12 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-23 | Sprint 4 | C2 - Client generation form | claude (sonnet) | L | R$ 20 |
 | 2026-06-23 | Sprint 4 | D1 - Admin approval action | claude (sonnet) | M | R$ 12 |
 | 2026-06-23 | Sprint 4 | D2 - Onboarding checklist | claude (sonnet) | L | R$ 20 |
+| 2026-06-24 | Sprint 5 | A1 - Provider abstraction | claude (opus) | L | R$ 20 |
+| 2026-06-24 | Sprint 5 | A2 - Rich prompts + mapping | claude (sonnet) | M | R$ 12 |
+| 2026-06-24 | Sprint 5 | A3 - computeClarifier | claude (sonnet) | M | R$ 12 |
 | 2026-06-24 | Sprint 5 | C1 - Extend bill-detail API + BillDetail type | deepseek-flash | S | R$ 5 |
 | 2026-06-24 | Sprint 5 | B1 - Rewire upload route | deepseek-flash | M | R$ 12 |
 | 2026-06-24 | Sprint 5 | B2 - Bill chat API route | deepseek-flash | M | R$ 12 |
 | 2026-06-24 | Sprint 5 | C2 - BillAnalyze clarifier dashboard | deepseek-flash | L | R$ 20 |
 | 2026-06-24 | Sprint 5 | C3 - Bill chat dialog integration | deepseek-flash | M | R$ 12 |
+| 2026-06-25 | Sprint 5 | F1 - Consolidate dashboard + source math from computeClarifier | deepseek-flash | L | R$ 20 |
