@@ -156,11 +156,11 @@ Existing `@user` route segments: `club`, `controle`, `dashboard`, `economia`, `e
 
 ### Phase A — Definition of Done
 
-- [ ] **DoD-A1** — Phase H/I work committed (no untracked dialog).
-- [ ] **DoD-A2** — `/economia` entry-point screen test green and guards both starts.
-- [ ] **DoD-A3** — double-prefix audit clean; dialog contract test asserts URL + `FormData`; build `0`.
-- [ ] **DoD-A4** — filtered typecheck shows zero Sprint-5/5.1 errors; repo-wide errors stay parked in `todo.md`.
-- [ ] **DoD-A5** — deployed with a working provider env; **real bill** uploads → 200 → dashboard + chat work in production. Closes Sprint 5 DoD-H6 / DoD-I4.
+- [x] **DoD-A1** — Phase H/I work committed (no untracked dialog). _(commit 5f6b6e4)_
+- [x] **DoD-A2** — `/economia` entry-point screen test green and guards both starts. _(commit 0f5bc2e; RED/GREEN proven)_
+- [x] **DoD-A3** — double-prefix audit clean; dialog contract test asserts URL + `FormData`; build `0`. _(audit 0 matches; build exit 0)_
+- [x] **DoD-A4** — filtered typecheck shows zero Sprint-5/5.1 errors; repo-wide errors stay parked in `todo.md`. _(8 non-sprint files remain, listed)_
+- [ ] **DoD-A5** — deployed with a working provider env; **real bill** uploads → 200 → dashboard + chat work in production. Closes Sprint 5 DoD-H6 / DoD-I4. **← HUMAN-ONLY (VPS); see §A4/A5 checklist.**
 
 ---
 
@@ -224,11 +224,11 @@ Existing `@user` route segments: `club`, `controle`, `dashboard`, `economia`, `e
 
 ### Phase B — Definition of Done
 
-- [ ] **DoD-B1** — desktop client sidebar shows exactly 4 groups: Controle · Energia · Consumo · Solo Club; Suporte in the footer/utility area; Investor Demo gone from client nav.
-- [ ] **DoD-B2** — mobile footer shows the 4 hubs (+Suporte), not 9 cramped items.
-- [ ] **DoD-B3** — `/energia` and `/consumo` hubs exist and reach every sub-screen; all pre-existing screens still load and keep their data.
-- [ ] **DoD-B4** — no dead links; `/economia/[billId]` remains the canonical analysis URL; redirects documented.
-- [ ] **DoD-B5** — `app-sidebar.test.tsx` green; full economia suite still green; `tsc --noEmit` clean on owned files; `npm.cmd run build` clean.
+- [x] **DoD-B1** — desktop client sidebar shows exactly 4 groups: Controle · Energia · Consumo · Solo Club; Suporte in the footer/utility area; Investor Demo gone from client nav. _(commit 8990383)_
+- [x] **DoD-B2** — mobile footer shows the 4 hubs (+Suporte), not 9 cramped items. _(5 hub items via dual sections+items wiring; guarded by B5 test)_
+- [x] **DoD-B3** — `/energia` and `/consumo` hubs exist and reach every sub-screen; all pre-existing screens still load and keep their data. _(commits c0792b9, ec60757; build manifest confirms routes)_
+- [x] **DoD-B4** — no dead links; `/economia/[billId]` remains the canonical analysis URL; redirects documented. _(no routes retired; IA record §navigation_IA.md)_
+- [x] **DoD-B5** — `app-sidebar.test.tsx` green; full economia suite still green; `tsc --noEmit` clean on owned files; `npm.cmd run build` clean. _(commit c09db73; 116 tests green; build exit 0)_
 
 ---
 
@@ -261,9 +261,9 @@ Existing `@user` route segments: `club`, `controle`, `dashboard`, `economia`, `e
 
 ### Phase C — Definition of Done
 
-- [ ] **DoD-C1** — from `/consumo` a client reaches the bill list + both upload entries without leaving the section.
-- [ ] **DoD-C2** — a client with zero bills sees a deliberate empty state that drives them to AI upload.
-- [ ] **DoD-C3** — `consumo-hub.test.tsx` proves both states and the reachability of the analyzer from Consumo; suite + build + filtered typecheck clean.
+- [x] **DoD-C1** — from `/consumo` a client reaches the bill list + both upload entries without leaving the section. _(AnalyzeBillDialog mounted on the hub; Economia card → /economia; commit ec60757)_
+- [x] **DoD-C2** — a client with zero bills sees a deliberate empty state that drives them to AI upload. _(exact empty-state copy; no loading flash — bills null-init)_
+- [x] **DoD-C3** — `consumo-hub.test.tsx` proves both states and the reachability of the analyzer from Consumo; suite + build + filtered typecheck clean. _(commit 1d3a765; 2/2 green)_
 
 ---
 
@@ -302,20 +302,38 @@ Do **not** build these in Sprint 5.1 unless the PM re-scopes:
 ## Sprint 5.1 — Definition of Done (the contract)
 
 **Phase A (analyzer closure):**
-- [ ] Phase H/I work committed; `/economia` has both entry points proven by `economia-screen.test.tsx`.
-- [ ] Dialog contract test proves `/client/energy-bills/upload` + `FormData`; prefix audit clean; economia suite + build pass.
-- [ ] Filtered typecheck: zero Sprint-5/5.1 errors; repo-wide errors parked in `todo.md`.
-- [ ] VPS has `ANTHROPIC_API_KEY` or `BILL_ANALYZER_PROVIDER=gemini`; **real bill** → 200 → `/economia/[billId]` → dashboard + technical viewer + chat all work.
+- [x] Phase H/I work committed; `/economia` has both entry points proven by `economia-screen.test.tsx`.
+- [x] Dialog contract test proves `/client/energy-bills/upload` + `FormData`; prefix audit clean; economia suite + build pass.
+- [x] Filtered typecheck: zero Sprint-5/5.1 errors; repo-wide errors parked in `todo.md`.
+- [ ] VPS has `ANTHROPIC_API_KEY` or `BILL_ANALYZER_PROVIDER=gemini`; **real bill** → 200 → `/economia/[billId]` → dashboard + technical viewer + chat all work. **← HUMAN-ONLY deploy (A4/A5).**
 
 **Phase B (navigation):**
-- [ ] Client sidebar consolidated to 4 sections (Controle · Energia · Consumo · Solo Club); Suporte in footer; mobile footer ≤5 hubs.
-- [ ] `/energia` + `/consumo` hubs reach every existing sub-screen with no data loss; no dead links; `app-sidebar.test.tsx` green.
+- [x] Client sidebar consolidated to 4 sections (Controle · Energia · Consumo · Solo Club); Suporte in footer; mobile footer ≤5 hubs.
+- [x] `/energia` + `/consumo` hubs reach every existing sub-screen with no data loss; no dead links; `app-sidebar.test.tsx` green.
 
 **Phase C (integration):**
-- [ ] Analyzer is reachable and native inside `/consumo`, with a deliberate empty/onboarding state; `consumo-hub.test.tsx` green.
+- [x] Analyzer is reachable and native inside `/consumo`, with a deliberate empty/onboarding state; `consumo-hub.test.tsx` green.
 
 **Cross-cutting:**
-- [ ] Zero schema migrations. `npm.cmd run build` clean. Focused `vitest` suites green. `tsc --noEmit` clean on all owned files.
-- [ ] PM handoff has the Sprint 5.1 addendum with deploy + smoke + nav evidence.
+- [x] Zero schema migrations. `npm.cmd run build` clean. Focused `vitest` suites green (18 files / 116 tests). `tsc --noEmit` clean on all owned files.
+- [x] Whole-branch frontier-model review (opus) returned READY TO MERGE; minors fixed in commit 7aa5f42.
+- [ ] PM handoff has the Sprint 5.1 addendum with deploy + smoke + nav evidence. **← completed by the human after A4/A5.**
 
-Only after every box above is checked is Sprint 5 **finished in production** and the navigation vision (Controle · Energia · Consumo · Solo Club) **shipped**. Auto-pull remains a Sprint 7 research spike.
+**STATUS (2026-06-26):** All codeable work is complete, reviewed, and green on branch `sprint5.1/integration` (10 commits, 0f5eea4..7aa5f42). The navigation vision (Controle · Energia · Consumo · Solo Club) is **shipped in code**. The ONLY remaining gate is the human-only **A4 deploy + A5 real-bill smoke** on the VPS — after which Sprint 5 is "finished in production." Auto-pull remains a Sprint 7 research spike.
+
+---
+
+## A4/A5 — Human deploy + smoke checklist (the only steps Claude cannot run)
+
+```bash
+# 1. Ensure ONE provider env is set on the VPS:
+#    ANTHROPIC_API_KEY=...   (default: claude)   OR   BILL_ANALYZER_PROVIDER=gemini
+# 2. Deploy (no migrations — zero schema changes this sprint):
+git checkout main && git merge --no-ff sprint5.1/integration   # or merge via PR
+git pull origin main && npm ci && npx prisma generate && npm run build && pm2 restart solo-app
+# 3. Smoke as a client with ≥1 consumer unit:
+#    /consumo (or /economia) -> "Analisar conta (PDF)" -> pick a real bill PDF
+#    EXPECT: POST /api/client/energy-bills/upload -> 200 (no /api/api/...) -> redirect /economia/<id>
+#            dashboard + technical viewer render; chat answers "Por que minha conta ainda teve valor a pagar?"
+# 4. Tick DoD-A5 + Sprint 5 DoD-H6/DoD-I4, and append the PM addendum.
+```
