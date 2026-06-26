@@ -86,7 +86,7 @@ export function PlantWizardScreen() {
         const loadExisting = async () => {
             setIsLoadingExisting(true);
             try {
-                const res = await api.get('/api/client/plants');
+                const res = await api.get('/client/plants');
                 if (res.data?.success) {
                     setExistingPlants(res.data.data || []);
                 }
@@ -146,13 +146,13 @@ export function PlantWizardScreen() {
             if (plantData.city) plantPayload.city = plantData.city;
             if (plantData.state) plantPayload.state = plantData.state;
 
-            const plantRes = await api.post('/api/client/plants', plantPayload);
+            const plantRes = await api.post('/client/plants', plantPayload);
             if (!plantRes.data?.success) throw new Error(plantRes.data?.message || 'Erro ao criar usina');
             const plantId: string = plantRes.data.data.id;
 
             // 2. Create inverter (if provider is provided)
             if (inverterData.provider || inverterData.providerId) {
-                await api.post('/api/client/inverters', {
+                await api.post('/client/inverters', {
                     plantId,
                     provider: inverterData.provider || undefined,
                     providerId: inverterData.providerId || undefined,
@@ -165,7 +165,7 @@ export function PlantWizardScreen() {
                 const unitPayload: Record<string, any> = { plantId, name: unit.name };
                 if (unit.clientNumber) unitPayload.clientNumber = unit.clientNumber;
                 if (unit.distributor) unitPayload.distributor = unit.distributor;
-                await api.post('/api/client/consumer-units', unitPayload);
+                await api.post('/client/consumer-units', unitPayload);
             }
 
             toast.success('Usina cadastrada com sucesso!');

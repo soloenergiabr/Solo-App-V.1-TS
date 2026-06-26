@@ -10,6 +10,7 @@ import { ConsolidadoSummary } from './components/consolidado-summary'
 import { CostBreakdown } from './components/cost-breakdown'
 import { AddBillForm } from './components/add-bill-form'
 import { AddGenerationForm } from './components/add-generation-form'
+import { AnalyzeBillDialog } from './components/analyze-bill-dialog'
 import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -60,33 +61,39 @@ export function EconomiaScreen() {
                     title="Economia"
                     subtitle={String(year)}
                     actions={
-                        <div className="flex items-center gap-2">
-                            <div className="flex items-center gap-1 rounded-lg border bg-card p-0.5 text-sm">
-                                <button
-                                    onClick={() => setTab('consolidado')}
-                                    className={
-                                        'rounded-md px-3 py-1 transition-colors ' +
-                                        (tab === 'consolidado'
-                                            ? 'bg-primary text-primary-foreground font-medium'
-                                            : 'text-muted-foreground hover:text-foreground')
-                                    }
-                                >
-                                    Consolidado
-                                </button>
-                                <button
-                                    onClick={() => setTab('por-conta')}
-                                    className={
-                                        'rounded-md px-3 py-1 transition-colors ' +
-                                        (tab === 'por-conta'
-                                            ? 'bg-primary text-primary-foreground font-medium'
-                                            : 'text-muted-foreground hover:text-foreground')
-                                    }
-                                >
-                                    Por conta
-                                </button>
+                        <div className="flex flex-col items-end gap-1">
+                            <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1 rounded-lg border bg-card p-0.5 text-sm">
+                                    <button
+                                        onClick={() => setTab('consolidado')}
+                                        className={
+                                            'rounded-md px-3 py-1 transition-colors ' +
+                                            (tab === 'consolidado'
+                                                ? 'bg-primary text-primary-foreground font-medium'
+                                                : 'text-muted-foreground hover:text-foreground')
+                                        }
+                                    >
+                                        Consolidado
+                                    </button>
+                                    <button
+                                        onClick={() => setTab('por-conta')}
+                                        className={
+                                            'rounded-md px-3 py-1 transition-colors ' +
+                                            (tab === 'por-conta'
+                                                ? 'bg-primary text-primary-foreground font-medium'
+                                                : 'text-muted-foreground hover:text-foreground')
+                                        }
+                                    >
+                                        Por conta
+                                    </button>
+                                </div>
+                                <AddBillForm onSuccess={refetch} />
+                                <AnalyzeBillDialog onSuccess={refetch} />
+                                <AddGenerationForm onSuccess={refetch} />
                             </div>
-                            <AddBillForm onSuccess={refetch} />
-                            <AddGenerationForm onSuccess={refetch} />
+                            <p className="text-xs text-muted-foreground">
+                                Tem o PDF da conta? Use &ldquo;Analisar conta&rdquo; para a IA preencher tudo.
+                            </p>
                         </div>
                     }
                 />
