@@ -8,7 +8,7 @@
 
 ## 🎨 Brand / Navigation / IA
 
-- [ ] **Navigation rebrand to 5 sections** — Controle / Energia / Consumo / Clube Solo / Suporte, with brand-styled names. Merge `plants` + `generation` → **Energia**; merge `consumption` + `rateio` → **Consumo**. Touches every screen + `app-sidebar.tsx`. _(XL — Vision §2)_
+- [~] **Navigation rebrand to 5 sections** — Controle / Energia / Consumo / Solo Club / Suporte. **Sidebar grouping DONE in Sprint 5.1** (`app-sidebar.tsx` → 4 desktop sections + 5-item mobile footer; `/energia` + `/consumo` hubs; Investor Demo removed from client nav; see `PM_Sprint_Handoff.md`). **REMAINING:** the deep screen-level merges — fold `plants` + `generation` into ONE Energia screen and `consumption` + `rateio` + `economia` into ONE Consumo screen (today the hubs are light landing pages that LINK OUT to the existing standalone screens). _(L — Vision §2; the grouping is shipped, the screen merges are not)_
 - [ ] **Dark "McLaren/Tesla" design-token pass** — expanded palette (`--solo-*`), JetBrains Mono for technical numbers, tighter display typography, purposeful glows. _(L — Vision §1)_
 - [ ] **Animated Solo logo** that pulses when live data is flowing. _(S — Vision §4)_
 
@@ -57,6 +57,26 @@
 - [ ] **PWA + offline** — service worker, stale-while-revalidate cache, offline action queue, "dados de [data]" freshness indicator. _(L — Session 2 §8)_
 - [ ] **Performance SLAs** — first load < 1s (SSR + streaming), instant nav (prefetch + cache). _(M — Vision §4)_
 - [ ] **Multi-tenant / white-label** foundation for the B2C2B integrator play. _(XL — Vision §5.2, Cenário B)_
+
+## 📦 Deferred out of Sprint 5.1 (AI Analyzer Closure + Nav Consolidation)
+
+> Added 2026-06-26. Sprint 5.1 shipped the manual-upload analyzer + the 4-section nav (`Controle · Energia · Consumo · Solo Club`) to `main` (`369ea44`). The items below were explicitly NOT built and are parked. Plan: `sprint_5.1_ai-analyzer_v1.md`; handoff: `PM_Sprint_Handoff.md`.
+
+### 🔌 Auto-pull (the big one — promote as **Sprint 7 research spike**)
+- [ ] **Auto-pull bills + auto-analyze for the client** — instead of the client uploading the PDF, fetch their bill automatically and run the AI analysis for them. **Blocked product/tech decision:** Brazilian distributors have no public bill API → needs either per-distributor RPA/headless-browser scraping with the client's stored portal login (CAPTCHA/MFA/ToS/legal exposure) OR a paid 3rd-party bill-aggregation vendor. **Spike output:** vendor shortlist vs. RPA, per-distributor coverage for Solo's real client base, security/legal constraints, build/no-build recommendation. _(XL — supersedes/overlaps the "Distributor API integration" + "Bot Enel" + "Bill OCR at scale" items above; this is their concrete near-term framing)_
+
+### 🤖 Analyzer hardening (post-MVP)
+- [ ] **OpenAI analyzer `extract()`/`analyze()`** — currently stubbed/best-effort; Claude + Gemini are the supported providers. Finish only if a third provider is needed. _(M)_
+- [ ] **Optional `rawExtraction Json?` column** — only if real-bill validation proves chat quality is blocked by missing raw JSON (hand-authored migration + PM sign-off). _(S, conditional)_
+- [ ] **Async PDF queue (BullMQ + Redis)** — the upload route runs two AI calls synchronously (10–40s); fine for v1 with the processing state. Build only if real bills time out on serverless/proxy. _(L — overlaps "Bill OCR at scale" above)_
+
+### 🧭 Navigation depth (beyond the shipped grouping)
+- [ ] **Energia / Consumo screen-level merges** — see the `[~]` nav item above: today the hubs LINK OUT; the deeper UX merges plants+generation and consumption+rateio+economia into unified screens. _(L)_
+- [ ] **Dedicated Solo Club hub** — Energia/Consumo got hub landing pages; Solo Club's mobile entry points straight to `/club`, relying on that screen's internal links to reach `/vouchers` + `/solo-coins`. Works today; a symmetric `/solo-club` hub would be cleaner. _(S)_
+- [ ] **`ConsumptionDashboard` header copy** — its hardcoded header reads "Economia e Consumo"; the `/consumo/historico` loader title says "Histórico de consumo". Cosmetic mismatch to reconcile when that screen is next touched. _(XS)_
+
+### 🧹 Type-safety repo-wide cleanup (parked since Phase G/I)
+- [ ] **Clear the 8 pre-existing non-sprint `tsc --noEmit` errors** then flip `next.config.ts` `typescript.ignoreBuildErrors` to `false`. Files: `api/admin/clients/[id]/plants/route.ts`, `…/plants/[plantId]/route.ts`, `backend/generation/__tests__/solis.inverter-api.repository.test.ts`, `…/sync-inverter-generation-data.use-case.test.ts`, `frontend/admin/components/bill-validation-queue.tsx`, `frontend/admin/components/client-details.tsx`, `frontend/rateio/rateio-screen.tsx`, `lib/object-storage.ts`. _(M — dedicated cleanup sprint; do NOT bundle into a feature sprint)_
 
 ## ❓ Open product questions (decide before the relevant sprint)
 
