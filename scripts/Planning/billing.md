@@ -63,3 +63,6 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-25 | Sprint 5 | I1 - Fix upload URL + sibling audit | codex (gpt-5) | S | R$ 5 |
 | 2026-06-25 | Sprint 5 | I2 - Add upload URL/FormData assertion | codex (gpt-5) | S | R$ 5 |
 | 2026-06-25 | Sprint 5.1 | A0 - Commit Phase H/I upload dialog + URL fix | claude (opus) | S | R$ 5 |
+| 2026-06-25 | Sprint 5.1 | A1 - Economia entry-point regression test | claude (sonnet) | S | R$ 5 |
+| 2026-06-25 | Sprint 5.1 | A2 - Phase I contract audit verification | claude (opus) | S | R$ 5 |
+| 2026-06-25 | Sprint 5.1 | A3 - Type-safety evidence (filtered) | claude (opus) | S | R$ 5 |
