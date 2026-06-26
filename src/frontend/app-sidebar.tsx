@@ -38,7 +38,7 @@ const vendedorSections: SidebarSection[] = [
         items: [
             { label: 'Economia', href: '/economia', icon: <DollarSign className="w-5 h-5" /> },
             { label: 'Rateio', href: '/rateio', icon: <Percent className="w-5 h-5" /> },
-            { label: 'Consumo', href: '/consumo/historico', icon: <Gauge className="w-5 h-5" /> },
+            { label: 'Histórico', href: '/consumo/historico', icon: <Gauge className="w-5 h-5" /> },
         ],
     },
     {

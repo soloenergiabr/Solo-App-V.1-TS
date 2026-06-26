@@ -8,7 +8,7 @@
 | --- | --- | --- | --- |
 | **Controle** | `/controle` | Controle (cockpit) | `Gauge` |
 | **Energia** | `/energia` (new hub) | Geração → `/dashboard` · Minhas Usinas → `/plants/wizard` | `Zap` |
-| **Consumo** | `/consumo` (new hub) | Economia (analisador IA) → `/economia` · Rateio → `/rateio` · Consumo → `/consumo` | `DollarSign` |
+| **Consumo** | `/consumo` (new hub) | Economia (analisador IA) → `/economia` · Rateio → `/rateio` · Histórico → `/consumo/historico` | `DollarSign` |
 | **Solo Club** | `/club` | Clube Solo → `/club` · Meus Vouchers → `/vouchers` · Solo Coins → `/solo-coins` | `Gift` |
 | _(footer / utility)_ | `/support` | Suporte | `HelpCircleIcon` |
 

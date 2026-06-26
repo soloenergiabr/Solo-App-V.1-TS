@@ -147,7 +147,7 @@ export function AnalyzeBillDialog({ onSuccess }: AnalyzeBillDialogProps) {
                 <div className="space-y-4">
                     {/* UC Select */}
                     <div className="space-y-2">
-                        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        <label htmlFor="uc-select" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                             Unidade consumidora
                         </label>
                         <Select
@@ -158,7 +158,7 @@ export function AnalyzeBillDialog({ onSuccess }: AnalyzeBillDialogProps) {
                             }}
                             disabled={loadingUnits || isProcessing}
                         >
-                            <SelectTrigger>
+                            <SelectTrigger id="uc-select">
                                 <SelectValue
                                     placeholder={
                                         loadingUnits
