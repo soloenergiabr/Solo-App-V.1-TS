@@ -66,3 +66,9 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-25 | Sprint 5.1 | A1 - Economia entry-point regression test | claude (sonnet) | S | R$ 5 |
 | 2026-06-25 | Sprint 5.1 | A2 - Phase I contract audit verification | claude (opus) | S | R$ 5 |
 | 2026-06-25 | Sprint 5.1 | A3 - Type-safety evidence (filtered) | claude (opus) | S | R$ 5 |
+| 2026-06-26 | Sprint 5.1 | B1 - Navigation IA decision record | claude (opus) | S | R$ 5 |
+| 2026-06-26 | Sprint 5.1 | B2 - Consolidate sidebar to 4 sections + mobile hubs | claude (sonnet) | M | R$ 12 |
+| 2026-06-26 | Sprint 5.1 | B3a - /energia section hub | claude (sonnet) | M | R$ 12 |
+| 2026-06-26 | Sprint 5.1 | B3b+C1+C2 - /consumo hub + analyzer entry + empty state | claude (sonnet) | L | R$ 20 |
+| 2026-06-26 | Sprint 5.1 | B5 - Sidebar 4-section regression test | claude (sonnet) | S | R$ 5 |
+| 2026-06-26 | Sprint 5.1 | C3 - Consumo hub analyzer reachability test | claude (sonnet) | M | R$ 12 |
