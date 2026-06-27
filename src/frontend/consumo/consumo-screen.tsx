@@ -9,6 +9,7 @@ import { EconomiaScreen } from '@/frontend/economia/economia-screen'
 import { RateioScreen } from '@/frontend/rateio/rateio-screen'
 import { ConsumptionDashboard } from '@/frontend/consumption/components/consumption-dashboard'
 import { AnalyzeBillDialog } from '@/frontend/economia/components/analyze-bill-dialog'
+import { BillHistory } from '@/frontend/economia/history/bill-history'
 import { PageLayout, PageHeader } from '@/components/ui/page-layout'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
@@ -95,6 +96,7 @@ export function ConsumoScreen() {
                 </TabsContent>
 
                 <TabsContent value="historico">
+                    <BillHistory />
                     <ConsumptionDashboard clientId={user.clientId} embedded />
                 </TabsContent>
             </Tabs>
