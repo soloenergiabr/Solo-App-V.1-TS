@@ -72,3 +72,9 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-26 | Sprint 5.1 | B3b+C1+C2 - /consumo hub + analyzer entry + empty state | claude (sonnet) | L | R$ 20 |
 | 2026-06-26 | Sprint 5.1 | B5 - Sidebar 4-section regression test | claude (sonnet) | S | R$ 5 |
 | 2026-06-26 | Sprint 5.1 | C3 - Consumo hub analyzer reachability test | claude (sonnet) | M | R$ 12 |
+| 2026-06-27 | Sprint 6 | A1 - embedded prop for EconomiaScreen | claude (sonnet) | M | R$ 12 |
+| 2026-06-27 | Sprint 6 | A2 - embedded prop for RateioScreen | claude (haiku) | M | R$ 12 |
+| 2026-06-27 | Sprint 6 | A3 - embedded prop for ConsumptionDashboard | claude (haiku) | M | R$ 12 |
+| 2026-06-27 | Sprint 6 | A4 - Unified /consumo tabbed shell | claude (sonnet) | L | R$ 20 |
+| 2026-06-27 | Sprint 6 | A5 - Redirect old routes + repoint sidebar to tabs | claude (sonnet) | S | R$ 5 |
+| 2026-06-27 | Sprint 6 | A6 - Finalize Consumo test suite (orphan remove + tabbed hrefs + real dialog) | claude (sonnet) | S | R$ 5 |
