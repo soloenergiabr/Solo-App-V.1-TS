@@ -1,7 +1,7 @@
 'use client'
 
-import { ConsumoHub } from "@/frontend/consumo/consumo-hub"
+import { ConsumoScreen } from "@/frontend/consumo/consumo-screen"
 
 export default function ConsumoPage() {
-    return <ConsumoHub />
+    return <ConsumoScreen />
 }
