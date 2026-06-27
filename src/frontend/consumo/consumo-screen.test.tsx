@@ -67,15 +67,6 @@ vi.mock('@/frontend/consumption/components/consumption-dashboard', () => ({
     ),
 }))
 
-// Mock AnalyzeBillDialog
-vi.mock('@/frontend/economia/components/analyze-bill-dialog', () => ({
-    AnalyzeBillDialog: ({ onSuccess }: { onSuccess: () => void }) => (
-        <button data-testid="analyze-bill-dialog" onClick={onSuccess}>
-            Analisar conta (PDF)
-        </button>
-    ),
-}))
-
 describe('ConsumoScreen', () => {
     beforeEach(() => {
         vi.clearAllMocks()
@@ -126,7 +117,7 @@ describe('ConsumoScreen', () => {
     it('renders the AnalyzeBillDialog and helper text in actions', () => {
         render(<ConsumoScreen />)
 
-        expect(screen.getByTestId('analyze-bill-dialog')).toBeInTheDocument()
+        expect(screen.getByText('Analisar conta (PDF)')).toBeInTheDocument()
         expect(
             screen.getByText(/Tem o PDF da conta/),
         ).toBeInTheDocument()
