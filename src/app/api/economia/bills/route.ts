@@ -9,7 +9,9 @@ const getEconomiaBillsRoute = async (request: NextRequest): Promise<NextResponse
     const userContext = await AuthMiddleware.requireAuth(request)
 
     const { searchParams } = new URL(request.url)
-    const year = Number(searchParams.get('year')) || new Date().getFullYear()
+    const yearParam = searchParams.get('year')
+    const filterByYear = yearParam !== 'all'
+    const year = filterByYear ? Number(yearParam) || new Date().getFullYear() : 0
     const month = searchParams.get('month') ? Number(searchParams.get('month')) : undefined
 
     // Server-enforced payer scope: payers are restricted to their own units;
@@ -25,7 +27,7 @@ const getEconomiaBillsRoute = async (request: NextRequest): Promise<NextResponse
 
     const bills = await prisma.energyBill.findMany({
         where: {
-            referenceYear: year,
+            ...(filterByYear ? { referenceYear: year } : {}),
             ...(month ? { referenceMonth: month } : {}),
             ...(scope === 'all'
                 ? { clientId }
