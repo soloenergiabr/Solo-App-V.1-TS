@@ -36,9 +36,9 @@ const vendedorSections: SidebarSection[] = [
     {
         title: 'Consumo',
         items: [
-            { label: 'Economia', href: '/economia', icon: <DollarSign className="w-5 h-5" /> },
-            { label: 'Rateio', href: '/rateio', icon: <Percent className="w-5 h-5" /> },
-            { label: 'Histórico', href: '/consumo/historico', icon: <Gauge className="w-5 h-5" /> },
+            { label: 'Economia', href: '/consumo?tab=economia', icon: <DollarSign className="w-5 h-5" /> },
+            { label: 'Rateio', href: '/consumo?tab=rateio', icon: <Percent className="w-5 h-5" /> },
+            { label: 'Histórico', href: '/consumo?tab=historico', icon: <Gauge className="w-5 h-5" /> },
         ],
     },
     {
