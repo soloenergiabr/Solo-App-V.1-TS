@@ -38,7 +38,7 @@ interface UnitOption {
     plantId: string;
 }
 
-export function RateioScreen() {
+export function RateioScreen({ embedded }: { embedded?: boolean }) {
     const api = useAuthenticatedApi();
     const {
         data: allocations,
@@ -101,15 +101,8 @@ export function RateioScreen() {
     }
     const plantsWithAllocations = Array.from(plantsMap.values());
 
-    return (
-        <PageLayout
-            header={
-                <PageHeader
-                    title="Rateio de Créditos"
-                    subtitle="Acompanhe a distribuição dos créditos de energia entre as unidades consumidoras"
-                />
-            }
-        >
+    const body = (
+        <>
             {/* Loading state */}
             {isLoading && (
                 <div className="space-y-3">
@@ -128,7 +121,7 @@ export function RateioScreen() {
             )}
 
             {/* Empty state */}
-            {!isLoading && !error && allocations !== null && allocations.length === 0 && (
+            {!isLoading && !error && allocations != null && allocations.length === 0 && (
                 <>
                     <PageEmpty
                         icon={Split}
@@ -340,6 +333,23 @@ export function RateioScreen() {
                     </div>
                 </div>
             )}
+        </>
+    );
+
+    if (embedded) {
+        return body;
+    }
+
+    return (
+        <PageLayout
+            header={
+                <PageHeader
+                    title="Rateio de Créditos"
+                    subtitle="Acompanhe a distribuição dos créditos de energia entre as unidades consumidoras"
+                />
+            }
+        >
+            {body}
         </PageLayout>
     );
 }

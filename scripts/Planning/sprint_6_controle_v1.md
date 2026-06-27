@@ -119,6 +119,23 @@ Wave E  (club + review)   D1 → E1
 
 ---
 
+> ### ✅ WAVE A — EXECUTED & VERIFIED (HANDOFF)
+> ```
+> HANDOFF: Wave A · A1·A2·A3 — `embedded` prop on the three Consumo screens
+> Branch:  sprint6/wave-a (MERGE_BASE 77a908f)
+> Commits: d2f9579 A1 economia embedded · 0b34bee A2 rateio embedded ·
+>          b8be6e5 A1 review fix (default prop + title-present assertion) · f9a8494 A3 consumption embedded
+> Files:   src/frontend/economia/economia-screen.tsx (embedded → inline actions + body, no PageLayout)
+>          src/frontend/rateio/rateio-screen.tsx (embedded → returns body)
+>          src/frontend/consumption/components/consumption-dashboard.tsx (embedded → returns body)
+>          + focused embedded-render tests for each
+> Tests:   embedded render path green (EconomiaScreen "renders inline actions and body without page title when embedded", etc.)
+> tsc:     no NEW errors in owned files (the pre-existing rateio-screen.tsx:127 Lucide→ReactNode error is parked in todo.md)
+> Review:  A1 reviewed + fixed (b8be6e5). Minor findings logged for final review: A2 test uses `.space-y-3` class selector
+>          instead of a Testing-Library query + no error/empty embedded tests; A3 no loading/empty embedded tests.
+> DoD:     A1/A2/A3 met — embedded bodies render without page chrome; standalone routes unchanged.
+> ```
+
 ### A1 — `embedded` prop for `EconomiaScreen` · Tier M
 **Goal:** `<EconomiaScreen embedded />` renders only the body (bill list + Consolidado/Por conta tabs + upload entries), no `PageLayout`/`PageHeader`; default behavior unchanged.
 **Owns:** `src/frontend/economia/economia-screen.tsx` (modify) + extend `src/frontend/economia/economia-screen.test.tsx`.
@@ -143,6 +160,75 @@ Wave E  (club + review)   D1 → E1
 - [ ] Add `embedded?: boolean` to the props (`{ clientId: string; embedded?: boolean }`). When `embedded`, return the body (period nav + `ConsumptionChart` + `SavingsCard`) without `PageLayout`/`PageHeader`; else unchanged.
 - [ ] Test: embedded render mounts the chart/savings area and omits the page title.
 **DoD:** body-only in embedded; standalone unchanged; `tsc` clean.
+
+---
+
+### 🟢 WAVE A HANDOFF — Embedded Props (A1, A2, A3)
+
+**Branch:** `sprint6/wave-a` (MERGE_BASE `77a908f`)
+**Commits:** `d2f9579` (A1), `0b34bee` (A2), `f9a8494` (A3), `b8be6e5` (A1 review fix)
+**Status:** ✅ ALL COMPLETE — reviewed and approved
+
+#### What was built
+
+| Task | File(s) | Change |
+|------|---------|--------|
+| A1 | `economia-screen.tsx` + test | `embedded` prop → body-only render; inline action row in embedded mode |
+| A2 | `rateio-screen.tsx` + test | `embedded` prop → body-only render |
+| A3 | `consumption-dashboard.tsx` + test | `embedded` prop → body-only render |
+
+All three screens accept `{ embedded?: boolean }` (default `false`). When `embedded=true`, each renders its content body without `PageLayout`/`PageHeader` chrome. When `embedded=false/undefined`, behavior is identical to before.
+
+#### Quality gates
+
+| Gate | Result |
+|------|--------|
+| `npm.cmd run build` | ✅ PASS |
+| `npx.cmd vitest run` (3 files, 8 tests) | ✅ 8/8 PASS |
+| `npx.cmd tsc --noEmit` | ✅ No new errors (8 pre-existing errors in non-sprint files) |
+
+#### Billing
+
+| Date | Task | Tier | R$ |
+|------|------|------|----|
+| 2026-06-27 | A1 — embedded prop for EconomiaScreen | M | R$ 12 |
+| 2026-06-27 | A2 — embedded prop for RateioScreen | M | R$ 12 |
+| 2026-06-27 | A3 — embedded prop for ConsumptionDashboard | M | R$ 12 |
+| | **Total** | | **R$ 36** |
+
+#### Minor findings (for final whole-branch review)
+- A2: test uses CSS class selector `.space-y-3` instead of Testing Library query
+- A2: no error or empty state tests in embedded mode
+- A3: embedded success tests could be merged (savings + navigation in one)
+- A3: no loading or empty state tests
+
+#### Next: Wave B — A4 (tabbed shell), A5 (redirects), A6 (sidebar deep-links)
+
+---
+
+> ### ✅ WAVE B — EXECUTED & VERIFIED (HANDOFF)
+> ```
+> HANDOFF: Wave B · A4·A5·A6 — unified tabbed /consumo + redirects + tests
+> Branch:  sprint6/wave-a
+> Commits: ad7e958 A4 unified tabbed shell · 9eeaf6e A5 redirects + sidebar repoint ·
+>          5103b16 A6 remove orphan hub test + assert tabbed sidebar hrefs · 47ee802 A6 fix (render REAL AnalyzeBillDialog, no stub)
+> Files:   src/frontend/consumo/consumo-screen.tsx (NEW — PageLayout + URL-driven Tabs economia/rateio/historico,
+>            auth+clientId guard, AnalyzeBillDialog + helper line, renders the 3 embedded bodies)
+>          src/app/(private)/@user/consumo/page.tsx (renders <ConsumoScreen/>)
+>          src/app/(private)/@user/economia/page.tsx → redirect('/consumo?tab=economia')
+>          src/app/(private)/@user/rateio/page.tsx → redirect('/consumo?tab=rateio')
+>          src/app/(private)/@user/consumo/historico/page.tsx → redirect('/consumo?tab=historico')
+>          src/frontend/app-sidebar.tsx (Consumo sub-items → /consumo?tab=…; mobile Consumo hub stays /consumo)
+>          src/frontend/consumo/consumo-screen.test.tsx (NEW — 13 tests) · app-sidebar.test.tsx (+3 tabbed-href asserts)
+>          DELETED: src/frontend/consumo/consumo-hub.tsx + consumo-hub.test.tsx (replaced by the shell + its test)
+> Tests:   focused suites 14 files / 72 passed, 0 failed. npm run build exit 0 →
+>          /consumo 44.2 kB (shell); /economia, /rateio, /consumo/historico = 0 B redirect stubs; /economia/[billId] untouched.
+> Review:  A4 ✅ · A5 ✅ · A6 had 1 Important finding (AnalyzeBillDialog was stubbed, violating "do not stub") → FIXED in 47ee802
+>          (real dialog now renders, asserts the real "Analisar conta (PDF)" trigger). Minors deferred to final review:
+>          duplicate useEconomia fetch on the Economia tab (latent); redundant 'use client' on consumo/page.tsx; sidebar
+>          test cold-start timeout raised to 15s (jsdom warm-up ~11s, not a re-render bug).
+> DoD:     DoD-1 (unified tabbed Consumo, no duplicate chrome) + DoD-2 (redirects + tabbed sidebar deep-links; /economia/[billId] canonical) met.
+> ```
 
 ### A4 — Unified `/consumo` tabbed shell · Tier L 🔴 (5-line pre-code plan to PM)
 **Goal:** replace the card-hub with one `PageLayout title="Consumo"` hosting `Tabs` (Economia/Rateio/Histórico) driven by `?tab=`, each tab rendering the embedded body from A1/A2/A3. Keep the `AnalyzeBillDialog` action + helper line in the page header.

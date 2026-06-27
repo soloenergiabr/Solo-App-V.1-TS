@@ -19,7 +19,11 @@ import type { AccountBill, RateioSlice } from '@/shared/controle/types'
 
 type Tab = 'consolidado' | 'por-conta'
 
-export function EconomiaScreen() {
+interface EconomiaScreenProps {
+    embedded?: boolean
+}
+
+export function EconomiaScreen({ embedded = false }: EconomiaScreenProps) {
     const currentYear = new Date().getFullYear()
     const [year] = useState(currentYear)
     const [tab, setTab] = useState<Tab>('consolidado')
@@ -54,51 +58,45 @@ export function EconomiaScreen() {
     const selected: AccountBill | undefined =
         selectedId != null ? (bills ?? []).find((b) => b.id === selectedId) : undefined
 
-    return (
-        <PageLayout
-            header={
-                <PageHeader
-                    title="Economia"
-                    subtitle={String(year)}
-                    actions={
-                        <div className="flex flex-col items-end gap-1">
-                            <div className="flex items-center gap-2">
-                                <div className="flex items-center gap-1 rounded-lg border bg-card p-0.5 text-sm">
-                                    <button
-                                        onClick={() => setTab('consolidado')}
-                                        className={
-                                            'rounded-md px-3 py-1 transition-colors ' +
-                                            (tab === 'consolidado'
-                                                ? 'bg-primary text-primary-foreground font-medium'
-                                                : 'text-muted-foreground hover:text-foreground')
-                                        }
-                                    >
-                                        Consolidado
-                                    </button>
-                                    <button
-                                        onClick={() => setTab('por-conta')}
-                                        className={
-                                            'rounded-md px-3 py-1 transition-colors ' +
-                                            (tab === 'por-conta'
-                                                ? 'bg-primary text-primary-foreground font-medium'
-                                                : 'text-muted-foreground hover:text-foreground')
-                                        }
-                                    >
-                                        Por conta
-                                    </button>
-                                </div>
-                                <AddBillForm onSuccess={refetch} />
-                                <AnalyzeBillDialog onSuccess={refetch} />
-                                <AddGenerationForm onSuccess={refetch} />
-                            </div>
-                            <p className="text-xs text-muted-foreground">
-                                Tem o PDF da conta? Use &ldquo;Analisar conta&rdquo; para a IA preencher tudo.
-                            </p>
-                        </div>
-                    }
-                />
-            }
-        >
+    const actions = (
+        <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 rounded-lg border bg-card p-0.5 text-sm">
+                    <button
+                        onClick={() => setTab('consolidado')}
+                        className={
+                            'rounded-md px-3 py-1 transition-colors ' +
+                            (tab === 'consolidado'
+                                ? 'bg-primary text-primary-foreground font-medium'
+                                : 'text-muted-foreground hover:text-foreground')
+                        }
+                    >
+                        Consolidado
+                    </button>
+                    <button
+                        onClick={() => setTab('por-conta')}
+                        className={
+                            'rounded-md px-3 py-1 transition-colors ' +
+                            (tab === 'por-conta'
+                                ? 'bg-primary text-primary-foreground font-medium'
+                                : 'text-muted-foreground hover:text-foreground')
+                        }
+                    >
+                        Por conta
+                    </button>
+                </div>
+                <AddBillForm onSuccess={refetch} />
+                <AnalyzeBillDialog onSuccess={refetch} />
+                <AddGenerationForm onSuccess={refetch} />
+            </div>
+            <p className="text-xs text-muted-foreground">
+                Tem o PDF da conta? Use &ldquo;Analisar conta&rdquo; para a IA preencher tudo.
+            </p>
+        </div>
+    )
+
+    const body = (
+        <>
             {/* Loading state */}
             {isLoading && (
                 <div className="space-y-3">
@@ -167,6 +165,21 @@ export function EconomiaScreen() {
                     )}
                 </div>
             )}
+        </>
+    )
+
+    if (embedded) {
+        return (
+            <div className="space-y-4">
+                <div className="flex items-center justify-end gap-2">{actions}</div>
+                {body}
+            </div>
+        )
+    }
+
+    return (
+        <PageLayout header={<PageHeader title="Economia" subtitle={String(year)} actions={actions} />}>
+            {body}
         </PageLayout>
     )
 }

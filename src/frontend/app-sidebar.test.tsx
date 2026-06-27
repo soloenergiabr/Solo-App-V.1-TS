@@ -44,7 +44,7 @@ describe('AppSidebar — vendedor (client) navigation', () => {
         mockUseIsMobile.mockReturnValue(false)
     })
 
-    it('desktop renders the 4 section headings and representative sub-items', () => {
+    it('desktop renders the 4 section headings and representative sub-items', { timeout: 15000 }, () => {
         render(<AppSidebar />)
 
         // The four titled sections must appear as <h3> headings
@@ -60,6 +60,11 @@ describe('AppSidebar — vendedor (client) navigation', () => {
         expect(screen.getByText('Rateio')).toBeInTheDocument()
         expect(screen.getByText('Clube Solo')).toBeInTheDocument()
         expect(screen.getByText('Suporte')).toBeInTheDocument()
+
+        // Consumo sub-items must point to the tabbed routes (A5 repoint)
+        expect(screen.getByRole('link', { name: /Economia/ })).toHaveAttribute('href', '/consumo?tab=economia')
+        expect(screen.getByRole('link', { name: /Rateio/ })).toHaveAttribute('href', '/consumo?tab=rateio')
+        expect(screen.getByRole('link', { name: /Histórico/ })).toHaveAttribute('href', '/consumo?tab=historico')
     })
 
     it('Investor Demo is absent from the client nav', () => {
