@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 // Must mock before any imports that use the hook
@@ -154,7 +155,7 @@ describe('BillHistory', () => {
         expect(screen.getByText('Vencida')).toBeInTheDocument()
     })
 
-    it('each row is clickable with correct href', () => {
+    it('each row is clickable with correct href', async () => {
         mockUseBillHistory.mockReturnValue({
             bills: [bill1, bill2],
             isLoading: false,
@@ -166,11 +167,11 @@ describe('BillHistory', () => {
         // Click first row (bill-1)
         const rows = screen.getAllByRole('row')
         // rows[0] is header, rows[1] is first data row
-        rows[1].click()
+        await userEvent.click(rows[1])
         expect(mockPush).toHaveBeenCalledWith('/economia/bill-1')
 
         // Click second row (bill-2)
-        rows[2].click()
+        await userEvent.click(rows[2])
         expect(mockPush).toHaveBeenCalledWith('/economia/bill-2')
     })
 })

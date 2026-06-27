@@ -5,7 +5,7 @@ import type { AccountBill } from '@/shared/controle/types'
 export function useBillHistory() {
     const api = useAuthenticatedApi()
     const [bills, setBills] = useState<AccountBill[] | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [reloadKey, setReloadKey] = useState(0)
 

@@ -32,11 +32,7 @@ const statusConfig: Record<
     vencida: { variant: 'destructive', label: 'Vencida' },
 }
 
-interface BillHistoryProps {
-    clientId?: string
-}
-
-export function BillHistory({ clientId: _clientId }: BillHistoryProps) {
+export function BillHistory() {
     const { bills, isLoading, error } = useBillHistory()
     const router = useRouter()
 
