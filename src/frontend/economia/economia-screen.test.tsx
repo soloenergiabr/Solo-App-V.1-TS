@@ -38,4 +38,15 @@ describe('EconomiaScreen', () => {
             screen.getByText(/Tem o PDF da conta\? Use .*Analisar conta.* para a IA preencher tudo\./),
         ).toBeInTheDocument()
     })
+
+    it('renders inline actions and body without page title when embedded', async () => {
+        render(<EconomiaScreen embedded />)
+        // Entry points should still be present
+        expect(await screen.findByText('Adicionar Fatura')).toBeInTheDocument()
+        expect(screen.getByText('Analisar conta (PDF)')).toBeInTheDocument()
+        // Page title "Economia" should NOT be rendered in embedded mode
+        expect(screen.queryByText('Economia')).not.toBeInTheDocument()
+        // Empty state message should be present (bills mock returns [])
+        expect(screen.getByText('Nenhuma conta ainda')).toBeInTheDocument()
+    })
 })
