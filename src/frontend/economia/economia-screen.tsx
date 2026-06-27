@@ -23,7 +23,7 @@ interface EconomiaScreenProps {
     embedded?: boolean
 }
 
-export function EconomiaScreen({ embedded }: EconomiaScreenProps) {
+export function EconomiaScreen({ embedded = false }: EconomiaScreenProps) {
     const currentYear = new Date().getFullYear()
     const [year] = useState(currentYear)
     const [tab, setTab] = useState<Tab>('consolidado')

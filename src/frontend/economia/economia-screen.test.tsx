@@ -37,6 +37,8 @@ describe('EconomiaScreen', () => {
         expect(
             screen.getByText(/Tem o PDF da conta\? Use .*Analisar conta.* para a IA preencher tudo\./),
         ).toBeInTheDocument()
+        // Page title should be present in non-embedded mode
+        expect(screen.getByText('Economia')).toBeInTheDocument()
     })
 
     it('renders inline actions and body without page title when embedded', async () => {
