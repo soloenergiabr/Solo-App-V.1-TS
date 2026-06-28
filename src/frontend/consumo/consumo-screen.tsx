@@ -11,6 +11,7 @@ import { ConsumptionDashboard } from '@/frontend/consumption/components/consumpt
 import { AnalyzeBillDialog } from '@/frontend/economia/components/analyze-bill-dialog'
 import { BillHistory } from '@/frontend/economia/history/bill-history'
 import { BillCompare } from '@/frontend/economia/history/bill-compare'
+import { EducationalFaq } from '@/frontend/education/educational-faq'
 import { PageLayout, PageHeader } from '@/components/ui/page-layout'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
@@ -102,6 +103,7 @@ export function ConsumoScreen() {
                     <ConsumptionDashboard clientId={user.clientId} embedded />
                 </TabsContent>
             </Tabs>
+            <EducationalFaq category="consumo" />
         </PageLayout>
     )
 }

@@ -68,6 +68,11 @@ vi.mock('@/frontend/economia/lib/bill-status', () => ({
   statusToBadge: () => ({ label: 'A Pagar', tone: 'warning' }),
 }))
 
+// Mock EducationalFaq so it does not call useAuthenticatedApi
+vi.mock('@/frontend/education/educational-faq', () => ({
+  EducationalFaq: () => null,
+}))
+
 // Mock lucide icons (all icons the component tree uses)
 vi.mock('lucide-react', () => {
   const icons = [
