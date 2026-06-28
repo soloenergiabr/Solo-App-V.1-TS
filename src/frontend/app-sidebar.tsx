@@ -60,7 +60,7 @@ const vendedorMobileItems: SidebarItem[] = [
     { label: 'Controle', mobileLabel: 'Controle', href: '/controle', icon: <Gauge className="w-5 h-5" /> },
     { label: 'Energia', mobileLabel: 'Energia', href: '/energia', icon: <Zap className="w-5 h-5" /> },
     { label: 'Consumo', mobileLabel: 'Consumo', href: '/consumo', icon: <DollarSign className="w-5 h-5" /> },
-    { label: 'Solo Club', mobileLabel: 'Club', href: '/club', icon: <Gift className="w-5 h-5" /> },
+    { label: 'Solo Club', mobileLabel: 'Club', href: '/solo-club', icon: <Gift className="w-5 h-5" /> },
     { label: 'Suporte', mobileLabel: 'Suporte', href: '/support', icon: <HelpCircleIcon className="w-5 h-5" /> },
 ]
 
