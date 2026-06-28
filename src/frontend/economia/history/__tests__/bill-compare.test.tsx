@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, fireEvent } from '@testing-library/react'
 import React from 'react'
 import type { AccountBill } from '@/shared/controle/types'
 
@@ -114,15 +113,16 @@ describe('BillCompare', () => {
             error: null,
             refetch: vi.fn(),
         })
-        const user = userEvent.setup()
         render(<BillCompare />)
 
-        // Select the two bills via the native selects
+        // Select the two bills via the native selects (Select is mocked to a
+        // native <select>; fireEvent.change is synchronous and deterministic —
+        // userEvent.selectOptions adds async overhead that flakes on slow CI).
         const selects = screen.getAllByRole('combobox')
         expect(selects).toHaveLength(2)
 
-        await user.selectOptions(selects[0], 'bill-1')
-        await user.selectOptions(selects[1], 'bill-2')
+        fireEvent.change(selects[0], { target: { value: 'bill-1' } })
+        fireEvent.change(selects[1], { target: { value: 'bill-2' } })
 
         // Metric rows are now visible
         expect(screen.getByText('Você pagou')).toBeInTheDocument()
