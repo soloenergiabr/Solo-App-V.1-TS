@@ -78,3 +78,10 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-27 | Sprint 6 | A4 - Unified /consumo tabbed shell | claude (sonnet) | L | R$ 20 |
 | 2026-06-27 | Sprint 6 | A5 - Redirect old routes + repoint sidebar to tabs | claude (sonnet) | S | R$ 5 |
 | 2026-06-27 | Sprint 6 | A6 - Finalize Consumo test suite (orphan remove + tabbed hrefs + real dialog) | claude (sonnet) | S | R$ 5 |
+| 2026-06-28 | Sprint 6 | B1 - LIST route ?year=all (multi-year fetch) | claude (sonnet) | S | R$ 5 |
+| 2026-06-28 | Sprint 6 | B2 - BillHistory multi-year grouped list (+review fix) | claude (sonnet) | L | R$ 20 |
+| 2026-06-28 | Sprint 6 | B3+B4 - BillCompare two-bill side-by-side + tests | claude (sonnet) | L | R$ 20 |
+| 2026-06-28 | Sprint 6 | C1+C3 - FAQ category filter + idempotent consumo seed | claude (sonnet) | M | R$ 12 |
+| 2026-06-28 | Sprint 6 | C2 - EducationalFaq accordion + mounts | claude (sonnet) | M | R$ 12 |
+| 2026-06-28 | Sprint 6 | D1 - /solo-club hub + sidebar repoint | claude (sonnet) | M | R$ 12 |
+| 2026-06-28 | Sprint 6 | E1 - Final whole-branch review (Wave C+D) | claude (opus) | - | R$ 20 |

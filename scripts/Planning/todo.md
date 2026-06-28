@@ -58,6 +58,15 @@
 - [ ] **Performance SLAs** — first load < 1s (SSR + streaming), instant nav (prefetch + cache). _(M — Vision §4)_
 - [ ] **Multi-tenant / white-label** foundation for the B2C2B integrator play. _(XL — Vision §5.2, Cenário B)_
 
+## 📦 Follow-ups from Sprint 6 (Consumo Unified — final review minors)
+
+> Added 2026-06-28. Sprint 6 (Consumo unified tabs + history/compare + contextual FAQ + Solo Club hub) shipped; the Opus whole-branch review flagged these non-blocking minors.
+
+- [ ] **`seed-consumo` (and `admin/faqs`) lack an explicit master-role check** — both use `AuthMiddleware.extractUserContext` (requires a valid JWT) but not `requireRole('master')`, so any authenticated user could POST the idempotent FAQ seed. Low risk (idempotent + safe default content). Add `AuthMiddleware.requireRole(request, 'master')` to close it (resolves the existing `// TODO: Explicit master role check` in `admin/faqs/route.ts` too). _(S)_
+- [ ] **`/api/economia/bills` `?clientId=` fallback hardening** — `userContext.clientId ?? searchParams.get('clientId')` lets a `scope==='all'` caller without a JWT clientId scope to another client; `?year=all` widens the temporal window. Pre-existing, not a Sprint 6 regression. _(S)_
+- [ ] **`referenceYear ?? year` → 0 group in `?year=all`** — a bill with null `referenceYear` lands in a "0" year group in BillHistory. Cosmetic; only on bad data. _(XS)_
+- [ ] **Test infra: full parallel vitest hits collection timeouts** on the current machine (jsdom env setup 70-140s) — run suites in batches, or raise `testTimeout`/`hookTimeout` and reduce worker concurrency in `vitest.config`. Not a code defect. _(S)_
+
 ## 📦 Deferred out of Sprint 5.1 (AI Analyzer Closure + Nav Consolidation)
 
 > Added 2026-06-26. Sprint 5.1 shipped the manual-upload analyzer + the 4-section nav (`Controle · Energia · Consumo · Solo Club`) to `main` (`369ea44`). The items below were explicitly NOT built and are parked. Plan: `sprint_5.1_ai-analyzer_v1.md`; handoff: `PM_Sprint_Handoff.md`.

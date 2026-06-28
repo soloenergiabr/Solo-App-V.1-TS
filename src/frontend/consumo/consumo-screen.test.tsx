@@ -67,6 +67,18 @@ vi.mock('@/frontend/consumption/components/consumption-dashboard', () => ({
     ),
 }))
 
+vi.mock('@/frontend/economia/history/bill-history', () => ({
+    BillHistory: () => <div data-testid="bill-history">BillHistory</div>,
+}))
+
+vi.mock('@/frontend/economia/history/bill-compare', () => ({
+    BillCompare: () => <div data-testid="bill-compare">BillCompare</div>,
+}))
+
+vi.mock('@/frontend/education/educational-faq', () => ({
+    EducationalFaq: () => <div data-testid="educational-faq" />,
+}))
+
 describe('ConsumoScreen', () => {
     beforeEach(() => {
         vi.clearAllMocks()
@@ -168,6 +180,7 @@ describe('ConsumoScreen', () => {
             'data-state',
             'active',
         )
+        expect(screen.getByTestId('bill-history')).toBeInTheDocument()
         expect(screen.getByTestId('consumption-dashboard')).toBeInTheDocument()
         expect(screen.queryByTestId('economia-screen')).not.toBeInTheDocument()
     })

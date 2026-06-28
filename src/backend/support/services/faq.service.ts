@@ -54,4 +54,9 @@ export class FAQService {
     async getActiveFAQs(): Promise<FAQModel[]> {
         return await this.faqRepository.findActive();
     }
+
+    async getActiveFAQsByCategory(category: string): Promise<FAQModel[]> {
+        const active = await this.getActiveFAQs();
+        return active.filter((f) => f.category === category);
+    }
 }

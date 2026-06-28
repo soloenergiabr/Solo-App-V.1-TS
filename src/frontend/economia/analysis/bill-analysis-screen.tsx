@@ -25,6 +25,7 @@ import { ActionCard } from './clarifier/action-card'
 import { TechnicalDataViewer } from './technical-data-viewer'
 import { BillSummaryCard } from './clarifier/bill-summary-card'
 import { BillChatDrawer } from './chat/bill-chat-drawer'
+import { EducationalFaq } from '@/frontend/education/educational-faq'
 
 function monthName(m: number): string {
     const names = [
@@ -364,6 +365,7 @@ export function BillAnalysisScreen({
 
                         {/* F2 slot: Technical viewer */}
                         <TechnicalDataViewer bill={bill} />
+                        <EducationalFaq category="consumo" />
                     </>
                 ) : null}
 
