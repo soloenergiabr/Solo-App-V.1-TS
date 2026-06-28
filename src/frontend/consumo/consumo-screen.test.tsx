@@ -71,6 +71,10 @@ vi.mock('@/frontend/economia/history/bill-history', () => ({
     BillHistory: () => <div data-testid="bill-history">BillHistory</div>,
 }))
 
+vi.mock('@/frontend/economia/history/bill-compare', () => ({
+    BillCompare: () => <div data-testid="bill-compare">BillCompare</div>,
+}))
+
 describe('ConsumoScreen', () => {
     beforeEach(() => {
         vi.clearAllMocks()
