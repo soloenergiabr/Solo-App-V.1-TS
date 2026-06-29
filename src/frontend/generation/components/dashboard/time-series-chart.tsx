@@ -60,7 +60,7 @@ export function TimeSeriesChart({ analytics }: TimeSeriesChartProps) {
                             />
                             <Tooltip
                                 contentStyle={{
-                                    backgroundColor: 'var(--background)',
+                                    backgroundColor: 'var(--card)',
                                     border: '1px solid var(--border)',
                                     borderRadius: '6px',
                                 }}
