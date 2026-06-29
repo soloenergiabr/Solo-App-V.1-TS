@@ -141,9 +141,9 @@ export function ConsumptionChart({ data, periodLabel }: ConsumptionChartProps) {
                             type="monotone"
                             dataKey="savings"
                             name="Economia"
-                            stroke="#22c55e" // Green-500
+                            stroke="var(--chart-3)"
                             strokeWidth={3}
-                            dot={{ r: 4, fill: "#22c55e", strokeWidth: 2, stroke: "#fff" }}
+                            dot={{ r: 4, fill: "var(--chart-3)", strokeWidth: 2, stroke: "var(--background)" }}
                             activeDot={{ r: 6 }}
                         />
                     </ComposedChart>
