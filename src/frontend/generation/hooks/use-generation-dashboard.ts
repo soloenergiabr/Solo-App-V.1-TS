@@ -84,6 +84,12 @@ export interface DashboardAnalytics {
 
 export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     const api = useAuthenticatedApi();
+    // useAuthenticatedApi() returns a fresh object (with fresh get/post) every
+    // render. Keep a ref to the latest instance so the sync effect and the
+    // exposed refetch stay identity-stable instead of depending on `api`.
+    const apiRef = useRef(api);
+    apiRef.current = api;
+    const isAuthenticated = api.isAuthenticated;
     const [filters, setFilters] = useState<DashboardFilters>({
         generationUnitType: 'real_time',
         currentDate: new Date(),
@@ -179,18 +185,18 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     // Sync on mount (once) — guard prevents the 5s poll from re-triggering sync
     const syncedRef = useRef(false)
     useEffect(() => {
-        if (!api.isAuthenticated || syncedRef.current) return
+        if (!isAuthenticated || syncedRef.current) return
         syncedRef.current = true
-        api.post('/generation/sync/client')
+        apiRef.current.post('/generation/sync/client')
             .catch((err) => console.error('[geracao] sync on mount failed', err))
             .finally(() => { refetch() })
-    }, [api, api.isAuthenticated, refetch])
+    }, [isAuthenticated, refetch])
 
     // Manual refresh also triggers a fresh sync
     const refetchWithSync = useCallback(async () => {
-        try { await api.post('/generation/sync/client') } catch (e) { console.error('[geracao] manual sync failed', e) }
+        try { await apiRef.current.post('/generation/sync/client') } catch (e) { console.error('[geracao] manual sync failed', e) }
         return refetch()
-    }, [api, refetch])
+    }, [refetch])
 
     const updateFilters = useCallback((newFilters: Partial<DashboardFilters>) => {
         setFilters(prev => ({ ...prev, ...newFilters }));

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 
 const post = vi.fn().mockResolvedValue({ data: { success: true, data: {} } })
@@ -20,5 +20,17 @@ describe('useGenerationDashboard', () => {
   it('triggers a client sync on mount before reading analytics', async () => {
     renderHook(() => useGenerationDashboard({}), { wrapper })
     await waitFor(() => expect(post).toHaveBeenCalledWith('/generation/sync/client'))
+  })
+
+  it('re-syncs the client when refetch is called manually', async () => {
+    const { result } = renderHook(() => useGenerationDashboard({}), { wrapper })
+    await waitFor(() => expect(post).toHaveBeenCalledWith('/generation/sync/client'))
+    post.mockClear()
+
+    await act(async () => {
+      await result.current.refetch()
+    })
+
+    expect(post).toHaveBeenCalledWith('/generation/sync/client')
   })
 })
