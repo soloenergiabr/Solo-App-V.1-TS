@@ -14,6 +14,6 @@ describe('ErrorBoundary', () => {
   it('renders fallback when a child throws', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     render(<ErrorBoundary><Boom /></ErrorBoundary>)
-    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(screen.getByText(/algo deu errado/i)).toBeInTheDocument()
   })
 })

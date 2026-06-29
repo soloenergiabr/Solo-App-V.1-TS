@@ -22,7 +22,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
       return (
         this.props.fallback ?? (
           <Alert variant="destructive">
-            <AlertTitle>Algo deu errado</AlertTitle>
+            <AlertTitle>Ops!</AlertTitle>
             <AlertDescription>
               Algo deu errado ao carregar esta seção. Tente recarregar a página.
             </AlertDescription>
