@@ -298,7 +298,7 @@ export function AdaptiveChart({ analytics, viewType }: AdaptiveChartProps) {
                                 strokeWidth={3}
                                 fill="url(#colorEnergia)"
                                 name="Energia (kWh)"
-                                dot={{ fill: 'var(--chart-1)', r: 4, strokeWidth: 2, stroke: '#fff' }}
+                                dot={{ fill: 'var(--chart-1)', r: 4, strokeWidth: 2, stroke: 'var(--background)' }}
                                 activeDot={{ r: 6, strokeWidth: 2 }}
                             />
                             <Area
@@ -309,7 +309,7 @@ export function AdaptiveChart({ analytics, viewType }: AdaptiveChartProps) {
                                 strokeWidth={2}
                                 fill="url(#colorPotencia)"
                                 name="Potência (W)"
-                                dot={{ fill: 'var(--chart-2)', r: 3, strokeWidth: 2, stroke: '#fff' }}
+                                dot={{ fill: 'var(--chart-2)', r: 3, strokeWidth: 2, stroke: 'var(--background)' }}
                                 activeDot={{ r: 5, strokeWidth: 2 }}
                             />
                         </AreaChart>
