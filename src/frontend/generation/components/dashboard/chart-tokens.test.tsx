@@ -14,6 +14,7 @@ const tooltipFiles = [
   'time-series-chart.tsx',
   'type-distribution-chart.tsx',
   'inverters-comparison-chart.tsx',
+  'adaptive-chart.tsx',
 ]
 
 describe('generation charts use valid design tokens', () => {

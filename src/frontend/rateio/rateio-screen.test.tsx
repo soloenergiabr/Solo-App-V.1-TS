@@ -70,7 +70,7 @@ describe('RateioScreen', () => {
         expect(await screen.findByText('Usina')).toBeInTheDocument()
     })
 
-    it('renders error state when plants/units fetch rejects', async () => {
+    it('does not crash when plants/units fetch rejects', async () => {
         mockApiGet.mockRejectedValue(new Error('network'))
         mockUseRateio.mockReturnValue({ data: [], isLoading: false, error: null, refetch: vi.fn() })
         render(<RateioScreen embedded />)

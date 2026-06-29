@@ -213,7 +213,7 @@ export function AdaptiveChart({ analytics, viewType }: AdaptiveChartProps) {
                             />
                             <Tooltip
                                 contentStyle={{
-                                    backgroundColor: 'var(--background)',
+                                    backgroundColor: 'var(--card)',
                                     border: '1px solid var(--border)',
                                     borderRadius: '6px',
                                 }}
@@ -272,7 +272,7 @@ export function AdaptiveChart({ analytics, viewType }: AdaptiveChartProps) {
                             />
                             <Tooltip
                                 contentStyle={{
-                                    backgroundColor: 'var(--background)',
+                                    backgroundColor: 'var(--card)',
                                     border: '1px solid var(--border)',
                                     borderRadius: '6px',
                                 }}
