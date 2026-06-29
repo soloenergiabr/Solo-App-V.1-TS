@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuthenticatedApi } from "@/frontend/auth/hooks/useAuthenticatedApi";
 import { addMonths, addYears, startOfDay, endOfDay, startOfMonth, endOfMonth, startOfYear, endOfYear, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -176,6 +176,22 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         staleTime: filters.generationUnitType === 'real_time' ? 0 : 1000 * 60, // 0 for real_time, 1 min otherwise
     });
 
+    // Sync on mount (once) — guard prevents the 5s poll from re-triggering sync
+    const syncedRef = useRef(false)
+    useEffect(() => {
+        if (!api.isAuthenticated || syncedRef.current) return
+        syncedRef.current = true
+        api.post('/generation/sync/client')
+            .catch((err) => console.error('[geracao] sync on mount failed', err))
+            .finally(() => { refetch() })
+    }, [api, api.isAuthenticated, refetch])
+
+    // Manual refresh also triggers a fresh sync
+    const refetchWithSync = useCallback(async () => {
+        try { await api.post('/generation/sync/client') } catch (e) { console.error('[geracao] manual sync failed', e) }
+        return refetch()
+    }, [api, refetch])
+
     const updateFilters = useCallback((newFilters: Partial<DashboardFilters>) => {
         setFilters(prev => ({ ...prev, ...newFilters }));
     }, []);
@@ -250,7 +266,7 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         filters,
         updateFilters,
         clearFilters,
-        refetch,
+        refetch: refetchWithSync,
         fetchDashboardAnalytics,
         goToPreviousPeriod,
         goToNextPeriod,
