@@ -54,24 +54,24 @@ export function GlowChart({
                 <AreaChart data={data}>
                     <defs>
                         <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#ff481e" stopOpacity={0.6} />
-                            <stop offset="100%" stopColor="#f5a623" stopOpacity={0.05} />
+                            <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.6} />
+                            <stop offset="100%" stopColor="var(--chart-2)" stopOpacity={0.05} />
                         </linearGradient>
                     </defs>
-                    <XAxis dataKey={xKey} stroke="hsl(0 0% 60%)" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis stroke="hsl(0 0% 60%)" fontSize={12} tickLine={false} axisLine={false} width={36} />
+                    <XAxis dataKey={xKey} stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} width={36} />
                     <Tooltip
                         contentStyle={{
-                            background: "hsl(0 0% 11%)",
-                            border: "1px solid hsl(0 0% 16%)",
+                            background: "var(--card)",
+                            border: "1px solid var(--border)",
                             borderRadius: "0.75rem",
-                            color: "hsl(48 9% 88%)",
+                            color: "var(--foreground)",
                         }}
                     />
                     <Area
                         type="monotone"
                         dataKey={dataKey}
-                        stroke="#ff481e"
+                        stroke="var(--chart-1)"
                         strokeWidth={2}
                         fill={`url(#${gradientId})`}
                     />

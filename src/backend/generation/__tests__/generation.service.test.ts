@@ -173,6 +173,26 @@ describe('GenerationService', () => {
         });
     });
 
+    describe('syncClientInvertersData', () => {
+        it('syncClientInvertersData only syncs inverters of the given client', async () => {
+            // Arrange: two inverters with different clientIds
+            vi.spyOn(inverterRepository, 'find').mockResolvedValue([
+                new InverterModel('inv-a', 'Inverter A', 'mock', 'MOCK-A', undefined, undefined, undefined, 'client-1'),
+                new InverterModel('inv-b', 'Inverter B', 'mock', 'MOCK-B', undefined, undefined, undefined, 'client-2'),
+            ]);
+            vi.spyOn(generationUnitRepository, 'findByInverterId').mockResolvedValue([]);
+            const syncSpy = vi.spyOn(service, 'syncInverterData').mockResolvedValue({
+                success: true, inverterId: 'inv-a', unitsCreated: 4, unitsUpdated: 0, message: 'ok',
+            });
+
+            const result = await service.syncClientInvertersData('client-1');
+
+            expect(syncSpy).toHaveBeenCalledTimes(1);
+            expect(syncSpy).toHaveBeenCalledWith({ inverterId: 'inv-a' });
+            expect(result.results).toHaveLength(1);
+        });
+    });
+
     describe('syncAllInvertersData', () => {
         it('should sync data for all inverters', async () => {
             const mockInverters = [

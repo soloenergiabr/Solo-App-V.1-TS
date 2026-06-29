@@ -60,7 +60,7 @@ export function TypeDistributionChart({ analytics }: TypeDistributionChartProps)
                                     labelLine={false}
                                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                                     outerRadius={80}
-                                    fill="#8884d8"
+                                    fill="var(--chart-1)"
                                     dataKey="value"
                                 >
                                     {chartData.map((entry, index) => (
@@ -70,10 +70,10 @@ export function TypeDistributionChart({ analytics }: TypeDistributionChartProps)
                                         />
                                     ))}
                                 </Pie>
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: 'hsl(var(--background))',
-                                        border: '1px solid hsl(var(--border))',
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: 'var(--card)',
+                                        border: '1px solid var(--border)',
                                         borderRadius: '6px',
                                     }}
                                     formatter={(value: number) => [

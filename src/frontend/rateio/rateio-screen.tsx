@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { useRateio, useCreateProposal, type RateioAllocation } from './hooks/use-rateio';
 import { EnelSyncBadge } from './enel-sync-badge';
@@ -60,23 +61,26 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
         Promise.all([
             api.get('/client/plants'),
             api.get('/client/consumer-units'),
-        ]).then(([plantsRes, unitsRes]) => {
-            if (plantsRes.data.success) {
-                setPlants(
-                    plantsRes.data.data.map((p: PlantOption) => ({ id: p.id, name: p.name ?? null }))
-                );
-            }
-            if (unitsRes.data.success) {
-                const units: UnitOption[] = unitsRes.data.data.map((u: UnitOption) => ({
-                    id: u.id,
-                    name: u.name ?? null,
-                    clientNumber: u.clientNumber ?? null,
-                    plantId: u.plantId,
-                }));
-                setGeneratorUnits(units);
-                setConsumerUnits(units);
-            }
-        }).finally(() => setEditorReady(true));
+        ])
+            .then(([plantsRes, unitsRes]) => {
+                const plantList = Array.isArray(plantsRes?.data?.data) ? plantsRes.data.data : [];
+                if (plantsRes?.data?.success) {
+                    setPlants(plantList.map((p: PlantOption) => ({ id: p.id, name: p.name ?? null })));
+                }
+                const unitList = Array.isArray(unitsRes?.data?.data) ? unitsRes.data.data : [];
+                if (unitsRes?.data?.success) {
+                    const units: UnitOption[] = unitList.map((u: UnitOption) => ({
+                        id: u.id,
+                        name: u.name ?? null,
+                        clientNumber: u.clientNumber ?? null,
+                        plantId: u.plantId,
+                    }));
+                    setGeneratorUnits(units);
+                    setConsumerUnits(units);
+                }
+            })
+            .catch((err) => { console.error('[rateio] failed to load plants/units', err); })
+            .finally(() => setEditorReady(true));
     }, [api, api.isAuthenticated]);
 
     // Reset selected allocation when data refetches
@@ -88,7 +92,7 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
     const plantsMap = new Map<string, PlantWithUnits>();
     if (allocations) {
         for (const a of allocations) {
-            const plantId = a.plant?.id ?? a.plantId;
+            const plantId = a.plant?.id ?? a.plantId ?? 'unknown';
             if (!plantsMap.has(plantId)) {
                 plantsMap.set(plantId, {
                     id: plantId,
@@ -124,7 +128,7 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
             {!isLoading && !error && allocations != null && allocations.length === 0 && (
                 <>
                     <PageEmpty
-                        icon={Split}
+                        icon={<Split className="h-8 w-8 text-muted-foreground" />}
                         title="Nenhum rateio configurado ainda"
                         description="Os rateios de créditos aparecerão aqui quando forem configurados pelo administrador."
                     />
@@ -337,7 +341,7 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
     );
 
     if (embedded) {
-        return body;
+        return <ErrorBoundary>{body}</ErrorBoundary>;
     }
 
     return (
@@ -349,7 +353,7 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
                 />
             }
         >
-            {body}
+            <ErrorBoundary>{body}</ErrorBoundary>
         </PageLayout>
     );
 }

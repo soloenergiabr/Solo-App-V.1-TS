@@ -58,31 +58,31 @@ export function TimeSeriesChart({ analytics }: TimeSeriesChartProps) {
                                 className="text-xs"
                                 label={{ value: 'Potência (W)', angle: 90, position: 'insideRight' }}
                             />
-                            <Tooltip 
-                                contentStyle={{ 
-                                    backgroundColor: 'hsl(var(--background))',
-                                    border: '1px solid hsl(var(--border))',
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: 'var(--card)',
+                                    border: '1px solid var(--border)',
                                     borderRadius: '6px',
                                 }}
                             />
                             <Legend />
-                            <Line 
+                            <Line
                                 yAxisId="left"
-                                type="monotone" 
-                                dataKey="energia" 
-                                stroke="hsl(var(--chart-1))" 
+                                type="monotone"
+                                dataKey="energia"
+                                stroke="var(--chart-1)"
                                 strokeWidth={2}
                                 name="Energia (kWh)"
-                                dot={{ fill: 'hsl(var(--chart-1))' }}
+                                dot={{ fill: 'var(--chart-1)' }}
                             />
-                            <Line 
+                            <Line
                                 yAxisId="right"
-                                type="monotone" 
-                                dataKey="potencia" 
-                                stroke="hsl(var(--chart-2))" 
+                                type="monotone"
+                                dataKey="potencia"
+                                stroke="var(--chart-2)"
                                 strokeWidth={2}
                                 name="Potência (W)"
-                                dot={{ fill: 'hsl(var(--chart-2))' }}
+                                dot={{ fill: 'var(--chart-2)' }}
                             />
                         </LineChart>
                     </ResponsiveContainer>
