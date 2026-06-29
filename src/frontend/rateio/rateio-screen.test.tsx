@@ -74,11 +74,8 @@ describe('RateioScreen', () => {
         mockApiGet.mockRejectedValue(new Error('network'))
         mockUseRateio.mockReturnValue({ data: [], isLoading: false, error: null, refetch: vi.fn() })
         render(<RateioScreen embedded />)
-        // Screen degrades gracefully — either the empty-state or the ErrorBoundary
-        // fallback is rendered; crucially, the rejection must NOT propagate as an
-        // unhandled promise rejection that crashes the route.
-        // In the jsdom test environment a secondary render issue causes the ErrorBoundary
-        // to catch a forwardRef-child error, so we assert on the friendly fallback text.
-        expect(await screen.findByText(/algo deu errado ao carregar esta seção/i)).toBeInTheDocument()
+        // Screen still renders the empty-state, editor simply stays unavailable — no crash.
+        // The rejection is caught by the useEffect .catch and does NOT propagate.
+        expect(await screen.findByText(/nenhum rateio configurado/i)).toBeInTheDocument()
     })
 })

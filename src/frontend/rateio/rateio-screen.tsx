@@ -128,7 +128,7 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
             {!isLoading && !error && allocations != null && allocations.length === 0 && (
                 <>
                     <PageEmpty
-                        icon={Split}
+                        icon={<Split className="h-8 w-8 text-muted-foreground" />}
                         title="Nenhum rateio configurado ainda"
                         description="Os rateios de créditos aparecerão aqui quando forem configurados pelo administrador."
                     />
