@@ -240,6 +240,37 @@ export class GenerationService {
         };
     }
 
+    async syncClientInvertersData(clientId: string): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[], skipped: string[] }> {
+        const inverters = (await this.inverterRepository.find()).filter(inv => inv.clientId === clientId);
+        const results: SyncInverterGenerationDataResponse[] = [];
+        const errors: any[] = [];
+        const skipped: string[] = [];
+
+        for (const inverter of inverters) {
+            try {
+                const minInterval = PROVIDER_MIN_SYNC_INTERVAL_MS[inverter.provider];
+                if (minInterval) {
+                    const units = await this.generationUnitRepository.findByInverterId(inverter.id);
+                    const latest = units.length > 0 ? units.reduce((latest, current) => current.timestamp > latest.timestamp ? current : latest) : null;
+                    if (latest && latest.timestamp && (Date.now() - latest.timestamp.getTime()) < minInterval) {
+                        skipped.push(inverter.id);
+                        continue;
+                    }
+                }
+
+                const result = await this.syncInverterData({ inverterId: inverter.id });
+                results.push(result);
+            } catch (error) {
+                errors.push({
+                    inverterId: inverter.id,
+                    error: error instanceof Error ? error.message : 'Unknown error'
+                });
+            }
+        }
+
+        return { results, errors, skipped };
+    }
+
     async syncAllInvertersData(): Promise<{ results: SyncInverterGenerationDataResponse[], errors: any[], skipped: string[] }> {
         const inverters = await this.inverterRepository.find();
         const results: SyncInverterGenerationDataResponse[] = [];
