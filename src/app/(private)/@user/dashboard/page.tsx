@@ -38,6 +38,7 @@ function GenerationDashboardPage() {
         analytics,
         isLoading,
         error,
+        syncError,
         filters,
         updateFilters,
         refetch,
@@ -101,6 +102,14 @@ function GenerationDashboardPage() {
                         </div>
                     ) : analytics ? (
                         <>
+                            {syncError && (
+                                <Alert variant="destructive">
+                                    <AlertCircle className="h-4 w-4" />
+                                    <AlertTitle>AtenÃ§Ã£o na sincronizaÃ§Ã£o</AlertTitle>
+                                    <AlertDescription>{syncError}</AlertDescription>
+                                </Alert>
+                            )}
+
                             {/* Indicador ao vivo */}
                             {isRealTime && (
                                 <div className="flex justify-end">

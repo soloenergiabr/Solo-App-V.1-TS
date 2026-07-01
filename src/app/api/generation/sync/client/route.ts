@@ -18,6 +18,14 @@ const syncClientInverters = async (request: NextRequest) => {
   if (!clientId) throw new Error('Usuário sem cliente vinculado')
 
   const result = await generationService.syncClientInvertersData(clientId)
+  if (result.results.length === 0 && result.errors.length > 0) {
+    return NextResponse.json({
+      success: false,
+      message: 'Falha ao sincronizar dados dos inversores. Verifique as credenciais de API.',
+      data: result,
+    })
+  }
+
   return NextResponse.json({ success: true, data: result })
 }
 

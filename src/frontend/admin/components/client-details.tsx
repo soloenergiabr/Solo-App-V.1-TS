@@ -707,7 +707,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
     const fetchManualGeneration = useCallback(() => {
         setManualGenerationLoading(true);
         setManualGenerationError(null);
-        api.get<{ success: boolean; data: any[] }>(`/admin/clients/${clientId}/generation`)
+        api.get<{ success: boolean; data: any[]; message?: string }>(`/admin/clients/${clientId}/generation`)
             .then(response => {
                 if (response.data.success) {
                     setManualGeneration(response.data.data || []);

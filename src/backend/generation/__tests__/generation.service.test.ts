@@ -176,10 +176,8 @@ describe('GenerationService', () => {
     describe('syncClientInvertersData', () => {
         it('syncClientInvertersData only syncs inverters of the given client', async () => {
             // Arrange: two inverters with different clientIds
-            vi.spyOn(inverterRepository, 'find').mockResolvedValue([
-                new InverterModel('inv-a', 'Inverter A', 'mock', 'MOCK-A', undefined, undefined, undefined, 'client-1'),
-                new InverterModel('inv-b', 'Inverter B', 'mock', 'MOCK-B', undefined, undefined, undefined, 'client-2'),
-            ]);
+            await inverterRepository.create(new InverterModel('inv-a', 'Inverter A', 'mock', 'MOCK-A', undefined, undefined, undefined, 'client-1'));
+            await inverterRepository.create(new InverterModel('inv-b', 'Inverter B', 'mock', 'MOCK-B', undefined, undefined, undefined, 'client-2'));
             vi.spyOn(generationUnitRepository, 'findByInverterId').mockResolvedValue([]);
             const syncSpy = vi.spyOn(service, 'syncInverterData').mockResolvedValue({
                 success: true, inverterId: 'inv-a', unitsCreated: 4, unitsUpdated: 0, message: 'ok',
@@ -190,6 +188,38 @@ describe('GenerationService', () => {
             expect(syncSpy).toHaveBeenCalledTimes(1);
             expect(syncSpy).toHaveBeenCalledWith({ inverterId: 'inv-a' });
             expect(result.results).toHaveLength(1);
+        });
+
+        it('records sync success and error status on each inverter', async () => {
+            const successInverter = new InverterModel('inv-ok', 'Inverter OK', 'mock', 'MOCK-OK', undefined, undefined, undefined, 'client-1');
+            const failedInverter = new InverterModel('inv-fail', 'Inverter Fail', 'mock', 'MOCK-FAIL', undefined, undefined, undefined, 'client-1');
+            await inverterRepository.create(successInverter);
+            await inverterRepository.create(failedInverter);
+            vi.spyOn(generationUnitRepository, 'findByInverterId').mockResolvedValue([]);
+            vi.spyOn(service, 'syncInverterData')
+                .mockResolvedValueOnce({
+                    success: true,
+                    inverterId: 'inv-ok',
+                    unitsCreated: 4,
+                    unitsUpdated: 0,
+                    message: 'ok',
+                })
+                .mockRejectedValueOnce(new Error('provider credentials invalid'));
+
+            const result = await service.syncClientInvertersData('client-1');
+            const updatedOk = await inverterRepository.findById('inv-ok');
+            const updatedFail = await inverterRepository.findById('inv-fail');
+
+            expect(result.results).toHaveLength(1);
+            expect(result.errors).toEqual([
+                { inverterId: 'inv-fail', error: 'provider credentials invalid' },
+            ]);
+            expect(updatedOk.lastSyncStatus).toBe('success');
+            expect(updatedOk.lastSyncError).toBeUndefined();
+            expect(updatedOk.lastSuccessfulSyncAt).toBeInstanceOf(Date);
+            expect(updatedFail.lastSyncStatus).toBe('error');
+            expect(updatedFail.lastSyncError).toBe('provider credentials invalid');
+            expect(updatedFail.lastSuccessfulSyncAt).toBeUndefined();
         });
     });
 

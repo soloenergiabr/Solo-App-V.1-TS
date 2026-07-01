@@ -26,4 +26,21 @@ describe('POST /api/generation/sync/client', () => {
     expect(json.success).toBe(true)
     expect(syncClientInvertersData).toHaveBeenCalledWith('client-1')
   })
+
+  it('returns success false when all synced inverters fail', async () => {
+    requireAuth.mockResolvedValue({ clientId: 'client-1', hasRole: () => false })
+    syncClientInvertersData.mockResolvedValue({
+      results: [],
+      errors: [{ inverterId: 'inv-1', error: 'provider failed' }],
+      skipped: [],
+    })
+
+    const res = await POST(new Request('http://x/api/generation/sync/client', { method: 'POST' }) as any)
+    const json = await res.json()
+
+    expect(res.status).toBe(200)
+    expect(json.success).toBe(false)
+    expect(json.message).toBe('Falha ao sincronizar dados dos inversores. Verifique as credenciais de API.')
+    expect(json.data.errors).toHaveLength(1)
+  })
 })

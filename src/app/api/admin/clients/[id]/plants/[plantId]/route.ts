@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { Prisma } from '@/app/generated/prisma';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import prisma from '@/lib/prisma';
@@ -27,13 +28,22 @@ const updatePlant = async (
     await AuthMiddleware.extractUserContext(request);
     const { id: clientId, plantId } = await params;
     const data = plantSchema.parse(await request.json());
+    const providerMetadata =
+        data.providerMetadata === undefined
+            ? undefined
+            : data.providerMetadata === null
+                ? Prisma.JsonNull
+                : data.providerMetadata as Prisma.InputJsonValue;
 
     const existing = await prisma.plant.findFirst({ where: { id: plantId, clientId, deletedAt: null } });
     if (!existing) throw new Error('Usina not found');
 
     const plant = await prisma.plant.update({
         where: { id: plantId },
-        data,
+        data: {
+            ...data,
+            providerMetadata,
+        },
     });
 
     return NextResponse.json({ success: true, message: 'Usina atualizada com sucesso', data: plant });

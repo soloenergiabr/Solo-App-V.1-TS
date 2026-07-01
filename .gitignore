@@ -46,3 +46,4 @@ next-env.d.ts
 dev-server*.log
 *.log
 *.bak
+.claude/worktrees/

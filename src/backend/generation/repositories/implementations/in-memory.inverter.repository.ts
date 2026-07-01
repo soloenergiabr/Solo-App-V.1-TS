@@ -20,7 +20,7 @@ export class InMemoryInverterRepository implements InverterRepository {
         return Promise.resolve(inverter)
     }
     update(inverter: InverterModel): Promise<void> {
-        const index = this.inverters.findIndex(inverter => inverter.id === inverter.id)
+        const index = this.inverters.findIndex(current => current.id === inverter.id)
         if (index === -1) {
             throw new Error("Inverter not found")
         }

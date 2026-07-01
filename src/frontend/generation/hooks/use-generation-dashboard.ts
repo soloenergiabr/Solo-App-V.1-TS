@@ -90,6 +90,7 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     const apiRef = useRef(api);
     apiRef.current = api;
     const isAuthenticated = api.isAuthenticated;
+    const [syncError, setSyncError] = useState<string | null>(null);
     const [filters, setFilters] = useState<DashboardFilters>({
         generationUnitType: 'real_time',
         currentDate: new Date(),
@@ -188,13 +189,38 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         if (!isAuthenticated || syncedRef.current) return
         syncedRef.current = true
         apiRef.current.post('/generation/sync/client')
+            .then((res) => {
+                if (!res.data.success) {
+                    setSyncError(res.data.message || 'Erro ao sincronizar dados de geraÃ§Ã£o')
+                    return
+                }
+
+                const errorCount = res.data.data?.errors?.length ?? 0
+                if (errorCount > 0) {
+                    setSyncError(`${errorCount} inversor(es) falharam na sincronizaÃ§Ã£o.`)
+                    return
+                }
+
+                setSyncError(null)
+            })
             .catch((err) => console.error('[geracao] sync on mount failed', err))
             .finally(() => { refetch() })
     }, [isAuthenticated, refetch])
 
     // Manual refresh also triggers a fresh sync
     const refetchWithSync = useCallback(async () => {
-        try { await apiRef.current.post('/generation/sync/client') } catch (e) { console.error('[geracao] manual sync failed', e) }
+        try {
+            const res = await apiRef.current.post('/generation/sync/client')
+            if (!res.data.success) {
+                setSyncError(res.data.message || 'Erro ao sincronizar dados de geraÃ§Ã£o')
+            } else {
+                const errorCount = res.data.data?.errors?.length ?? 0
+                setSyncError(errorCount > 0 ? `${errorCount} inversor(es) falharam na sincronizaÃ§Ã£o.` : null)
+            }
+        } catch (e) {
+            console.error('[geracao] manual sync failed', e)
+            setSyncError('Erro de rede ao sincronizar dados de geraÃ§Ã£o')
+        }
         return refetch()
     }, [refetch])
 
@@ -269,6 +295,7 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         analytics: analytics ?? null,
         isLoading,
         error: error ? (error as Error).message : null,
+        syncError,
         filters,
         updateFilters,
         clearFilters,

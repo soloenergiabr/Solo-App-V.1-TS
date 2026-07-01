@@ -7,6 +7,7 @@ import { InMemoryInverterRepository } from '../repositories/implementations/in-m
 import { GenerationUnitRepository } from '../repositories/generation-unit.repository';
 import { InMemoryGenerationUnitRepository } from '../repositories/implementations/in-memory.generation-unit.repository';
 import { UserContextModel } from '@/backend/auth/models/user-context.model';
+import { InverterModel } from '../models/inverter.model';
 
 const inverterRepository: InverterRepository = new InMemoryInverterRepository()
 const generationUnitRepository: GenerationUnitRepository = new InMemoryGenerationUnitRepository()
@@ -15,15 +16,15 @@ describe('Sync Inverter Generation Data Use Case', () => {
     let mockUserContext: UserContextModel;
 
     beforeAll(async () => {
-        await inverterRepository.create({
-            id: '1',
-            name: 'My inverter',
-            provider: 'mock',
-            providerId: '1',
-            providerApiKey: '1',
-            providerApiSecret: '1',
-            providerUrl: '1',
-        })
+        await inverterRepository.create(new InverterModel(
+            '1',
+            'My inverter',
+            'mock',
+            '1',
+            '1',
+            '1',
+            '1'
+        ))
     })
 
     beforeEach(async () => {

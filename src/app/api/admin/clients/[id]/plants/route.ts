@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { Prisma } from '@/app/generated/prisma';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import prisma from '@/lib/prisma';
@@ -52,10 +53,15 @@ const createPlant = async (
     await AuthMiddleware.extractUserContext(request);
     const { id: clientId } = await params;
     const data = plantSchema.parse(await request.json());
+    const providerMetadata =
+        data.providerMetadata === undefined
+            ? undefined
+            : data.providerMetadata as Prisma.InputJsonValue;
 
     const plant = await prisma.plant.create({
         data: {
             ...data,
+            providerMetadata,
             clientId,
         },
     });

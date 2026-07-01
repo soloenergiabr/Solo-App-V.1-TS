@@ -2,6 +2,7 @@ import { InverterRepository } from "../repositories/inverter.repository";
 import { GenerationUnitRepository } from "../repositories/generation-unit.repository";
 import { InverterService } from "./inverter.service";
 import { GenerationAnalyticsService } from "./generation-analytics.service";
+import { InverterModel } from "../models/inverter.model";
 
 // Types for the orchestrator service
 import type {
@@ -260,14 +261,19 @@ export class GenerationService {
 
                 const result = await this.syncInverterData({ inverterId: inverter.id });
                 results.push(result);
+                await this.markSyncSuccess(inverter);
             } catch (error) {
+                const message = error instanceof Error ? error.message : 'Unknown error';
+                console.error(`[sync] Inverter ${inverter.id} (${inverter.provider}, client=${clientId}): ${message}`);
+                await this.markSyncError(inverter, message);
                 errors.push({
                     inverterId: inverter.id,
-                    error: error instanceof Error ? error.message : 'Unknown error'
+                    error: message
                 });
             }
         }
 
+        this.logSyncSummary(clientId, results.length, errors, skipped);
         return { results, errors, skipped };
     }
 
@@ -291,14 +297,44 @@ export class GenerationService {
 
                 const result = await this.syncInverterData({ inverterId: inverter.id });
                 results.push(result);
+                await this.markSyncSuccess(inverter);
             } catch (error) {
+                const message = error instanceof Error ? error.message : 'Unknown error';
+                console.error(`[sync] Inverter ${inverter.id} (${inverter.provider}, all-clients): ${message}`);
+                await this.markSyncError(inverter, message);
                 errors.push({
                     inverterId: inverter.id,
-                    error: error instanceof Error ? error.message : 'Unknown error'
+                    error: message
                 });
             }
         }
 
+        this.logSyncSummary('all-clients', results.length, errors, skipped);
         return { results, errors, skipped };
+    }
+
+    private async markSyncSuccess(inverter: InverterModel): Promise<void> {
+        const now = new Date();
+        inverter.lastSyncAt = now;
+        inverter.lastSuccessfulSyncAt = now;
+        inverter.lastSyncStatus = 'success';
+        inverter.lastSyncError = undefined;
+        await this.inverterRepository.update(inverter);
+    }
+
+    private async markSyncError(inverter: InverterModel, message: string): Promise<void> {
+        inverter.lastSyncAt = new Date();
+        inverter.lastSyncStatus = 'error';
+        inverter.lastSyncError = message;
+        await this.inverterRepository.update(inverter);
+    }
+
+    private logSyncSummary(clientId: string, successCount: number, errors: any[], skipped: string[]): void {
+        if (errors.length === 0 && skipped.length === 0) return;
+
+        console.log(`[sync] Client ${clientId}: ${successCount} ok, ${errors.length} errors, ${skipped.length} skipped`);
+        for (const error of errors) {
+            console.error(`[sync]   Error: inverter ${error.inverterId} -> ${error.error}`);
+        }
     }
 }

@@ -65,8 +65,14 @@ export class SolplanetProInverterApiRepository extends InverterApiRepository {
             params: { plantId }
         })
 
-        const power = this.toNumber(detailResponse?.result?.totalPower ?? 0)
-        const energy = this.toNumber(detailResponse?.result?.etoday ?? 0)
+        if (!detailResponse?.result) {
+            throw new Error(
+                `Solplanet API returned no result for plant ${plantId} (inverter ${this.data?.id ?? 'unknown'})`
+            )
+        }
+
+        const power = this.toNumber(detailResponse.result.totalPower ?? 0)
+        const energy = this.toNumber(detailResponse.result.etoday ?? 0)
 
         return { power, energy }
     }
@@ -203,13 +209,6 @@ export class SolplanetProInverterApiRepository extends InverterApiRepository {
             data: options.method && options.method !== 'GET' && options.body ? options.body : undefined
         }
 
-        console.log({
-            url: axiosConfig.url,
-            params: axiosConfig.params,
-            headers: axiosConfig.headers,
-            data: axiosConfig.data
-        })
-
         try {
             const response = await axios(axiosConfig)
             return response.data
@@ -239,16 +238,12 @@ export class SolplanetProInverterApiRepository extends InverterApiRepository {
         const loginResponse = await this.login(account, password)
         const loginData = loginResponse.data
 
-        console.log({
-            login: loginData
-        })
-
         const token = loginData?.result?.token ?? (loginData as any)?.token
         const apiKey = (loginData as any)?.data?.apitoken ?? (loginData as any)?.apitoken
         const expireSeconds = (loginData as any)?.data?.expire ?? (loginData as any)?.expire
 
         if (!token) {
-            throw new Error('Failed to obtain Solplanet token')
+            throw new Error(`Solplanet login failed for inverter ${this.data?.id ?? 'unknown'}: missing token`)
         }
 
         let acwTc = ''

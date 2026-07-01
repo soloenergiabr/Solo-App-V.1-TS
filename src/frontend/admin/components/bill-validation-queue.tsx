@@ -125,7 +125,7 @@ function useAdminPendingGenerations() {
         queryKey: ['admin-energy-bills', 'pending-review'],
         queryFn: async () => {
             const response = await api.get<ApiEnvelope<PendingItem[]>>('/admin/energy-bills/pending-review');
-            return response.data.data.filter((item): item is PendingGeneration => item.type === 'generation');
+            return response.data.data.filter((item): item is PendingGeneration => 'type' in item && item.type === 'generation');
         },
         enabled: api.isAuthenticated,
     });

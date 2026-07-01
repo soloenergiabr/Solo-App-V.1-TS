@@ -135,7 +135,7 @@ export async function uploadObject({ key, body, contentType }: UploadObjectInput
             ...headers,
             authorization,
         },
-        body,
+        body: new Uint8Array(body),
     });
 
     if (!response.ok) {

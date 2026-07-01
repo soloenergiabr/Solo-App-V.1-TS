@@ -17,9 +17,27 @@ export class SolisInverterApiRepository extends InverterApiRepository {
         const resource = '/v1/api/inverterDetail'
         const body = { id: inverter.providerId }
 
-        const { data } = await this.postToSolis<{ data: { pac?: number, eToday?: number } }>(resource, body, inverter)
-        const totalPower = data.pac || 0
-        const energyToday = data.eToday || 0
+        const response = await this.postToSolis<{
+            code?: number
+            success?: boolean
+            data?: { pac?: number, eToday?: number } | null
+        }>(resource, body, inverter)
+
+        if (response.success === false || (response.code !== undefined && response.code !== 0)) {
+            throw new Error(
+                `Solis API returned error for inverter ${inverter.id} (providerId: ${inverter.providerId}): ` +
+                `code=${response.code}, success=${response.success}`
+            )
+        }
+
+        if (!response.data) {
+            throw new Error(
+                `Solis API returned empty data for inverter ${inverter.id} (providerId: ${inverter.providerId})`
+            )
+        }
+
+        const totalPower = response.data.pac ?? 0
+        const energyToday = response.data.eToday ?? 0
 
         return { power: totalPower, energy: energyToday }
     }

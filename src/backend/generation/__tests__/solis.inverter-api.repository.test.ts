@@ -1,47 +1,78 @@
-import { describe, it, expect, beforeEach, beforeAll } from 'vitest'
-import { InverterApiRepository } from '../repositories/inverter-api.repository';
-import { InverterApiFactory } from '../repositories/inverter-api.factory';
-import { SyncInverterGenerationDataUseCase } from '../use-cases/sync-inverter-generation-data.use-case';
-import { InverterRepository } from '../repositories/inverter.repository';
-import { InMemoryInverterRepository } from '../repositories/implementations/in-memory.inverter.repository';
-import { GenerationUnitRepository } from '../repositories/generation-unit.repository';
-import { InMemoryGenerationUnitRepository } from '../repositories/implementations/in-memory.generation-unit.repository';
-import { UserContextModel } from '@/backend/auth/models/user-context.model';
+import axios from 'axios'
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
+import { InverterModel } from '../models/inverter.model'
+import { SolisInverterApiRepository } from '../repositories/implementations/solis.inverter-api.repository'
 
-const inverterRepository: InverterRepository = new InMemoryInverterRepository()
-const generationUnitRepository: GenerationUnitRepository = new InMemoryGenerationUnitRepository()
+vi.mock('axios', () => ({
+    default: {
+        post: vi.fn(),
+        isAxiosError: vi.fn(() => false),
+    },
+}))
 
-describe('Solis Inverter Api Repository', () => {
-    let mockUserContext: UserContextModel;
+const mockedPost = axios.post as unknown as Mock
 
-    beforeAll(async () => {
-        await inverterRepository.create({
-            id: '1',
-            name: 'Valid Solis Inverter',
-            provider: 'solis',
-            providerId: '1308675217948935765',
-            providerApiKey: '1300386381677169825',
-            providerApiSecret: 'de360d20d66e4457b4dc581c99e271ad',
-            providerUrl: 'https://www.soliscloud.com:13333',
+describe('SolisInverterApiRepository', () => {
+    const inverter = new InverterModel(
+        'inv-solis',
+        'Solis Test',
+        'solis',
+        'provider-123',
+        'api-key',
+        'api-secret',
+        'https://solis.example.test'
+    )
+
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
+    it('returns real-time power and energy when Solis returns valid data', async () => {
+        mockedPost.mockResolvedValue({
+            data: {
+                code: 0,
+                success: true,
+                data: { pac: 5200, eToday: 18.4 },
+            },
+        })
+
+        const repository = new SolisInverterApiRepository(inverter)
+
+        await expect(repository.getRealTimeGeneration()).resolves.toEqual({
+            power: 5200,
+            energy: 18.4,
         })
     })
 
-    beforeEach(async () => {
-        await generationUnitRepository.deleteAll()
+    it('throws a descriptive error when Solis returns an unsuccessful envelope', async () => {
+        mockedPost.mockResolvedValue({
+            data: {
+                code: 1001,
+                success: false,
+                data: null,
+            },
+        })
 
-        mockUserContext = new UserContextModel(
-            'user123',
-            'test@example.com',
-            'Test User',
-            ['user'],
-            ['create_inverter', 'read_inverters', 'sync_inverter_generation_data'],
-            'client123'
-        );
+        const repository = new SolisInverterApiRepository(inverter)
+
+        await expect(repository.getRealTimeGeneration()).rejects.toThrow(
+            'Solis API returned error for inverter inv-solis'
+        )
     })
 
-    it('should sync inverter generation data', async () => {
-        const syncInverterGenerationDataUseCase = new SyncInverterGenerationDataUseCase(inverterRepository, generationUnitRepository)
-        await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '1' })).resolves.not.toThrow()
-        await expect(generationUnitRepository.findByInverterId('1')).resolves.toHaveLength(4)
+    it('throws a descriptive error when Solis returns no data payload', async () => {
+        mockedPost.mockResolvedValue({
+            data: {
+                code: 0,
+                success: true,
+                data: null,
+            },
+        })
+
+        const repository = new SolisInverterApiRepository(inverter)
+
+        await expect(repository.getRealTimeGeneration()).rejects.toThrow(
+            'Solis API returned empty data for inverter inv-solis'
+        )
     })
 })

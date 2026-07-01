@@ -20,7 +20,7 @@ export class InMemoryGenerationUnitRepository implements GenerationUnitRepositor
     }
 
     update(generationUnit: GenerationUnitModel): Promise<void> {
-        const index = this.generationUnits.findIndex(generationUnit => generationUnit.id === generationUnit.id)
+        const index = this.generationUnits.findIndex(current => current.id === generationUnit.id)
         if (index === -1) {
             throw new Error("Generation unit not found")
         }
