@@ -223,7 +223,15 @@ function GenerationDashboardPage() {
                                     </h2>
                                     {isRealTime && <LiveBadge />}
                                 </div>
-                                <GlowChart data={chartData} dataKey="energia" xKey="label" />
+                                <GlowChart
+                                    data={chartData}
+                                    dataKey="energia"
+                                    xKey="label"
+                                    valueLabel="Energia"
+                                    valueFormatter={(value) =>
+                                        `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(value)} kWh`
+                                    }
+                                />
                             </div>
 
                             {/* Gráfico de Comparação de Inversores */}

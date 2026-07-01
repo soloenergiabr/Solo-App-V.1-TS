@@ -19,12 +19,16 @@ export function GlowChart({
     xKey,
     height = 300,
     className,
+    valueFormatter,
+    valueLabel,
 }: {
     data: Row[]
     dataKey: string
     xKey: string
     height?: number
     className?: string
+    valueFormatter?: (value: number) => string
+    valueLabel?: string
 }) {
     const gradientId = useId()
 
@@ -67,6 +71,10 @@ export function GlowChart({
                             borderRadius: "0.75rem",
                             color: "var(--foreground)",
                         }}
+                        formatter={(value: number) => [
+                            valueFormatter ? valueFormatter(value) : value,
+                            valueLabel ?? dataKey,
+                        ]}
                     />
                     <Area
                         type="monotone"

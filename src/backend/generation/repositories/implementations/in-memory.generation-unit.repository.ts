@@ -1,5 +1,5 @@
 import { GenerationUnitModel } from "../../models/generation-unit.model"
-import { GenerationUnitRepository } from "../generation-unit.repository"
+import { GenerationUnitQuery, GenerationUnitRepository } from "../generation-unit.repository"
 
 export class InMemoryGenerationUnitRepository implements GenerationUnitRepository {
 
@@ -17,6 +17,24 @@ export class InMemoryGenerationUnitRepository implements GenerationUnitRepositor
 
     findByInverterId(inverterId: string): Promise<GenerationUnitModel[]> {
         return Promise.resolve(this.generationUnits.filter(generationUnit => generationUnit.inverterId === inverterId))
+    }
+
+    findByInverterIds(inverterIds: string[], options?: GenerationUnitQuery): Promise<GenerationUnitModel[]> {
+        let filtered = this.generationUnits.filter(unit => inverterIds.includes(unit.inverterId));
+
+        if (options?.generationUnitType) {
+            filtered = filtered.filter(unit => unit.generationUnitType === options.generationUnitType);
+        }
+
+        if (options?.startDate) {
+            filtered = filtered.filter(unit => new Date(unit.timestamp) >= options.startDate!);
+        }
+
+        if (options?.endDate) {
+            filtered = filtered.filter(unit => new Date(unit.timestamp) <= options.endDate!);
+        }
+
+        return Promise.resolve(filtered);
     }
 
     update(generationUnit: GenerationUnitModel): Promise<void> {

@@ -1,11 +1,17 @@
 import { Prisma, PrismaClient } from "@/app/generated/prisma";
 import { GenerationUnitModel, GenerationUnitType } from "../../models/generation-unit.model";
-import { GenerationUnitRepository } from "../generation-unit.repository";
+import { GenerationUnitQuery, GenerationUnitRepository } from "../generation-unit.repository";
 
 // Unapproved client-proposed manual readings (source = 'manual_pending') must
 // not appear in active generation aggregates until Solo validates them.
-// Excluding the single source value keeps null + provider + approved 'manual'.
-const EXCLUDE_PENDING = { source: { not: 'manual_pending' as const } };
+// Must explicitly include null sources since Prisma's `not` filter excludes them
+// (e.g., source = null yields NULL not TRUE with `NOT (source = 'manual_pending')`).
+const EXCLUDE_PENDING = {
+    OR: [
+        { source: null },
+        { source: { not: 'manual_pending' as const } },
+    ],
+};
 
 export class PrismaGenerationUnitRepository implements GenerationUnitRepository {
     constructor(private prisma: PrismaClient) { }
@@ -35,6 +41,33 @@ export class PrismaGenerationUnitRepository implements GenerationUnitRepository 
             },
             orderBy: {
                 timestamp: 'desc',
+            },
+        });
+
+        return generationUnits.map(unit => this.toModel(unit));
+    }
+
+    async findByInverterIds(inverterIds: string[], options?: GenerationUnitQuery): Promise<GenerationUnitModel[]> {
+        const where: any = {
+            inverterId: { in: inverterIds },
+            deletedAt: null,
+            ...EXCLUDE_PENDING,
+        };
+
+        if (options?.generationUnitType) {
+            where.generationUnitType = options.generationUnitType;
+        }
+
+        if (options?.startDate || options?.endDate) {
+            where.timestamp = {};
+            if (options.startDate) where.timestamp.gte = options.startDate;
+            if (options.endDate) where.timestamp.lte = options.endDate;
+        }
+
+        const generationUnits = await this.prisma.generationUnit.findMany({
+            where,
+            orderBy: {
+                timestamp: 'asc',
             },
         });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentType, type ReactNode, useCallback, useEffect, useState } from 'react';
+import { type ComponentType, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import {
@@ -700,6 +700,8 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
         getCurrentPeriodLabel,
     } = useGenerationDashboard({ clientId });
     const api = useAuthenticatedApi();
+    const apiRef = useRef(api);
+    apiRef.current = api;
     const [manualGeneration, setManualGeneration] = useState<any[]>([]);
     const [manualGenerationLoading, setManualGenerationLoading] = useState(false);
     const [manualGenerationError, setManualGenerationError] = useState<string | null>(null);
@@ -707,7 +709,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
     const fetchManualGeneration = useCallback(() => {
         setManualGenerationLoading(true);
         setManualGenerationError(null);
-        api.get<{ success: boolean; data: any[]; message?: string }>(`/admin/clients/${clientId}/generation`)
+        apiRef.current.get<{ success: boolean; data: any[]; message?: string }>(`/admin/clients/${clientId}/generation`)
             .then(response => {
                 if (response.data.success) {
                     setManualGeneration(response.data.data || []);
@@ -721,7 +723,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
             .finally(() => {
                 setManualGenerationLoading(false);
             });
-    }, [clientId, api]);
+    }, [clientId]);
 
     useEffect(() => {
         fetchManualGeneration();

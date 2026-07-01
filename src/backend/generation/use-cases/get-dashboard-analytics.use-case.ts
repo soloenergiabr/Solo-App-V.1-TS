@@ -129,26 +129,14 @@ export class GetDashboardAnalyticsUseCase {
         if (targetInverterIds.length === 0) {
             return this.createEmptyResponse(request);
         }
-        const allUnitsPromises = targetInverterIds.map(inverterId =>
-            this.generationUnitRepository.findByInverterId(inverterId)
+        const allUnits = await this.generationUnitRepository.findByInverterIds(
+            targetInverterIds,
+            {
+                generationUnitType: request?.generationUnitType,
+                startDate: request?.startDate ? new Date(request.startDate) : undefined,
+                endDate: request?.endDate ? new Date(request.endDate) : undefined,
+            }
         );
-        const allUnitsArrays = await Promise.all(allUnitsPromises);
-        let allUnits = allUnitsArrays.flat();
-
-        // Aplicar filtros
-        if (request?.generationUnitType) {
-            allUnits = allUnits.filter(unit => unit.generationUnitType === request.generationUnitType);
-        }
-
-        if (request?.startDate) {
-            const startDate = new Date(request.startDate);
-            allUnits = allUnits.filter(unit => new Date(unit.timestamp) >= startDate);
-        }
-
-        if (request?.endDate) {
-            const endDate = new Date(request.endDate);
-            allUnits = allUnits.filter(unit => new Date(unit.timestamp) <= endDate);
-        }
 
         let totalEnergy = 0;
         if (request?.generationUnitType === 'real_time') {
@@ -349,20 +337,16 @@ export class GetDashboardAnalyticsUseCase {
             const previousStart = new Date(start.getTime() - periodDuration);
             const previousEnd = start;
 
-            const previousUnitsPromises = targetInverterIds.map(inverterId =>
-                this.generationUnitRepository.findByInverterId(inverterId)
+            const previousUnits = await this.generationUnitRepository.findByInverterIds(
+                targetInverterIds,
+                {
+                    generationUnitType: request?.generationUnitType,
+                    startDate: previousStart,
+                    // Original filter uses timestamp < previousEnd (exclusive).
+                    // Prisma lte is inclusive, so subtract 1ms for equivalent behavior.
+                    endDate: new Date(previousEnd.getTime() - 1),
+                }
             );
-            const previousUnitsArrays = await Promise.all(previousUnitsPromises);
-            let previousUnits = previousUnitsArrays.flat();
-
-            previousUnits = previousUnits.filter(unit => {
-                const timestamp = new Date(unit.timestamp);
-                return timestamp >= previousStart && timestamp < previousEnd;
-            });
-
-            if (request?.generationUnitType) {
-                previousUnits = previousUnits.filter(unit => unit.generationUnitType === request.generationUnitType);
-            }
 
             let previousTotalEnergy = 0;
             if (request?.generationUnitType === 'real_time') {

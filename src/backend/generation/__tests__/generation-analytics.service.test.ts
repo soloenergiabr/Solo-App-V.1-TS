@@ -18,6 +18,7 @@ const mockInverterRepository: InverterRepository = {
 const mockGenerationUnitRepository: GenerationUnitRepository = {
     create: vi.fn(),
     findByInverterId: vi.fn(),
+    findByInverterIds: vi.fn(),
     update: vi.fn(),
     deleteAll: vi.fn(),
 };

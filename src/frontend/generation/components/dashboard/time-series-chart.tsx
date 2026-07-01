@@ -64,6 +64,11 @@ export function TimeSeriesChart({ analytics }: TimeSeriesChartProps) {
                                     border: '1px solid var(--border)',
                                     borderRadius: '6px',
                                 }}
+                                formatter={(value: number, name: string) => {
+                                    const fmt = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
+                                    const suffix = name.includes('Energia') ? 'kWh' : 'W';
+                                    return [`${fmt.format(value)} ${suffix}`, name];
+                                }}
                             />
                             <Legend />
                             <Line

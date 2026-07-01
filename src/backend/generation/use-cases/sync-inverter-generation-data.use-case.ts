@@ -56,7 +56,8 @@ export class SyncInverterGenerationDataUseCase {
             power,
             energy,
             generationUnitType: 'real_time',
-            inverterId: inverter.id
+            inverterId: inverter.id,
+            source: 'api_sync'
         });
         await this.generationUnitRepository.create(realTimeUnit);
         unitsCreated++;
@@ -72,7 +73,8 @@ export class SyncInverterGenerationDataUseCase {
                 power,
                 energy,
                 generationUnitType: 'day',
-                inverterId: inverter.id
+                inverterId: inverter.id,
+                source: 'api_sync'
             });
             await this.generationUnitRepository.create(dayUnit);
             unitsCreated++;
@@ -99,7 +101,8 @@ export class SyncInverterGenerationDataUseCase {
                 power,
                 energy,
                 generationUnitType: 'month',
-                inverterId: inverter.id
+                inverterId: inverter.id,
+                source: 'api_sync'
             });
             await this.generationUnitRepository.create(monthUnit);
             unitsCreated++;
@@ -126,7 +129,8 @@ export class SyncInverterGenerationDataUseCase {
                 power,
                 energy,
                 generationUnitType: 'year',
-                inverterId: inverter.id
+                inverterId: inverter.id,
+                source: 'api_sync'
             });
             await this.generationUnitRepository.create(yearUnit);
             unitsCreated++;
