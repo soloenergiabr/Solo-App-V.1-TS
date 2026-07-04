@@ -69,6 +69,7 @@ const deletePlant = async (
 
 const validationSchema = z.object({
     validationStatus: z.enum(['confirmed', 'rejected']),
+    rejectionReason: z.string().trim().optional(),
 });
 
 const validatePlant = async (
@@ -77,14 +78,20 @@ const validatePlant = async (
 ) => {
     await AuthMiddleware.extractUserContext(request);
     const { id: clientId, plantId } = await params;
-    const { validationStatus } = validationSchema.parse(await request.json());
+    const { validationStatus, rejectionReason } = validationSchema.parse(await request.json());
 
     const existing = await prisma.plant.findFirst({ where: { id: plantId, clientId, deletedAt: null } });
     if (!existing) throw new Error('Usina not found');
 
     const plant = await prisma.plant.update({
         where: { id: plantId },
-        data: { validationStatus },
+        data: {
+            validationStatus,
+            rejectionReason:
+                validationStatus === 'rejected' ? (rejectionReason ?? null)
+                : validationStatus === 'confirmed' ? null
+                : undefined,
+        },
     });
 
     return NextResponse.json({ success: true, message: 'Status de validacao atualizado', data: plant });

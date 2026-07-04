@@ -64,6 +64,7 @@ const deleteConsumerUnit = async (
 
 const validationSchema = z.object({
     validationStatus: z.enum(['confirmed', 'rejected']),
+    rejectionReason: z.string().trim().optional(),
 });
 
 const validateConsumerUnit = async (
@@ -72,14 +73,20 @@ const validateConsumerUnit = async (
 ) => {
     await AuthMiddleware.extractUserContext(request);
     const { id: clientId, unitId } = await params;
-    const { validationStatus } = validationSchema.parse(await request.json());
+    const { validationStatus, rejectionReason } = validationSchema.parse(await request.json());
 
     const existing = await prisma.consumerUnit.findFirst({ where: { id: unitId, clientId, deletedAt: null } });
     if (!existing) throw new Error('Unidade consumidora not found');
 
     const unit = await prisma.consumerUnit.update({
         where: { id: unitId },
-        data: { validationStatus },
+        data: {
+            validationStatus,
+            rejectionReason:
+                validationStatus === 'rejected' ? (rejectionReason ?? null)
+                : validationStatus === 'confirmed' ? null
+                : undefined,
+        },
     });
 
     return NextResponse.json({ success: true, message: 'Status de validacao atualizado', data: unit });
