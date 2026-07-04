@@ -85,3 +85,4 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-28 | Sprint 6 | C2 - EducationalFaq accordion + mounts | claude (sonnet) | M | R$ 12 |
 | 2026-06-28 | Sprint 6 | D1 - /solo-club hub + sidebar repoint | claude (sonnet) | M | R$ 12 |
 | 2026-06-28 | Sprint 6 | E1 - Final whole-branch review (Wave C+D) | claude (opus) | - | R$ 20 |
+| 2026-07-04 | Sprint 7 | 7.1 - Fix do input de PDF (bucket auto-create + pt-BR error + test) | deepseek-v4 | L | R$ 20 |

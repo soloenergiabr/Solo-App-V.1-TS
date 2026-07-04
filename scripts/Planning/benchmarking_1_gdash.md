@@ -1,4 +1,4 @@
-# Benchmarking Estratégico: GDASH → Solo App
+ # Benchmarking Estratégico: GDASH → Solo App
 
 > **Data:** 2026-06-20 **Propósito:** Análise completa do GDASH como benchmark
 > para evolução do Solo App, incluindo visão de plataforma multi-tenant e
