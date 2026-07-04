@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle2, ChevronLeft, ChevronRight, Zap, Home, Bluetooth, Sun, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
 
 /* ─── Types ─── */
 
@@ -168,7 +169,7 @@ export function PlantWizardScreen() {
                 await api.post('/client/consumer-units', unitPayload);
             }
 
-            toast.success('Usina cadastrada com sucesso!');
+            toast.success('Sua usina foi cadastrada com sucesso! Ela sera analisada por nossa equipe.');
             router.push('/dashboard');
         } catch (err: any) {
             const msg =
@@ -430,15 +431,65 @@ export function PlantWizardScreen() {
                 </CardContent>
             </Card>
 
-            {/* Existing plants alert */}
+            {/* Existing plants status */}
             {existingPlants.length > 0 && (
-                <Alert>
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Voce ja possui {existingPlants.length} usina(s)</AlertTitle>
-                    <AlertDescription>
-                        Esta nova usina sera adicionada as suas existentes.
-                    </AlertDescription>
-                </Alert>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Suas Usinas</CardTitle>
+                        <CardDescription>
+                            Voce ja possui {existingPlants.length} usina(s) cadastrada(s).
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                        {existingPlants.map((plant: any, i: number) => {
+                            const status = plant.validationStatus || 'pending_review';
+                            const createdDate = plant.createdAt
+                                ? new Date(plant.createdAt).toLocaleDateString('pt-BR')
+                                : '---';
+
+                            let badge: React.ReactNode;
+                            switch (status) {
+                                case 'confirmed':
+                                    badge = (
+                                        <Badge className="bg-green-600 hover:bg-green-600 text-white">
+                                            Aprovada
+                                        </Badge>
+                                    );
+                                    break;
+                                case 'rejected':
+                                    badge = <Badge variant="destructive">Rejeitada</Badge>;
+                                    break;
+                                default:
+                                    badge = (
+                                        <Badge className="bg-amber-500 hover:bg-amber-500 text-white">
+                                            Aguardando aprovacao
+                                        </Badge>
+                                    );
+                                    break;
+                            }
+
+                            return (
+                                <div
+                                    key={plant.id || i}
+                                    className="border rounded-lg p-3 space-y-1 text-sm"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-medium">{plant.name || 'Sem nome'}</span>
+                                        {badge}
+                                    </div>
+                                    <p className="text-muted-foreground text-xs">
+                                        Criada em {createdDate}
+                                    </p>
+                                    {status === 'rejected' && plant.rejectionReason && (
+                                        <p className="text-destructive text-xs mt-1">
+                                            Motivo: {plant.rejectionReason}
+                                        </p>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </CardContent>
+                </Card>
             )}
         </div>
     );

@@ -5316,6 +5316,7 @@ export namespace Prisma {
     updatedAt: Date | null
     deletedAt: Date | null
     validationStatus: string | null
+    rejectionReason: string | null
   }
 
   export type PlantMaxAggregateOutputType = {
@@ -5337,6 +5338,7 @@ export namespace Prisma {
     updatedAt: Date | null
     deletedAt: Date | null
     validationStatus: string | null
+    rejectionReason: string | null
   }
 
   export type PlantCountAggregateOutputType = {
@@ -5359,6 +5361,7 @@ export namespace Prisma {
     updatedAt: number
     deletedAt: number
     validationStatus: number
+    rejectionReason: number
     _all: number
   }
 
@@ -5396,6 +5399,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     validationStatus?: true
+    rejectionReason?: true
   }
 
   export type PlantMaxAggregateInputType = {
@@ -5417,6 +5421,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     validationStatus?: true
+    rejectionReason?: true
   }
 
   export type PlantCountAggregateInputType = {
@@ -5439,6 +5444,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     validationStatus?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -5548,6 +5554,7 @@ export namespace Prisma {
     updatedAt: Date
     deletedAt: Date | null
     validationStatus: string
+    rejectionReason: string | null
     _count: PlantCountAggregateOutputType | null
     _avg: PlantAvgAggregateOutputType | null
     _sum: PlantSumAggregateOutputType | null
@@ -5589,6 +5596,7 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     inverters?: boolean | Plant$invertersArgs<ExtArgs>
     consumerUnits?: boolean | Plant$consumerUnitsArgs<ExtArgs>
@@ -5617,6 +5625,7 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["plant"]>
 
@@ -5640,6 +5649,7 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["plant"]>
 
@@ -5663,9 +5673,10 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
   }
 
-  export type PlantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "provider" | "providerStatus" | "providerPlantId" | "installedPowerKw" | "totalEnergyKwh" | "address" | "city" | "state" | "timezone" | "latitude" | "longitude" | "providerMetadata" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus", ExtArgs["result"]["plant"]>
+  export type PlantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "provider" | "providerStatus" | "providerPlantId" | "installedPowerKw" | "totalEnergyKwh" | "address" | "city" | "state" | "timezone" | "latitude" | "longitude" | "providerMetadata" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus" | "rejectionReason", ExtArgs["result"]["plant"]>
   export type PlantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     inverters?: boolean | Plant$invertersArgs<ExtArgs>
@@ -5710,6 +5721,7 @@ export namespace Prisma {
       updatedAt: Date
       deletedAt: Date | null
       validationStatus: string
+      rejectionReason: string | null
     }, ExtArgs["result"]["plant"]>
     composites: {}
   }
@@ -6157,6 +6169,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Plant", 'DateTime'>
     readonly deletedAt: FieldRef<"Plant", 'DateTime'>
     readonly validationStatus: FieldRef<"Plant", 'String'>
+    readonly rejectionReason: FieldRef<"Plant", 'String'>
   }
     
 
@@ -8184,6 +8197,7 @@ export namespace Prisma {
     updatedAt: Date | null
     deletedAt: Date | null
     validationStatus: string | null
+    rejectionReason: string | null
   }
 
   export type ConsumerUnitMaxAggregateOutputType = {
@@ -8210,6 +8224,7 @@ export namespace Prisma {
     updatedAt: Date | null
     deletedAt: Date | null
     validationStatus: string | null
+    rejectionReason: string | null
   }
 
   export type ConsumerUnitCountAggregateOutputType = {
@@ -8236,6 +8251,7 @@ export namespace Prisma {
     updatedAt: number
     deletedAt: number
     validationStatus: number
+    rejectionReason: number
     _all: number
   }
 
@@ -8264,6 +8280,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     validationStatus?: true
+    rejectionReason?: true
   }
 
   export type ConsumerUnitMaxAggregateInputType = {
@@ -8290,6 +8307,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     validationStatus?: true
+    rejectionReason?: true
   }
 
   export type ConsumerUnitCountAggregateInputType = {
@@ -8316,6 +8334,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     validationStatus?: true
+    rejectionReason?: true
     _all?: true
   }
 
@@ -8415,6 +8434,7 @@ export namespace Prisma {
     updatedAt: Date
     deletedAt: Date | null
     validationStatus: string
+    rejectionReason: string | null
     _count: ConsumerUnitCountAggregateOutputType | null
     _min: ConsumerUnitMinAggregateOutputType | null
     _max: ConsumerUnitMaxAggregateOutputType | null
@@ -8458,6 +8478,7 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -8491,6 +8512,7 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -8520,6 +8542,7 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -8549,9 +8572,10 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     validationStatus?: boolean
+    rejectionReason?: boolean
   }
 
-  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus", ExtArgs["result"]["consumerUnit"]>
+  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus" | "rejectionReason", ExtArgs["result"]["consumerUnit"]>
   export type ConsumerUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
@@ -8606,6 +8630,7 @@ export namespace Prisma {
       updatedAt: Date
       deletedAt: Date | null
       validationStatus: string
+      rejectionReason: string | null
     }, ExtArgs["result"]["consumerUnit"]>
     composites: {}
   }
@@ -9058,6 +9083,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"ConsumerUnit", 'DateTime'>
     readonly deletedAt: FieldRef<"ConsumerUnit", 'DateTime'>
     readonly validationStatus: FieldRef<"ConsumerUnit", 'String'>
+    readonly rejectionReason: FieldRef<"ConsumerUnit", 'String'>
   }
     
 
@@ -22195,7 +22221,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
-    validationStatus: 'validationStatus'
+    validationStatus: 'validationStatus',
+    rejectionReason: 'rejectionReason'
   };
 
   export type PlantScalarFieldEnum = (typeof PlantScalarFieldEnum)[keyof typeof PlantScalarFieldEnum]
@@ -22261,7 +22288,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
-    validationStatus: 'validationStatus'
+    validationStatus: 'validationStatus',
+    rejectionReason: 'rejectionReason'
   };
 
   export type ConsumerUnitScalarFieldEnum = (typeof ConsumerUnitScalarFieldEnum)[keyof typeof ConsumerUnitScalarFieldEnum]
@@ -22972,6 +23000,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
     validationStatus?: StringFilter<"Plant"> | string
+    rejectionReason?: StringNullableFilter<"Plant"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     inverters?: InverterListRelationFilter
     consumerUnits?: ConsumerUnitListRelationFilter
@@ -22999,6 +23028,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
     inverters?: InverterOrderByRelationAggregateInput
     consumerUnits?: ConsumerUnitOrderByRelationAggregateInput
@@ -23029,6 +23059,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
     validationStatus?: StringFilter<"Plant"> | string
+    rejectionReason?: StringNullableFilter<"Plant"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     inverters?: InverterListRelationFilter
     consumerUnits?: ConsumerUnitListRelationFilter
@@ -23056,6 +23087,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: PlantCountOrderByAggregateInput
     _avg?: PlantAvgOrderByAggregateInput
     _max?: PlantMaxOrderByAggregateInput
@@ -23086,6 +23118,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Plant"> | Date | string | null
     validationStatus?: StringWithAggregatesFilter<"Plant"> | string
+    rejectionReason?: StringNullableWithAggregatesFilter<"Plant"> | string | null
   }
 
   export type InverterWhereInput = {
@@ -23308,6 +23341,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringFilter<"ConsumerUnit"> | string
+    rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -23340,6 +23374,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
     payerUser?: UserOrderByWithRelationInput
     plant?: PlantOrderByWithRelationInput
@@ -23375,6 +23410,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringFilter<"ConsumerUnit"> | string
+    rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -23407,6 +23443,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     _count?: ConsumerUnitCountOrderByAggregateInput
     _max?: ConsumerUnitMaxOrderByAggregateInput
     _min?: ConsumerUnitMinOrderByAggregateInput
@@ -23439,6 +23476,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringWithAggregatesFilter<"ConsumerUnit"> | string
+    rejectionReason?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
   }
 
   export type CreditAllocationWhereInput = {
@@ -24922,6 +24960,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
@@ -24949,6 +24988,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
@@ -24974,6 +25014,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
@@ -25001,6 +25042,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
@@ -25027,6 +25069,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
   }
 
   export type PlantUpdateManyMutationInput = {
@@ -25048,6 +25091,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PlantUncheckedUpdateManyInput = {
@@ -25070,6 +25114,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InverterCreateInput = {
@@ -25333,6 +25378,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -25365,6 +25411,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -25391,6 +25438,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -25423,6 +25471,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -25452,6 +25501,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
   }
 
   export type ConsumerUnitUpdateManyMutationInput = {
@@ -25475,6 +25525,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConsumerUnitUncheckedUpdateManyInput = {
@@ -25501,6 +25552,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationCreateInput = {
@@ -27381,6 +27433,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type PlantAvgOrderByAggregateInput = {
@@ -27409,6 +27462,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type PlantMinOrderByAggregateInput = {
@@ -27430,6 +27484,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type PlantSumOrderByAggregateInput = {
@@ -27665,6 +27720,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ConsumerUnitMaxOrderByAggregateInput = {
@@ -27691,6 +27747,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type ConsumerUnitMinOrderByAggregateInput = {
@@ -27717,6 +27774,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     validationStatus?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type DecimalFilter<$PrismaModel = never> = {
@@ -30468,6 +30526,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -30498,6 +30557,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -30623,6 +30683,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ConsumerUnit"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringFilter<"ConsumerUnit"> | string
+    rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
   }
 
   export type UserCreateWithoutClientInput = {
@@ -31000,6 +31061,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
@@ -31025,6 +31087,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
@@ -31140,6 +31203,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -31170,6 +31234,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -31578,6 +31643,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Plant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Plant"> | Date | string | null
     validationStatus?: StringFilter<"Plant"> | string
+    rejectionReason?: StringNullableFilter<"Plant"> | string | null
   }
 
   export type InverterUpsertWithWhereUniqueWithoutClientInput = {
@@ -31882,6 +31948,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -31912,6 +31979,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -32352,6 +32420,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutPlantsInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
@@ -32378,6 +32447,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
@@ -32523,6 +32593,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
@@ -32549,6 +32620,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
     energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
@@ -32703,6 +32775,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutPlantInput
@@ -32729,6 +32802,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
@@ -33145,6 +33219,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
@@ -33171,6 +33246,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
     energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
@@ -33304,6 +33380,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
@@ -33330,6 +33407,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutPlantInput
@@ -33361,6 +33439,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -33392,6 +33471,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
   }
@@ -33422,6 +33502,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -33453,6 +33534,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
   }
@@ -33559,6 +33641,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
@@ -33585,6 +33668,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     energyBills?: EnergyBillUncheckedUpdateManyWithoutPlantNestedInput
@@ -33622,6 +33706,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -33653,6 +33738,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
   }
@@ -33689,6 +33775,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -33720,6 +33807,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
   }
@@ -34730,6 +34818,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutPlantsInput
     inverters?: InverterCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutPlantInput
@@ -34756,6 +34845,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     inverters?: InverterUncheckedCreateNestedManyWithoutPlantInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPlantInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutPlantInput
@@ -34787,6 +34877,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -34818,6 +34909,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
   }
@@ -34924,6 +35016,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutPlantsNestedInput
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
@@ -34950,6 +35043,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
@@ -34987,6 +35081,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -35018,6 +35113,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
   }
@@ -35173,6 +35269,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
   }
 
   export type ConsumerUnitUpdateWithoutPayerUserInput = {
@@ -35196,6 +35293,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -35226,6 +35324,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -35254,6 +35353,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateManyClientInput = {
@@ -35417,6 +35517,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
   }
 
   export type InverterCreateManyClientInput = {
@@ -35475,6 +35576,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
   }
 
   export type CreditAllocationCreateManyClientInput = {
@@ -35957,6 +36059,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     inverters?: InverterUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutPlantNestedInput
@@ -35982,6 +36085,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     inverters?: InverterUncheckedUpdateManyWithoutPlantNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPlantNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutPlantNestedInput
@@ -36007,6 +36111,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InverterUpdateWithoutClientInput = {
@@ -36131,6 +36236,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -36161,6 +36267,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -36189,6 +36296,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationUpdateWithoutClientInput = {
@@ -36346,6 +36454,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     validationStatus?: string
+    rejectionReason?: string | null
   }
 
   export type CreditAllocationCreateManyPlantInput = {
@@ -36567,6 +36676,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -36597,6 +36707,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -36625,6 +36736,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationUpdateWithoutPlantInput = {

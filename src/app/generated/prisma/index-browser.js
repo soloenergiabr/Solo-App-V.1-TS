@@ -171,7 +171,8 @@ exports.Prisma.PlantScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
-  validationStatus: 'validationStatus'
+  validationStatus: 'validationStatus',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.InverterScalarFieldEnum = {
@@ -231,7 +232,8 @@ exports.Prisma.ConsumerUnitScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
-  validationStatus: 'validationStatus'
+  validationStatus: 'validationStatus',
+  rejectionReason: 'rejectionReason'
 };
 
 exports.Prisma.CreditAllocationScalarFieldEnum = {

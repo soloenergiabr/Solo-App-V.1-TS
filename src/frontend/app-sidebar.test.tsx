@@ -1,7 +1,16 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppSidebar } from './app-sidebar'
+
+// Wraps each render in a QueryClientProvider (required for useQuery in sidebar)
+const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+})
+function Wrapper({ children }: { children: React.ReactNode }) {
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+}
 
 // Mock auth context — empty roles → vendedor (client) nav, not admin
 vi.mock('@/frontend/auth/contexts/auth-context', () => ({
@@ -45,7 +54,7 @@ describe('AppSidebar — vendedor (client) navigation', () => {
     })
 
     it('desktop renders the 4 section headings and representative sub-items', { timeout: 15000 }, () => {
-        render(<AppSidebar />)
+        render(<AppSidebar />, { wrapper: Wrapper })
 
         // The four titled sections must appear as <h3> headings
         expect(screen.getByRole('heading', { name: 'Controle' })).toBeInTheDocument()
@@ -68,14 +77,14 @@ describe('AppSidebar — vendedor (client) navigation', () => {
     })
 
     it('Investor Demo is absent from the client nav', () => {
-        render(<AppSidebar />)
+        render(<AppSidebar />, { wrapper: Wrapper })
         // Investor Demo must never appear in the vendedor sidebar — only in admin nav
         expect(screen.queryByText('Investor Demo')).toBeNull()
     })
 
     it('mobile footer shows the 5 hub labels and hides desktop-only sub-items', () => {
         mockUseIsMobile.mockReturnValue(true)
-        render(<AppSidebar />)
+        render(<AppSidebar />, { wrapper: Wrapper })
 
         // Hub labels rendered via mobileLabel in the footer
         expect(screen.getByText('Energia')).toBeInTheDocument()

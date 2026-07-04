@@ -131,6 +131,7 @@ model Plant {
   updatedAt        DateTime  @updatedAt
   deletedAt        DateTime?
   validationStatus String    @default("pending_review")
+  rejectionReason  String?
 
   @@index([clientId])
   @@index([providerPlantId])
@@ -228,6 +229,7 @@ model ConsumerUnit {
   updatedAt        DateTime  @updatedAt
   deletedAt        DateTime?
   validationStatus String    @default("pending_review")
+  rejectionReason  String?
 
   @@index([clientId])
   @@index([plantId])

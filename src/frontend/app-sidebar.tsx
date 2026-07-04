@@ -3,10 +3,12 @@
 import { Sidebar, SidebarItem, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Zap } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { useAuthenticatedApi } from "@/frontend/auth/hooks/useAuthenticatedApi"
+import { ClipboardCheck, Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Zap } from "lucide-react"
 import { useTheme } from "next-themes"
 
-const adminSections: SidebarSection[] = [
+const baseAdminSections: SidebarSection[] = [
     {
         title: 'Principal',
         items: [
@@ -66,11 +68,39 @@ const vendedorMobileItems: SidebarItem[] = [
 
 export function AppSidebar() {
     const { user, logout } = useAuthContext();
+    const api = useAuthenticatedApi();
     const isMobile = useIsMobile();
     const { resolvedTheme } = useTheme();
 
+    const { data: pendingCount = 0 } = useQuery({
+        queryKey: ['admin-approvals', 'count'],
+        queryFn: async () => {
+            const response = await api.get<{ success: boolean; data: unknown[] }>('/admin/approvals');
+            return response.data.data.length;
+        },
+        enabled: api.isAuthenticated && (user?.roles.includes('master') ?? false),
+        refetchInterval: 30_000,
+    });
+
     const isMaster = user?.roles.includes("master");
     const role = isMaster ? 'admin' : 'vendedor';
+
+    const adminSections: SidebarSection[] = baseAdminSections.map((section) => {
+        if (section.title === 'Principal') {
+            return {
+                ...section,
+                items: [
+                    ...section.items,
+                    {
+                        label: pendingCount > 0 ? `Aprovacoes (${pendingCount})` : 'Aprovacoes',
+                        href: '/admin/approvals',
+                        icon: <ClipboardCheck className="w-5 h-5" />,
+                    },
+                ],
+            };
+        }
+        return section;
+    });
 
     const sectionsMapper = {
         admin: adminSections,
