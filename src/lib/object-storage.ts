@@ -140,6 +140,11 @@ export async function uploadObject({ key, body, contentType }: UploadObjectInput
 
     if (!response.ok) {
         const errorBody = await response.text().catch(() => '');
+        if (response.status === 404 && errorBody.includes('NoSuchBucket')) {
+            throw new Error(
+                'Bucket de armazenamento não encontrado. O administrador precisa configurar o bucket de arquivos.'
+            );
+        }
         throw new Error(`Object storage upload failed: ${response.status} ${errorBody}`);
     }
 
@@ -147,4 +152,162 @@ export async function uploadObject({ key, body, contentType }: UploadObjectInput
         key,
         url: getObjectUrl(key),
     };
+}
+
+/**
+ * Checks if the configured bucket exists in the object storage.
+ * Returns true if the bucket exists, false otherwise.
+ */
+export async function bucketExists(): Promise<boolean> {
+    const config = getConfig();
+    const now = new Date();
+    const amzDate = toAmzDate(now);
+    const dateStamp = amzDate.slice(0, 8);
+    const payloadHash = sha256Hex('');
+    const baseUrl = buildBaseUrl(config);
+    const bucketPath = `/${config.bucket}/`;
+    const requestUrl = new URL(baseUrl.toString());
+    requestUrl.pathname = bucketPath;
+
+    const host = requestUrl.host;
+    const headers: Record<string, string> = {
+        host,
+        'x-amz-content-sha256': payloadHash,
+        'x-amz-date': amzDate,
+    };
+
+    const signedHeaders = Object.keys(headers).sort().join(';');
+    const canonicalHeaders = Object.keys(headers)
+        .sort()
+        .map(name => `${name}:${headers[name]}\n`)
+        .join('');
+
+    const canonicalRequest = [
+        'HEAD',
+        bucketPath,
+        '',
+        canonicalHeaders,
+        signedHeaders,
+        payloadHash,
+    ].join('\n');
+
+    const credentialScope = `${dateStamp}/${config.region}/s3/aws4_request`;
+    const stringToSign = [
+        'AWS4-HMAC-SHA256',
+        amzDate,
+        credentialScope,
+        sha256Hex(canonicalRequest),
+    ].join('\n');
+
+    const signature = createHmac('sha256', buildSigningKey(config.secretAccessKey, dateStamp, config.region))
+        .update(stringToSign)
+        .digest('hex');
+
+    const authorization = [
+        `AWS4-HMAC-SHA256 Credential=${config.accessKeyId}/${credentialScope}`,
+        `SignedHeaders=${signedHeaders}`,
+        `Signature=${signature}`,
+    ].join(', ');
+
+    const response = await fetch(requestUrl, {
+        method: 'HEAD',
+        headers: {
+            ...headers,
+            authorization,
+        },
+    });
+
+    return response.status === 200;
+}
+
+/**
+ * Creates the configured bucket in the object storage if it does not exist.
+ * Uses AWS SigV4 PUT /{bucket}/.
+ */
+export async function createBucket(): Promise<void> {
+    const config = getConfig();
+    const now = new Date();
+    const amzDate = toAmzDate(now);
+    const dateStamp = amzDate.slice(0, 8);
+    const payloadHash = sha256Hex('');
+    const baseUrl = buildBaseUrl(config);
+    const bucketPath = `/${config.bucket}/`;
+    const requestUrl = new URL(baseUrl.toString());
+    requestUrl.pathname = bucketPath;
+
+    const host = requestUrl.host;
+    const headers: Record<string, string> = {
+        host,
+        'x-amz-content-sha256': payloadHash,
+        'x-amz-date': amzDate,
+    };
+
+    const signedHeaders = Object.keys(headers).sort().join(';');
+    const canonicalHeaders = Object.keys(headers)
+        .sort()
+        .map(name => `${name}:${headers[name]}\n`)
+        .join('');
+
+    const canonicalRequest = [
+        'PUT',
+        bucketPath,
+        '',
+        canonicalHeaders,
+        signedHeaders,
+        payloadHash,
+    ].join('\n');
+
+    const credentialScope = `${dateStamp}/${config.region}/s3/aws4_request`;
+    const stringToSign = [
+        'AWS4-HMAC-SHA256',
+        amzDate,
+        credentialScope,
+        sha256Hex(canonicalRequest),
+    ].join('\n');
+
+    const signature = createHmac('sha256', buildSigningKey(config.secretAccessKey, dateStamp, config.region))
+        .update(stringToSign)
+        .digest('hex');
+
+    const authorization = [
+        `AWS4-HMAC-SHA256 Credential=${config.accessKeyId}/${credentialScope}`,
+        `SignedHeaders=${signedHeaders}`,
+        `Signature=${signature}`,
+    ].join(', ');
+
+    const response = await fetch(requestUrl, {
+        method: 'PUT',
+        headers: {
+            ...headers,
+            authorization,
+        },
+    });
+
+    if (!response.ok) {
+        const errorBody = await response.text().catch(() => '');
+        throw new Error(`Failed to create storage bucket: ${response.status} ${errorBody}`);
+    }
+}
+
+/**
+ * Ensures the configured bucket exists, creating it if necessary.
+ * Safe to call multiple times — no-op if bucket already exists.
+ * Logs success or failure for observability.
+ */
+export async function ensureBucketExists(): Promise<void> {
+    try {
+        const exists = await bucketExists();
+        if (exists) {
+            console.log(`✅ Storage bucket "${getConfig().bucket}" already exists`);
+            return;
+        }
+
+        console.log(`📦 Creating storage bucket "${getConfig().bucket}"...`);
+        await createBucket();
+        console.log(`✅ Storage bucket "${getConfig().bucket}" created successfully`);
+    } catch (error) {
+        console.error(`❌ Failed to ensure storage bucket exists:`, error);
+        // Não propagamos o erro — o app pode funcionar sem storage,
+        // e os uploads vão falhar com mensagem clara para o usuário.
+    }
 }

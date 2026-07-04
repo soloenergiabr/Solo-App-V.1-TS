@@ -229,6 +229,27 @@ describe('POST /api/client/energy-bills/upload', () => {
         });
     });
 
+    describe('storage errors', () => {
+        it('returns 400 with pt-BR message when storage bucket does not exist (NoSuchBucket)', async () => {
+            mockUploadObject.mockRejectedValue(
+                new Error('Bucket de armazenamento não encontrado. O administrador precisa configurar o bucket de arquivos.')
+            );
+
+            const formData = new FormData();
+            formData.append('file', makeFile());
+            formData.append('consumerUnitId', 'unit-1');
+
+            const res = await callPOST(formData);
+            const body = await res.json();
+
+            expect(res.status).toBe(400);
+            expect(body.message).toContain('Bucket de armazenamento não encontrado');
+            // Garantir que o XML cru do MinIO não vaza para o usuário
+            expect(body.message).not.toContain('NoSuchBucket');
+            expect(body.message).not.toContain('<?xml');
+        });
+    });
+
     describe('successful upload', () => {
         it('uploads file to object storage', async () => {
             const formData = new FormData();
