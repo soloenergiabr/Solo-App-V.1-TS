@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
@@ -28,53 +28,19 @@ import { Textarea } from '@/components/ui/textarea';
 import { Loader2, CheckCircle2, XCircle, ClipboardCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState } from 'react';
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-type ApprovalItem = {
-    type: 'plant' | 'consumer_unit';
-    id: string;
-    name: string;
-    clientName: string;
-    clientId: string;
-    createdAt: string;
-    validationStatus: string;
-    rejectionReason: string | null;
-};
-
-type ApiEnvelope<T> = {
-    success: boolean;
-    data: T;
-    message?: string;
-};
+import { ApprovalItem, useAdminApprovals, useInvalidateAdminApprovals } from '@/frontend/admin/hooks/use-admin-approvals';
 
 // ---------------------------------------------------------------------------
 // Hooks
 // ---------------------------------------------------------------------------
 
 function useApprovals() {
-    const api = useAuthenticatedApi();
-
-    return useQuery({
-        queryKey: ['admin-approvals', 'pending'],
-        queryFn: async () => {
-            const response = await api.get<ApiEnvelope<ApprovalItem[]>>('/admin/approvals');
-            return response.data.data;
-        },
-        enabled: api.isAuthenticated,
-        refetchInterval: 30_000,
-    });
+    return useAdminApprovals();
 }
 
 function useApproveItem() {
     const api = useAuthenticatedApi();
-    const queryClient = useQueryClient();
-
-    const invalidate = () => {
-        void queryClient.invalidateQueries({ queryKey: ['admin-approvals', 'pending'] });
-    };
+    const invalidate = useInvalidateAdminApprovals();
 
     return useMutation({
         mutationFn: async (item: ApprovalItem) => {
@@ -89,7 +55,7 @@ function useApproveItem() {
         },
         onSuccess: () => {
             toast.success('Item aprovado com sucesso');
-            invalidate();
+            void invalidate();
         },
         onError: (error: unknown) => {
             const message = error instanceof Error ? error.message : 'Erro ao aprovar item';
@@ -100,11 +66,7 @@ function useApproveItem() {
 
 function useRejectItem() {
     const api = useAuthenticatedApi();
-    const queryClient = useQueryClient();
-
-    const invalidate = () => {
-        void queryClient.invalidateQueries({ queryKey: ['admin-approvals', 'pending'] });
-    };
+    const invalidate = useInvalidateAdminApprovals();
 
     return useMutation({
         mutationFn: async ({ item, reason }: { item: ApprovalItem; reason?: string }) => {
@@ -122,7 +84,7 @@ function useRejectItem() {
         },
         onSuccess: () => {
             toast.success('Item rejeitado');
-            invalidate();
+            void invalidate();
         },
         onError: (error: unknown) => {
             const message = error instanceof Error ? error.message : 'Erro ao rejeitar item';

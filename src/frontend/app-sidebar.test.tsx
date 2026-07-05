@@ -1,68 +1,82 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppSidebar } from './app-sidebar'
 
-// Wraps each render in a QueryClientProvider (required for useQuery in sidebar)
-const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-})
-function Wrapper({ children }: { children: React.ReactNode }) {
-    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+const mockUseIsMobile = vi.fn()
+const mockAuthContext = vi.fn()
+const mockUseAdminApprovals = vi.fn()
+
+function createTestQueryClient() {
+    return new QueryClient({
+        defaultOptions: { queries: { retry: false } },
+    })
 }
 
-// Mock auth context — empty roles → vendedor (client) nav, not admin
+function Wrapper({ children }: { children: React.ReactNode }) {
+    return <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>
+}
+
 vi.mock('@/frontend/auth/contexts/auth-context', () => ({
-    useAuthContext: () => ({ user: { name: 'Cliente', roles: [] }, logout: vi.fn() }),
+    useAuthContext: () => mockAuthContext(),
 }))
 
-// useIsMobile is a controllable fn so each test can choose desktop vs mobile
-const mockUseIsMobile = vi.fn()
+vi.mock('@/frontend/auth/hooks/useAuthenticatedApi', () => ({
+    useAuthenticatedApi: () => ({
+        isAuthenticated: true,
+    }),
+}))
+
+vi.mock('@/frontend/admin/hooks/use-admin-approvals', () => ({
+    useAdminApprovals: (options?: { select?: (items: unknown[]) => unknown }) => mockUseAdminApprovals(options),
+}))
+
 vi.mock('@/hooks/use-mobile', () => ({
     useIsMobile: () => mockUseIsMobile(),
 }))
 
-// Mock next-themes — no ThemeProvider needed in tests
 vi.mock('next-themes', () => ({
     useTheme: () => ({ resolvedTheme: 'dark' }),
 }))
 
-// Mock next/navigation — Sidebar uses usePathname internally
 vi.mock('next/navigation', () => ({
     usePathname: () => '/controle',
 }))
 
-// Mock next/link — render as plain anchor so jsdom doesn't choke on the Next.js router
 vi.mock('next/link', () => ({
     default: ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => (
         <a href={href} onClick={onClick}>{children}</a>
     ),
 }))
 
-// Mock next/image — render as plain img
 vi.mock('next/image', () => ({
     default: ({ src, alt }: { src: string; alt: string }) => (
         <img src={src} alt={alt} />
     ),
 }))
 
-describe('AppSidebar — vendedor (client) navigation', () => {
+describe('AppSidebar', () => {
     beforeEach(() => {
-        // Default to desktop; individual tests override as needed
+        vi.clearAllMocks()
         mockUseIsMobile.mockReturnValue(false)
+        mockUseAdminApprovals.mockImplementation((options?: { select?: (items: unknown[]) => unknown }) => ({
+            data: options?.select ? options.select([]) : [],
+        }))
+        mockAuthContext.mockReturnValue({
+            user: { name: 'Cliente', roles: [] },
+            logout: vi.fn(),
+        })
     })
 
-    it('desktop renders the 4 section headings and representative sub-items', { timeout: 15000 }, () => {
+    it('desktop vendedor renders the section headings and representative sub-items', () => {
         render(<AppSidebar />, { wrapper: Wrapper })
 
-        // The four titled sections must appear as <h3> headings
         expect(screen.getByRole('heading', { name: 'Controle' })).toBeInTheDocument()
         expect(screen.getByRole('heading', { name: 'Energia' })).toBeInTheDocument()
         expect(screen.getByRole('heading', { name: 'Consumo' })).toBeInTheDocument()
         expect(screen.getByRole('heading', { name: 'Solo Club' })).toBeInTheDocument()
 
-        // Representative sub-item labels across each section
         expect(screen.getByText('Geração')).toBeInTheDocument()
         expect(screen.getByText('Minhas Usinas')).toBeInTheDocument()
         expect(screen.getByText('Economia')).toBeInTheDocument()
@@ -70,15 +84,13 @@ describe('AppSidebar — vendedor (client) navigation', () => {
         expect(screen.getByText('Clube Solo')).toBeInTheDocument()
         expect(screen.getByText('Suporte')).toBeInTheDocument()
 
-        // Consumo sub-items must point to the tabbed routes (A5 repoint)
         expect(screen.getByRole('link', { name: /Economia/ })).toHaveAttribute('href', '/consumo?tab=economia')
         expect(screen.getByRole('link', { name: /Rateio/ })).toHaveAttribute('href', '/consumo?tab=rateio')
         expect(screen.getByRole('link', { name: /Histórico/ })).toHaveAttribute('href', '/consumo?tab=historico')
     })
 
-    it('Investor Demo is absent from the client nav', () => {
+    it('keeps Investor Demo out of the vendedor nav', () => {
         render(<AppSidebar />, { wrapper: Wrapper })
-        // Investor Demo must never appear in the vendedor sidebar — only in admin nav
         expect(screen.queryByText('Investor Demo')).toBeNull()
     })
 
@@ -86,16 +98,34 @@ describe('AppSidebar — vendedor (client) navigation', () => {
         mockUseIsMobile.mockReturnValue(true)
         render(<AppSidebar />, { wrapper: Wrapper })
 
-        // Hub labels rendered via mobileLabel in the footer
         expect(screen.getByText('Energia')).toBeInTheDocument()
         expect(screen.getByText('Consumo')).toBeInTheDocument()
-        expect(screen.getByText('Club')).toBeInTheDocument() // mobileLabel:'Club' overrides label:'Solo Club'
+        expect(screen.getByText('Club')).toBeInTheDocument()
 
-        // Desktop-only sub-items must NOT appear — the footer renders only the 5 hub items
         expect(screen.queryByText('Minhas Usinas')).toBeNull()
         expect(screen.queryByText('Solo Coins')).toBeNull()
-
-        // The full desktop label 'Solo Club' is replaced by the mobileLabel 'Club'
         expect(screen.queryByText('Solo Club')).toBeNull()
+    })
+
+    it('master nav shows the approvals badge count from the approvals list query', async () => {
+        mockAuthContext.mockReturnValue({
+            user: { name: 'Admin', roles: ['master'] },
+            logout: vi.fn(),
+        })
+        mockUseAdminApprovals.mockImplementation((options?: { select?: (items: unknown[]) => unknown }) => ({
+            data: options?.select ? options.select([{ id: 'plant-1' }, { id: 'unit-1' }]) : [{ id: 'plant-1' }, { id: 'unit-1' }],
+        }))
+
+        render(<AppSidebar />, { wrapper: Wrapper })
+
+        await waitFor(() => {
+            expect(screen.getByRole('link', { name: /Aprovacoes \(2\)/ })).toBeInTheDocument()
+        })
+        expect(mockUseAdminApprovals).toHaveBeenCalledWith(
+            expect.objectContaining({
+                enabled: true,
+                select: expect.any(Function),
+            }),
+        )
     })
 })

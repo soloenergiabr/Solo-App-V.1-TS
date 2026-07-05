@@ -3,10 +3,9 @@
 import { Sidebar, SidebarItem, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useQuery } from "@tanstack/react-query"
-import { useAuthenticatedApi } from "@/frontend/auth/hooks/useAuthenticatedApi"
 import { ClipboardCheck, Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Zap } from "lucide-react"
 import { useTheme } from "next-themes"
+import { useAdminApprovals } from "@/frontend/admin/hooks/use-admin-approvals"
 
 const baseAdminSections: SidebarSection[] = [
     {
@@ -68,18 +67,12 @@ const vendedorMobileItems: SidebarItem[] = [
 
 export function AppSidebar() {
     const { user, logout } = useAuthContext();
-    const api = useAuthenticatedApi();
     const isMobile = useIsMobile();
     const { resolvedTheme } = useTheme();
 
-    const { data: pendingCount = 0 } = useQuery({
-        queryKey: ['admin-approvals', 'count'],
-        queryFn: async () => {
-            const response = await api.get<{ success: boolean; data: unknown[] }>('/admin/approvals');
-            return response.data.data.length;
-        },
-        enabled: api.isAuthenticated && (user?.roles.includes('master') ?? false),
-        refetchInterval: 30_000,
+    const { data: pendingCount = 0 } = useAdminApprovals({
+        select: (items) => items.length,
+        enabled: user?.roles.includes('master') ?? false,
     });
 
     const isMaster = user?.roles.includes("master");

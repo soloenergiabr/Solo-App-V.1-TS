@@ -74,6 +74,9 @@ const validateConsumerUnit = async (
     await AuthMiddleware.extractUserContext(request);
     const { id: clientId, unitId } = await params;
     const { validationStatus, rejectionReason } = validationSchema.parse(await request.json());
+    const normalizedRejectionReason = rejectionReason && rejectionReason.length > 0
+        ? rejectionReason
+        : null;
 
     const existing = await prisma.consumerUnit.findFirst({ where: { id: unitId, clientId, deletedAt: null } });
     if (!existing) throw new Error('Unidade consumidora not found');
@@ -83,7 +86,7 @@ const validateConsumerUnit = async (
         data: {
             validationStatus,
             rejectionReason:
-                validationStatus === 'rejected' ? (rejectionReason ?? null)
+                validationStatus === 'rejected' ? normalizedRejectionReason
                 : validationStatus === 'confirmed' ? null
                 : undefined,
         },

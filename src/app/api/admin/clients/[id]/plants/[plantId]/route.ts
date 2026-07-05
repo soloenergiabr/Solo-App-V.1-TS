@@ -79,6 +79,9 @@ const validatePlant = async (
     await AuthMiddleware.extractUserContext(request);
     const { id: clientId, plantId } = await params;
     const { validationStatus, rejectionReason } = validationSchema.parse(await request.json());
+    const normalizedRejectionReason = rejectionReason && rejectionReason.length > 0
+        ? rejectionReason
+        : null;
 
     const existing = await prisma.plant.findFirst({ where: { id: plantId, clientId, deletedAt: null } });
     if (!existing) throw new Error('Usina not found');
@@ -88,7 +91,7 @@ const validatePlant = async (
         data: {
             validationStatus,
             rejectionReason:
-                validationStatus === 'rejected' ? (rejectionReason ?? null)
+                validationStatus === 'rejected' ? normalizedRejectionReason
                 : validationStatus === 'confirmed' ? null
                 : undefined,
         },
