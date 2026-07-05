@@ -4,6 +4,7 @@ import { PrismaGenerationUnitRepository } from "./repositories/implementations/p
 import prisma from "@/lib/prisma"
 
 const DEFAULT_INTERVAL_MINUTES = 15
+let schedulerHandle: ReturnType<typeof setInterval> | undefined
 
 type SyncAllInvertersResult = Awaited<ReturnType<GenerationService["syncAllInvertersData"]>>
 type SyncAllInvertersFn = () => Promise<SyncAllInvertersResult>
@@ -55,12 +56,25 @@ function defaultSyncAllInvertersData(): Promise<SyncAllInvertersResult> {
 export function startGenerationSyncScheduler(
     syncAllInvertersData: SyncAllInvertersFn = defaultSyncAllInvertersData
 ): NodeJS.Timeout | undefined {
+    if (schedulerHandle) {
+        return schedulerHandle
+    }
+
     const rawInterval = process.env.GENERATION_SYNC_INTERVAL_MINUTES
     if (!rawInterval) return undefined
 
     const intervalMs = resolveIntervalMinutes(rawInterval) * 60 * 1000
 
-    return setInterval(() => {
+    schedulerHandle = setInterval(() => {
         void runSyncCycle(syncAllInvertersData)
     }, intervalMs)
+
+    return schedulerHandle
+}
+
+export function resetGenerationSyncSchedulerForTests(): void {
+    if (schedulerHandle) {
+        clearInterval(schedulerHandle)
+        schedulerHandle = undefined
+    }
 }

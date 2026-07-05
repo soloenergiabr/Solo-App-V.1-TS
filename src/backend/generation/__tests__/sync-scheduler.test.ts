@@ -2,7 +2,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 vi.mock('@/lib/prisma', () => ({ default: {} }))
 
-import { startGenerationSyncScheduler } from '../sync-scheduler'
+import {
+  resetGenerationSyncSchedulerForTests,
+  startGenerationSyncScheduler,
+} from '../sync-scheduler'
 
 describe('startGenerationSyncScheduler', () => {
   const ORIGINAL_INTERVAL_ENV = process.env.GENERATION_SYNC_INTERVAL_MINUTES
@@ -16,6 +19,7 @@ describe('startGenerationSyncScheduler', () => {
   })
 
   afterEach(() => {
+    resetGenerationSyncSchedulerForTests()
     vi.useRealTimers()
     logSpy.mockRestore()
     errorSpy.mockRestore()
@@ -91,5 +95,16 @@ describe('startGenerationSyncScheduler', () => {
     await vi.advanceTimersByTimeAsync(60 * 1000)
 
     expect(errorSpy).toHaveBeenCalled()
+  })
+
+  it('does not create a second interval when startGenerationSyncScheduler is called twice', () => {
+    process.env.GENERATION_SYNC_INTERVAL_MINUTES = '5'
+    const syncFn = vi.fn().mockResolvedValue({ results: [], errors: [], skipped: [] })
+
+    const firstHandle = startGenerationSyncScheduler(syncFn)
+    const secondHandle = startGenerationSyncScheduler(syncFn)
+
+    expect(secondHandle).toBe(firstHandle)
+    expect(vi.getTimerCount()).toBe(1)
   })
 })
