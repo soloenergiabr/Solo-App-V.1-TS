@@ -29,6 +29,7 @@ type AdminApprovalsOptions<TData> = Omit<
 
 export function useAdminApprovals<TData = ApprovalItem[]>(options?: AdminApprovalsOptions<TData>) {
     const api = useAuthenticatedApi();
+    const { enabled, ...queryOptions } = options ?? {};
 
     return useQuery({
         queryKey: adminApprovalsQueryKey,
@@ -36,9 +37,9 @@ export function useAdminApprovals<TData = ApprovalItem[]>(options?: AdminApprova
             const response = await api.get<ApiEnvelope<ApprovalItem[]>>('/admin/approvals');
             return response.data.data;
         },
-        enabled: api.isAuthenticated && (options?.enabled ?? true),
+        ...queryOptions,
+        enabled: api.isAuthenticated && (enabled ?? true),
         refetchInterval: 30_000,
-        ...options,
     });
 }
 
