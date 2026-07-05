@@ -85,9 +85,8 @@ describe('GET /api/admin/approvals', () => {
             );
 
             const res = await callGET();
-            // withHandle returns 403 since error message includes 'permission'
-            // or falls back to 400 if it doesn't match keyword
-            expect([403, 400]).toContain(res.status);
+            // withHandle maps 'does not have role' to 403 (Authorization failed)
+            expect(res.status).toBe(403);
         });
     });
 

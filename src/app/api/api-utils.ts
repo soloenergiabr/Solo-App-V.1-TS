@@ -29,7 +29,8 @@ export function withHandle(handler: RouteHandler): RouteHandler {
                 (error.message.includes('token') ||
                     error.message.includes('Authentication') ||
                     error.message.includes('credentials') ||
-                    error.message.includes('permission'))) {
+                    error.message.includes('permission') ||
+                    error.message.includes('does not have role'))) {
 
                 const isTokenError = error.message.includes('token') || error.message.includes('Authentication');
                 const status = isTokenError ? 401 : 403;

@@ -108,9 +108,8 @@ describe('GET /api/admin/energy-bills/pending-review', () => {
             );
 
             const res = await callGET();
-            // withHandle returns 400 since the error message
-            // does not contain exact token/auth trigger words
-            expect(res.status).toBe(400);
+            // withHandle maps 'does not have role' to 403 (Authorization failed)
+            expect(res.status).toBe(403);
         });
     });
 
@@ -200,7 +199,8 @@ describe('PATCH /api/admin/energy-bills/pending-review/[billId]', () => {
             );
 
             const res = await callPATCH('bill-1', { action: 'confirm' });
-            expect(res.status).toBe(400);
+            // withHandle maps 'does not have role' to 403 (Authorization failed)
+            expect(res.status).toBe(403);
         });
     });
 
