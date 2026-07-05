@@ -304,6 +304,7 @@ export class GenerationService {
                 await this.markSyncError(inverter, message);
                 errors.push({
                     inverterId: inverter.id,
+                    provider: inverter.provider,
                     error: message
                 });
             }

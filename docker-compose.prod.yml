@@ -162,6 +162,10 @@ services:
       - AUXSOL_APP_SECRET=${AUXSOL_APP_SECRET}
       - AUXSOL_BASE_URL=${AUXSOL_BASE_URL}
 
+      # Generation sync (service-token + scheduler)
+      - GENERATION_SYNC_TOKEN=${GENERATION_SYNC_TOKEN}
+      - GENERATION_SYNC_INTERVAL_MINUTES=${GENERATION_SYNC_INTERVAL_MINUTES}
+
       # OpenAI Configuration
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
