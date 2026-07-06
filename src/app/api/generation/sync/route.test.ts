@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import type { NextRequest } from 'next/server'
 
 const { requireAuth, syncAllInvertersData } = vi.hoisted(() => ({
   requireAuth: vi.fn(),
@@ -16,7 +17,7 @@ vi.mock('@/lib/prisma', () => ({ default: {} }))
 import { POST } from './route'
 
 function makeRequest(headers: Record<string, string> = {}) {
-  return new Request('http://x/api/generation/sync', { method: 'POST', headers }) as any
+  return new Request('http://x/api/generation/sync', { method: 'POST', headers }) as unknown as NextRequest
 }
 
 describe('POST /api/generation/sync', () => {
