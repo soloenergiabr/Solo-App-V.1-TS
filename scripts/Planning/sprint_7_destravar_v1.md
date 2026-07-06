@@ -95,15 +95,15 @@ com 3–5 clientes piloto reais.
 
 ## Task 7.2 — Fila de aprovações no admin
 
-- [ ] API: `GET src/app/api/admin/approvals/route.ts` — lista `Plant` e `ConsumerUnit`
+- [x] API: `GET src/app/api/admin/approvals/route.ts` — lista `Plant` e `ConsumerUnit`
       com `validationStatus: 'pending_review'` (join com cliente; ordenar por criação)
-- [ ] Teste da rota (admin-only; user comum recebe 403)
-- [ ] UI: página `src/app/(private)/@master/admin/approvals/page.tsx` — tabela de
+- [x] Teste da rota (admin-only; user comum recebe 403)
+- [x] UI: página `src/app/(private)/@master/admin/approvals/page.tsx` — tabela de
       pendências com ações **Aprovar / Rejeitar** (com motivo opcional), reusando os
       PATCH existentes (`admin/clients/[id]/plants/[plantId]`, `.../consumer-units/[unitId]`)
-- [ ] Badge de contagem de pendências no menu/admin dashboard (TanStack Query,
+- [x] Badge de contagem de pendências no menu/admin dashboard (TanStack Query,
       refetch on focus)
-- [ ] Lado do cliente: em Minhas Usinas, estado "aguardando aprovação" mostra data do
+- [x] Lado do cliente: em Minhas Usinas, estado "aguardando aprovação" mostra data do
       pedido; após rejeição, mostrar motivo
 - [ ] **Aceite:** cliente cria usina no wizard → item aparece na fila do admin →
       aprovar → cliente vê a usina ativa sem precisar de suporte
@@ -114,17 +114,17 @@ com 3–5 clientes piloto reais.
 nenhum agendamento existe. O sync client-scoped disparado pelo dashboard (Sprint 6.1)
 continua como está.
 
-- [ ] **Proteger `POST /api/generation/sync`**: exigir service-token via header
+- [x] **Proteger `POST /api/generation/sync`**: exigir service-token via header
       (`x-sync-token`, secret `GENERATION_SYNC_TOKEN` em env) OU sessão admin; token
       inválido/ausente → 401. Teste primeiro (TDD): rota sem token → 401
-- [ ] Scheduler in-process em `src/instrumentation.ts`: se
+- [x] Scheduler in-process em `src/instrumentation.ts`: se
       `GENERATION_SYNC_INTERVAL_MINUTES` estiver definida, agendar
       `syncAllInvertersData()` no intervalo (default 15 min); guard para rodar só no
       runtime Node.js (`process.env.NEXT_RUNTIME === 'nodejs'`) e nunca em build/test
-- [ ] Log estruturado por ciclo: quantos inversores sincronizados, falhas por provider
+- [x] Log estruturado por ciclo: quantos inversores sincronizados, falhas por provider
       (alimenta o painel de status do Sprint 9 / WP-5)
-- [ ] Teste unitário do scheduler (fake timers: dispara no intervalo, não agenda sem env)
-- [ ] Adicionar `GENERATION_SYNC_INTERVAL_MINUTES` e `GENERATION_SYNC_TOKEN` ao
+- [x] Teste unitário do scheduler (fake timers: dispara no intervalo, não agenda sem env)
+- [x] Adicionar `GENERATION_SYNC_INTERVAL_MINUTES` e `GENERATION_SYNC_TOKEN` ao
       `docker-compose.prod.yml` (o dev acabou de adicionar as envs de
       Hoymiles/AUXSOL lá — commit `e756450` — seguir o mesmo padrão)
 - [ ] **Aceite:** com nenhum dashboard aberto por 1h, os dados de geração no banco
@@ -152,10 +152,10 @@ continua como está.
 
 ## Task 7.6 — WP-8: Auditoria de gap do Analisador (timebox 1 dia)
 
-- [ ] Comparar telas/insights do `solar-bill-clarity` com Economia/Consumo do app:
+- [x] Comparar telas/insights do `solar-bill-clarity` com Economia/Consumo do app:
       visão mensal por conta, saldo de créditos mês a mês, comparativo com rateio,
       "por que paguei este valor"
-- [ ] Entregar `scripts/Planning/wp8_gap_analisador.md` com: já coberto / falta /
+- [x] Entregar `scripts/Planning/wp8_gap_analisador.md` com: já coberto / falta /
       prioridade sugerida (para Sprint 9/10)
 - [ ] **Aceite:** PO revisa a lista e marca o que entra no v1
 

@@ -86,3 +86,6 @@ model does an S task; that's intentional and conservative.)_
 | 2026-06-28 | Sprint 6 | D1 - /solo-club hub + sidebar repoint | claude (sonnet) | M | R$ 12 |
 | 2026-06-28 | Sprint 6 | E1 - Final whole-branch review (Wave C+D) | claude (opus) | - | R$ 20 |
 | 2026-07-04 | Sprint 7 | 7.1 - Fix do input de PDF (bucket auto-create + pt-BR error + test) | deepseek-v4 | L | R$ 20 |
+| 2026-07-06 | Sprint 7 | 7.2 - Fila de aprovações no admin | codex + subagents (gpt-5) | L | R$ 20 |
+| 2026-07-06 | Sprint 7 | 7.3 - Sync auth + scheduler em background | codex + subagents (gpt-5) | L | R$ 20 |
+| 2026-07-06 | Sprint 7 | 7.6 - WP-8 gap audit Analisador vs app | codex + subagents (gpt-5) | S | R$ 5 |
