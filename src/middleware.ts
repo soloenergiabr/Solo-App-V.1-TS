@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { JwtService } from './backend/auth/services/jwt.service';
 
 const publicRoutes = [
     '/api/auth/login',
@@ -19,18 +18,14 @@ const protectedApiRoutes = [
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    if (publicRoutes.some(route => pathname.startsWith(route))) {
+    if (publicRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))) {
         return NextResponse.next();
     }
 
     if (protectedApiRoutes.some(route => pathname.startsWith(route))) {
-        try {
-            const authHeader = request.headers.get('Authorization');
-            const token = JwtService.extractTokenFromHeader(authHeader);
-            JwtService.verifyToken(token);
+        const authHeader = request.headers.get('Authorization');
 
-            return NextResponse.next();
-        } catch (error) {
+        if (!authHeader?.startsWith('Bearer ') || authHeader.length <= 'Bearer '.length) {
             return NextResponse.json(
                 {
                     success: false,
@@ -40,6 +35,8 @@ export function middleware(request: NextRequest) {
                 { status: 401 }
             );
         }
+
+        return NextResponse.next();
     }
 
     return NextResponse.next();

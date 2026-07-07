@@ -1,12 +1,15 @@
-import { initListeners } from "./backend/init-listeners";
-import { startGenerationSyncScheduler } from "./backend/generation/sync-scheduler";
-
-export function register() {
+export async function register() {
     console.log('Registering instrumentation');
-    initListeners();
 
-    // Scheduler roda só no runtime Node.js do servidor (nunca no edge, build ou testes).
+    // Node-only startup code must stay behind dynamic imports so Edge
+    // instrumentation does not bundle Prisma, object storage, or crypto code.
     if (process.env.NEXT_RUNTIME === 'nodejs') {
+        const [{ initListeners }, { startGenerationSyncScheduler }] = await Promise.all([
+            import("./backend/init-listeners"),
+            import("./backend/generation/sync-scheduler"),
+        ]);
+
+        initListeners();
         startGenerationSyncScheduler();
     }
 }
