@@ -134,7 +134,9 @@ continua como está.
 
 - [ ] Checklist de envs de produção: DB, JWT/auth secrets, chaves IA (Gemini/Claude/OpenAI),
       credenciais de providers de inversores, object storage, service-tokens novos
-- [ ] `npm run typecheck` + suíte completa verde no commit de deploy
+- [x] `npm run typecheck` + suíte completa verde no commit de deploy
+      **Evidência 2026-07-07:** `npm.cmd run typecheck` OK;
+      `npm.cmd test -- --run` OK (83 arquivos); `npm.cmd run build` OK.
 - [ ] Deploy na VPS + `prisma migrate deploy` (se houver migration nova do 7.2/7.3)
 - [ ] Smoke test em produção: login cliente, login admin, upload de PDF (Task 7.1),
       dashboard de geração, fila de aprovações (Task 7.2)
