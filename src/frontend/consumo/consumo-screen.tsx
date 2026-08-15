@@ -12,6 +12,8 @@ import { AnalyzeBillDialog } from '@/frontend/economia/components/analyze-bill-d
 import { BillHistory } from '@/frontend/economia/history/bill-history'
 import { BillCompare } from '@/frontend/economia/history/bill-compare'
 import { EducationalFaq } from '@/frontend/education/educational-faq'
+import { GdScreen } from '@/frontend/gd/gd-screen'
+import { PayerCharges } from '@/frontend/gd/payer-charges'
 import { PageLayout, PageHeader } from '@/components/ui/page-layout'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
@@ -23,7 +25,7 @@ function Loader() {
     )
 }
 
-const VALID_TABS = ['economia', 'rateio', 'historico'] as const
+const VALID_TABS = ['economia', 'rateio', 'gd', 'historico'] as const
 type Tab = (typeof VALID_TABS)[number]
 
 function isTab(value: string | null): value is Tab {
@@ -36,8 +38,13 @@ export function ConsumoScreen() {
     const { user, isLoading: authLoading } = useAuth()
     const { refetch } = useEconomia({ year: new Date().getFullYear() })
 
+    // Um pagador (responsavel por uma UC) nao gerencia o imovel: ve a propria
+    // conta e a analise dela, nunca o rateio nem as demais unidades.
+    const isPayer = user?.roles?.includes('payer') ?? false
+
     const tabParam = searchParams.get('tab')
-    const activeTab: Tab = isTab(tabParam) ? tabParam : 'economia'
+    const requestedTab: Tab = isTab(tabParam) ? tabParam : 'economia'
+    const activeTab: Tab = isPayer && requestedTab === 'rateio' ? 'gd' : requestedTab
 
     const handleTabChange = useCallback(
         (value: string) => {
@@ -84,7 +91,10 @@ export function ConsumoScreen() {
                 <div className="w-full overflow-x-auto">
                     <TabsList>
                         <TabsTrigger value="economia">Economia</TabsTrigger>
-                        <TabsTrigger value="rateio">Rateio</TabsTrigger>
+                        {!isPayer && <TabsTrigger value="rateio">Rateio</TabsTrigger>}
+                        <TabsTrigger value="gd">
+                            {isPayer ? 'Minha conta' : 'Geração Distribuída'}
+                        </TabsTrigger>
                         <TabsTrigger value="historico">Histórico</TabsTrigger>
                     </TabsList>
                 </div>
@@ -93,14 +103,20 @@ export function ConsumoScreen() {
                     <EconomiaScreen embedded />
                 </TabsContent>
 
-                <TabsContent value="rateio">
-                    <RateioScreen embedded />
+                {!isPayer && (
+                    <TabsContent value="rateio">
+                        <RateioScreen embedded />
+                    </TabsContent>
+                )}
+
+                <TabsContent value="gd">
+                    {isPayer ? <PayerCharges /> : <GdScreen embedded />}
                 </TabsContent>
 
                 <TabsContent value="historico">
                     <BillHistory />
                     <BillCompare />
-                    <ConsumptionDashboard clientId={user.clientId} embedded />
+                    {!isPayer && <ConsumptionDashboard clientId={user.clientId} embedded />}
                 </TabsContent>
             </Tabs>
             <EducationalFaq category="consumo" />

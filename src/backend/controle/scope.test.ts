@@ -13,4 +13,19 @@ describe('computeAccessibleUnitIds', () => {
     it('returns a single-element list for a payer of one unit', () => {
         expect(computeAccessibleUnitIds(['u9'])).toEqual(['u9'])
     })
+
+    // A payer user is marked by role, not by "happens to have units". Without
+    // this, unassigning a payer's last unit would silently promote them to
+    // titular and expose the whole client's bills.
+    it('returns an empty scope for a role-marked payer with no units', () => {
+        expect(computeAccessibleUnitIds([], true)).toEqual([])
+    })
+
+    it('keeps a role-marked payer restricted to their units', () => {
+        expect(computeAccessibleUnitIds(['u1'], true)).toEqual(['u1'])
+    })
+
+    it("still returns 'all' for a titular that pays no units", () => {
+        expect(computeAccessibleUnitIds([], false)).toBe('all')
+    })
 })

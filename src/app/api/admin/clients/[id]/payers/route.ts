@@ -16,7 +16,9 @@ const assignPayer = async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {
-    await AuthMiddleware.extractUserContext(request);
+    // Rota de admin: sem esta guarda, qualquer usuario autenticado podia
+    // reatribuir o responsavel de qualquer unidade de qualquer cliente.
+    await AuthMiddleware.requireRole(request, 'master');
     const { id: clientId } = await params;
     const { unitId, ...payer } = payerSchema.parse(await request.json());
 

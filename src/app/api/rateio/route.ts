@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { assertNotPayer } from '@/backend/controle/scope';
 import prisma from '@/lib/prisma';
 
 /**
@@ -9,6 +10,9 @@ import prisma from '@/lib/prisma';
  */
 const listAllocations = async (request: NextRequest) => {
     const user = await AuthMiddleware.requireAuth(request);
+    // O rateio é do titular: um pagador não enxerga a distribuição de créditos
+    // entre as outras unidades do prédio.
+    await assertNotPayer(user.userId);
     if (!user.clientId) throw new Error('Usuário sem cliente vinculado');
 
     const allocations = await prisma.creditAllocation.findMany({
