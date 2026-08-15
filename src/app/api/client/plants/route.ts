@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { assertNotPayer } from '@/backend/controle/scope';
 import prisma from '@/lib/prisma';
 
 const plantSchema = z.object({
@@ -40,6 +41,7 @@ const listPlants = async (request: NextRequest) => {
 
 const createPlant = async (request: NextRequest) => {
     const userContext = await AuthMiddleware.requireAuth(request);
+    await assertNotPayer(userContext.userId);
     const clientId = userContext.clientId;
     if (!clientId) throw new Error('Cliente nao identificado.');
 

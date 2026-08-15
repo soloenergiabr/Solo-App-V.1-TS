@@ -424,6 +424,65 @@ exports.Prisma.EnergyBillScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ChargeRuleScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  consumerUnitId: 'consumerUnitId',
+  mode: 'mode',
+  pricePerKwh: 'pricePerKwh',
+  fixedAmount: 'fixedAmount',
+  dueDayOfMonth: 'dueDayOfMonth',
+  isActive: 'isActive',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ChargeScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  consumerUnitId: 'consumerUnitId',
+  energyBillId: 'energyBillId',
+  chargeRuleId: 'chargeRuleId',
+  referenceMonth: 'referenceMonth',
+  referenceYear: 'referenceYear',
+  mode: 'mode',
+  basisKwh: 'basisKwh',
+  pricePerKwh: 'pricePerKwh',
+  amount: 'amount',
+  dueDate: 'dueDate',
+  status: 'status',
+  payerUserId: 'payerUserId',
+  payerName: 'payerName',
+  payerEmail: 'payerEmail',
+  sentAt: 'sentAt',
+  paidAt: 'paidAt',
+  canceledAt: 'canceledAt',
+  confirmedByUserId: 'confirmedByUserId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.PayerInviteScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  consumerUnitId: 'consumerUnitId',
+  name: 'name',
+  email: 'email',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  status: 'status',
+  acceptedAt: 'acceptedAt',
+  revokedAt: 'revokedAt',
+  invitedByUserId: 'invitedByUserId',
+  acceptedUserId: 'acceptedUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.InvestmentScalarFieldEnum = {
   id: 'id',
   clientId: 'clientId',
@@ -499,6 +558,26 @@ exports.BillPaymentStatus = exports.$Enums.BillPaymentStatus = {
   vencida: 'vencida'
 };
 
+exports.ChargeMode = exports.$Enums.ChargeMode = {
+  pass_through: 'pass_through',
+  per_kwh: 'per_kwh',
+  fixed: 'fixed'
+};
+
+exports.ChargeStatus = exports.$Enums.ChargeStatus = {
+  draft: 'draft',
+  sent: 'sent',
+  paid: 'paid',
+  overdue: 'overdue',
+  canceled: 'canceled'
+};
+
+exports.PayerInviteStatus = exports.$Enums.PayerInviteStatus = {
+  pending: 'pending',
+  accepted: 'accepted',
+  revoked: 'revoked'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Client: 'Client',
@@ -514,6 +593,9 @@ exports.Prisma.ModelName = {
   Transaction: 'Transaction',
   Consumption: 'Consumption',
   EnergyBill: 'EnergyBill',
+  ChargeRule: 'ChargeRule',
+  Charge: 'Charge',
+  PayerInvite: 'PayerInvite',
   Investment: 'Investment'
 };
 

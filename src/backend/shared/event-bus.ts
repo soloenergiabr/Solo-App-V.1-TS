@@ -17,6 +17,12 @@ export enum EventType {
 
     // Inverter events
     INVERTER_CONNECTED = 'inverter.connected',
+
+    // Geracao distribuida (cobranca entre titular e responsaveis)
+    GD_CHARGE_SENT = 'gd.charge_sent',
+    GD_CHARGE_PAID = 'gd.charge_paid',
+    GD_PAYER_INVITED = 'gd.payer_invited',
+    GD_PAYER_ACCEPTED = 'gd.payer_accepted',
 }
 
 export interface IndicationCreatedPayload {
@@ -84,6 +90,35 @@ export interface InverterConnectedPayload {
     provider: string;
 }
 
+// Geracao distribuida payloads
+export interface GdChargeSentPayload {
+    chargeId: string;
+    clientId: string;
+    consumerUnitId: string;
+    payerEmail: string;
+}
+
+export interface GdChargePaidPayload {
+    chargeId: string;
+    clientId: string;
+    consumerUnitId: string;
+    paidAt: string;
+}
+
+export interface GdPayerInvitedPayload {
+    inviteId: string;
+    clientId: string;
+    consumerUnitId: string;
+    email: string;
+}
+
+export interface GdPayerAcceptedPayload {
+    inviteId: string;
+    clientId: string;
+    consumerUnitId: string;
+    userId: string;
+}
+
 export class EventBus extends EventEmitter {
     private static instance: EventBus;
 
@@ -112,6 +147,11 @@ export class EventBus extends EventEmitter {
     public emit(event: EventType.RATEIO_APPLIED, payload: RateioAppliedPayload): boolean;
     // Inverter events
     public emit(event: EventType.INVERTER_CONNECTED, payload: InverterConnectedPayload): boolean;
+    // Geracao distribuida events
+    public emit(event: EventType.GD_CHARGE_SENT, payload: GdChargeSentPayload): boolean;
+    public emit(event: EventType.GD_CHARGE_PAID, payload: GdChargePaidPayload): boolean;
+    public emit(event: EventType.GD_PAYER_INVITED, payload: GdPayerInvitedPayload): boolean;
+    public emit(event: EventType.GD_PAYER_ACCEPTED, payload: GdPayerAcceptedPayload): boolean;
     // Fallback
     public emit(event: string, ...args: any[]): boolean {
         return super.emit(event, ...args);
@@ -131,6 +171,11 @@ export class EventBus extends EventEmitter {
     public on(event: EventType.RATEIO_APPLIED, listener: (payload: RateioAppliedPayload) => void): this;
     // Inverter events
     public on(event: EventType.INVERTER_CONNECTED, listener: (payload: InverterConnectedPayload) => void): this;
+    // Geracao distribuida events
+    public on(event: EventType.GD_CHARGE_SENT, listener: (payload: GdChargeSentPayload) => void): this;
+    public on(event: EventType.GD_CHARGE_PAID, listener: (payload: GdChargePaidPayload) => void): this;
+    public on(event: EventType.GD_PAYER_INVITED, listener: (payload: GdPayerInvitedPayload) => void): this;
+    public on(event: EventType.GD_PAYER_ACCEPTED, listener: (payload: GdPayerAcceptedPayload) => void): this;
     // Fallback
     public on(event: string, listener: (...args: any[]) => void): this {
         return super.on(event, listener);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { assertNotPayer } from '@/backend/controle/scope';
 import { eventBus, EventType } from '@/backend/shared/event-bus';
 import prisma from '@/lib/prisma';
 
@@ -20,6 +21,7 @@ const proposalSchema = z.object({
  */
 const createProposal = async (request: NextRequest) => {
     const user = await AuthMiddleware.requireAuth(request);
+    await assertNotPayer(user.userId);
     if (!user.clientId) throw new Error('Usuário sem cliente vinculado');
 
     const data = proposalSchema.parse(await request.json());

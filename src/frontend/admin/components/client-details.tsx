@@ -30,6 +30,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { GdScreen } from '@/frontend/gd/gd-screen';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -773,6 +774,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                     <TabsTrigger value="resumo">Resumo</TabsTrigger>
                     <TabsTrigger value="plants">Usinas e Estrutura</TabsTrigger>
                     <TabsTrigger value="bills">Faturas</TabsTrigger>
+                    <TabsTrigger value="gd">Geração Distribuída</TabsTrigger>
                     <TabsTrigger value="generation">Dashboard de Geração</TabsTrigger>
                     <TabsTrigger value="manual-generation">Geração (manual)</TabsTrigger>
                 </TabsList>
@@ -795,6 +797,11 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
 
                 <TabsContent value="bills" className="mt-6">
                     <EnergyBillsTab clientId={clientId} />
+                </TabsContent>
+
+                {/* Espelho do admin: mesma tela do titular, operando neste cliente. */}
+                <TabsContent value="gd" className="mt-6">
+                    <GdScreen embedded clientId={clientId} />
                 </TabsContent>
 
                 <TabsContent value="generation" className="mt-6 space-y-6">

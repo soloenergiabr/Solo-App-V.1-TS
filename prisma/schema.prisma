@@ -40,6 +40,30 @@ enum GenerationUnitType {
   year
 }
 
+/// How the titular charges the party responsible for a consumer unit.
+/// - pass_through: repassa integralmente a fatura da distribuidora
+/// - per_kwh: energia compensada no mes x preco definido pelo titular
+/// - fixed: valor fixo mensal
+enum ChargeMode {
+  pass_through
+  per_kwh
+  fixed
+}
+
+enum ChargeStatus {
+  draft
+  sent
+  paid
+  overdue
+  canceled
+}
+
+enum PayerInviteStatus {
+  pending
+  accepted
+  revoked
+}
+
 model User {
   id                   String    @id @default(cuid())
   email                String    @unique
@@ -56,7 +80,8 @@ model User {
 
   client Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
-  payerUnits ConsumerUnit[] @relation("PayerUnits")
+  payerUnits   ConsumerUnit[] @relation("PayerUnits")
+  payerCharges Charge[]       @relation("PayerCharges")
 
   @@index([email])
   @@index([clientId])
@@ -96,6 +121,11 @@ model Client {
   consumerUnits     ConsumerUnit[]
   creditAllocations CreditAllocation[]
   investments       Investment[]
+
+  // Geracao distribuida (rateio de custo entre responsaveis)
+  chargeRules  ChargeRule[]
+  charges      Charge[]
+  payerInvites PayerInvite[]
 
   @@index([email])
   @@index([cpfCnpj])
@@ -224,6 +254,10 @@ model ConsumerUnit {
 
   allocationsFrom CreditAllocation[] @relation("CreditAllocationFrom")
   allocationsTo   CreditAllocation[] @relation("CreditAllocationTo")
+
+  chargeRule   ChargeRule?
+  charges      Charge[]
+  payerInvites PayerInvite[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -548,6 +582,8 @@ model EnergyBill {
   pixCode       String?
   barcode       String?
 
+  charges Charge[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -560,6 +596,128 @@ model EnergyBill {
   @@index([status])
   @@index([clientId, paymentStatus])
   @@map("energy_bill")
+}
+
+/// Regra de cobranca do titular para o responsavel de uma unidade consumidora.
+/// Uma regra ativa por UC — e o que decide COMO o valor devido e calculado.
+model ChargeRule {
+  id String @id @default(dbgenerated("(concat('charge_rule_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  consumerUnit   ConsumerUnit @relation(fields: [consumerUnitId], references: [id], onDelete: Cascade)
+  consumerUnitId String       @unique
+
+  mode ChargeMode @default(pass_through)
+
+  /// per_kwh: preco por kWh compensado cobrado pelo titular
+  pricePerKwh Decimal? @db.Decimal(12, 6)
+  /// fixed: valor fixo mensal
+  fixedAmount Decimal? @db.Decimal(14, 2)
+  /// dia de vencimento da cobranca; sem valor, herda o vencimento da fatura
+  dueDayOfMonth Int?
+
+  isActive Boolean @default(true)
+  notes    String?
+
+  charges Charge[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([clientId])
+  @@index([clientId, isActive])
+  @@map("charge_rule")
+}
+
+/// Cobranca de uma competencia para uma unidade consumidora.
+/// Nao processa pagamento — registra o valor devido, o envio e a baixa.
+model Charge {
+  id String @id @default(dbgenerated("(concat('charge_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  consumerUnit   ConsumerUnit @relation(fields: [consumerUnitId], references: [id], onDelete: Cascade)
+  consumerUnitId String
+
+  energyBill   EnergyBill? @relation(fields: [energyBillId], references: [id])
+  energyBillId String?
+
+  chargeRule   ChargeRule? @relation(fields: [chargeRuleId], references: [id])
+  chargeRuleId String?
+
+  referenceMonth Int
+  referenceYear  Int
+
+  /// snapshot do modo usado no calculo (a regra pode mudar depois)
+  mode        ChargeMode
+  basisKwh    Decimal? @db.Decimal(14, 4)
+  pricePerKwh Decimal? @db.Decimal(12, 6)
+  amount      Decimal  @db.Decimal(14, 2)
+
+  dueDate DateTime?    @db.Date
+  status  ChargeStatus @default(draft)
+
+  payerUser   User?   @relation("PayerCharges", fields: [payerUserId], references: [id])
+  payerUserId String?
+  payerName   String?
+  payerEmail  String?
+
+  sentAt            DateTime?
+  paidAt            DateTime?
+  canceledAt        DateTime?
+  confirmedByUserId String?
+
+  notes String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([consumerUnitId, referenceYear, referenceMonth])
+  @@index([clientId])
+  @@index([clientId, status])
+  @@index([consumerUnitId])
+  @@index([payerUserId])
+  @@index([referenceYear, referenceMonth])
+  @@map("charge")
+}
+
+/// Convite para um responsavel virar usuario pagador sob o client do titular.
+/// Guarda apenas o hash do token; o token cru so existe no link enviado por e-mail.
+model PayerInvite {
+  id String @id @default(dbgenerated("(concat('payer_invite_', gen_random_uuid()))::TEXT"))
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  consumerUnit   ConsumerUnit @relation(fields: [consumerUnitId], references: [id], onDelete: Cascade)
+  consumerUnitId String
+
+  name  String
+  email String
+
+  tokenHash String   @unique
+  expiresAt DateTime
+
+  status     PayerInviteStatus @default(pending)
+  acceptedAt DateTime?
+  revokedAt  DateTime?
+
+  invitedByUserId String?
+  acceptedUserId  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clientId])
+  @@index([consumerUnitId])
+  @@index([email])
+  @@index([status])
+  @@map("payer_invite")
 }
 
 model Investment {

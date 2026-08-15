@@ -84,6 +84,24 @@ export type Consumption = $Result.DefaultSelection<Prisma.$ConsumptionPayload>
  */
 export type EnergyBill = $Result.DefaultSelection<Prisma.$EnergyBillPayload>
 /**
+ * Model ChargeRule
+ * Regra de cobranca do titular para o responsavel de uma unidade consumidora.
+ * Uma regra ativa por UC — e o que decide COMO o valor devido e calculado.
+ */
+export type ChargeRule = $Result.DefaultSelection<Prisma.$ChargeRulePayload>
+/**
+ * Model Charge
+ * Cobranca de uma competencia para uma unidade consumidora.
+ * Nao processa pagamento — registra o valor devido, o envio e a baixa.
+ */
+export type Charge = $Result.DefaultSelection<Prisma.$ChargePayload>
+/**
+ * Model PayerInvite
+ * Convite para um responsavel virar usuario pagador sob o client do titular.
+ * Guarda apenas o hash do token; o token cru so existe no link enviado por e-mail.
+ */
+export type PayerInvite = $Result.DefaultSelection<Prisma.$PayerInvitePayload>
+/**
  * Model Investment
  * 
  */
@@ -131,6 +149,35 @@ export const GenerationUnitType: {
 export type GenerationUnitType = (typeof GenerationUnitType)[keyof typeof GenerationUnitType]
 
 
+export const ChargeMode: {
+  pass_through: 'pass_through',
+  per_kwh: 'per_kwh',
+  fixed: 'fixed'
+};
+
+export type ChargeMode = (typeof ChargeMode)[keyof typeof ChargeMode]
+
+
+export const ChargeStatus: {
+  draft: 'draft',
+  sent: 'sent',
+  paid: 'paid',
+  overdue: 'overdue',
+  canceled: 'canceled'
+};
+
+export type ChargeStatus = (typeof ChargeStatus)[keyof typeof ChargeStatus]
+
+
+export const PayerInviteStatus: {
+  pending: 'pending',
+  accepted: 'accepted',
+  revoked: 'revoked'
+};
+
+export type PayerInviteStatus = (typeof PayerInviteStatus)[keyof typeof PayerInviteStatus]
+
+
 export const RedemptionStatus: {
   pending: 'pending',
   used: 'used',
@@ -165,6 +212,18 @@ export const TransactionType: typeof $Enums.TransactionType
 export type GenerationUnitType = $Enums.GenerationUnitType
 
 export const GenerationUnitType: typeof $Enums.GenerationUnitType
+
+export type ChargeMode = $Enums.ChargeMode
+
+export const ChargeMode: typeof $Enums.ChargeMode
+
+export type ChargeStatus = $Enums.ChargeStatus
+
+export const ChargeStatus: typeof $Enums.ChargeStatus
+
+export type PayerInviteStatus = $Enums.PayerInviteStatus
+
+export const PayerInviteStatus: typeof $Enums.PayerInviteStatus
 
 export type RedemptionStatus = $Enums.RedemptionStatus
 
@@ -431,6 +490,36 @@ export class PrismaClient<
     * ```
     */
   get energyBill(): Prisma.EnergyBillDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.chargeRule`: Exposes CRUD operations for the **ChargeRule** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ChargeRules
+    * const chargeRules = await prisma.chargeRule.findMany()
+    * ```
+    */
+  get chargeRule(): Prisma.ChargeRuleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.charge`: Exposes CRUD operations for the **Charge** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Charges
+    * const charges = await prisma.charge.findMany()
+    * ```
+    */
+  get charge(): Prisma.ChargeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.payerInvite`: Exposes CRUD operations for the **PayerInvite** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PayerInvites
+    * const payerInvites = await prisma.payerInvite.findMany()
+    * ```
+    */
+  get payerInvite(): Prisma.PayerInviteDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.investment`: Exposes CRUD operations for the **Investment** model.
@@ -895,6 +984,9 @@ export namespace Prisma {
     Transaction: 'Transaction',
     Consumption: 'Consumption',
     EnergyBill: 'EnergyBill',
+    ChargeRule: 'ChargeRule',
+    Charge: 'Charge',
+    PayerInvite: 'PayerInvite',
     Investment: 'Investment'
   };
 
@@ -914,7 +1006,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "investment"
+      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "chargeRule" | "charge" | "payerInvite" | "investment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1954,6 +2046,228 @@ export namespace Prisma {
           }
         }
       }
+      ChargeRule: {
+        payload: Prisma.$ChargeRulePayload<ExtArgs>
+        fields: Prisma.ChargeRuleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChargeRuleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChargeRuleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>
+          }
+          findFirst: {
+            args: Prisma.ChargeRuleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChargeRuleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>
+          }
+          findMany: {
+            args: Prisma.ChargeRuleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>[]
+          }
+          create: {
+            args: Prisma.ChargeRuleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>
+          }
+          createMany: {
+            args: Prisma.ChargeRuleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChargeRuleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>[]
+          }
+          delete: {
+            args: Prisma.ChargeRuleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>
+          }
+          update: {
+            args: Prisma.ChargeRuleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>
+          }
+          deleteMany: {
+            args: Prisma.ChargeRuleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChargeRuleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ChargeRuleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>[]
+          }
+          upsert: {
+            args: Prisma.ChargeRuleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargeRulePayload>
+          }
+          aggregate: {
+            args: Prisma.ChargeRuleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChargeRule>
+          }
+          groupBy: {
+            args: Prisma.ChargeRuleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChargeRuleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChargeRuleCountArgs<ExtArgs>
+            result: $Utils.Optional<ChargeRuleCountAggregateOutputType> | number
+          }
+        }
+      }
+      Charge: {
+        payload: Prisma.$ChargePayload<ExtArgs>
+        fields: Prisma.ChargeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChargeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChargeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>
+          }
+          findFirst: {
+            args: Prisma.ChargeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChargeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>
+          }
+          findMany: {
+            args: Prisma.ChargeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>[]
+          }
+          create: {
+            args: Prisma.ChargeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>
+          }
+          createMany: {
+            args: Prisma.ChargeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChargeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>[]
+          }
+          delete: {
+            args: Prisma.ChargeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>
+          }
+          update: {
+            args: Prisma.ChargeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>
+          }
+          deleteMany: {
+            args: Prisma.ChargeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChargeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ChargeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>[]
+          }
+          upsert: {
+            args: Prisma.ChargeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChargePayload>
+          }
+          aggregate: {
+            args: Prisma.ChargeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCharge>
+          }
+          groupBy: {
+            args: Prisma.ChargeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChargeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChargeCountArgs<ExtArgs>
+            result: $Utils.Optional<ChargeCountAggregateOutputType> | number
+          }
+        }
+      }
+      PayerInvite: {
+        payload: Prisma.$PayerInvitePayload<ExtArgs>
+        fields: Prisma.PayerInviteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PayerInviteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PayerInviteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>
+          }
+          findFirst: {
+            args: Prisma.PayerInviteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PayerInviteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>
+          }
+          findMany: {
+            args: Prisma.PayerInviteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>[]
+          }
+          create: {
+            args: Prisma.PayerInviteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>
+          }
+          createMany: {
+            args: Prisma.PayerInviteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PayerInviteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>[]
+          }
+          delete: {
+            args: Prisma.PayerInviteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>
+          }
+          update: {
+            args: Prisma.PayerInviteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>
+          }
+          deleteMany: {
+            args: Prisma.PayerInviteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PayerInviteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PayerInviteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>[]
+          }
+          upsert: {
+            args: Prisma.PayerInviteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayerInvitePayload>
+          }
+          aggregate: {
+            args: Prisma.PayerInviteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayerInvite>
+          }
+          groupBy: {
+            args: Prisma.PayerInviteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PayerInviteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PayerInviteCountArgs<ExtArgs>
+            result: $Utils.Optional<PayerInviteCountAggregateOutputType> | number
+          }
+        }
+      }
       Investment: {
         payload: Prisma.$InvestmentPayload<ExtArgs>
         fields: Prisma.InvestmentFieldRefs
@@ -2138,6 +2452,9 @@ export namespace Prisma {
     transaction?: TransactionOmit
     consumption?: ConsumptionOmit
     energyBill?: EnergyBillOmit
+    chargeRule?: ChargeRuleOmit
+    charge?: ChargeOmit
+    payerInvite?: PayerInviteOmit
     investment?: InvestmentOmit
   }
 
@@ -2220,10 +2537,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     payerUnits: number
+    payerCharges: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     payerUnits?: boolean | UserCountOutputTypeCountPayerUnitsArgs
+    payerCharges?: boolean | UserCountOutputTypeCountPayerChargesArgs
   }
 
   // Custom InputTypes
@@ -2244,6 +2563,13 @@ export namespace Prisma {
     where?: ConsumerUnitWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPayerChargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeWhereInput
+  }
+
 
   /**
    * Count Type ClientCountOutputType
@@ -2262,6 +2588,9 @@ export namespace Prisma {
     consumerUnits: number
     creditAllocations: number
     investments: number
+    chargeRules: number
+    charges: number
+    payerInvites: number
   }
 
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2277,6 +2606,9 @@ export namespace Prisma {
     consumerUnits?: boolean | ClientCountOutputTypeCountConsumerUnitsArgs
     creditAllocations?: boolean | ClientCountOutputTypeCountCreditAllocationsArgs
     investments?: boolean | ClientCountOutputTypeCountInvestmentsArgs
+    chargeRules?: boolean | ClientCountOutputTypeCountChargeRulesArgs
+    charges?: boolean | ClientCountOutputTypeCountChargesArgs
+    payerInvites?: boolean | ClientCountOutputTypeCountPayerInvitesArgs
   }
 
   // Custom InputTypes
@@ -2372,6 +2704,27 @@ export namespace Prisma {
    */
   export type ClientCountOutputTypeCountInvestmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvestmentWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountChargeRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeRuleWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountChargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountPayerInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayerInviteWhereInput
   }
 
 
@@ -2472,12 +2825,16 @@ export namespace Prisma {
     energyBills: number
     allocationsFrom: number
     allocationsTo: number
+    charges: number
+    payerInvites: number
   }
 
   export type ConsumerUnitCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     energyBills?: boolean | ConsumerUnitCountOutputTypeCountEnergyBillsArgs
     allocationsFrom?: boolean | ConsumerUnitCountOutputTypeCountAllocationsFromArgs
     allocationsTo?: boolean | ConsumerUnitCountOutputTypeCountAllocationsToArgs
+    charges?: boolean | ConsumerUnitCountOutputTypeCountChargesArgs
+    payerInvites?: boolean | ConsumerUnitCountOutputTypeCountPayerInvitesArgs
   }
 
   // Custom InputTypes
@@ -2512,6 +2869,20 @@ export namespace Prisma {
     where?: CreditAllocationWhereInput
   }
 
+  /**
+   * ConsumerUnitCountOutputType without action
+   */
+  export type ConsumerUnitCountOutputTypeCountChargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeWhereInput
+  }
+
+  /**
+   * ConsumerUnitCountOutputType without action
+   */
+  export type ConsumerUnitCountOutputTypeCountPayerInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayerInviteWhereInput
+  }
+
 
   /**
    * Count Type OfferCountOutputType
@@ -2541,6 +2912,68 @@ export namespace Prisma {
    */
   export type OfferCountOutputTypeCountRedemptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OfferRedemptionWhereInput
+  }
+
+
+  /**
+   * Count Type EnergyBillCountOutputType
+   */
+
+  export type EnergyBillCountOutputType = {
+    charges: number
+  }
+
+  export type EnergyBillCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charges?: boolean | EnergyBillCountOutputTypeCountChargesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EnergyBillCountOutputType without action
+   */
+  export type EnergyBillCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBillCountOutputType
+     */
+    select?: EnergyBillCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EnergyBillCountOutputType without action
+   */
+  export type EnergyBillCountOutputTypeCountChargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeWhereInput
+  }
+
+
+  /**
+   * Count Type ChargeRuleCountOutputType
+   */
+
+  export type ChargeRuleCountOutputType = {
+    charges: number
+  }
+
+  export type ChargeRuleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charges?: boolean | ChargeRuleCountOutputTypeCountChargesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ChargeRuleCountOutputType without action
+   */
+  export type ChargeRuleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRuleCountOutputType
+     */
+    select?: ChargeRuleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ChargeRuleCountOutputType without action
+   */
+  export type ChargeRuleCountOutputTypeCountChargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeWhereInput
   }
 
 
@@ -2762,6 +3195,7 @@ export namespace Prisma {
     updatedAt?: boolean
     client?: boolean | User$clientArgs<ExtArgs>
     payerUnits?: boolean | User$payerUnitsArgs<ExtArgs>
+    payerCharges?: boolean | User$payerChargesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2816,6 +3250,7 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | User$clientArgs<ExtArgs>
     payerUnits?: boolean | User$payerUnitsArgs<ExtArgs>
+    payerCharges?: boolean | User$payerChargesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2830,6 +3265,7 @@ export namespace Prisma {
     objects: {
       client: Prisma.$ClientPayload<ExtArgs> | null
       payerUnits: Prisma.$ConsumerUnitPayload<ExtArgs>[]
+      payerCharges: Prisma.$ChargePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3240,6 +3676,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     client<T extends User$clientArgs<ExtArgs> = {}>(args?: Subset<T, User$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     payerUnits<T extends User$payerUnitsArgs<ExtArgs> = {}>(args?: Subset<T, User$payerUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payerCharges<T extends User$payerChargesArgs<ExtArgs> = {}>(args?: Subset<T, User$payerChargesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3720,6 +4157,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.payerCharges
+   */
+  export type User$payerChargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    where?: ChargeWhereInput
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    cursor?: ChargeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4024,6 +4485,9 @@ export namespace Prisma {
     consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
     creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
     investments?: boolean | Client$investmentsArgs<ExtArgs>
+    chargeRules?: boolean | Client$chargeRulesArgs<ExtArgs>
+    charges?: boolean | Client$chargesArgs<ExtArgs>
+    payerInvites?: boolean | Client$payerInvitesArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -4092,6 +4556,9 @@ export namespace Prisma {
     consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
     creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
     investments?: boolean | Client$investmentsArgs<ExtArgs>
+    chargeRules?: boolean | Client$chargeRulesArgs<ExtArgs>
+    charges?: boolean | Client$chargesArgs<ExtArgs>
+    payerInvites?: boolean | Client$payerInvitesArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4112,6 +4579,9 @@ export namespace Prisma {
       consumerUnits: Prisma.$ConsumerUnitPayload<ExtArgs>[]
       creditAllocations: Prisma.$CreditAllocationPayload<ExtArgs>[]
       investments: Prisma.$InvestmentPayload<ExtArgs>[]
+      chargeRules: Prisma.$ChargeRulePayload<ExtArgs>[]
+      charges: Prisma.$ChargePayload<ExtArgs>[]
+      payerInvites: Prisma.$PayerInvitePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4534,6 +5004,9 @@ export namespace Prisma {
     consumerUnits<T extends Client$consumerUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Client$consumerUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     creditAllocations<T extends Client$creditAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, Client$creditAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     investments<T extends Client$investmentsArgs<ExtArgs> = {}>(args?: Subset<T, Client$investmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chargeRules<T extends Client$chargeRulesArgs<ExtArgs> = {}>(args?: Subset<T, Client$chargeRulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    charges<T extends Client$chargesArgs<ExtArgs> = {}>(args?: Subset<T, Client$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payerInvites<T extends Client$payerInvitesArgs<ExtArgs> = {}>(args?: Subset<T, Client$payerInvitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5250,6 +5723,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InvestmentScalarFieldEnum | InvestmentScalarFieldEnum[]
+  }
+
+  /**
+   * Client.chargeRules
+   */
+  export type Client$chargeRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    where?: ChargeRuleWhereInput
+    orderBy?: ChargeRuleOrderByWithRelationInput | ChargeRuleOrderByWithRelationInput[]
+    cursor?: ChargeRuleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChargeRuleScalarFieldEnum | ChargeRuleScalarFieldEnum[]
+  }
+
+  /**
+   * Client.charges
+   */
+  export type Client$chargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    where?: ChargeWhereInput
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    cursor?: ChargeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
+   * Client.payerInvites
+   */
+  export type Client$payerInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    where?: PayerInviteWhereInput
+    orderBy?: PayerInviteOrderByWithRelationInput | PayerInviteOrderByWithRelationInput[]
+    cursor?: PayerInviteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PayerInviteScalarFieldEnum | PayerInviteScalarFieldEnum[]
   }
 
   /**
@@ -8485,6 +9030,9 @@ export namespace Prisma {
     energyBills?: boolean | ConsumerUnit$energyBillsArgs<ExtArgs>
     allocationsFrom?: boolean | ConsumerUnit$allocationsFromArgs<ExtArgs>
     allocationsTo?: boolean | ConsumerUnit$allocationsToArgs<ExtArgs>
+    chargeRule?: boolean | ConsumerUnit$chargeRuleArgs<ExtArgs>
+    charges?: boolean | ConsumerUnit$chargesArgs<ExtArgs>
+    payerInvites?: boolean | ConsumerUnit$payerInvitesArgs<ExtArgs>
     _count?: boolean | ConsumerUnitCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["consumerUnit"]>
 
@@ -8583,6 +9131,9 @@ export namespace Prisma {
     energyBills?: boolean | ConsumerUnit$energyBillsArgs<ExtArgs>
     allocationsFrom?: boolean | ConsumerUnit$allocationsFromArgs<ExtArgs>
     allocationsTo?: boolean | ConsumerUnit$allocationsToArgs<ExtArgs>
+    chargeRule?: boolean | ConsumerUnit$chargeRuleArgs<ExtArgs>
+    charges?: boolean | ConsumerUnit$chargesArgs<ExtArgs>
+    payerInvites?: boolean | ConsumerUnit$payerInvitesArgs<ExtArgs>
     _count?: boolean | ConsumerUnitCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConsumerUnitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8605,6 +9156,9 @@ export namespace Prisma {
       energyBills: Prisma.$EnergyBillPayload<ExtArgs>[]
       allocationsFrom: Prisma.$CreditAllocationPayload<ExtArgs>[]
       allocationsTo: Prisma.$CreditAllocationPayload<ExtArgs>[]
+      chargeRule: Prisma.$ChargeRulePayload<ExtArgs> | null
+      charges: Prisma.$ChargePayload<ExtArgs>[]
+      payerInvites: Prisma.$PayerInvitePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9031,6 +9585,9 @@ export namespace Prisma {
     energyBills<T extends ConsumerUnit$energyBillsArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$energyBillsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocationsFrom<T extends ConsumerUnit$allocationsFromArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$allocationsFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocationsTo<T extends ConsumerUnit$allocationsToArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$allocationsToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chargeRule<T extends ConsumerUnit$chargeRuleArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$chargeRuleArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    charges<T extends ConsumerUnit$chargesArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payerInvites<T extends ConsumerUnit$payerInvitesArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnit$payerInvitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9568,6 +10125,73 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CreditAllocationScalarFieldEnum | CreditAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit.chargeRule
+   */
+  export type ConsumerUnit$chargeRuleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    where?: ChargeRuleWhereInput
+  }
+
+  /**
+   * ConsumerUnit.charges
+   */
+  export type ConsumerUnit$chargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    where?: ChargeWhereInput
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    cursor?: ChargeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
+   * ConsumerUnit.payerInvites
+   */
+  export type ConsumerUnit$payerInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    where?: PayerInviteWhereInput
+    orderBy?: PayerInviteOrderByWithRelationInput | PayerInviteOrderByWithRelationInput[]
+    cursor?: PayerInviteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PayerInviteScalarFieldEnum | PayerInviteScalarFieldEnum[]
   }
 
   /**
@@ -19755,6 +20379,8 @@ export namespace Prisma {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
     consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    charges?: boolean | EnergyBill$chargesArgs<ExtArgs>
+    _count?: boolean | EnergyBillCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["energyBill"]>
 
   export type EnergyBillSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19996,6 +20622,8 @@ export namespace Prisma {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
     consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    charges?: boolean | EnergyBill$chargesArgs<ExtArgs>
+    _count?: boolean | EnergyBillCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EnergyBillIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -20014,6 +20642,7 @@ export namespace Prisma {
       client: Prisma.$ClientPayload<ExtArgs>
       plant: Prisma.$PlantPayload<ExtArgs>
       consumerUnit: Prisma.$ConsumerUnitPayload<ExtArgs>
+      charges: Prisma.$ChargePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20486,6 +21115,7 @@ export namespace Prisma {
     client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     plant<T extends PlantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlantDefaultArgs<ExtArgs>>): Prisma__PlantClient<$Result.GetResult<Prisma.$PlantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     consumerUnit<T extends ConsumerUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnitDefaultArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    charges<T extends EnergyBill$chargesArgs<ExtArgs> = {}>(args?: Subset<T, EnergyBill$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20984,6 +21614,30 @@ export namespace Prisma {
   }
 
   /**
+   * EnergyBill.charges
+   */
+  export type EnergyBill$chargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    where?: ChargeWhereInput
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    cursor?: ChargeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
    * EnergyBill without action
    */
   export type EnergyBillDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20999,6 +21653,3874 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EnergyBillInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ChargeRule
+   */
+
+  export type AggregateChargeRule = {
+    _count: ChargeRuleCountAggregateOutputType | null
+    _avg: ChargeRuleAvgAggregateOutputType | null
+    _sum: ChargeRuleSumAggregateOutputType | null
+    _min: ChargeRuleMinAggregateOutputType | null
+    _max: ChargeRuleMaxAggregateOutputType | null
+  }
+
+  export type ChargeRuleAvgAggregateOutputType = {
+    pricePerKwh: Decimal | null
+    fixedAmount: Decimal | null
+    dueDayOfMonth: number | null
+  }
+
+  export type ChargeRuleSumAggregateOutputType = {
+    pricePerKwh: Decimal | null
+    fixedAmount: Decimal | null
+    dueDayOfMonth: number | null
+  }
+
+  export type ChargeRuleMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    consumerUnitId: string | null
+    mode: $Enums.ChargeMode | null
+    pricePerKwh: Decimal | null
+    fixedAmount: Decimal | null
+    dueDayOfMonth: number | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ChargeRuleMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    consumerUnitId: string | null
+    mode: $Enums.ChargeMode | null
+    pricePerKwh: Decimal | null
+    fixedAmount: Decimal | null
+    dueDayOfMonth: number | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ChargeRuleCountAggregateOutputType = {
+    id: number
+    clientId: number
+    consumerUnitId: number
+    mode: number
+    pricePerKwh: number
+    fixedAmount: number
+    dueDayOfMonth: number
+    isActive: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type ChargeRuleAvgAggregateInputType = {
+    pricePerKwh?: true
+    fixedAmount?: true
+    dueDayOfMonth?: true
+  }
+
+  export type ChargeRuleSumAggregateInputType = {
+    pricePerKwh?: true
+    fixedAmount?: true
+    dueDayOfMonth?: true
+  }
+
+  export type ChargeRuleMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    mode?: true
+    pricePerKwh?: true
+    fixedAmount?: true
+    dueDayOfMonth?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ChargeRuleMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    mode?: true
+    pricePerKwh?: true
+    fixedAmount?: true
+    dueDayOfMonth?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ChargeRuleCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    mode?: true
+    pricePerKwh?: true
+    fixedAmount?: true
+    dueDayOfMonth?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type ChargeRuleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChargeRule to aggregate.
+     */
+    where?: ChargeRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChargeRules to fetch.
+     */
+    orderBy?: ChargeRuleOrderByWithRelationInput | ChargeRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChargeRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChargeRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChargeRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChargeRules
+    **/
+    _count?: true | ChargeRuleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ChargeRuleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ChargeRuleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChargeRuleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChargeRuleMaxAggregateInputType
+  }
+
+  export type GetChargeRuleAggregateType<T extends ChargeRuleAggregateArgs> = {
+        [P in keyof T & keyof AggregateChargeRule]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChargeRule[P]>
+      : GetScalarType<T[P], AggregateChargeRule[P]>
+  }
+
+
+
+
+  export type ChargeRuleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeRuleWhereInput
+    orderBy?: ChargeRuleOrderByWithAggregationInput | ChargeRuleOrderByWithAggregationInput[]
+    by: ChargeRuleScalarFieldEnum[] | ChargeRuleScalarFieldEnum
+    having?: ChargeRuleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChargeRuleCountAggregateInputType | true
+    _avg?: ChargeRuleAvgAggregateInputType
+    _sum?: ChargeRuleSumAggregateInputType
+    _min?: ChargeRuleMinAggregateInputType
+    _max?: ChargeRuleMaxAggregateInputType
+  }
+
+  export type ChargeRuleGroupByOutputType = {
+    id: string
+    clientId: string
+    consumerUnitId: string
+    mode: $Enums.ChargeMode
+    pricePerKwh: Decimal | null
+    fixedAmount: Decimal | null
+    dueDayOfMonth: number | null
+    isActive: boolean
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: ChargeRuleCountAggregateOutputType | null
+    _avg: ChargeRuleAvgAggregateOutputType | null
+    _sum: ChargeRuleSumAggregateOutputType | null
+    _min: ChargeRuleMinAggregateOutputType | null
+    _max: ChargeRuleMaxAggregateOutputType | null
+  }
+
+  type GetChargeRuleGroupByPayload<T extends ChargeRuleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChargeRuleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChargeRuleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChargeRuleGroupByOutputType[P]>
+            : GetScalarType<T[P], ChargeRuleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChargeRuleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    mode?: boolean
+    pricePerKwh?: boolean
+    fixedAmount?: boolean
+    dueDayOfMonth?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    charges?: boolean | ChargeRule$chargesArgs<ExtArgs>
+    _count?: boolean | ChargeRuleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chargeRule"]>
+
+  export type ChargeRuleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    mode?: boolean
+    pricePerKwh?: boolean
+    fixedAmount?: boolean
+    dueDayOfMonth?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chargeRule"]>
+
+  export type ChargeRuleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    mode?: boolean
+    pricePerKwh?: boolean
+    fixedAmount?: boolean
+    dueDayOfMonth?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chargeRule"]>
+
+  export type ChargeRuleSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    mode?: boolean
+    pricePerKwh?: boolean
+    fixedAmount?: boolean
+    dueDayOfMonth?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type ChargeRuleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "consumerUnitId" | "mode" | "pricePerKwh" | "fixedAmount" | "dueDayOfMonth" | "isActive" | "notes" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["chargeRule"]>
+  export type ChargeRuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    charges?: boolean | ChargeRule$chargesArgs<ExtArgs>
+    _count?: boolean | ChargeRuleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ChargeRuleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+  export type ChargeRuleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+
+  export type $ChargeRulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChargeRule"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+      consumerUnit: Prisma.$ConsumerUnitPayload<ExtArgs>
+      charges: Prisma.$ChargePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      consumerUnitId: string
+      mode: $Enums.ChargeMode
+      /**
+       * per_kwh: preco por kWh compensado cobrado pelo titular
+       */
+      pricePerKwh: Prisma.Decimal | null
+      /**
+       * fixed: valor fixo mensal
+       */
+      fixedAmount: Prisma.Decimal | null
+      /**
+       * dia de vencimento da cobranca; sem valor, herda o vencimento da fatura
+       */
+      dueDayOfMonth: number | null
+      isActive: boolean
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["chargeRule"]>
+    composites: {}
+  }
+
+  type ChargeRuleGetPayload<S extends boolean | null | undefined | ChargeRuleDefaultArgs> = $Result.GetResult<Prisma.$ChargeRulePayload, S>
+
+  type ChargeRuleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChargeRuleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChargeRuleCountAggregateInputType | true
+    }
+
+  export interface ChargeRuleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChargeRule'], meta: { name: 'ChargeRule' } }
+    /**
+     * Find zero or one ChargeRule that matches the filter.
+     * @param {ChargeRuleFindUniqueArgs} args - Arguments to find a ChargeRule
+     * @example
+     * // Get one ChargeRule
+     * const chargeRule = await prisma.chargeRule.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChargeRuleFindUniqueArgs>(args: SelectSubset<T, ChargeRuleFindUniqueArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ChargeRule that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChargeRuleFindUniqueOrThrowArgs} args - Arguments to find a ChargeRule
+     * @example
+     * // Get one ChargeRule
+     * const chargeRule = await prisma.chargeRule.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChargeRuleFindUniqueOrThrowArgs>(args: SelectSubset<T, ChargeRuleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChargeRule that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeRuleFindFirstArgs} args - Arguments to find a ChargeRule
+     * @example
+     * // Get one ChargeRule
+     * const chargeRule = await prisma.chargeRule.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChargeRuleFindFirstArgs>(args?: SelectSubset<T, ChargeRuleFindFirstArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChargeRule that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeRuleFindFirstOrThrowArgs} args - Arguments to find a ChargeRule
+     * @example
+     * // Get one ChargeRule
+     * const chargeRule = await prisma.chargeRule.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChargeRuleFindFirstOrThrowArgs>(args?: SelectSubset<T, ChargeRuleFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ChargeRules that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeRuleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChargeRules
+     * const chargeRules = await prisma.chargeRule.findMany()
+     * 
+     * // Get first 10 ChargeRules
+     * const chargeRules = await prisma.chargeRule.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const chargeRuleWithIdOnly = await prisma.chargeRule.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ChargeRuleFindManyArgs>(args?: SelectSubset<T, ChargeRuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ChargeRule.
+     * @param {ChargeRuleCreateArgs} args - Arguments to create a ChargeRule.
+     * @example
+     * // Create one ChargeRule
+     * const ChargeRule = await prisma.chargeRule.create({
+     *   data: {
+     *     // ... data to create a ChargeRule
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChargeRuleCreateArgs>(args: SelectSubset<T, ChargeRuleCreateArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ChargeRules.
+     * @param {ChargeRuleCreateManyArgs} args - Arguments to create many ChargeRules.
+     * @example
+     * // Create many ChargeRules
+     * const chargeRule = await prisma.chargeRule.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChargeRuleCreateManyArgs>(args?: SelectSubset<T, ChargeRuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ChargeRules and returns the data saved in the database.
+     * @param {ChargeRuleCreateManyAndReturnArgs} args - Arguments to create many ChargeRules.
+     * @example
+     * // Create many ChargeRules
+     * const chargeRule = await prisma.chargeRule.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ChargeRules and only return the `id`
+     * const chargeRuleWithIdOnly = await prisma.chargeRule.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChargeRuleCreateManyAndReturnArgs>(args?: SelectSubset<T, ChargeRuleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ChargeRule.
+     * @param {ChargeRuleDeleteArgs} args - Arguments to delete one ChargeRule.
+     * @example
+     * // Delete one ChargeRule
+     * const ChargeRule = await prisma.chargeRule.delete({
+     *   where: {
+     *     // ... filter to delete one ChargeRule
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChargeRuleDeleteArgs>(args: SelectSubset<T, ChargeRuleDeleteArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ChargeRule.
+     * @param {ChargeRuleUpdateArgs} args - Arguments to update one ChargeRule.
+     * @example
+     * // Update one ChargeRule
+     * const chargeRule = await prisma.chargeRule.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChargeRuleUpdateArgs>(args: SelectSubset<T, ChargeRuleUpdateArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ChargeRules.
+     * @param {ChargeRuleDeleteManyArgs} args - Arguments to filter ChargeRules to delete.
+     * @example
+     * // Delete a few ChargeRules
+     * const { count } = await prisma.chargeRule.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChargeRuleDeleteManyArgs>(args?: SelectSubset<T, ChargeRuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChargeRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeRuleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChargeRules
+     * const chargeRule = await prisma.chargeRule.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChargeRuleUpdateManyArgs>(args: SelectSubset<T, ChargeRuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChargeRules and returns the data updated in the database.
+     * @param {ChargeRuleUpdateManyAndReturnArgs} args - Arguments to update many ChargeRules.
+     * @example
+     * // Update many ChargeRules
+     * const chargeRule = await prisma.chargeRule.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ChargeRules and only return the `id`
+     * const chargeRuleWithIdOnly = await prisma.chargeRule.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ChargeRuleUpdateManyAndReturnArgs>(args: SelectSubset<T, ChargeRuleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ChargeRule.
+     * @param {ChargeRuleUpsertArgs} args - Arguments to update or create a ChargeRule.
+     * @example
+     * // Update or create a ChargeRule
+     * const chargeRule = await prisma.chargeRule.upsert({
+     *   create: {
+     *     // ... data to create a ChargeRule
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChargeRule we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChargeRuleUpsertArgs>(args: SelectSubset<T, ChargeRuleUpsertArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ChargeRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeRuleCountArgs} args - Arguments to filter ChargeRules to count.
+     * @example
+     * // Count the number of ChargeRules
+     * const count = await prisma.chargeRule.count({
+     *   where: {
+     *     // ... the filter for the ChargeRules we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChargeRuleCountArgs>(
+      args?: Subset<T, ChargeRuleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChargeRuleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChargeRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeRuleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChargeRuleAggregateArgs>(args: Subset<T, ChargeRuleAggregateArgs>): Prisma.PrismaPromise<GetChargeRuleAggregateType<T>>
+
+    /**
+     * Group by ChargeRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeRuleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChargeRuleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChargeRuleGroupByArgs['orderBy'] }
+        : { orderBy?: ChargeRuleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChargeRuleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChargeRuleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChargeRule model
+   */
+  readonly fields: ChargeRuleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChargeRule.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChargeRuleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    consumerUnit<T extends ConsumerUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnitDefaultArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    charges<T extends ChargeRule$chargesArgs<ExtArgs> = {}>(args?: Subset<T, ChargeRule$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChargeRule model
+   */
+  interface ChargeRuleFieldRefs {
+    readonly id: FieldRef<"ChargeRule", 'String'>
+    readonly clientId: FieldRef<"ChargeRule", 'String'>
+    readonly consumerUnitId: FieldRef<"ChargeRule", 'String'>
+    readonly mode: FieldRef<"ChargeRule", 'ChargeMode'>
+    readonly pricePerKwh: FieldRef<"ChargeRule", 'Decimal'>
+    readonly fixedAmount: FieldRef<"ChargeRule", 'Decimal'>
+    readonly dueDayOfMonth: FieldRef<"ChargeRule", 'Int'>
+    readonly isActive: FieldRef<"ChargeRule", 'Boolean'>
+    readonly notes: FieldRef<"ChargeRule", 'String'>
+    readonly createdAt: FieldRef<"ChargeRule", 'DateTime'>
+    readonly updatedAt: FieldRef<"ChargeRule", 'DateTime'>
+    readonly deletedAt: FieldRef<"ChargeRule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChargeRule findUnique
+   */
+  export type ChargeRuleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which ChargeRule to fetch.
+     */
+    where: ChargeRuleWhereUniqueInput
+  }
+
+  /**
+   * ChargeRule findUniqueOrThrow
+   */
+  export type ChargeRuleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which ChargeRule to fetch.
+     */
+    where: ChargeRuleWhereUniqueInput
+  }
+
+  /**
+   * ChargeRule findFirst
+   */
+  export type ChargeRuleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which ChargeRule to fetch.
+     */
+    where?: ChargeRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChargeRules to fetch.
+     */
+    orderBy?: ChargeRuleOrderByWithRelationInput | ChargeRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChargeRules.
+     */
+    cursor?: ChargeRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChargeRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChargeRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChargeRules.
+     */
+    distinct?: ChargeRuleScalarFieldEnum | ChargeRuleScalarFieldEnum[]
+  }
+
+  /**
+   * ChargeRule findFirstOrThrow
+   */
+  export type ChargeRuleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which ChargeRule to fetch.
+     */
+    where?: ChargeRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChargeRules to fetch.
+     */
+    orderBy?: ChargeRuleOrderByWithRelationInput | ChargeRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChargeRules.
+     */
+    cursor?: ChargeRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChargeRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChargeRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChargeRules.
+     */
+    distinct?: ChargeRuleScalarFieldEnum | ChargeRuleScalarFieldEnum[]
+  }
+
+  /**
+   * ChargeRule findMany
+   */
+  export type ChargeRuleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which ChargeRules to fetch.
+     */
+    where?: ChargeRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChargeRules to fetch.
+     */
+    orderBy?: ChargeRuleOrderByWithRelationInput | ChargeRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChargeRules.
+     */
+    cursor?: ChargeRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChargeRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChargeRules.
+     */
+    skip?: number
+    distinct?: ChargeRuleScalarFieldEnum | ChargeRuleScalarFieldEnum[]
+  }
+
+  /**
+   * ChargeRule create
+   */
+  export type ChargeRuleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChargeRule.
+     */
+    data: XOR<ChargeRuleCreateInput, ChargeRuleUncheckedCreateInput>
+  }
+
+  /**
+   * ChargeRule createMany
+   */
+  export type ChargeRuleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChargeRules.
+     */
+    data: ChargeRuleCreateManyInput | ChargeRuleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ChargeRule createManyAndReturn
+   */
+  export type ChargeRuleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * The data used to create many ChargeRules.
+     */
+    data: ChargeRuleCreateManyInput | ChargeRuleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChargeRule update
+   */
+  export type ChargeRuleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChargeRule.
+     */
+    data: XOR<ChargeRuleUpdateInput, ChargeRuleUncheckedUpdateInput>
+    /**
+     * Choose, which ChargeRule to update.
+     */
+    where: ChargeRuleWhereUniqueInput
+  }
+
+  /**
+   * ChargeRule updateMany
+   */
+  export type ChargeRuleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChargeRules.
+     */
+    data: XOR<ChargeRuleUpdateManyMutationInput, ChargeRuleUncheckedUpdateManyInput>
+    /**
+     * Filter which ChargeRules to update
+     */
+    where?: ChargeRuleWhereInput
+    /**
+     * Limit how many ChargeRules to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChargeRule updateManyAndReturn
+   */
+  export type ChargeRuleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * The data used to update ChargeRules.
+     */
+    data: XOR<ChargeRuleUpdateManyMutationInput, ChargeRuleUncheckedUpdateManyInput>
+    /**
+     * Filter which ChargeRules to update
+     */
+    where?: ChargeRuleWhereInput
+    /**
+     * Limit how many ChargeRules to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChargeRule upsert
+   */
+  export type ChargeRuleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChargeRule to update in case it exists.
+     */
+    where: ChargeRuleWhereUniqueInput
+    /**
+     * In case the ChargeRule found by the `where` argument doesn't exist, create a new ChargeRule with this data.
+     */
+    create: XOR<ChargeRuleCreateInput, ChargeRuleUncheckedCreateInput>
+    /**
+     * In case the ChargeRule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChargeRuleUpdateInput, ChargeRuleUncheckedUpdateInput>
+  }
+
+  /**
+   * ChargeRule delete
+   */
+  export type ChargeRuleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    /**
+     * Filter which ChargeRule to delete.
+     */
+    where: ChargeRuleWhereUniqueInput
+  }
+
+  /**
+   * ChargeRule deleteMany
+   */
+  export type ChargeRuleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChargeRules to delete
+     */
+    where?: ChargeRuleWhereInput
+    /**
+     * Limit how many ChargeRules to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChargeRule.charges
+   */
+  export type ChargeRule$chargesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    where?: ChargeWhereInput
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    cursor?: ChargeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
+   * ChargeRule without action
+   */
+  export type ChargeRuleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Charge
+   */
+
+  export type AggregateCharge = {
+    _count: ChargeCountAggregateOutputType | null
+    _avg: ChargeAvgAggregateOutputType | null
+    _sum: ChargeSumAggregateOutputType | null
+    _min: ChargeMinAggregateOutputType | null
+    _max: ChargeMaxAggregateOutputType | null
+  }
+
+  export type ChargeAvgAggregateOutputType = {
+    referenceMonth: number | null
+    referenceYear: number | null
+    basisKwh: Decimal | null
+    pricePerKwh: Decimal | null
+    amount: Decimal | null
+  }
+
+  export type ChargeSumAggregateOutputType = {
+    referenceMonth: number | null
+    referenceYear: number | null
+    basisKwh: Decimal | null
+    pricePerKwh: Decimal | null
+    amount: Decimal | null
+  }
+
+  export type ChargeMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    consumerUnitId: string | null
+    energyBillId: string | null
+    chargeRuleId: string | null
+    referenceMonth: number | null
+    referenceYear: number | null
+    mode: $Enums.ChargeMode | null
+    basisKwh: Decimal | null
+    pricePerKwh: Decimal | null
+    amount: Decimal | null
+    dueDate: Date | null
+    status: $Enums.ChargeStatus | null
+    payerUserId: string | null
+    payerName: string | null
+    payerEmail: string | null
+    sentAt: Date | null
+    paidAt: Date | null
+    canceledAt: Date | null
+    confirmedByUserId: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ChargeMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    consumerUnitId: string | null
+    energyBillId: string | null
+    chargeRuleId: string | null
+    referenceMonth: number | null
+    referenceYear: number | null
+    mode: $Enums.ChargeMode | null
+    basisKwh: Decimal | null
+    pricePerKwh: Decimal | null
+    amount: Decimal | null
+    dueDate: Date | null
+    status: $Enums.ChargeStatus | null
+    payerUserId: string | null
+    payerName: string | null
+    payerEmail: string | null
+    sentAt: Date | null
+    paidAt: Date | null
+    canceledAt: Date | null
+    confirmedByUserId: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type ChargeCountAggregateOutputType = {
+    id: number
+    clientId: number
+    consumerUnitId: number
+    energyBillId: number
+    chargeRuleId: number
+    referenceMonth: number
+    referenceYear: number
+    mode: number
+    basisKwh: number
+    pricePerKwh: number
+    amount: number
+    dueDate: number
+    status: number
+    payerUserId: number
+    payerName: number
+    payerEmail: number
+    sentAt: number
+    paidAt: number
+    canceledAt: number
+    confirmedByUserId: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type ChargeAvgAggregateInputType = {
+    referenceMonth?: true
+    referenceYear?: true
+    basisKwh?: true
+    pricePerKwh?: true
+    amount?: true
+  }
+
+  export type ChargeSumAggregateInputType = {
+    referenceMonth?: true
+    referenceYear?: true
+    basisKwh?: true
+    pricePerKwh?: true
+    amount?: true
+  }
+
+  export type ChargeMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    energyBillId?: true
+    chargeRuleId?: true
+    referenceMonth?: true
+    referenceYear?: true
+    mode?: true
+    basisKwh?: true
+    pricePerKwh?: true
+    amount?: true
+    dueDate?: true
+    status?: true
+    payerUserId?: true
+    payerName?: true
+    payerEmail?: true
+    sentAt?: true
+    paidAt?: true
+    canceledAt?: true
+    confirmedByUserId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ChargeMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    energyBillId?: true
+    chargeRuleId?: true
+    referenceMonth?: true
+    referenceYear?: true
+    mode?: true
+    basisKwh?: true
+    pricePerKwh?: true
+    amount?: true
+    dueDate?: true
+    status?: true
+    payerUserId?: true
+    payerName?: true
+    payerEmail?: true
+    sentAt?: true
+    paidAt?: true
+    canceledAt?: true
+    confirmedByUserId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type ChargeCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    energyBillId?: true
+    chargeRuleId?: true
+    referenceMonth?: true
+    referenceYear?: true
+    mode?: true
+    basisKwh?: true
+    pricePerKwh?: true
+    amount?: true
+    dueDate?: true
+    status?: true
+    payerUserId?: true
+    payerName?: true
+    payerEmail?: true
+    sentAt?: true
+    paidAt?: true
+    canceledAt?: true
+    confirmedByUserId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type ChargeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Charge to aggregate.
+     */
+    where?: ChargeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charges to fetch.
+     */
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChargeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Charges
+    **/
+    _count?: true | ChargeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ChargeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ChargeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChargeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChargeMaxAggregateInputType
+  }
+
+  export type GetChargeAggregateType<T extends ChargeAggregateArgs> = {
+        [P in keyof T & keyof AggregateCharge]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCharge[P]>
+      : GetScalarType<T[P], AggregateCharge[P]>
+  }
+
+
+
+
+  export type ChargeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChargeWhereInput
+    orderBy?: ChargeOrderByWithAggregationInput | ChargeOrderByWithAggregationInput[]
+    by: ChargeScalarFieldEnum[] | ChargeScalarFieldEnum
+    having?: ChargeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChargeCountAggregateInputType | true
+    _avg?: ChargeAvgAggregateInputType
+    _sum?: ChargeSumAggregateInputType
+    _min?: ChargeMinAggregateInputType
+    _max?: ChargeMaxAggregateInputType
+  }
+
+  export type ChargeGroupByOutputType = {
+    id: string
+    clientId: string
+    consumerUnitId: string
+    energyBillId: string | null
+    chargeRuleId: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh: Decimal | null
+    pricePerKwh: Decimal | null
+    amount: Decimal
+    dueDate: Date | null
+    status: $Enums.ChargeStatus
+    payerUserId: string | null
+    payerName: string | null
+    payerEmail: string | null
+    sentAt: Date | null
+    paidAt: Date | null
+    canceledAt: Date | null
+    confirmedByUserId: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: ChargeCountAggregateOutputType | null
+    _avg: ChargeAvgAggregateOutputType | null
+    _sum: ChargeSumAggregateOutputType | null
+    _min: ChargeMinAggregateOutputType | null
+    _max: ChargeMaxAggregateOutputType | null
+  }
+
+  type GetChargeGroupByPayload<T extends ChargeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChargeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChargeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChargeGroupByOutputType[P]>
+            : GetScalarType<T[P], ChargeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChargeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    energyBillId?: boolean
+    chargeRuleId?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    mode?: boolean
+    basisKwh?: boolean
+    pricePerKwh?: boolean
+    amount?: boolean
+    dueDate?: boolean
+    status?: boolean
+    payerUserId?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    sentAt?: boolean
+    paidAt?: boolean
+    canceledAt?: boolean
+    confirmedByUserId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    energyBill?: boolean | Charge$energyBillArgs<ExtArgs>
+    chargeRule?: boolean | Charge$chargeRuleArgs<ExtArgs>
+    payerUser?: boolean | Charge$payerUserArgs<ExtArgs>
+  }, ExtArgs["result"]["charge"]>
+
+  export type ChargeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    energyBillId?: boolean
+    chargeRuleId?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    mode?: boolean
+    basisKwh?: boolean
+    pricePerKwh?: boolean
+    amount?: boolean
+    dueDate?: boolean
+    status?: boolean
+    payerUserId?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    sentAt?: boolean
+    paidAt?: boolean
+    canceledAt?: boolean
+    confirmedByUserId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    energyBill?: boolean | Charge$energyBillArgs<ExtArgs>
+    chargeRule?: boolean | Charge$chargeRuleArgs<ExtArgs>
+    payerUser?: boolean | Charge$payerUserArgs<ExtArgs>
+  }, ExtArgs["result"]["charge"]>
+
+  export type ChargeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    energyBillId?: boolean
+    chargeRuleId?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    mode?: boolean
+    basisKwh?: boolean
+    pricePerKwh?: boolean
+    amount?: boolean
+    dueDate?: boolean
+    status?: boolean
+    payerUserId?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    sentAt?: boolean
+    paidAt?: boolean
+    canceledAt?: boolean
+    confirmedByUserId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    energyBill?: boolean | Charge$energyBillArgs<ExtArgs>
+    chargeRule?: boolean | Charge$chargeRuleArgs<ExtArgs>
+    payerUser?: boolean | Charge$payerUserArgs<ExtArgs>
+  }, ExtArgs["result"]["charge"]>
+
+  export type ChargeSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    energyBillId?: boolean
+    chargeRuleId?: boolean
+    referenceMonth?: boolean
+    referenceYear?: boolean
+    mode?: boolean
+    basisKwh?: boolean
+    pricePerKwh?: boolean
+    amount?: boolean
+    dueDate?: boolean
+    status?: boolean
+    payerUserId?: boolean
+    payerName?: boolean
+    payerEmail?: boolean
+    sentAt?: boolean
+    paidAt?: boolean
+    canceledAt?: boolean
+    confirmedByUserId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type ChargeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "consumerUnitId" | "energyBillId" | "chargeRuleId" | "referenceMonth" | "referenceYear" | "mode" | "basisKwh" | "pricePerKwh" | "amount" | "dueDate" | "status" | "payerUserId" | "payerName" | "payerEmail" | "sentAt" | "paidAt" | "canceledAt" | "confirmedByUserId" | "notes" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["charge"]>
+  export type ChargeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    energyBill?: boolean | Charge$energyBillArgs<ExtArgs>
+    chargeRule?: boolean | Charge$chargeRuleArgs<ExtArgs>
+    payerUser?: boolean | Charge$payerUserArgs<ExtArgs>
+  }
+  export type ChargeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    energyBill?: boolean | Charge$energyBillArgs<ExtArgs>
+    chargeRule?: boolean | Charge$chargeRuleArgs<ExtArgs>
+    payerUser?: boolean | Charge$payerUserArgs<ExtArgs>
+  }
+  export type ChargeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+    energyBill?: boolean | Charge$energyBillArgs<ExtArgs>
+    chargeRule?: boolean | Charge$chargeRuleArgs<ExtArgs>
+    payerUser?: boolean | Charge$payerUserArgs<ExtArgs>
+  }
+
+  export type $ChargePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Charge"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+      consumerUnit: Prisma.$ConsumerUnitPayload<ExtArgs>
+      energyBill: Prisma.$EnergyBillPayload<ExtArgs> | null
+      chargeRule: Prisma.$ChargeRulePayload<ExtArgs> | null
+      payerUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      consumerUnitId: string
+      energyBillId: string | null
+      chargeRuleId: string | null
+      referenceMonth: number
+      referenceYear: number
+      /**
+       * snapshot do modo usado no calculo (a regra pode mudar depois)
+       */
+      mode: $Enums.ChargeMode
+      basisKwh: Prisma.Decimal | null
+      pricePerKwh: Prisma.Decimal | null
+      amount: Prisma.Decimal
+      dueDate: Date | null
+      status: $Enums.ChargeStatus
+      payerUserId: string | null
+      payerName: string | null
+      payerEmail: string | null
+      sentAt: Date | null
+      paidAt: Date | null
+      canceledAt: Date | null
+      confirmedByUserId: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["charge"]>
+    composites: {}
+  }
+
+  type ChargeGetPayload<S extends boolean | null | undefined | ChargeDefaultArgs> = $Result.GetResult<Prisma.$ChargePayload, S>
+
+  type ChargeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChargeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChargeCountAggregateInputType | true
+    }
+
+  export interface ChargeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Charge'], meta: { name: 'Charge' } }
+    /**
+     * Find zero or one Charge that matches the filter.
+     * @param {ChargeFindUniqueArgs} args - Arguments to find a Charge
+     * @example
+     * // Get one Charge
+     * const charge = await prisma.charge.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChargeFindUniqueArgs>(args: SelectSubset<T, ChargeFindUniqueArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Charge that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChargeFindUniqueOrThrowArgs} args - Arguments to find a Charge
+     * @example
+     * // Get one Charge
+     * const charge = await prisma.charge.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChargeFindUniqueOrThrowArgs>(args: SelectSubset<T, ChargeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Charge that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeFindFirstArgs} args - Arguments to find a Charge
+     * @example
+     * // Get one Charge
+     * const charge = await prisma.charge.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChargeFindFirstArgs>(args?: SelectSubset<T, ChargeFindFirstArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Charge that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeFindFirstOrThrowArgs} args - Arguments to find a Charge
+     * @example
+     * // Get one Charge
+     * const charge = await prisma.charge.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChargeFindFirstOrThrowArgs>(args?: SelectSubset<T, ChargeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Charges that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Charges
+     * const charges = await prisma.charge.findMany()
+     * 
+     * // Get first 10 Charges
+     * const charges = await prisma.charge.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const chargeWithIdOnly = await prisma.charge.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ChargeFindManyArgs>(args?: SelectSubset<T, ChargeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Charge.
+     * @param {ChargeCreateArgs} args - Arguments to create a Charge.
+     * @example
+     * // Create one Charge
+     * const Charge = await prisma.charge.create({
+     *   data: {
+     *     // ... data to create a Charge
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChargeCreateArgs>(args: SelectSubset<T, ChargeCreateArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Charges.
+     * @param {ChargeCreateManyArgs} args - Arguments to create many Charges.
+     * @example
+     * // Create many Charges
+     * const charge = await prisma.charge.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChargeCreateManyArgs>(args?: SelectSubset<T, ChargeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Charges and returns the data saved in the database.
+     * @param {ChargeCreateManyAndReturnArgs} args - Arguments to create many Charges.
+     * @example
+     * // Create many Charges
+     * const charge = await prisma.charge.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Charges and only return the `id`
+     * const chargeWithIdOnly = await prisma.charge.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChargeCreateManyAndReturnArgs>(args?: SelectSubset<T, ChargeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Charge.
+     * @param {ChargeDeleteArgs} args - Arguments to delete one Charge.
+     * @example
+     * // Delete one Charge
+     * const Charge = await prisma.charge.delete({
+     *   where: {
+     *     // ... filter to delete one Charge
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChargeDeleteArgs>(args: SelectSubset<T, ChargeDeleteArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Charge.
+     * @param {ChargeUpdateArgs} args - Arguments to update one Charge.
+     * @example
+     * // Update one Charge
+     * const charge = await prisma.charge.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChargeUpdateArgs>(args: SelectSubset<T, ChargeUpdateArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Charges.
+     * @param {ChargeDeleteManyArgs} args - Arguments to filter Charges to delete.
+     * @example
+     * // Delete a few Charges
+     * const { count } = await prisma.charge.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChargeDeleteManyArgs>(args?: SelectSubset<T, ChargeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Charges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Charges
+     * const charge = await prisma.charge.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChargeUpdateManyArgs>(args: SelectSubset<T, ChargeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Charges and returns the data updated in the database.
+     * @param {ChargeUpdateManyAndReturnArgs} args - Arguments to update many Charges.
+     * @example
+     * // Update many Charges
+     * const charge = await prisma.charge.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Charges and only return the `id`
+     * const chargeWithIdOnly = await prisma.charge.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ChargeUpdateManyAndReturnArgs>(args: SelectSubset<T, ChargeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Charge.
+     * @param {ChargeUpsertArgs} args - Arguments to update or create a Charge.
+     * @example
+     * // Update or create a Charge
+     * const charge = await prisma.charge.upsert({
+     *   create: {
+     *     // ... data to create a Charge
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Charge we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChargeUpsertArgs>(args: SelectSubset<T, ChargeUpsertArgs<ExtArgs>>): Prisma__ChargeClient<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Charges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeCountArgs} args - Arguments to filter Charges to count.
+     * @example
+     * // Count the number of Charges
+     * const count = await prisma.charge.count({
+     *   where: {
+     *     // ... the filter for the Charges we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChargeCountArgs>(
+      args?: Subset<T, ChargeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChargeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Charge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChargeAggregateArgs>(args: Subset<T, ChargeAggregateArgs>): Prisma.PrismaPromise<GetChargeAggregateType<T>>
+
+    /**
+     * Group by Charge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChargeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChargeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChargeGroupByArgs['orderBy'] }
+        : { orderBy?: ChargeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChargeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChargeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Charge model
+   */
+  readonly fields: ChargeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Charge.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChargeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    consumerUnit<T extends ConsumerUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnitDefaultArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    energyBill<T extends Charge$energyBillArgs<ExtArgs> = {}>(args?: Subset<T, Charge$energyBillArgs<ExtArgs>>): Prisma__EnergyBillClient<$Result.GetResult<Prisma.$EnergyBillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    chargeRule<T extends Charge$chargeRuleArgs<ExtArgs> = {}>(args?: Subset<T, Charge$chargeRuleArgs<ExtArgs>>): Prisma__ChargeRuleClient<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    payerUser<T extends Charge$payerUserArgs<ExtArgs> = {}>(args?: Subset<T, Charge$payerUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Charge model
+   */
+  interface ChargeFieldRefs {
+    readonly id: FieldRef<"Charge", 'String'>
+    readonly clientId: FieldRef<"Charge", 'String'>
+    readonly consumerUnitId: FieldRef<"Charge", 'String'>
+    readonly energyBillId: FieldRef<"Charge", 'String'>
+    readonly chargeRuleId: FieldRef<"Charge", 'String'>
+    readonly referenceMonth: FieldRef<"Charge", 'Int'>
+    readonly referenceYear: FieldRef<"Charge", 'Int'>
+    readonly mode: FieldRef<"Charge", 'ChargeMode'>
+    readonly basisKwh: FieldRef<"Charge", 'Decimal'>
+    readonly pricePerKwh: FieldRef<"Charge", 'Decimal'>
+    readonly amount: FieldRef<"Charge", 'Decimal'>
+    readonly dueDate: FieldRef<"Charge", 'DateTime'>
+    readonly status: FieldRef<"Charge", 'ChargeStatus'>
+    readonly payerUserId: FieldRef<"Charge", 'String'>
+    readonly payerName: FieldRef<"Charge", 'String'>
+    readonly payerEmail: FieldRef<"Charge", 'String'>
+    readonly sentAt: FieldRef<"Charge", 'DateTime'>
+    readonly paidAt: FieldRef<"Charge", 'DateTime'>
+    readonly canceledAt: FieldRef<"Charge", 'DateTime'>
+    readonly confirmedByUserId: FieldRef<"Charge", 'String'>
+    readonly notes: FieldRef<"Charge", 'String'>
+    readonly createdAt: FieldRef<"Charge", 'DateTime'>
+    readonly updatedAt: FieldRef<"Charge", 'DateTime'>
+    readonly deletedAt: FieldRef<"Charge", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Charge findUnique
+   */
+  export type ChargeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * Filter, which Charge to fetch.
+     */
+    where: ChargeWhereUniqueInput
+  }
+
+  /**
+   * Charge findUniqueOrThrow
+   */
+  export type ChargeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * Filter, which Charge to fetch.
+     */
+    where: ChargeWhereUniqueInput
+  }
+
+  /**
+   * Charge findFirst
+   */
+  export type ChargeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * Filter, which Charge to fetch.
+     */
+    where?: ChargeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charges to fetch.
+     */
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Charges.
+     */
+    cursor?: ChargeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Charges.
+     */
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
+   * Charge findFirstOrThrow
+   */
+  export type ChargeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * Filter, which Charge to fetch.
+     */
+    where?: ChargeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charges to fetch.
+     */
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Charges.
+     */
+    cursor?: ChargeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Charges.
+     */
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
+   * Charge findMany
+   */
+  export type ChargeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * Filter, which Charges to fetch.
+     */
+    where?: ChargeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charges to fetch.
+     */
+    orderBy?: ChargeOrderByWithRelationInput | ChargeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Charges.
+     */
+    cursor?: ChargeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charges.
+     */
+    skip?: number
+    distinct?: ChargeScalarFieldEnum | ChargeScalarFieldEnum[]
+  }
+
+  /**
+   * Charge create
+   */
+  export type ChargeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Charge.
+     */
+    data: XOR<ChargeCreateInput, ChargeUncheckedCreateInput>
+  }
+
+  /**
+   * Charge createMany
+   */
+  export type ChargeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Charges.
+     */
+    data: ChargeCreateManyInput | ChargeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Charge createManyAndReturn
+   */
+  export type ChargeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * The data used to create many Charges.
+     */
+    data: ChargeCreateManyInput | ChargeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Charge update
+   */
+  export type ChargeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Charge.
+     */
+    data: XOR<ChargeUpdateInput, ChargeUncheckedUpdateInput>
+    /**
+     * Choose, which Charge to update.
+     */
+    where: ChargeWhereUniqueInput
+  }
+
+  /**
+   * Charge updateMany
+   */
+  export type ChargeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Charges.
+     */
+    data: XOR<ChargeUpdateManyMutationInput, ChargeUncheckedUpdateManyInput>
+    /**
+     * Filter which Charges to update
+     */
+    where?: ChargeWhereInput
+    /**
+     * Limit how many Charges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Charge updateManyAndReturn
+   */
+  export type ChargeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * The data used to update Charges.
+     */
+    data: XOR<ChargeUpdateManyMutationInput, ChargeUncheckedUpdateManyInput>
+    /**
+     * Filter which Charges to update
+     */
+    where?: ChargeWhereInput
+    /**
+     * Limit how many Charges to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Charge upsert
+   */
+  export type ChargeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Charge to update in case it exists.
+     */
+    where: ChargeWhereUniqueInput
+    /**
+     * In case the Charge found by the `where` argument doesn't exist, create a new Charge with this data.
+     */
+    create: XOR<ChargeCreateInput, ChargeUncheckedCreateInput>
+    /**
+     * In case the Charge was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChargeUpdateInput, ChargeUncheckedUpdateInput>
+  }
+
+  /**
+   * Charge delete
+   */
+  export type ChargeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+    /**
+     * Filter which Charge to delete.
+     */
+    where: ChargeWhereUniqueInput
+  }
+
+  /**
+   * Charge deleteMany
+   */
+  export type ChargeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Charges to delete
+     */
+    where?: ChargeWhereInput
+    /**
+     * Limit how many Charges to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Charge.energyBill
+   */
+  export type Charge$energyBillArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyBill
+     */
+    select?: EnergyBillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyBill
+     */
+    omit?: EnergyBillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyBillInclude<ExtArgs> | null
+    where?: EnergyBillWhereInput
+  }
+
+  /**
+   * Charge.chargeRule
+   */
+  export type Charge$chargeRuleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChargeRule
+     */
+    select?: ChargeRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChargeRule
+     */
+    omit?: ChargeRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeRuleInclude<ExtArgs> | null
+    where?: ChargeRuleWhereInput
+  }
+
+  /**
+   * Charge.payerUser
+   */
+  export type Charge$payerUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Charge without action
+   */
+  export type ChargeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charge
+     */
+    select?: ChargeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charge
+     */
+    omit?: ChargeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChargeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PayerInvite
+   */
+
+  export type AggregatePayerInvite = {
+    _count: PayerInviteCountAggregateOutputType | null
+    _min: PayerInviteMinAggregateOutputType | null
+    _max: PayerInviteMaxAggregateOutputType | null
+  }
+
+  export type PayerInviteMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    consumerUnitId: string | null
+    name: string | null
+    email: string | null
+    tokenHash: string | null
+    expiresAt: Date | null
+    status: $Enums.PayerInviteStatus | null
+    acceptedAt: Date | null
+    revokedAt: Date | null
+    invitedByUserId: string | null
+    acceptedUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayerInviteMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    consumerUnitId: string | null
+    name: string | null
+    email: string | null
+    tokenHash: string | null
+    expiresAt: Date | null
+    status: $Enums.PayerInviteStatus | null
+    acceptedAt: Date | null
+    revokedAt: Date | null
+    invitedByUserId: string | null
+    acceptedUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayerInviteCountAggregateOutputType = {
+    id: number
+    clientId: number
+    consumerUnitId: number
+    name: number
+    email: number
+    tokenHash: number
+    expiresAt: number
+    status: number
+    acceptedAt: number
+    revokedAt: number
+    invitedByUserId: number
+    acceptedUserId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PayerInviteMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    name?: true
+    email?: true
+    tokenHash?: true
+    expiresAt?: true
+    status?: true
+    acceptedAt?: true
+    revokedAt?: true
+    invitedByUserId?: true
+    acceptedUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayerInviteMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    name?: true
+    email?: true
+    tokenHash?: true
+    expiresAt?: true
+    status?: true
+    acceptedAt?: true
+    revokedAt?: true
+    invitedByUserId?: true
+    acceptedUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayerInviteCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    consumerUnitId?: true
+    name?: true
+    email?: true
+    tokenHash?: true
+    expiresAt?: true
+    status?: true
+    acceptedAt?: true
+    revokedAt?: true
+    invitedByUserId?: true
+    acceptedUserId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PayerInviteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayerInvite to aggregate.
+     */
+    where?: PayerInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayerInvites to fetch.
+     */
+    orderBy?: PayerInviteOrderByWithRelationInput | PayerInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PayerInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayerInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayerInvites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PayerInvites
+    **/
+    _count?: true | PayerInviteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PayerInviteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PayerInviteMaxAggregateInputType
+  }
+
+  export type GetPayerInviteAggregateType<T extends PayerInviteAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayerInvite]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayerInvite[P]>
+      : GetScalarType<T[P], AggregatePayerInvite[P]>
+  }
+
+
+
+
+  export type PayerInviteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayerInviteWhereInput
+    orderBy?: PayerInviteOrderByWithAggregationInput | PayerInviteOrderByWithAggregationInput[]
+    by: PayerInviteScalarFieldEnum[] | PayerInviteScalarFieldEnum
+    having?: PayerInviteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PayerInviteCountAggregateInputType | true
+    _min?: PayerInviteMinAggregateInputType
+    _max?: PayerInviteMaxAggregateInputType
+  }
+
+  export type PayerInviteGroupByOutputType = {
+    id: string
+    clientId: string
+    consumerUnitId: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date
+    status: $Enums.PayerInviteStatus
+    acceptedAt: Date | null
+    revokedAt: Date | null
+    invitedByUserId: string | null
+    acceptedUserId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PayerInviteCountAggregateOutputType | null
+    _min: PayerInviteMinAggregateOutputType | null
+    _max: PayerInviteMaxAggregateOutputType | null
+  }
+
+  type GetPayerInviteGroupByPayload<T extends PayerInviteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PayerInviteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PayerInviteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PayerInviteGroupByOutputType[P]>
+            : GetScalarType<T[P], PayerInviteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PayerInviteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    name?: boolean
+    email?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    status?: boolean
+    acceptedAt?: boolean
+    revokedAt?: boolean
+    invitedByUserId?: boolean
+    acceptedUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payerInvite"]>
+
+  export type PayerInviteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    name?: boolean
+    email?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    status?: boolean
+    acceptedAt?: boolean
+    revokedAt?: boolean
+    invitedByUserId?: boolean
+    acceptedUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payerInvite"]>
+
+  export type PayerInviteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    name?: boolean
+    email?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    status?: boolean
+    acceptedAt?: boolean
+    revokedAt?: boolean
+    invitedByUserId?: boolean
+    acceptedUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payerInvite"]>
+
+  export type PayerInviteSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    consumerUnitId?: boolean
+    name?: boolean
+    email?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    status?: boolean
+    acceptedAt?: boolean
+    revokedAt?: boolean
+    invitedByUserId?: boolean
+    acceptedUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PayerInviteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "consumerUnitId" | "name" | "email" | "tokenHash" | "expiresAt" | "status" | "acceptedAt" | "revokedAt" | "invitedByUserId" | "acceptedUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["payerInvite"]>
+  export type PayerInviteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+  export type PayerInviteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+  export type PayerInviteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+    consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
+  }
+
+  export type $PayerInvitePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PayerInvite"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+      consumerUnit: Prisma.$ConsumerUnitPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      consumerUnitId: string
+      name: string
+      email: string
+      tokenHash: string
+      expiresAt: Date
+      status: $Enums.PayerInviteStatus
+      acceptedAt: Date | null
+      revokedAt: Date | null
+      invitedByUserId: string | null
+      acceptedUserId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["payerInvite"]>
+    composites: {}
+  }
+
+  type PayerInviteGetPayload<S extends boolean | null | undefined | PayerInviteDefaultArgs> = $Result.GetResult<Prisma.$PayerInvitePayload, S>
+
+  type PayerInviteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PayerInviteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PayerInviteCountAggregateInputType | true
+    }
+
+  export interface PayerInviteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PayerInvite'], meta: { name: 'PayerInvite' } }
+    /**
+     * Find zero or one PayerInvite that matches the filter.
+     * @param {PayerInviteFindUniqueArgs} args - Arguments to find a PayerInvite
+     * @example
+     * // Get one PayerInvite
+     * const payerInvite = await prisma.payerInvite.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PayerInviteFindUniqueArgs>(args: SelectSubset<T, PayerInviteFindUniqueArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PayerInvite that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PayerInviteFindUniqueOrThrowArgs} args - Arguments to find a PayerInvite
+     * @example
+     * // Get one PayerInvite
+     * const payerInvite = await prisma.payerInvite.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PayerInviteFindUniqueOrThrowArgs>(args: SelectSubset<T, PayerInviteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayerInvite that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayerInviteFindFirstArgs} args - Arguments to find a PayerInvite
+     * @example
+     * // Get one PayerInvite
+     * const payerInvite = await prisma.payerInvite.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PayerInviteFindFirstArgs>(args?: SelectSubset<T, PayerInviteFindFirstArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayerInvite that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayerInviteFindFirstOrThrowArgs} args - Arguments to find a PayerInvite
+     * @example
+     * // Get one PayerInvite
+     * const payerInvite = await prisma.payerInvite.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PayerInviteFindFirstOrThrowArgs>(args?: SelectSubset<T, PayerInviteFindFirstOrThrowArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PayerInvites that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayerInviteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PayerInvites
+     * const payerInvites = await prisma.payerInvite.findMany()
+     * 
+     * // Get first 10 PayerInvites
+     * const payerInvites = await prisma.payerInvite.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const payerInviteWithIdOnly = await prisma.payerInvite.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PayerInviteFindManyArgs>(args?: SelectSubset<T, PayerInviteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PayerInvite.
+     * @param {PayerInviteCreateArgs} args - Arguments to create a PayerInvite.
+     * @example
+     * // Create one PayerInvite
+     * const PayerInvite = await prisma.payerInvite.create({
+     *   data: {
+     *     // ... data to create a PayerInvite
+     *   }
+     * })
+     * 
+     */
+    create<T extends PayerInviteCreateArgs>(args: SelectSubset<T, PayerInviteCreateArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PayerInvites.
+     * @param {PayerInviteCreateManyArgs} args - Arguments to create many PayerInvites.
+     * @example
+     * // Create many PayerInvites
+     * const payerInvite = await prisma.payerInvite.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PayerInviteCreateManyArgs>(args?: SelectSubset<T, PayerInviteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PayerInvites and returns the data saved in the database.
+     * @param {PayerInviteCreateManyAndReturnArgs} args - Arguments to create many PayerInvites.
+     * @example
+     * // Create many PayerInvites
+     * const payerInvite = await prisma.payerInvite.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PayerInvites and only return the `id`
+     * const payerInviteWithIdOnly = await prisma.payerInvite.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PayerInviteCreateManyAndReturnArgs>(args?: SelectSubset<T, PayerInviteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PayerInvite.
+     * @param {PayerInviteDeleteArgs} args - Arguments to delete one PayerInvite.
+     * @example
+     * // Delete one PayerInvite
+     * const PayerInvite = await prisma.payerInvite.delete({
+     *   where: {
+     *     // ... filter to delete one PayerInvite
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PayerInviteDeleteArgs>(args: SelectSubset<T, PayerInviteDeleteArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PayerInvite.
+     * @param {PayerInviteUpdateArgs} args - Arguments to update one PayerInvite.
+     * @example
+     * // Update one PayerInvite
+     * const payerInvite = await prisma.payerInvite.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PayerInviteUpdateArgs>(args: SelectSubset<T, PayerInviteUpdateArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PayerInvites.
+     * @param {PayerInviteDeleteManyArgs} args - Arguments to filter PayerInvites to delete.
+     * @example
+     * // Delete a few PayerInvites
+     * const { count } = await prisma.payerInvite.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PayerInviteDeleteManyArgs>(args?: SelectSubset<T, PayerInviteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayerInvites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayerInviteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PayerInvites
+     * const payerInvite = await prisma.payerInvite.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PayerInviteUpdateManyArgs>(args: SelectSubset<T, PayerInviteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayerInvites and returns the data updated in the database.
+     * @param {PayerInviteUpdateManyAndReturnArgs} args - Arguments to update many PayerInvites.
+     * @example
+     * // Update many PayerInvites
+     * const payerInvite = await prisma.payerInvite.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PayerInvites and only return the `id`
+     * const payerInviteWithIdOnly = await prisma.payerInvite.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PayerInviteUpdateManyAndReturnArgs>(args: SelectSubset<T, PayerInviteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PayerInvite.
+     * @param {PayerInviteUpsertArgs} args - Arguments to update or create a PayerInvite.
+     * @example
+     * // Update or create a PayerInvite
+     * const payerInvite = await prisma.payerInvite.upsert({
+     *   create: {
+     *     // ... data to create a PayerInvite
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PayerInvite we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PayerInviteUpsertArgs>(args: SelectSubset<T, PayerInviteUpsertArgs<ExtArgs>>): Prisma__PayerInviteClient<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PayerInvites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayerInviteCountArgs} args - Arguments to filter PayerInvites to count.
+     * @example
+     * // Count the number of PayerInvites
+     * const count = await prisma.payerInvite.count({
+     *   where: {
+     *     // ... the filter for the PayerInvites we want to count
+     *   }
+     * })
+    **/
+    count<T extends PayerInviteCountArgs>(
+      args?: Subset<T, PayerInviteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PayerInviteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PayerInvite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayerInviteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PayerInviteAggregateArgs>(args: Subset<T, PayerInviteAggregateArgs>): Prisma.PrismaPromise<GetPayerInviteAggregateType<T>>
+
+    /**
+     * Group by PayerInvite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayerInviteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PayerInviteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PayerInviteGroupByArgs['orderBy'] }
+        : { orderBy?: PayerInviteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PayerInviteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPayerInviteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PayerInvite model
+   */
+  readonly fields: PayerInviteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PayerInvite.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PayerInviteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    consumerUnit<T extends ConsumerUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsumerUnitDefaultArgs<ExtArgs>>): Prisma__ConsumerUnitClient<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PayerInvite model
+   */
+  interface PayerInviteFieldRefs {
+    readonly id: FieldRef<"PayerInvite", 'String'>
+    readonly clientId: FieldRef<"PayerInvite", 'String'>
+    readonly consumerUnitId: FieldRef<"PayerInvite", 'String'>
+    readonly name: FieldRef<"PayerInvite", 'String'>
+    readonly email: FieldRef<"PayerInvite", 'String'>
+    readonly tokenHash: FieldRef<"PayerInvite", 'String'>
+    readonly expiresAt: FieldRef<"PayerInvite", 'DateTime'>
+    readonly status: FieldRef<"PayerInvite", 'PayerInviteStatus'>
+    readonly acceptedAt: FieldRef<"PayerInvite", 'DateTime'>
+    readonly revokedAt: FieldRef<"PayerInvite", 'DateTime'>
+    readonly invitedByUserId: FieldRef<"PayerInvite", 'String'>
+    readonly acceptedUserId: FieldRef<"PayerInvite", 'String'>
+    readonly createdAt: FieldRef<"PayerInvite", 'DateTime'>
+    readonly updatedAt: FieldRef<"PayerInvite", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PayerInvite findUnique
+   */
+  export type PayerInviteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which PayerInvite to fetch.
+     */
+    where: PayerInviteWhereUniqueInput
+  }
+
+  /**
+   * PayerInvite findUniqueOrThrow
+   */
+  export type PayerInviteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which PayerInvite to fetch.
+     */
+    where: PayerInviteWhereUniqueInput
+  }
+
+  /**
+   * PayerInvite findFirst
+   */
+  export type PayerInviteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which PayerInvite to fetch.
+     */
+    where?: PayerInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayerInvites to fetch.
+     */
+    orderBy?: PayerInviteOrderByWithRelationInput | PayerInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayerInvites.
+     */
+    cursor?: PayerInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayerInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayerInvites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayerInvites.
+     */
+    distinct?: PayerInviteScalarFieldEnum | PayerInviteScalarFieldEnum[]
+  }
+
+  /**
+   * PayerInvite findFirstOrThrow
+   */
+  export type PayerInviteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which PayerInvite to fetch.
+     */
+    where?: PayerInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayerInvites to fetch.
+     */
+    orderBy?: PayerInviteOrderByWithRelationInput | PayerInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayerInvites.
+     */
+    cursor?: PayerInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayerInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayerInvites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayerInvites.
+     */
+    distinct?: PayerInviteScalarFieldEnum | PayerInviteScalarFieldEnum[]
+  }
+
+  /**
+   * PayerInvite findMany
+   */
+  export type PayerInviteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which PayerInvites to fetch.
+     */
+    where?: PayerInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayerInvites to fetch.
+     */
+    orderBy?: PayerInviteOrderByWithRelationInput | PayerInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PayerInvites.
+     */
+    cursor?: PayerInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayerInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayerInvites.
+     */
+    skip?: number
+    distinct?: PayerInviteScalarFieldEnum | PayerInviteScalarFieldEnum[]
+  }
+
+  /**
+   * PayerInvite create
+   */
+  export type PayerInviteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PayerInvite.
+     */
+    data: XOR<PayerInviteCreateInput, PayerInviteUncheckedCreateInput>
+  }
+
+  /**
+   * PayerInvite createMany
+   */
+  export type PayerInviteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PayerInvites.
+     */
+    data: PayerInviteCreateManyInput | PayerInviteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PayerInvite createManyAndReturn
+   */
+  export type PayerInviteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * The data used to create many PayerInvites.
+     */
+    data: PayerInviteCreateManyInput | PayerInviteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PayerInvite update
+   */
+  export type PayerInviteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PayerInvite.
+     */
+    data: XOR<PayerInviteUpdateInput, PayerInviteUncheckedUpdateInput>
+    /**
+     * Choose, which PayerInvite to update.
+     */
+    where: PayerInviteWhereUniqueInput
+  }
+
+  /**
+   * PayerInvite updateMany
+   */
+  export type PayerInviteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PayerInvites.
+     */
+    data: XOR<PayerInviteUpdateManyMutationInput, PayerInviteUncheckedUpdateManyInput>
+    /**
+     * Filter which PayerInvites to update
+     */
+    where?: PayerInviteWhereInput
+    /**
+     * Limit how many PayerInvites to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayerInvite updateManyAndReturn
+   */
+  export type PayerInviteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * The data used to update PayerInvites.
+     */
+    data: XOR<PayerInviteUpdateManyMutationInput, PayerInviteUncheckedUpdateManyInput>
+    /**
+     * Filter which PayerInvites to update
+     */
+    where?: PayerInviteWhereInput
+    /**
+     * Limit how many PayerInvites to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PayerInvite upsert
+   */
+  export type PayerInviteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PayerInvite to update in case it exists.
+     */
+    where: PayerInviteWhereUniqueInput
+    /**
+     * In case the PayerInvite found by the `where` argument doesn't exist, create a new PayerInvite with this data.
+     */
+    create: XOR<PayerInviteCreateInput, PayerInviteUncheckedCreateInput>
+    /**
+     * In case the PayerInvite was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PayerInviteUpdateInput, PayerInviteUncheckedUpdateInput>
+  }
+
+  /**
+   * PayerInvite delete
+   */
+  export type PayerInviteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
+    /**
+     * Filter which PayerInvite to delete.
+     */
+    where: PayerInviteWhereUniqueInput
+  }
+
+  /**
+   * PayerInvite deleteMany
+   */
+  export type PayerInviteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayerInvites to delete
+     */
+    where?: PayerInviteWhereInput
+    /**
+     * Limit how many PayerInvites to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayerInvite without action
+   */
+  export type PayerInviteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayerInvite
+     */
+    select?: PayerInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayerInvite
+     */
+    omit?: PayerInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayerInviteInclude<ExtArgs> | null
   }
 
 
@@ -22510,6 +27032,74 @@ export namespace Prisma {
   export type EnergyBillScalarFieldEnum = (typeof EnergyBillScalarFieldEnum)[keyof typeof EnergyBillScalarFieldEnum]
 
 
+  export const ChargeRuleScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    consumerUnitId: 'consumerUnitId',
+    mode: 'mode',
+    pricePerKwh: 'pricePerKwh',
+    fixedAmount: 'fixedAmount',
+    dueDayOfMonth: 'dueDayOfMonth',
+    isActive: 'isActive',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type ChargeRuleScalarFieldEnum = (typeof ChargeRuleScalarFieldEnum)[keyof typeof ChargeRuleScalarFieldEnum]
+
+
+  export const ChargeScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    consumerUnitId: 'consumerUnitId',
+    energyBillId: 'energyBillId',
+    chargeRuleId: 'chargeRuleId',
+    referenceMonth: 'referenceMonth',
+    referenceYear: 'referenceYear',
+    mode: 'mode',
+    basisKwh: 'basisKwh',
+    pricePerKwh: 'pricePerKwh',
+    amount: 'amount',
+    dueDate: 'dueDate',
+    status: 'status',
+    payerUserId: 'payerUserId',
+    payerName: 'payerName',
+    payerEmail: 'payerEmail',
+    sentAt: 'sentAt',
+    paidAt: 'paidAt',
+    canceledAt: 'canceledAt',
+    confirmedByUserId: 'confirmedByUserId',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type ChargeScalarFieldEnum = (typeof ChargeScalarFieldEnum)[keyof typeof ChargeScalarFieldEnum]
+
+
+  export const PayerInviteScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    consumerUnitId: 'consumerUnitId',
+    name: 'name',
+    email: 'email',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    status: 'status',
+    acceptedAt: 'acceptedAt',
+    revokedAt: 'revokedAt',
+    invitedByUserId: 'invitedByUserId',
+    acceptedUserId: 'acceptedUserId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PayerInviteScalarFieldEnum = (typeof PayerInviteScalarFieldEnum)[keyof typeof PayerInviteScalarFieldEnum]
+
+
   export const InvestmentScalarFieldEnum: {
     id: 'id',
     clientId: 'clientId',
@@ -22744,6 +27334,48 @@ export namespace Prisma {
    */
   export type ListEnumBillPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillPaymentStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'ChargeMode'
+   */
+  export type EnumChargeModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChargeMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChargeMode[]'
+   */
+  export type ListEnumChargeModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChargeMode[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChargeStatus'
+   */
+  export type EnumChargeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChargeStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChargeStatus[]'
+   */
+  export type ListEnumChargeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChargeStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PayerInviteStatus'
+   */
+  export type EnumPayerInviteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayerInviteStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PayerInviteStatus[]'
+   */
+  export type ListEnumPayerInviteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayerInviteStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -22767,6 +27399,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     payerUnits?: ConsumerUnitListRelationFilter
+    payerCharges?: ChargeListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -22784,6 +27417,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     client?: ClientOrderByWithRelationInput
     payerUnits?: ConsumerUnitOrderByRelationAggregateInput
+    payerCharges?: ChargeOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -22804,6 +27438,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     payerUnits?: ConsumerUnitListRelationFilter
+    payerCharges?: ChargeListRelationFilter
   }, "id" | "email" | "resetPasswordToken">
 
   export type UserOrderByWithAggregationInput = {
@@ -22872,6 +27507,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitListRelationFilter
     creditAllocations?: CreditAllocationListRelationFilter
     investments?: InvestmentListRelationFilter
+    chargeRules?: ChargeRuleListRelationFilter
+    charges?: ChargeListRelationFilter
+    payerInvites?: PayerInviteListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
@@ -22901,6 +27539,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitOrderByRelationAggregateInput
     creditAllocations?: CreditAllocationOrderByRelationAggregateInput
     investments?: InvestmentOrderByRelationAggregateInput
+    chargeRules?: ChargeRuleOrderByRelationAggregateInput
+    charges?: ChargeOrderByRelationAggregateInput
+    payerInvites?: PayerInviteOrderByRelationAggregateInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
@@ -22933,6 +27574,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitListRelationFilter
     creditAllocations?: CreditAllocationListRelationFilter
     investments?: InvestmentListRelationFilter
+    chargeRules?: ChargeRuleListRelationFilter
+    charges?: ChargeListRelationFilter
+    payerInvites?: PayerInviteListRelationFilter
   }, "id" | "email" | "cpfCnpj" | "indicationCode">
 
   export type ClientOrderByWithAggregationInput = {
@@ -23348,6 +27992,9 @@ export namespace Prisma {
     energyBills?: EnergyBillListRelationFilter
     allocationsFrom?: CreditAllocationListRelationFilter
     allocationsTo?: CreditAllocationListRelationFilter
+    chargeRule?: XOR<ChargeRuleNullableScalarRelationFilter, ChargeRuleWhereInput> | null
+    charges?: ChargeListRelationFilter
+    payerInvites?: PayerInviteListRelationFilter
   }
 
   export type ConsumerUnitOrderByWithRelationInput = {
@@ -23381,6 +28028,9 @@ export namespace Prisma {
     energyBills?: EnergyBillOrderByRelationAggregateInput
     allocationsFrom?: CreditAllocationOrderByRelationAggregateInput
     allocationsTo?: CreditAllocationOrderByRelationAggregateInput
+    chargeRule?: ChargeRuleOrderByWithRelationInput
+    charges?: ChargeOrderByRelationAggregateInput
+    payerInvites?: PayerInviteOrderByRelationAggregateInput
   }
 
   export type ConsumerUnitWhereUniqueInput = Prisma.AtLeast<{
@@ -23417,6 +28067,9 @@ export namespace Prisma {
     energyBills?: EnergyBillListRelationFilter
     allocationsFrom?: CreditAllocationListRelationFilter
     allocationsTo?: CreditAllocationListRelationFilter
+    chargeRule?: XOR<ChargeRuleNullableScalarRelationFilter, ChargeRuleWhereInput> | null
+    charges?: ChargeListRelationFilter
+    payerInvites?: PayerInviteListRelationFilter
   }, "id">
 
   export type ConsumerUnitOrderByWithAggregationInput = {
@@ -24265,6 +28918,7 @@ export namespace Prisma {
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
     consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    charges?: ChargeListRelationFilter
   }
 
   export type EnergyBillOrderByWithRelationInput = {
@@ -24344,6 +28998,7 @@ export namespace Prisma {
     client?: ClientOrderByWithRelationInput
     plant?: PlantOrderByWithRelationInput
     consumerUnit?: ConsumerUnitOrderByWithRelationInput
+    charges?: ChargeOrderByRelationAggregateInput
   }
 
   export type EnergyBillWhereUniqueInput = Prisma.AtLeast<{
@@ -24427,6 +29082,7 @@ export namespace Prisma {
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
     consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    charges?: ChargeListRelationFilter
   }, "id" | "consumerUnitId_referenceMonth_referenceYear">
 
   export type EnergyBillOrderByWithAggregationInput = {
@@ -24589,6 +29245,372 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
   }
 
+  export type ChargeRuleWhereInput = {
+    AND?: ChargeRuleWhereInput | ChargeRuleWhereInput[]
+    OR?: ChargeRuleWhereInput[]
+    NOT?: ChargeRuleWhereInput | ChargeRuleWhereInput[]
+    id?: StringFilter<"ChargeRule"> | string
+    clientId?: StringFilter<"ChargeRule"> | string
+    consumerUnitId?: StringFilter<"ChargeRule"> | string
+    mode?: EnumChargeModeFilter<"ChargeRule"> | $Enums.ChargeMode
+    pricePerKwh?: DecimalNullableFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalNullableFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: IntNullableFilter<"ChargeRule"> | number | null
+    isActive?: BoolFilter<"ChargeRule"> | boolean
+    notes?: StringNullableFilter<"ChargeRule"> | string | null
+    createdAt?: DateTimeFilter<"ChargeRule"> | Date | string
+    updatedAt?: DateTimeFilter<"ChargeRule"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ChargeRule"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    charges?: ChargeListRelationFilter
+  }
+
+  export type ChargeRuleOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    mode?: SortOrder
+    pricePerKwh?: SortOrderInput | SortOrder
+    fixedAmount?: SortOrderInput | SortOrder
+    dueDayOfMonth?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+    consumerUnit?: ConsumerUnitOrderByWithRelationInput
+    charges?: ChargeOrderByRelationAggregateInput
+  }
+
+  export type ChargeRuleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    consumerUnitId?: string
+    AND?: ChargeRuleWhereInput | ChargeRuleWhereInput[]
+    OR?: ChargeRuleWhereInput[]
+    NOT?: ChargeRuleWhereInput | ChargeRuleWhereInput[]
+    clientId?: StringFilter<"ChargeRule"> | string
+    mode?: EnumChargeModeFilter<"ChargeRule"> | $Enums.ChargeMode
+    pricePerKwh?: DecimalNullableFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalNullableFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: IntNullableFilter<"ChargeRule"> | number | null
+    isActive?: BoolFilter<"ChargeRule"> | boolean
+    notes?: StringNullableFilter<"ChargeRule"> | string | null
+    createdAt?: DateTimeFilter<"ChargeRule"> | Date | string
+    updatedAt?: DateTimeFilter<"ChargeRule"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ChargeRule"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    charges?: ChargeListRelationFilter
+  }, "id" | "consumerUnitId">
+
+  export type ChargeRuleOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    mode?: SortOrder
+    pricePerKwh?: SortOrderInput | SortOrder
+    fixedAmount?: SortOrderInput | SortOrder
+    dueDayOfMonth?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: ChargeRuleCountOrderByAggregateInput
+    _avg?: ChargeRuleAvgOrderByAggregateInput
+    _max?: ChargeRuleMaxOrderByAggregateInput
+    _min?: ChargeRuleMinOrderByAggregateInput
+    _sum?: ChargeRuleSumOrderByAggregateInput
+  }
+
+  export type ChargeRuleScalarWhereWithAggregatesInput = {
+    AND?: ChargeRuleScalarWhereWithAggregatesInput | ChargeRuleScalarWhereWithAggregatesInput[]
+    OR?: ChargeRuleScalarWhereWithAggregatesInput[]
+    NOT?: ChargeRuleScalarWhereWithAggregatesInput | ChargeRuleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ChargeRule"> | string
+    clientId?: StringWithAggregatesFilter<"ChargeRule"> | string
+    consumerUnitId?: StringWithAggregatesFilter<"ChargeRule"> | string
+    mode?: EnumChargeModeWithAggregatesFilter<"ChargeRule"> | $Enums.ChargeMode
+    pricePerKwh?: DecimalNullableWithAggregatesFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalNullableWithAggregatesFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: IntNullableWithAggregatesFilter<"ChargeRule"> | number | null
+    isActive?: BoolWithAggregatesFilter<"ChargeRule"> | boolean
+    notes?: StringNullableWithAggregatesFilter<"ChargeRule"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ChargeRule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ChargeRule"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"ChargeRule"> | Date | string | null
+  }
+
+  export type ChargeWhereInput = {
+    AND?: ChargeWhereInput | ChargeWhereInput[]
+    OR?: ChargeWhereInput[]
+    NOT?: ChargeWhereInput | ChargeWhereInput[]
+    id?: StringFilter<"Charge"> | string
+    clientId?: StringFilter<"Charge"> | string
+    consumerUnitId?: StringFilter<"Charge"> | string
+    energyBillId?: StringNullableFilter<"Charge"> | string | null
+    chargeRuleId?: StringNullableFilter<"Charge"> | string | null
+    referenceMonth?: IntFilter<"Charge"> | number
+    referenceYear?: IntFilter<"Charge"> | number
+    mode?: EnumChargeModeFilter<"Charge"> | $Enums.ChargeMode
+    basisKwh?: DecimalNullableFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: DecimalNullableFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFilter<"Charge"> | Decimal | DecimalJsLike | number | string
+    dueDate?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    status?: EnumChargeStatusFilter<"Charge"> | $Enums.ChargeStatus
+    payerUserId?: StringNullableFilter<"Charge"> | string | null
+    payerName?: StringNullableFilter<"Charge"> | string | null
+    payerEmail?: StringNullableFilter<"Charge"> | string | null
+    sentAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    canceledAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    confirmedByUserId?: StringNullableFilter<"Charge"> | string | null
+    notes?: StringNullableFilter<"Charge"> | string | null
+    createdAt?: DateTimeFilter<"Charge"> | Date | string
+    updatedAt?: DateTimeFilter<"Charge"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    energyBill?: XOR<EnergyBillNullableScalarRelationFilter, EnergyBillWhereInput> | null
+    chargeRule?: XOR<ChargeRuleNullableScalarRelationFilter, ChargeRuleWhereInput> | null
+    payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ChargeOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    energyBillId?: SortOrderInput | SortOrder
+    chargeRuleId?: SortOrderInput | SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    mode?: SortOrder
+    basisKwh?: SortOrderInput | SortOrder
+    pricePerKwh?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    payerUserId?: SortOrderInput | SortOrder
+    payerName?: SortOrderInput | SortOrder
+    payerEmail?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    canceledAt?: SortOrderInput | SortOrder
+    confirmedByUserId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+    consumerUnit?: ConsumerUnitOrderByWithRelationInput
+    energyBill?: EnergyBillOrderByWithRelationInput
+    chargeRule?: ChargeRuleOrderByWithRelationInput
+    payerUser?: UserOrderByWithRelationInput
+  }
+
+  export type ChargeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    consumerUnitId_referenceYear_referenceMonth?: ChargeConsumerUnitIdReferenceYearReferenceMonthCompoundUniqueInput
+    AND?: ChargeWhereInput | ChargeWhereInput[]
+    OR?: ChargeWhereInput[]
+    NOT?: ChargeWhereInput | ChargeWhereInput[]
+    clientId?: StringFilter<"Charge"> | string
+    consumerUnitId?: StringFilter<"Charge"> | string
+    energyBillId?: StringNullableFilter<"Charge"> | string | null
+    chargeRuleId?: StringNullableFilter<"Charge"> | string | null
+    referenceMonth?: IntFilter<"Charge"> | number
+    referenceYear?: IntFilter<"Charge"> | number
+    mode?: EnumChargeModeFilter<"Charge"> | $Enums.ChargeMode
+    basisKwh?: DecimalNullableFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: DecimalNullableFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFilter<"Charge"> | Decimal | DecimalJsLike | number | string
+    dueDate?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    status?: EnumChargeStatusFilter<"Charge"> | $Enums.ChargeStatus
+    payerUserId?: StringNullableFilter<"Charge"> | string | null
+    payerName?: StringNullableFilter<"Charge"> | string | null
+    payerEmail?: StringNullableFilter<"Charge"> | string | null
+    sentAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    canceledAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    confirmedByUserId?: StringNullableFilter<"Charge"> | string | null
+    notes?: StringNullableFilter<"Charge"> | string | null
+    createdAt?: DateTimeFilter<"Charge"> | Date | string
+    updatedAt?: DateTimeFilter<"Charge"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+    energyBill?: XOR<EnergyBillNullableScalarRelationFilter, EnergyBillWhereInput> | null
+    chargeRule?: XOR<ChargeRuleNullableScalarRelationFilter, ChargeRuleWhereInput> | null
+    payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "consumerUnitId_referenceYear_referenceMonth">
+
+  export type ChargeOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    energyBillId?: SortOrderInput | SortOrder
+    chargeRuleId?: SortOrderInput | SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    mode?: SortOrder
+    basisKwh?: SortOrderInput | SortOrder
+    pricePerKwh?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    payerUserId?: SortOrderInput | SortOrder
+    payerName?: SortOrderInput | SortOrder
+    payerEmail?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    canceledAt?: SortOrderInput | SortOrder
+    confirmedByUserId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: ChargeCountOrderByAggregateInput
+    _avg?: ChargeAvgOrderByAggregateInput
+    _max?: ChargeMaxOrderByAggregateInput
+    _min?: ChargeMinOrderByAggregateInput
+    _sum?: ChargeSumOrderByAggregateInput
+  }
+
+  export type ChargeScalarWhereWithAggregatesInput = {
+    AND?: ChargeScalarWhereWithAggregatesInput | ChargeScalarWhereWithAggregatesInput[]
+    OR?: ChargeScalarWhereWithAggregatesInput[]
+    NOT?: ChargeScalarWhereWithAggregatesInput | ChargeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Charge"> | string
+    clientId?: StringWithAggregatesFilter<"Charge"> | string
+    consumerUnitId?: StringWithAggregatesFilter<"Charge"> | string
+    energyBillId?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    chargeRuleId?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    referenceMonth?: IntWithAggregatesFilter<"Charge"> | number
+    referenceYear?: IntWithAggregatesFilter<"Charge"> | number
+    mode?: EnumChargeModeWithAggregatesFilter<"Charge"> | $Enums.ChargeMode
+    basisKwh?: DecimalNullableWithAggregatesFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: DecimalNullableWithAggregatesFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalWithAggregatesFilter<"Charge"> | Decimal | DecimalJsLike | number | string
+    dueDate?: DateTimeNullableWithAggregatesFilter<"Charge"> | Date | string | null
+    status?: EnumChargeStatusWithAggregatesFilter<"Charge"> | $Enums.ChargeStatus
+    payerUserId?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    payerName?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    payerEmail?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"Charge"> | Date | string | null
+    paidAt?: DateTimeNullableWithAggregatesFilter<"Charge"> | Date | string | null
+    canceledAt?: DateTimeNullableWithAggregatesFilter<"Charge"> | Date | string | null
+    confirmedByUserId?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Charge"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Charge"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Charge"> | Date | string | null
+  }
+
+  export type PayerInviteWhereInput = {
+    AND?: PayerInviteWhereInput | PayerInviteWhereInput[]
+    OR?: PayerInviteWhereInput[]
+    NOT?: PayerInviteWhereInput | PayerInviteWhereInput[]
+    id?: StringFilter<"PayerInvite"> | string
+    clientId?: StringFilter<"PayerInvite"> | string
+    consumerUnitId?: StringFilter<"PayerInvite"> | string
+    name?: StringFilter<"PayerInvite"> | string
+    email?: StringFilter<"PayerInvite"> | string
+    tokenHash?: StringFilter<"PayerInvite"> | string
+    expiresAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    status?: EnumPayerInviteStatusFilter<"PayerInvite"> | $Enums.PayerInviteStatus
+    acceptedAt?: DateTimeNullableFilter<"PayerInvite"> | Date | string | null
+    revokedAt?: DateTimeNullableFilter<"PayerInvite"> | Date | string | null
+    invitedByUserId?: StringNullableFilter<"PayerInvite"> | string | null
+    acceptedUserId?: StringNullableFilter<"PayerInvite"> | string | null
+    createdAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    updatedAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+  }
+
+  export type PayerInviteOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
+    acceptedAt?: SortOrderInput | SortOrder
+    revokedAt?: SortOrderInput | SortOrder
+    invitedByUserId?: SortOrderInput | SortOrder
+    acceptedUserId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    client?: ClientOrderByWithRelationInput
+    consumerUnit?: ConsumerUnitOrderByWithRelationInput
+  }
+
+  export type PayerInviteWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tokenHash?: string
+    AND?: PayerInviteWhereInput | PayerInviteWhereInput[]
+    OR?: PayerInviteWhereInput[]
+    NOT?: PayerInviteWhereInput | PayerInviteWhereInput[]
+    clientId?: StringFilter<"PayerInvite"> | string
+    consumerUnitId?: StringFilter<"PayerInvite"> | string
+    name?: StringFilter<"PayerInvite"> | string
+    email?: StringFilter<"PayerInvite"> | string
+    expiresAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    status?: EnumPayerInviteStatusFilter<"PayerInvite"> | $Enums.PayerInviteStatus
+    acceptedAt?: DateTimeNullableFilter<"PayerInvite"> | Date | string | null
+    revokedAt?: DateTimeNullableFilter<"PayerInvite"> | Date | string | null
+    invitedByUserId?: StringNullableFilter<"PayerInvite"> | string | null
+    acceptedUserId?: StringNullableFilter<"PayerInvite"> | string | null
+    createdAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    updatedAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+    consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
+  }, "id" | "tokenHash">
+
+  export type PayerInviteOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
+    acceptedAt?: SortOrderInput | SortOrder
+    revokedAt?: SortOrderInput | SortOrder
+    invitedByUserId?: SortOrderInput | SortOrder
+    acceptedUserId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PayerInviteCountOrderByAggregateInput
+    _max?: PayerInviteMaxOrderByAggregateInput
+    _min?: PayerInviteMinOrderByAggregateInput
+  }
+
+  export type PayerInviteScalarWhereWithAggregatesInput = {
+    AND?: PayerInviteScalarWhereWithAggregatesInput | PayerInviteScalarWhereWithAggregatesInput[]
+    OR?: PayerInviteScalarWhereWithAggregatesInput[]
+    NOT?: PayerInviteScalarWhereWithAggregatesInput | PayerInviteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PayerInvite"> | string
+    clientId?: StringWithAggregatesFilter<"PayerInvite"> | string
+    consumerUnitId?: StringWithAggregatesFilter<"PayerInvite"> | string
+    name?: StringWithAggregatesFilter<"PayerInvite"> | string
+    email?: StringWithAggregatesFilter<"PayerInvite"> | string
+    tokenHash?: StringWithAggregatesFilter<"PayerInvite"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"PayerInvite"> | Date | string
+    status?: EnumPayerInviteStatusWithAggregatesFilter<"PayerInvite"> | $Enums.PayerInviteStatus
+    acceptedAt?: DateTimeNullableWithAggregatesFilter<"PayerInvite"> | Date | string | null
+    revokedAt?: DateTimeNullableWithAggregatesFilter<"PayerInvite"> | Date | string | null
+    invitedByUserId?: StringNullableWithAggregatesFilter<"PayerInvite"> | string | null
+    acceptedUserId?: StringNullableWithAggregatesFilter<"PayerInvite"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PayerInvite"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PayerInvite"> | Date | string
+  }
+
   export type InvestmentWhereInput = {
     AND?: InvestmentWhereInput | InvestmentWhereInput[]
     OR?: InvestmentWhereInput[]
@@ -24680,6 +29702,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutUsersInput
     payerUnits?: ConsumerUnitCreateNestedManyWithoutPayerUserInput
+    payerCharges?: ChargeCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -24696,6 +29719,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     payerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPayerUserInput
+    payerCharges?: ChargeUncheckedCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserUpdateInput = {
@@ -24712,6 +29736,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutUsersNestedInput
     payerUnits?: ConsumerUnitUpdateManyWithoutPayerUserNestedInput
+    payerCharges?: ChargeUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -24728,6 +29753,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPayerUserNestedInput
+    payerCharges?: ChargeUncheckedUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -24801,6 +29827,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
@@ -24830,6 +29859,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
@@ -24859,6 +29891,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
@@ -24888,6 +29923,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
@@ -25385,6 +30423,9 @@ export namespace Prisma {
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUncheckedCreateInput = {
@@ -25415,6 +30456,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUpdateInput = {
@@ -25445,6 +30489,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateInput = {
@@ -25475,6 +30522,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitCreateManyInput = {
@@ -26406,6 +31456,7 @@ export namespace Prisma {
     client: ClientCreateNestedOneWithoutEnergyBillsInput
     plant: PlantCreateNestedOneWithoutEnergyBillsInput
     consumerUnit: ConsumerUnitCreateNestedOneWithoutEnergyBillsInput
+    charges?: ChargeCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillUncheckedCreateInput = {
@@ -26482,6 +31533,7 @@ export namespace Prisma {
     barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillUpdateInput = {
@@ -26558,6 +31610,7 @@ export namespace Prisma {
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
     plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
     consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput
+    charges?: ChargeUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillUncheckedUpdateInput = {
@@ -26634,6 +31687,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillCreateManyInput = {
@@ -26861,6 +31915,414 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ChargeRuleCreateInput = {
+    id?: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargeRulesInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargeRuleInput
+    charges?: ChargeCreateNestedManyWithoutChargeRuleInput
+  }
+
+  export type ChargeRuleUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    charges?: ChargeUncheckedCreateNestedManyWithoutChargeRuleInput
+  }
+
+  export type ChargeRuleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargeRulesNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargeRuleNestedInput
+    charges?: ChargeUpdateManyWithoutChargeRuleNestedInput
+  }
+
+  export type ChargeRuleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    charges?: ChargeUncheckedUpdateManyWithoutChargeRuleNestedInput
+  }
+
+  export type ChargeRuleCreateManyInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeRuleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeRuleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeCreateInput = {
+    id?: string
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargesInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargesInput
+    energyBill?: EnergyBillCreateNestedOneWithoutChargesInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutChargesInput
+    payerUser?: UserCreateNestedOneWithoutPayerChargesInput
+  }
+
+  export type ChargeUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargesNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargesNestedInput
+    energyBill?: EnergyBillUpdateOneWithoutChargesNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutChargesNestedInput
+    payerUser?: UserUpdateOneWithoutPayerChargesNestedInput
+  }
+
+  export type ChargeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeCreateManyInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayerInviteCreateInput = {
+    id?: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutPayerInvitesInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutPayerInvitesInput
+  }
+
+  export type PayerInviteUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayerInviteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutPayerInvitesNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutPayerInvitesNestedInput
+  }
+
+  export type PayerInviteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayerInviteCreateManyInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayerInviteUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayerInviteUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InvestmentCreateInput = {
     id?: string
     totalInvested: Decimal | DecimalJsLike | number | string
@@ -27020,12 +32482,22 @@ export namespace Prisma {
     none?: ConsumerUnitWhereInput
   }
 
+  export type ChargeListRelationFilter = {
+    every?: ChargeWhereInput
+    some?: ChargeWhereInput
+    none?: ChargeWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type ConsumerUnitOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChargeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27231,6 +32703,18 @@ export namespace Prisma {
     none?: InvestmentWhereInput
   }
 
+  export type ChargeRuleListRelationFilter = {
+    every?: ChargeRuleWhereInput
+    some?: ChargeRuleWhereInput
+    none?: ChargeRuleWhereInput
+  }
+
+  export type PayerInviteListRelationFilter = {
+    every?: PayerInviteWhereInput
+    some?: PayerInviteWhereInput
+    none?: PayerInviteWhereInput
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -27268,6 +32752,14 @@ export namespace Prisma {
   }
 
   export type InvestmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChargeRuleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PayerInviteOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27694,6 +33186,11 @@ export namespace Prisma {
   export type PlantScalarRelationFilter = {
     is?: PlantWhereInput
     isNot?: PlantWhereInput
+  }
+
+  export type ChargeRuleNullableScalarRelationFilter = {
+    is?: ChargeRuleWhereInput | null
+    isNot?: ChargeRuleWhereInput | null
   }
 
   export type ConsumerUnitCountOrderByAggregateInput = {
@@ -28638,6 +34135,273 @@ export namespace Prisma {
     _max?: NestedEnumBillPaymentStatusFilter<$PrismaModel>
   }
 
+  export type EnumChargeModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeMode | EnumChargeModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeModeFilter<$PrismaModel> | $Enums.ChargeMode
+  }
+
+  export type ChargeRuleCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    mode?: SortOrder
+    pricePerKwh?: SortOrder
+    fixedAmount?: SortOrder
+    dueDayOfMonth?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ChargeRuleAvgOrderByAggregateInput = {
+    pricePerKwh?: SortOrder
+    fixedAmount?: SortOrder
+    dueDayOfMonth?: SortOrder
+  }
+
+  export type ChargeRuleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    mode?: SortOrder
+    pricePerKwh?: SortOrder
+    fixedAmount?: SortOrder
+    dueDayOfMonth?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ChargeRuleMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    mode?: SortOrder
+    pricePerKwh?: SortOrder
+    fixedAmount?: SortOrder
+    dueDayOfMonth?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ChargeRuleSumOrderByAggregateInput = {
+    pricePerKwh?: SortOrder
+    fixedAmount?: SortOrder
+    dueDayOfMonth?: SortOrder
+  }
+
+  export type EnumChargeModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeMode | EnumChargeModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeModeWithAggregatesFilter<$PrismaModel> | $Enums.ChargeMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChargeModeFilter<$PrismaModel>
+    _max?: NestedEnumChargeModeFilter<$PrismaModel>
+  }
+
+  export type EnumChargeStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeStatus | EnumChargeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeStatusFilter<$PrismaModel> | $Enums.ChargeStatus
+  }
+
+  export type EnergyBillNullableScalarRelationFilter = {
+    is?: EnergyBillWhereInput | null
+    isNot?: EnergyBillWhereInput | null
+  }
+
+  export type ChargeConsumerUnitIdReferenceYearReferenceMonthCompoundUniqueInput = {
+    consumerUnitId: string
+    referenceYear: number
+    referenceMonth: number
+  }
+
+  export type ChargeCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    energyBillId?: SortOrder
+    chargeRuleId?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    mode?: SortOrder
+    basisKwh?: SortOrder
+    pricePerKwh?: SortOrder
+    amount?: SortOrder
+    dueDate?: SortOrder
+    status?: SortOrder
+    payerUserId?: SortOrder
+    payerName?: SortOrder
+    payerEmail?: SortOrder
+    sentAt?: SortOrder
+    paidAt?: SortOrder
+    canceledAt?: SortOrder
+    confirmedByUserId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ChargeAvgOrderByAggregateInput = {
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    basisKwh?: SortOrder
+    pricePerKwh?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type ChargeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    energyBillId?: SortOrder
+    chargeRuleId?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    mode?: SortOrder
+    basisKwh?: SortOrder
+    pricePerKwh?: SortOrder
+    amount?: SortOrder
+    dueDate?: SortOrder
+    status?: SortOrder
+    payerUserId?: SortOrder
+    payerName?: SortOrder
+    payerEmail?: SortOrder
+    sentAt?: SortOrder
+    paidAt?: SortOrder
+    canceledAt?: SortOrder
+    confirmedByUserId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ChargeMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    energyBillId?: SortOrder
+    chargeRuleId?: SortOrder
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    mode?: SortOrder
+    basisKwh?: SortOrder
+    pricePerKwh?: SortOrder
+    amount?: SortOrder
+    dueDate?: SortOrder
+    status?: SortOrder
+    payerUserId?: SortOrder
+    payerName?: SortOrder
+    payerEmail?: SortOrder
+    sentAt?: SortOrder
+    paidAt?: SortOrder
+    canceledAt?: SortOrder
+    confirmedByUserId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type ChargeSumOrderByAggregateInput = {
+    referenceMonth?: SortOrder
+    referenceYear?: SortOrder
+    basisKwh?: SortOrder
+    pricePerKwh?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type EnumChargeStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeStatus | EnumChargeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeStatusWithAggregatesFilter<$PrismaModel> | $Enums.ChargeStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChargeStatusFilter<$PrismaModel>
+    _max?: NestedEnumChargeStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPayerInviteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayerInviteStatus | EnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPayerInviteStatusFilter<$PrismaModel> | $Enums.PayerInviteStatus
+  }
+
+  export type PayerInviteCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
+    acceptedAt?: SortOrder
+    revokedAt?: SortOrder
+    invitedByUserId?: SortOrder
+    acceptedUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayerInviteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
+    acceptedAt?: SortOrder
+    revokedAt?: SortOrder
+    invitedByUserId?: SortOrder
+    acceptedUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayerInviteMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    consumerUnitId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
+    acceptedAt?: SortOrder
+    revokedAt?: SortOrder
+    invitedByUserId?: SortOrder
+    acceptedUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumPayerInviteStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayerInviteStatus | EnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPayerInviteStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayerInviteStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPayerInviteStatusFilter<$PrismaModel>
+    _max?: NestedEnumPayerInviteStatusFilter<$PrismaModel>
+  }
+
   export type InvestmentCountOrderByAggregateInput = {
     id?: SortOrder
     clientId?: SortOrder
@@ -28705,11 +34469,25 @@ export namespace Prisma {
     connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
   }
 
+  export type ChargeCreateNestedManyWithoutPayerUserInput = {
+    create?: XOR<ChargeCreateWithoutPayerUserInput, ChargeUncheckedCreateWithoutPayerUserInput> | ChargeCreateWithoutPayerUserInput[] | ChargeUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutPayerUserInput | ChargeCreateOrConnectWithoutPayerUserInput[]
+    createMany?: ChargeCreateManyPayerUserInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
   export type ConsumerUnitUncheckedCreateNestedManyWithoutPayerUserInput = {
     create?: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput> | ConsumerUnitCreateWithoutPayerUserInput[] | ConsumerUnitUncheckedCreateWithoutPayerUserInput[]
     connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerUserInput | ConsumerUnitCreateOrConnectWithoutPayerUserInput[]
     createMany?: ConsumerUnitCreateManyPayerUserInputEnvelope
     connect?: ConsumerUnitWhereUniqueInput | ConsumerUnitWhereUniqueInput[]
+  }
+
+  export type ChargeUncheckedCreateNestedManyWithoutPayerUserInput = {
+    create?: XOR<ChargeCreateWithoutPayerUserInput, ChargeUncheckedCreateWithoutPayerUserInput> | ChargeCreateWithoutPayerUserInput[] | ChargeUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutPayerUserInput | ChargeCreateOrConnectWithoutPayerUserInput[]
+    createMany?: ChargeCreateManyPayerUserInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -28766,6 +34544,20 @@ export namespace Prisma {
     deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
   }
 
+  export type ChargeUpdateManyWithoutPayerUserNestedInput = {
+    create?: XOR<ChargeCreateWithoutPayerUserInput, ChargeUncheckedCreateWithoutPayerUserInput> | ChargeCreateWithoutPayerUserInput[] | ChargeUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutPayerUserInput | ChargeCreateOrConnectWithoutPayerUserInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutPayerUserInput | ChargeUpsertWithWhereUniqueWithoutPayerUserInput[]
+    createMany?: ChargeCreateManyPayerUserInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutPayerUserInput | ChargeUpdateWithWhereUniqueWithoutPayerUserInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutPayerUserInput | ChargeUpdateManyWithWhereWithoutPayerUserInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
   export type ConsumerUnitUncheckedUpdateManyWithoutPayerUserNestedInput = {
     create?: XOR<ConsumerUnitCreateWithoutPayerUserInput, ConsumerUnitUncheckedCreateWithoutPayerUserInput> | ConsumerUnitCreateWithoutPayerUserInput[] | ConsumerUnitUncheckedCreateWithoutPayerUserInput[]
     connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerUserInput | ConsumerUnitCreateOrConnectWithoutPayerUserInput[]
@@ -28778,6 +34570,20 @@ export namespace Prisma {
     update?: ConsumerUnitUpdateWithWhereUniqueWithoutPayerUserInput | ConsumerUnitUpdateWithWhereUniqueWithoutPayerUserInput[]
     updateMany?: ConsumerUnitUpdateManyWithWhereWithoutPayerUserInput | ConsumerUnitUpdateManyWithWhereWithoutPayerUserInput[]
     deleteMany?: ConsumerUnitScalarWhereInput | ConsumerUnitScalarWhereInput[]
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutPayerUserNestedInput = {
+    create?: XOR<ChargeCreateWithoutPayerUserInput, ChargeUncheckedCreateWithoutPayerUserInput> | ChargeCreateWithoutPayerUserInput[] | ChargeUncheckedCreateWithoutPayerUserInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutPayerUserInput | ChargeCreateOrConnectWithoutPayerUserInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutPayerUserInput | ChargeUpsertWithWhereUniqueWithoutPayerUserInput[]
+    createMany?: ChargeCreateManyPayerUserInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutPayerUserInput | ChargeUpdateWithWhereUniqueWithoutPayerUserInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutPayerUserInput | ChargeUpdateManyWithWhereWithoutPayerUserInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutClientInput = {
@@ -28864,6 +34670,27 @@ export namespace Prisma {
     connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
   }
 
+  export type ChargeRuleCreateNestedManyWithoutClientInput = {
+    create?: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput> | ChargeRuleCreateWithoutClientInput[] | ChargeRuleUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutClientInput | ChargeRuleCreateOrConnectWithoutClientInput[]
+    createMany?: ChargeRuleCreateManyClientInputEnvelope
+    connect?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+  }
+
+  export type ChargeCreateNestedManyWithoutClientInput = {
+    create?: XOR<ChargeCreateWithoutClientInput, ChargeUncheckedCreateWithoutClientInput> | ChargeCreateWithoutClientInput[] | ChargeUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutClientInput | ChargeCreateOrConnectWithoutClientInput[]
+    createMany?: ChargeCreateManyClientInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
+  export type PayerInviteCreateNestedManyWithoutClientInput = {
+    create?: XOR<PayerInviteCreateWithoutClientInput, PayerInviteUncheckedCreateWithoutClientInput> | PayerInviteCreateWithoutClientInput[] | PayerInviteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutClientInput | PayerInviteCreateOrConnectWithoutClientInput[]
+    createMany?: PayerInviteCreateManyClientInputEnvelope
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutClientInput = {
     create?: XOR<UserCreateWithoutClientInput, UserUncheckedCreateWithoutClientInput> | UserCreateWithoutClientInput[] | UserUncheckedCreateWithoutClientInput[]
     connectOrCreate?: UserCreateOrConnectWithoutClientInput | UserCreateOrConnectWithoutClientInput[]
@@ -28946,6 +34773,27 @@ export namespace Prisma {
     connectOrCreate?: InvestmentCreateOrConnectWithoutClientInput | InvestmentCreateOrConnectWithoutClientInput[]
     createMany?: InvestmentCreateManyClientInputEnvelope
     connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+  }
+
+  export type ChargeRuleUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput> | ChargeRuleCreateWithoutClientInput[] | ChargeRuleUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutClientInput | ChargeRuleCreateOrConnectWithoutClientInput[]
+    createMany?: ChargeRuleCreateManyClientInputEnvelope
+    connect?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+  }
+
+  export type ChargeUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<ChargeCreateWithoutClientInput, ChargeUncheckedCreateWithoutClientInput> | ChargeCreateWithoutClientInput[] | ChargeUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutClientInput | ChargeCreateOrConnectWithoutClientInput[]
+    createMany?: ChargeCreateManyClientInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
+  export type PayerInviteUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<PayerInviteCreateWithoutClientInput, PayerInviteUncheckedCreateWithoutClientInput> | PayerInviteCreateWithoutClientInput[] | PayerInviteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutClientInput | PayerInviteCreateOrConnectWithoutClientInput[]
+    createMany?: PayerInviteCreateManyClientInputEnvelope
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -29136,6 +34984,48 @@ export namespace Prisma {
     deleteMany?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
   }
 
+  export type ChargeRuleUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput> | ChargeRuleCreateWithoutClientInput[] | ChargeRuleUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutClientInput | ChargeRuleCreateOrConnectWithoutClientInput[]
+    upsert?: ChargeRuleUpsertWithWhereUniqueWithoutClientInput | ChargeRuleUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ChargeRuleCreateManyClientInputEnvelope
+    set?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    disconnect?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    delete?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    connect?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    update?: ChargeRuleUpdateWithWhereUniqueWithoutClientInput | ChargeRuleUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ChargeRuleUpdateManyWithWhereWithoutClientInput | ChargeRuleUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ChargeRuleScalarWhereInput | ChargeRuleScalarWhereInput[]
+  }
+
+  export type ChargeUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ChargeCreateWithoutClientInput, ChargeUncheckedCreateWithoutClientInput> | ChargeCreateWithoutClientInput[] | ChargeUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutClientInput | ChargeCreateOrConnectWithoutClientInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutClientInput | ChargeUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ChargeCreateManyClientInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutClientInput | ChargeUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutClientInput | ChargeUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type PayerInviteUpdateManyWithoutClientNestedInput = {
+    create?: XOR<PayerInviteCreateWithoutClientInput, PayerInviteUncheckedCreateWithoutClientInput> | PayerInviteCreateWithoutClientInput[] | PayerInviteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutClientInput | PayerInviteCreateOrConnectWithoutClientInput[]
+    upsert?: PayerInviteUpsertWithWhereUniqueWithoutClientInput | PayerInviteUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: PayerInviteCreateManyClientInputEnvelope
+    set?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    disconnect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    delete?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    update?: PayerInviteUpdateWithWhereUniqueWithoutClientInput | PayerInviteUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: PayerInviteUpdateManyWithWhereWithoutClientInput | PayerInviteUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: PayerInviteScalarWhereInput | PayerInviteScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutClientNestedInput = {
     create?: XOR<UserCreateWithoutClientInput, UserUncheckedCreateWithoutClientInput> | UserCreateWithoutClientInput[] | UserUncheckedCreateWithoutClientInput[]
     connectOrCreate?: UserCreateOrConnectWithoutClientInput | UserCreateOrConnectWithoutClientInput[]
@@ -29302,6 +35192,48 @@ export namespace Prisma {
     update?: InvestmentUpdateWithWhereUniqueWithoutClientInput | InvestmentUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: InvestmentUpdateManyWithWhereWithoutClientInput | InvestmentUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
+  }
+
+  export type ChargeRuleUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput> | ChargeRuleCreateWithoutClientInput[] | ChargeRuleUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutClientInput | ChargeRuleCreateOrConnectWithoutClientInput[]
+    upsert?: ChargeRuleUpsertWithWhereUniqueWithoutClientInput | ChargeRuleUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ChargeRuleCreateManyClientInputEnvelope
+    set?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    disconnect?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    delete?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    connect?: ChargeRuleWhereUniqueInput | ChargeRuleWhereUniqueInput[]
+    update?: ChargeRuleUpdateWithWhereUniqueWithoutClientInput | ChargeRuleUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ChargeRuleUpdateManyWithWhereWithoutClientInput | ChargeRuleUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ChargeRuleScalarWhereInput | ChargeRuleScalarWhereInput[]
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<ChargeCreateWithoutClientInput, ChargeUncheckedCreateWithoutClientInput> | ChargeCreateWithoutClientInput[] | ChargeUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutClientInput | ChargeCreateOrConnectWithoutClientInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutClientInput | ChargeUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: ChargeCreateManyClientInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutClientInput | ChargeUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutClientInput | ChargeUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type PayerInviteUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<PayerInviteCreateWithoutClientInput, PayerInviteUncheckedCreateWithoutClientInput> | PayerInviteCreateWithoutClientInput[] | PayerInviteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutClientInput | PayerInviteCreateOrConnectWithoutClientInput[]
+    upsert?: PayerInviteUpsertWithWhereUniqueWithoutClientInput | PayerInviteUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: PayerInviteCreateManyClientInputEnvelope
+    set?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    disconnect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    delete?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    update?: PayerInviteUpdateWithWhereUniqueWithoutClientInput | PayerInviteUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: PayerInviteUpdateManyWithWhereWithoutClientInput | PayerInviteUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: PayerInviteScalarWhereInput | PayerInviteScalarWhereInput[]
   }
 
   export type ClientCreateNestedOneWithoutPlantsInput = {
@@ -29613,6 +35545,26 @@ export namespace Prisma {
     connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
   }
 
+  export type ChargeRuleCreateNestedOneWithoutConsumerUnitInput = {
+    create?: XOR<ChargeRuleCreateWithoutConsumerUnitInput, ChargeRuleUncheckedCreateWithoutConsumerUnitInput>
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutConsumerUnitInput
+    connect?: ChargeRuleWhereUniqueInput
+  }
+
+  export type ChargeCreateNestedManyWithoutConsumerUnitInput = {
+    create?: XOR<ChargeCreateWithoutConsumerUnitInput, ChargeUncheckedCreateWithoutConsumerUnitInput> | ChargeCreateWithoutConsumerUnitInput[] | ChargeUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutConsumerUnitInput | ChargeCreateOrConnectWithoutConsumerUnitInput[]
+    createMany?: ChargeCreateManyConsumerUnitInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
+  export type PayerInviteCreateNestedManyWithoutConsumerUnitInput = {
+    create?: XOR<PayerInviteCreateWithoutConsumerUnitInput, PayerInviteUncheckedCreateWithoutConsumerUnitInput> | PayerInviteCreateWithoutConsumerUnitInput[] | PayerInviteUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutConsumerUnitInput | PayerInviteCreateOrConnectWithoutConsumerUnitInput[]
+    createMany?: PayerInviteCreateManyConsumerUnitInputEnvelope
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+  }
+
   export type EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput = {
     create?: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput> | EnergyBillCreateWithoutConsumerUnitInput[] | EnergyBillUncheckedCreateWithoutConsumerUnitInput[]
     connectOrCreate?: EnergyBillCreateOrConnectWithoutConsumerUnitInput | EnergyBillCreateOrConnectWithoutConsumerUnitInput[]
@@ -29632,6 +35584,26 @@ export namespace Prisma {
     connectOrCreate?: CreditAllocationCreateOrConnectWithoutToInput | CreditAllocationCreateOrConnectWithoutToInput[]
     createMany?: CreditAllocationCreateManyToInputEnvelope
     connect?: CreditAllocationWhereUniqueInput | CreditAllocationWhereUniqueInput[]
+  }
+
+  export type ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput = {
+    create?: XOR<ChargeRuleCreateWithoutConsumerUnitInput, ChargeRuleUncheckedCreateWithoutConsumerUnitInput>
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutConsumerUnitInput
+    connect?: ChargeRuleWhereUniqueInput
+  }
+
+  export type ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput = {
+    create?: XOR<ChargeCreateWithoutConsumerUnitInput, ChargeUncheckedCreateWithoutConsumerUnitInput> | ChargeCreateWithoutConsumerUnitInput[] | ChargeUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutConsumerUnitInput | ChargeCreateOrConnectWithoutConsumerUnitInput[]
+    createMany?: ChargeCreateManyConsumerUnitInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
+  export type PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput = {
+    create?: XOR<PayerInviteCreateWithoutConsumerUnitInput, PayerInviteUncheckedCreateWithoutConsumerUnitInput> | PayerInviteCreateWithoutConsumerUnitInput[] | PayerInviteUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutConsumerUnitInput | PayerInviteCreateOrConnectWithoutConsumerUnitInput[]
+    createMany?: PayerInviteCreateManyConsumerUnitInputEnvelope
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
   }
 
   export type ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput = {
@@ -29702,6 +35674,44 @@ export namespace Prisma {
     deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
   }
 
+  export type ChargeRuleUpdateOneWithoutConsumerUnitNestedInput = {
+    create?: XOR<ChargeRuleCreateWithoutConsumerUnitInput, ChargeRuleUncheckedCreateWithoutConsumerUnitInput>
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutConsumerUnitInput
+    upsert?: ChargeRuleUpsertWithoutConsumerUnitInput
+    disconnect?: ChargeRuleWhereInput | boolean
+    delete?: ChargeRuleWhereInput | boolean
+    connect?: ChargeRuleWhereUniqueInput
+    update?: XOR<XOR<ChargeRuleUpdateToOneWithWhereWithoutConsumerUnitInput, ChargeRuleUpdateWithoutConsumerUnitInput>, ChargeRuleUncheckedUpdateWithoutConsumerUnitInput>
+  }
+
+  export type ChargeUpdateManyWithoutConsumerUnitNestedInput = {
+    create?: XOR<ChargeCreateWithoutConsumerUnitInput, ChargeUncheckedCreateWithoutConsumerUnitInput> | ChargeCreateWithoutConsumerUnitInput[] | ChargeUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutConsumerUnitInput | ChargeCreateOrConnectWithoutConsumerUnitInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutConsumerUnitInput | ChargeUpsertWithWhereUniqueWithoutConsumerUnitInput[]
+    createMany?: ChargeCreateManyConsumerUnitInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutConsumerUnitInput | ChargeUpdateWithWhereUniqueWithoutConsumerUnitInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutConsumerUnitInput | ChargeUpdateManyWithWhereWithoutConsumerUnitInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type PayerInviteUpdateManyWithoutConsumerUnitNestedInput = {
+    create?: XOR<PayerInviteCreateWithoutConsumerUnitInput, PayerInviteUncheckedCreateWithoutConsumerUnitInput> | PayerInviteCreateWithoutConsumerUnitInput[] | PayerInviteUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutConsumerUnitInput | PayerInviteCreateOrConnectWithoutConsumerUnitInput[]
+    upsert?: PayerInviteUpsertWithWhereUniqueWithoutConsumerUnitInput | PayerInviteUpsertWithWhereUniqueWithoutConsumerUnitInput[]
+    createMany?: PayerInviteCreateManyConsumerUnitInputEnvelope
+    set?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    disconnect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    delete?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    update?: PayerInviteUpdateWithWhereUniqueWithoutConsumerUnitInput | PayerInviteUpdateWithWhereUniqueWithoutConsumerUnitInput[]
+    updateMany?: PayerInviteUpdateManyWithWhereWithoutConsumerUnitInput | PayerInviteUpdateManyWithWhereWithoutConsumerUnitInput[]
+    deleteMany?: PayerInviteScalarWhereInput | PayerInviteScalarWhereInput[]
+  }
+
   export type EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput = {
     create?: XOR<EnergyBillCreateWithoutConsumerUnitInput, EnergyBillUncheckedCreateWithoutConsumerUnitInput> | EnergyBillCreateWithoutConsumerUnitInput[] | EnergyBillUncheckedCreateWithoutConsumerUnitInput[]
     connectOrCreate?: EnergyBillCreateOrConnectWithoutConsumerUnitInput | EnergyBillCreateOrConnectWithoutConsumerUnitInput[]
@@ -29742,6 +35752,44 @@ export namespace Prisma {
     update?: CreditAllocationUpdateWithWhereUniqueWithoutToInput | CreditAllocationUpdateWithWhereUniqueWithoutToInput[]
     updateMany?: CreditAllocationUpdateManyWithWhereWithoutToInput | CreditAllocationUpdateManyWithWhereWithoutToInput[]
     deleteMany?: CreditAllocationScalarWhereInput | CreditAllocationScalarWhereInput[]
+  }
+
+  export type ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput = {
+    create?: XOR<ChargeRuleCreateWithoutConsumerUnitInput, ChargeRuleUncheckedCreateWithoutConsumerUnitInput>
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutConsumerUnitInput
+    upsert?: ChargeRuleUpsertWithoutConsumerUnitInput
+    disconnect?: ChargeRuleWhereInput | boolean
+    delete?: ChargeRuleWhereInput | boolean
+    connect?: ChargeRuleWhereUniqueInput
+    update?: XOR<XOR<ChargeRuleUpdateToOneWithWhereWithoutConsumerUnitInput, ChargeRuleUpdateWithoutConsumerUnitInput>, ChargeRuleUncheckedUpdateWithoutConsumerUnitInput>
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput = {
+    create?: XOR<ChargeCreateWithoutConsumerUnitInput, ChargeUncheckedCreateWithoutConsumerUnitInput> | ChargeCreateWithoutConsumerUnitInput[] | ChargeUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutConsumerUnitInput | ChargeCreateOrConnectWithoutConsumerUnitInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutConsumerUnitInput | ChargeUpsertWithWhereUniqueWithoutConsumerUnitInput[]
+    createMany?: ChargeCreateManyConsumerUnitInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutConsumerUnitInput | ChargeUpdateWithWhereUniqueWithoutConsumerUnitInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutConsumerUnitInput | ChargeUpdateManyWithWhereWithoutConsumerUnitInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput = {
+    create?: XOR<PayerInviteCreateWithoutConsumerUnitInput, PayerInviteUncheckedCreateWithoutConsumerUnitInput> | PayerInviteCreateWithoutConsumerUnitInput[] | PayerInviteUncheckedCreateWithoutConsumerUnitInput[]
+    connectOrCreate?: PayerInviteCreateOrConnectWithoutConsumerUnitInput | PayerInviteCreateOrConnectWithoutConsumerUnitInput[]
+    upsert?: PayerInviteUpsertWithWhereUniqueWithoutConsumerUnitInput | PayerInviteUpsertWithWhereUniqueWithoutConsumerUnitInput[]
+    createMany?: PayerInviteCreateManyConsumerUnitInputEnvelope
+    set?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    disconnect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    delete?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    connect?: PayerInviteWhereUniqueInput | PayerInviteWhereUniqueInput[]
+    update?: PayerInviteUpdateWithWhereUniqueWithoutConsumerUnitInput | PayerInviteUpdateWithWhereUniqueWithoutConsumerUnitInput[]
+    updateMany?: PayerInviteUpdateManyWithWhereWithoutConsumerUnitInput | PayerInviteUpdateManyWithWhereWithoutConsumerUnitInput[]
+    deleteMany?: PayerInviteScalarWhereInput | PayerInviteScalarWhereInput[]
   }
 
   export type ClientCreateNestedOneWithoutCreditAllocationsInput = {
@@ -29990,6 +36038,20 @@ export namespace Prisma {
     connect?: ConsumerUnitWhereUniqueInput
   }
 
+  export type ChargeCreateNestedManyWithoutEnergyBillInput = {
+    create?: XOR<ChargeCreateWithoutEnergyBillInput, ChargeUncheckedCreateWithoutEnergyBillInput> | ChargeCreateWithoutEnergyBillInput[] | ChargeUncheckedCreateWithoutEnergyBillInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutEnergyBillInput | ChargeCreateOrConnectWithoutEnergyBillInput[]
+    createMany?: ChargeCreateManyEnergyBillInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
+  export type ChargeUncheckedCreateNestedManyWithoutEnergyBillInput = {
+    create?: XOR<ChargeCreateWithoutEnergyBillInput, ChargeUncheckedCreateWithoutEnergyBillInput> | ChargeCreateWithoutEnergyBillInput[] | ChargeUncheckedCreateWithoutEnergyBillInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutEnergyBillInput | ChargeCreateOrConnectWithoutEnergyBillInput[]
+    createMany?: ChargeCreateManyEnergyBillInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
   export type EnumBillPaymentStatusFieldUpdateOperationsInput = {
     set?: $Enums.BillPaymentStatus
   }
@@ -30016,6 +36078,220 @@ export namespace Prisma {
     upsert?: ConsumerUnitUpsertWithoutEnergyBillsInput
     connect?: ConsumerUnitWhereUniqueInput
     update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutEnergyBillsInput, ConsumerUnitUpdateWithoutEnergyBillsInput>, ConsumerUnitUncheckedUpdateWithoutEnergyBillsInput>
+  }
+
+  export type ChargeUpdateManyWithoutEnergyBillNestedInput = {
+    create?: XOR<ChargeCreateWithoutEnergyBillInput, ChargeUncheckedCreateWithoutEnergyBillInput> | ChargeCreateWithoutEnergyBillInput[] | ChargeUncheckedCreateWithoutEnergyBillInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutEnergyBillInput | ChargeCreateOrConnectWithoutEnergyBillInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutEnergyBillInput | ChargeUpsertWithWhereUniqueWithoutEnergyBillInput[]
+    createMany?: ChargeCreateManyEnergyBillInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutEnergyBillInput | ChargeUpdateWithWhereUniqueWithoutEnergyBillInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutEnergyBillInput | ChargeUpdateManyWithWhereWithoutEnergyBillInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput = {
+    create?: XOR<ChargeCreateWithoutEnergyBillInput, ChargeUncheckedCreateWithoutEnergyBillInput> | ChargeCreateWithoutEnergyBillInput[] | ChargeUncheckedCreateWithoutEnergyBillInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutEnergyBillInput | ChargeCreateOrConnectWithoutEnergyBillInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutEnergyBillInput | ChargeUpsertWithWhereUniqueWithoutEnergyBillInput[]
+    createMany?: ChargeCreateManyEnergyBillInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutEnergyBillInput | ChargeUpdateWithWhereUniqueWithoutEnergyBillInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutEnergyBillInput | ChargeUpdateManyWithWhereWithoutEnergyBillInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type ClientCreateNestedOneWithoutChargeRulesInput = {
+    create?: XOR<ClientCreateWithoutChargeRulesInput, ClientUncheckedCreateWithoutChargeRulesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutChargeRulesInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type ConsumerUnitCreateNestedOneWithoutChargeRuleInput = {
+    create?: XOR<ConsumerUnitCreateWithoutChargeRuleInput, ConsumerUnitUncheckedCreateWithoutChargeRuleInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutChargeRuleInput
+    connect?: ConsumerUnitWhereUniqueInput
+  }
+
+  export type ChargeCreateNestedManyWithoutChargeRuleInput = {
+    create?: XOR<ChargeCreateWithoutChargeRuleInput, ChargeUncheckedCreateWithoutChargeRuleInput> | ChargeCreateWithoutChargeRuleInput[] | ChargeUncheckedCreateWithoutChargeRuleInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutChargeRuleInput | ChargeCreateOrConnectWithoutChargeRuleInput[]
+    createMany?: ChargeCreateManyChargeRuleInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
+  export type ChargeUncheckedCreateNestedManyWithoutChargeRuleInput = {
+    create?: XOR<ChargeCreateWithoutChargeRuleInput, ChargeUncheckedCreateWithoutChargeRuleInput> | ChargeCreateWithoutChargeRuleInput[] | ChargeUncheckedCreateWithoutChargeRuleInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutChargeRuleInput | ChargeCreateOrConnectWithoutChargeRuleInput[]
+    createMany?: ChargeCreateManyChargeRuleInputEnvelope
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+  }
+
+  export type EnumChargeModeFieldUpdateOperationsInput = {
+    set?: $Enums.ChargeMode
+  }
+
+  export type ClientUpdateOneRequiredWithoutChargeRulesNestedInput = {
+    create?: XOR<ClientCreateWithoutChargeRulesInput, ClientUncheckedCreateWithoutChargeRulesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutChargeRulesInput
+    upsert?: ClientUpsertWithoutChargeRulesInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutChargeRulesInput, ClientUpdateWithoutChargeRulesInput>, ClientUncheckedUpdateWithoutChargeRulesInput>
+  }
+
+  export type ConsumerUnitUpdateOneRequiredWithoutChargeRuleNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutChargeRuleInput, ConsumerUnitUncheckedCreateWithoutChargeRuleInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutChargeRuleInput
+    upsert?: ConsumerUnitUpsertWithoutChargeRuleInput
+    connect?: ConsumerUnitWhereUniqueInput
+    update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutChargeRuleInput, ConsumerUnitUpdateWithoutChargeRuleInput>, ConsumerUnitUncheckedUpdateWithoutChargeRuleInput>
+  }
+
+  export type ChargeUpdateManyWithoutChargeRuleNestedInput = {
+    create?: XOR<ChargeCreateWithoutChargeRuleInput, ChargeUncheckedCreateWithoutChargeRuleInput> | ChargeCreateWithoutChargeRuleInput[] | ChargeUncheckedCreateWithoutChargeRuleInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutChargeRuleInput | ChargeCreateOrConnectWithoutChargeRuleInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutChargeRuleInput | ChargeUpsertWithWhereUniqueWithoutChargeRuleInput[]
+    createMany?: ChargeCreateManyChargeRuleInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutChargeRuleInput | ChargeUpdateWithWhereUniqueWithoutChargeRuleInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutChargeRuleInput | ChargeUpdateManyWithWhereWithoutChargeRuleInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutChargeRuleNestedInput = {
+    create?: XOR<ChargeCreateWithoutChargeRuleInput, ChargeUncheckedCreateWithoutChargeRuleInput> | ChargeCreateWithoutChargeRuleInput[] | ChargeUncheckedCreateWithoutChargeRuleInput[]
+    connectOrCreate?: ChargeCreateOrConnectWithoutChargeRuleInput | ChargeCreateOrConnectWithoutChargeRuleInput[]
+    upsert?: ChargeUpsertWithWhereUniqueWithoutChargeRuleInput | ChargeUpsertWithWhereUniqueWithoutChargeRuleInput[]
+    createMany?: ChargeCreateManyChargeRuleInputEnvelope
+    set?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    disconnect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    delete?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    connect?: ChargeWhereUniqueInput | ChargeWhereUniqueInput[]
+    update?: ChargeUpdateWithWhereUniqueWithoutChargeRuleInput | ChargeUpdateWithWhereUniqueWithoutChargeRuleInput[]
+    updateMany?: ChargeUpdateManyWithWhereWithoutChargeRuleInput | ChargeUpdateManyWithWhereWithoutChargeRuleInput[]
+    deleteMany?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+  }
+
+  export type ClientCreateNestedOneWithoutChargesInput = {
+    create?: XOR<ClientCreateWithoutChargesInput, ClientUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutChargesInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type ConsumerUnitCreateNestedOneWithoutChargesInput = {
+    create?: XOR<ConsumerUnitCreateWithoutChargesInput, ConsumerUnitUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutChargesInput
+    connect?: ConsumerUnitWhereUniqueInput
+  }
+
+  export type EnergyBillCreateNestedOneWithoutChargesInput = {
+    create?: XOR<EnergyBillCreateWithoutChargesInput, EnergyBillUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutChargesInput
+    connect?: EnergyBillWhereUniqueInput
+  }
+
+  export type ChargeRuleCreateNestedOneWithoutChargesInput = {
+    create?: XOR<ChargeRuleCreateWithoutChargesInput, ChargeRuleUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutChargesInput
+    connect?: ChargeRuleWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPayerChargesInput = {
+    create?: XOR<UserCreateWithoutPayerChargesInput, UserUncheckedCreateWithoutPayerChargesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPayerChargesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumChargeStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ChargeStatus
+  }
+
+  export type ClientUpdateOneRequiredWithoutChargesNestedInput = {
+    create?: XOR<ClientCreateWithoutChargesInput, ClientUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutChargesInput
+    upsert?: ClientUpsertWithoutChargesInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutChargesInput, ClientUpdateWithoutChargesInput>, ClientUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type ConsumerUnitUpdateOneRequiredWithoutChargesNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutChargesInput, ConsumerUnitUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutChargesInput
+    upsert?: ConsumerUnitUpsertWithoutChargesInput
+    connect?: ConsumerUnitWhereUniqueInput
+    update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutChargesInput, ConsumerUnitUpdateWithoutChargesInput>, ConsumerUnitUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type EnergyBillUpdateOneWithoutChargesNestedInput = {
+    create?: XOR<EnergyBillCreateWithoutChargesInput, EnergyBillUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: EnergyBillCreateOrConnectWithoutChargesInput
+    upsert?: EnergyBillUpsertWithoutChargesInput
+    disconnect?: EnergyBillWhereInput | boolean
+    delete?: EnergyBillWhereInput | boolean
+    connect?: EnergyBillWhereUniqueInput
+    update?: XOR<XOR<EnergyBillUpdateToOneWithWhereWithoutChargesInput, EnergyBillUpdateWithoutChargesInput>, EnergyBillUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type ChargeRuleUpdateOneWithoutChargesNestedInput = {
+    create?: XOR<ChargeRuleCreateWithoutChargesInput, ChargeRuleUncheckedCreateWithoutChargesInput>
+    connectOrCreate?: ChargeRuleCreateOrConnectWithoutChargesInput
+    upsert?: ChargeRuleUpsertWithoutChargesInput
+    disconnect?: ChargeRuleWhereInput | boolean
+    delete?: ChargeRuleWhereInput | boolean
+    connect?: ChargeRuleWhereUniqueInput
+    update?: XOR<XOR<ChargeRuleUpdateToOneWithWhereWithoutChargesInput, ChargeRuleUpdateWithoutChargesInput>, ChargeRuleUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type UserUpdateOneWithoutPayerChargesNestedInput = {
+    create?: XOR<UserCreateWithoutPayerChargesInput, UserUncheckedCreateWithoutPayerChargesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPayerChargesInput
+    upsert?: UserUpsertWithoutPayerChargesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPayerChargesInput, UserUpdateWithoutPayerChargesInput>, UserUncheckedUpdateWithoutPayerChargesInput>
+  }
+
+  export type ClientCreateNestedOneWithoutPayerInvitesInput = {
+    create?: XOR<ClientCreateWithoutPayerInvitesInput, ClientUncheckedCreateWithoutPayerInvitesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutPayerInvitesInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type ConsumerUnitCreateNestedOneWithoutPayerInvitesInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPayerInvitesInput, ConsumerUnitUncheckedCreateWithoutPayerInvitesInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerInvitesInput
+    connect?: ConsumerUnitWhereUniqueInput
+  }
+
+  export type EnumPayerInviteStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PayerInviteStatus
+  }
+
+  export type ClientUpdateOneRequiredWithoutPayerInvitesNestedInput = {
+    create?: XOR<ClientCreateWithoutPayerInvitesInput, ClientUncheckedCreateWithoutPayerInvitesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutPayerInvitesInput
+    upsert?: ClientUpsertWithoutPayerInvitesInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutPayerInvitesInput, ClientUpdateWithoutPayerInvitesInput>, ClientUncheckedUpdateWithoutPayerInvitesInput>
+  }
+
+  export type ConsumerUnitUpdateOneRequiredWithoutPayerInvitesNestedInput = {
+    create?: XOR<ConsumerUnitCreateWithoutPayerInvitesInput, ConsumerUnitUncheckedCreateWithoutPayerInvitesInput>
+    connectOrCreate?: ConsumerUnitCreateOrConnectWithoutPayerInvitesInput
+    upsert?: ConsumerUnitUpsertWithoutPayerInvitesInput
+    connect?: ConsumerUnitWhereUniqueInput
+    update?: XOR<XOR<ConsumerUnitUpdateToOneWithWhereWithoutPayerInvitesInput, ConsumerUnitUpdateWithoutPayerInvitesInput>, ConsumerUnitUncheckedUpdateWithoutPayerInvitesInput>
   }
 
   export type ClientCreateNestedOneWithoutInvestmentsInput = {
@@ -30444,6 +36720,57 @@ export namespace Prisma {
     _max?: NestedEnumBillPaymentStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumChargeModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeMode | EnumChargeModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeModeFilter<$PrismaModel> | $Enums.ChargeMode
+  }
+
+  export type NestedEnumChargeModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeMode | EnumChargeModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeMode[] | ListEnumChargeModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeModeWithAggregatesFilter<$PrismaModel> | $Enums.ChargeMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChargeModeFilter<$PrismaModel>
+    _max?: NestedEnumChargeModeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumChargeStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeStatus | EnumChargeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeStatusFilter<$PrismaModel> | $Enums.ChargeStatus
+  }
+
+  export type NestedEnumChargeStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChargeStatus | EnumChargeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChargeStatus[] | ListEnumChargeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumChargeStatusWithAggregatesFilter<$PrismaModel> | $Enums.ChargeStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChargeStatusFilter<$PrismaModel>
+    _max?: NestedEnumChargeStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPayerInviteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayerInviteStatus | EnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPayerInviteStatusFilter<$PrismaModel> | $Enums.PayerInviteStatus
+  }
+
+  export type NestedEnumPayerInviteStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayerInviteStatus | EnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PayerInviteStatus[] | ListEnumPayerInviteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPayerInviteStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayerInviteStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPayerInviteStatusFilter<$PrismaModel>
+    _max?: NestedEnumPayerInviteStatusFilter<$PrismaModel>
+  }
+
   export type ClientCreateWithoutUsersInput = {
     id?: string
     name: string
@@ -30470,6 +36797,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutUsersInput = {
@@ -30498,6 +36828,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutUsersInput = {
@@ -30532,6 +36865,9 @@ export namespace Prisma {
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUncheckedCreateWithoutPayerUserInput = {
@@ -30561,6 +36897,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitCreateOrConnectWithoutPayerUserInput = {
@@ -30570,6 +36909,68 @@ export namespace Prisma {
 
   export type ConsumerUnitCreateManyPayerUserInputEnvelope = {
     data: ConsumerUnitCreateManyPayerUserInput | ConsumerUnitCreateManyPayerUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChargeCreateWithoutPayerUserInput = {
+    id?: string
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargesInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargesInput
+    energyBill?: EnergyBillCreateNestedOneWithoutChargesInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutChargesInput
+  }
+
+  export type ChargeUncheckedCreateWithoutPayerUserInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeCreateOrConnectWithoutPayerUserInput = {
+    where: ChargeWhereUniqueInput
+    create: XOR<ChargeCreateWithoutPayerUserInput, ChargeUncheckedCreateWithoutPayerUserInput>
+  }
+
+  export type ChargeCreateManyPayerUserInputEnvelope = {
+    data: ChargeCreateManyPayerUserInput | ChargeCreateManyPayerUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -30610,6 +37011,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutUsersInput = {
@@ -30638,6 +37042,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ConsumerUnitUpsertWithWhereUniqueWithoutPayerUserInput = {
@@ -30686,6 +37093,52 @@ export namespace Prisma {
     rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
   }
 
+  export type ChargeUpsertWithWhereUniqueWithoutPayerUserInput = {
+    where: ChargeWhereUniqueInput
+    update: XOR<ChargeUpdateWithoutPayerUserInput, ChargeUncheckedUpdateWithoutPayerUserInput>
+    create: XOR<ChargeCreateWithoutPayerUserInput, ChargeUncheckedCreateWithoutPayerUserInput>
+  }
+
+  export type ChargeUpdateWithWhereUniqueWithoutPayerUserInput = {
+    where: ChargeWhereUniqueInput
+    data: XOR<ChargeUpdateWithoutPayerUserInput, ChargeUncheckedUpdateWithoutPayerUserInput>
+  }
+
+  export type ChargeUpdateManyWithWhereWithoutPayerUserInput = {
+    where: ChargeScalarWhereInput
+    data: XOR<ChargeUpdateManyMutationInput, ChargeUncheckedUpdateManyWithoutPayerUserInput>
+  }
+
+  export type ChargeScalarWhereInput = {
+    AND?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+    OR?: ChargeScalarWhereInput[]
+    NOT?: ChargeScalarWhereInput | ChargeScalarWhereInput[]
+    id?: StringFilter<"Charge"> | string
+    clientId?: StringFilter<"Charge"> | string
+    consumerUnitId?: StringFilter<"Charge"> | string
+    energyBillId?: StringNullableFilter<"Charge"> | string | null
+    chargeRuleId?: StringNullableFilter<"Charge"> | string | null
+    referenceMonth?: IntFilter<"Charge"> | number
+    referenceYear?: IntFilter<"Charge"> | number
+    mode?: EnumChargeModeFilter<"Charge"> | $Enums.ChargeMode
+    basisKwh?: DecimalNullableFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: DecimalNullableFilter<"Charge"> | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFilter<"Charge"> | Decimal | DecimalJsLike | number | string
+    dueDate?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    status?: EnumChargeStatusFilter<"Charge"> | $Enums.ChargeStatus
+    payerUserId?: StringNullableFilter<"Charge"> | string | null
+    payerName?: StringNullableFilter<"Charge"> | string | null
+    payerEmail?: StringNullableFilter<"Charge"> | string | null
+    sentAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    canceledAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+    confirmedByUserId?: StringNullableFilter<"Charge"> | string | null
+    notes?: StringNullableFilter<"Charge"> | string | null
+    createdAt?: DateTimeFilter<"Charge"> | Date | string
+    updatedAt?: DateTimeFilter<"Charge"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
+  }
+
   export type UserCreateWithoutClientInput = {
     id?: string
     email: string
@@ -30699,6 +37152,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     payerUnits?: ConsumerUnitCreateNestedManyWithoutPayerUserInput
+    payerCharges?: ChargeCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserUncheckedCreateWithoutClientInput = {
@@ -30714,6 +37168,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     payerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPayerUserInput
+    payerCharges?: ChargeUncheckedCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserCreateOrConnectWithoutClientInput = {
@@ -30955,6 +37410,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     plant: PlantCreateNestedOneWithoutEnergyBillsInput
     consumerUnit: ConsumerUnitCreateNestedOneWithoutEnergyBillsInput
+    charges?: ChargeCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillUncheckedCreateWithoutClientInput = {
@@ -31030,6 +37486,7 @@ export namespace Prisma {
     barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillCreateOrConnectWithoutClientInput = {
@@ -31209,6 +37666,9 @@ export namespace Prisma {
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUncheckedCreateWithoutClientInput = {
@@ -31238,6 +37698,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitCreateOrConnectWithoutClientInput = {
@@ -31333,6 +37796,150 @@ export namespace Prisma {
 
   export type InvestmentCreateManyClientInputEnvelope = {
     data: InvestmentCreateManyClientInput | InvestmentCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChargeRuleCreateWithoutClientInput = {
+    id?: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargeRuleInput
+    charges?: ChargeCreateNestedManyWithoutChargeRuleInput
+  }
+
+  export type ChargeRuleUncheckedCreateWithoutClientInput = {
+    id?: string
+    consumerUnitId: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    charges?: ChargeUncheckedCreateNestedManyWithoutChargeRuleInput
+  }
+
+  export type ChargeRuleCreateOrConnectWithoutClientInput = {
+    where: ChargeRuleWhereUniqueInput
+    create: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput>
+  }
+
+  export type ChargeRuleCreateManyClientInputEnvelope = {
+    data: ChargeRuleCreateManyClientInput | ChargeRuleCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChargeCreateWithoutClientInput = {
+    id?: string
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargesInput
+    energyBill?: EnergyBillCreateNestedOneWithoutChargesInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutChargesInput
+    payerUser?: UserCreateNestedOneWithoutPayerChargesInput
+  }
+
+  export type ChargeUncheckedCreateWithoutClientInput = {
+    id?: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeCreateOrConnectWithoutClientInput = {
+    where: ChargeWhereUniqueInput
+    create: XOR<ChargeCreateWithoutClientInput, ChargeUncheckedCreateWithoutClientInput>
+  }
+
+  export type ChargeCreateManyClientInputEnvelope = {
+    data: ChargeCreateManyClientInput | ChargeCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PayerInviteCreateWithoutClientInput = {
+    id?: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutPayerInvitesInput
+  }
+
+  export type PayerInviteUncheckedCreateWithoutClientInput = {
+    id?: string
+    consumerUnitId: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayerInviteCreateOrConnectWithoutClientInput = {
+    where: PayerInviteWhereUniqueInput
+    create: XOR<PayerInviteCreateWithoutClientInput, PayerInviteUncheckedCreateWithoutClientInput>
+  }
+
+  export type PayerInviteCreateManyClientInputEnvelope = {
+    data: PayerInviteCreateManyClientInput | PayerInviteCreateManyClientInput[]
     skipDuplicates?: boolean
   }
 
@@ -31788,6 +38395,92 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Investment"> | Date | string | null
   }
 
+  export type ChargeRuleUpsertWithWhereUniqueWithoutClientInput = {
+    where: ChargeRuleWhereUniqueInput
+    update: XOR<ChargeRuleUpdateWithoutClientInput, ChargeRuleUncheckedUpdateWithoutClientInput>
+    create: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput>
+  }
+
+  export type ChargeRuleUpdateWithWhereUniqueWithoutClientInput = {
+    where: ChargeRuleWhereUniqueInput
+    data: XOR<ChargeRuleUpdateWithoutClientInput, ChargeRuleUncheckedUpdateWithoutClientInput>
+  }
+
+  export type ChargeRuleUpdateManyWithWhereWithoutClientInput = {
+    where: ChargeRuleScalarWhereInput
+    data: XOR<ChargeRuleUpdateManyMutationInput, ChargeRuleUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type ChargeRuleScalarWhereInput = {
+    AND?: ChargeRuleScalarWhereInput | ChargeRuleScalarWhereInput[]
+    OR?: ChargeRuleScalarWhereInput[]
+    NOT?: ChargeRuleScalarWhereInput | ChargeRuleScalarWhereInput[]
+    id?: StringFilter<"ChargeRule"> | string
+    clientId?: StringFilter<"ChargeRule"> | string
+    consumerUnitId?: StringFilter<"ChargeRule"> | string
+    mode?: EnumChargeModeFilter<"ChargeRule"> | $Enums.ChargeMode
+    pricePerKwh?: DecimalNullableFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalNullableFilter<"ChargeRule"> | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: IntNullableFilter<"ChargeRule"> | number | null
+    isActive?: BoolFilter<"ChargeRule"> | boolean
+    notes?: StringNullableFilter<"ChargeRule"> | string | null
+    createdAt?: DateTimeFilter<"ChargeRule"> | Date | string
+    updatedAt?: DateTimeFilter<"ChargeRule"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ChargeRule"> | Date | string | null
+  }
+
+  export type ChargeUpsertWithWhereUniqueWithoutClientInput = {
+    where: ChargeWhereUniqueInput
+    update: XOR<ChargeUpdateWithoutClientInput, ChargeUncheckedUpdateWithoutClientInput>
+    create: XOR<ChargeCreateWithoutClientInput, ChargeUncheckedCreateWithoutClientInput>
+  }
+
+  export type ChargeUpdateWithWhereUniqueWithoutClientInput = {
+    where: ChargeWhereUniqueInput
+    data: XOR<ChargeUpdateWithoutClientInput, ChargeUncheckedUpdateWithoutClientInput>
+  }
+
+  export type ChargeUpdateManyWithWhereWithoutClientInput = {
+    where: ChargeScalarWhereInput
+    data: XOR<ChargeUpdateManyMutationInput, ChargeUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type PayerInviteUpsertWithWhereUniqueWithoutClientInput = {
+    where: PayerInviteWhereUniqueInput
+    update: XOR<PayerInviteUpdateWithoutClientInput, PayerInviteUncheckedUpdateWithoutClientInput>
+    create: XOR<PayerInviteCreateWithoutClientInput, PayerInviteUncheckedCreateWithoutClientInput>
+  }
+
+  export type PayerInviteUpdateWithWhereUniqueWithoutClientInput = {
+    where: PayerInviteWhereUniqueInput
+    data: XOR<PayerInviteUpdateWithoutClientInput, PayerInviteUncheckedUpdateWithoutClientInput>
+  }
+
+  export type PayerInviteUpdateManyWithWhereWithoutClientInput = {
+    where: PayerInviteScalarWhereInput
+    data: XOR<PayerInviteUpdateManyMutationInput, PayerInviteUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type PayerInviteScalarWhereInput = {
+    AND?: PayerInviteScalarWhereInput | PayerInviteScalarWhereInput[]
+    OR?: PayerInviteScalarWhereInput[]
+    NOT?: PayerInviteScalarWhereInput | PayerInviteScalarWhereInput[]
+    id?: StringFilter<"PayerInvite"> | string
+    clientId?: StringFilter<"PayerInvite"> | string
+    consumerUnitId?: StringFilter<"PayerInvite"> | string
+    name?: StringFilter<"PayerInvite"> | string
+    email?: StringFilter<"PayerInvite"> | string
+    tokenHash?: StringFilter<"PayerInvite"> | string
+    expiresAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    status?: EnumPayerInviteStatusFilter<"PayerInvite"> | $Enums.PayerInviteStatus
+    acceptedAt?: DateTimeNullableFilter<"PayerInvite"> | Date | string | null
+    revokedAt?: DateTimeNullableFilter<"PayerInvite"> | Date | string | null
+    invitedByUserId?: StringNullableFilter<"PayerInvite"> | string | null
+    acceptedUserId?: StringNullableFilter<"PayerInvite"> | string | null
+    createdAt?: DateTimeFilter<"PayerInvite"> | Date | string
+    updatedAt?: DateTimeFilter<"PayerInvite"> | Date | string
+  }
+
   export type ClientCreateWithoutPlantsInput = {
     id?: string
     name: string
@@ -31814,6 +38507,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutPlantsInput = {
@@ -31842,6 +38538,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutPlantsInput = {
@@ -31954,6 +38653,9 @@ export namespace Prisma {
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUncheckedCreateWithoutPlantInput = {
@@ -31983,6 +38685,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitCreateOrConnectWithoutPlantInput = {
@@ -32122,6 +38827,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
     consumerUnit: ConsumerUnitCreateNestedOneWithoutEnergyBillsInput
+    charges?: ChargeCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillUncheckedCreateWithoutPlantInput = {
@@ -32197,6 +38903,7 @@ export namespace Prisma {
     barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillCreateOrConnectWithoutPlantInput = {
@@ -32246,6 +38953,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutPlantsInput = {
@@ -32274,6 +38984,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type InverterUpsertWithWhereUniqueWithoutPlantInput = {
@@ -32366,6 +39079,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutInvertersInput = {
@@ -32394,6 +39110,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutInvertersInput = {
@@ -32533,6 +39252,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutInvertersInput = {
@@ -32561,6 +39283,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PlantUpsertWithoutInvertersInput = {
@@ -32686,6 +39411,9 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutConsumerUnitsInput = {
@@ -32714,6 +39442,9 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutConsumerUnitsInput = {
@@ -32734,6 +39465,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutUsersInput
+    payerCharges?: ChargeCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserUncheckedCreateWithoutPayerUnitsInput = {
@@ -32749,6 +39481,7 @@ export namespace Prisma {
     resetPasswordExpires?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payerCharges?: ChargeUncheckedCreateNestedManyWithoutPayerUserInput
   }
 
   export type UserCreateOrConnectWithoutPayerUnitsInput = {
@@ -32886,6 +39619,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
     plant: PlantCreateNestedOneWithoutEnergyBillsInput
+    charges?: ChargeCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillUncheckedCreateWithoutConsumerUnitInput = {
@@ -32961,6 +39695,7 @@ export namespace Prisma {
     barcode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
   }
 
   export type EnergyBillCreateOrConnectWithoutConsumerUnitInput = {
@@ -33081,6 +39816,145 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ChargeRuleCreateWithoutConsumerUnitInput = {
+    id?: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargeRulesInput
+    charges?: ChargeCreateNestedManyWithoutChargeRuleInput
+  }
+
+  export type ChargeRuleUncheckedCreateWithoutConsumerUnitInput = {
+    id?: string
+    clientId: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    charges?: ChargeUncheckedCreateNestedManyWithoutChargeRuleInput
+  }
+
+  export type ChargeRuleCreateOrConnectWithoutConsumerUnitInput = {
+    where: ChargeRuleWhereUniqueInput
+    create: XOR<ChargeRuleCreateWithoutConsumerUnitInput, ChargeRuleUncheckedCreateWithoutConsumerUnitInput>
+  }
+
+  export type ChargeCreateWithoutConsumerUnitInput = {
+    id?: string
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargesInput
+    energyBill?: EnergyBillCreateNestedOneWithoutChargesInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutChargesInput
+    payerUser?: UserCreateNestedOneWithoutPayerChargesInput
+  }
+
+  export type ChargeUncheckedCreateWithoutConsumerUnitInput = {
+    id?: string
+    clientId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeCreateOrConnectWithoutConsumerUnitInput = {
+    where: ChargeWhereUniqueInput
+    create: XOR<ChargeCreateWithoutConsumerUnitInput, ChargeUncheckedCreateWithoutConsumerUnitInput>
+  }
+
+  export type ChargeCreateManyConsumerUnitInputEnvelope = {
+    data: ChargeCreateManyConsumerUnitInput | ChargeCreateManyConsumerUnitInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PayerInviteCreateWithoutConsumerUnitInput = {
+    id?: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutPayerInvitesInput
+  }
+
+  export type PayerInviteUncheckedCreateWithoutConsumerUnitInput = {
+    id?: string
+    clientId: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayerInviteCreateOrConnectWithoutConsumerUnitInput = {
+    where: PayerInviteWhereUniqueInput
+    create: XOR<PayerInviteCreateWithoutConsumerUnitInput, PayerInviteUncheckedCreateWithoutConsumerUnitInput>
+  }
+
+  export type PayerInviteCreateManyConsumerUnitInputEnvelope = {
+    data: PayerInviteCreateManyConsumerUnitInput | PayerInviteCreateManyConsumerUnitInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ClientUpsertWithoutConsumerUnitsInput = {
     update: XOR<ClientUpdateWithoutConsumerUnitsInput, ClientUncheckedUpdateWithoutConsumerUnitsInput>
     create: XOR<ClientCreateWithoutConsumerUnitsInput, ClientUncheckedCreateWithoutConsumerUnitsInput>
@@ -33118,6 +39992,9 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutConsumerUnitsInput = {
@@ -33146,6 +40023,9 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithoutPayerUnitsInput = {
@@ -33172,6 +40052,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutUsersNestedInput
+    payerCharges?: ChargeUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPayerUnitsInput = {
@@ -33187,6 +40068,7 @@ export namespace Prisma {
     resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payerCharges?: ChargeUncheckedUpdateManyWithoutPayerUserNestedInput
   }
 
   export type PlantUpsertWithoutConsumerUnitsInput = {
@@ -33300,6 +40182,79 @@ export namespace Prisma {
     data: XOR<CreditAllocationUpdateManyMutationInput, CreditAllocationUncheckedUpdateManyWithoutToInput>
   }
 
+  export type ChargeRuleUpsertWithoutConsumerUnitInput = {
+    update: XOR<ChargeRuleUpdateWithoutConsumerUnitInput, ChargeRuleUncheckedUpdateWithoutConsumerUnitInput>
+    create: XOR<ChargeRuleCreateWithoutConsumerUnitInput, ChargeRuleUncheckedCreateWithoutConsumerUnitInput>
+    where?: ChargeRuleWhereInput
+  }
+
+  export type ChargeRuleUpdateToOneWithWhereWithoutConsumerUnitInput = {
+    where?: ChargeRuleWhereInput
+    data: XOR<ChargeRuleUpdateWithoutConsumerUnitInput, ChargeRuleUncheckedUpdateWithoutConsumerUnitInput>
+  }
+
+  export type ChargeRuleUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargeRulesNestedInput
+    charges?: ChargeUpdateManyWithoutChargeRuleNestedInput
+  }
+
+  export type ChargeRuleUncheckedUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    charges?: ChargeUncheckedUpdateManyWithoutChargeRuleNestedInput
+  }
+
+  export type ChargeUpsertWithWhereUniqueWithoutConsumerUnitInput = {
+    where: ChargeWhereUniqueInput
+    update: XOR<ChargeUpdateWithoutConsumerUnitInput, ChargeUncheckedUpdateWithoutConsumerUnitInput>
+    create: XOR<ChargeCreateWithoutConsumerUnitInput, ChargeUncheckedCreateWithoutConsumerUnitInput>
+  }
+
+  export type ChargeUpdateWithWhereUniqueWithoutConsumerUnitInput = {
+    where: ChargeWhereUniqueInput
+    data: XOR<ChargeUpdateWithoutConsumerUnitInput, ChargeUncheckedUpdateWithoutConsumerUnitInput>
+  }
+
+  export type ChargeUpdateManyWithWhereWithoutConsumerUnitInput = {
+    where: ChargeScalarWhereInput
+    data: XOR<ChargeUpdateManyMutationInput, ChargeUncheckedUpdateManyWithoutConsumerUnitInput>
+  }
+
+  export type PayerInviteUpsertWithWhereUniqueWithoutConsumerUnitInput = {
+    where: PayerInviteWhereUniqueInput
+    update: XOR<PayerInviteUpdateWithoutConsumerUnitInput, PayerInviteUncheckedUpdateWithoutConsumerUnitInput>
+    create: XOR<PayerInviteCreateWithoutConsumerUnitInput, PayerInviteUncheckedCreateWithoutConsumerUnitInput>
+  }
+
+  export type PayerInviteUpdateWithWhereUniqueWithoutConsumerUnitInput = {
+    where: PayerInviteWhereUniqueInput
+    data: XOR<PayerInviteUpdateWithoutConsumerUnitInput, PayerInviteUncheckedUpdateWithoutConsumerUnitInput>
+  }
+
+  export type PayerInviteUpdateManyWithWhereWithoutConsumerUnitInput = {
+    where: PayerInviteScalarWhereInput
+    data: XOR<PayerInviteUpdateManyMutationInput, PayerInviteUncheckedUpdateManyWithoutConsumerUnitInput>
+  }
+
   export type ClientCreateWithoutCreditAllocationsInput = {
     id?: string
     name: string
@@ -33326,6 +40281,9 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutCreditAllocationsInput = {
@@ -33354,6 +40312,9 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutCreditAllocationsInput = {
@@ -33445,6 +40406,9 @@ export namespace Prisma {
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUncheckedCreateWithoutAllocationsFromInput = {
@@ -33474,6 +40438,9 @@ export namespace Prisma {
     rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitCreateOrConnectWithoutAllocationsFromInput = {
@@ -33508,6 +40475,9 @@ export namespace Prisma {
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUncheckedCreateWithoutAllocationsToInput = {
@@ -33537,6 +40507,9 @@ export namespace Prisma {
     rejectionReason?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitCreateOrConnectWithoutAllocationsToInput = {
@@ -33581,6 +40554,9 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutCreditAllocationsInput = {
@@ -33609,6 +40585,9 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PlantUpsertWithoutCreditAllocationsInput = {
@@ -33712,6 +40691,9 @@ export namespace Prisma {
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateWithoutAllocationsFromInput = {
@@ -33741,6 +40723,9 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUpsertWithoutAllocationsToInput = {
@@ -33781,6 +40766,9 @@ export namespace Prisma {
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateWithoutAllocationsToInput = {
@@ -33810,6 +40798,9 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type InverterCreateWithoutGenerationUnitsInput = {
@@ -33990,6 +40981,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferrerInput = {
@@ -34018,6 +41012,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferrerInput = {
@@ -34051,6 +41048,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutIndicationsAsReferredInput = {
@@ -34079,6 +41079,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutIndicationsAsReferredInput = {
@@ -34123,6 +41126,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferrerInput = {
@@ -34151,6 +41157,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUpsertWithoutIndicationsAsReferredInput = {
@@ -34190,6 +41199,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutIndicationsAsReferredInput = {
@@ -34218,6 +41230,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type OfferRedemptionCreateWithoutOfferInput = {
@@ -34335,6 +41350,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutOfferRedemptionsInput = {
@@ -34363,6 +41381,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutOfferRedemptionsInput = {
@@ -34452,6 +41473,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutOfferRedemptionsInput = {
@@ -34480,6 +41504,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutTransactionsInput = {
@@ -34508,6 +41535,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutTransactionsInput = {
@@ -34536,6 +41566,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutTransactionsInput = {
@@ -34580,6 +41613,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutTransactionsInput = {
@@ -34608,6 +41644,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutConsumptionsInput = {
@@ -34636,6 +41675,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutConsumptionsInput = {
@@ -34664,6 +41706,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutConsumptionsInput = {
@@ -34708,6 +41753,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutConsumptionsInput = {
@@ -34736,6 +41784,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutEnergyBillsInput = {
@@ -34764,6 +41815,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutEnergyBillsInput = {
@@ -34792,6 +41846,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutEnergyBillsInput = {
@@ -34883,6 +41940,9 @@ export namespace Prisma {
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitUncheckedCreateWithoutEnergyBillsInput = {
@@ -34912,11 +41972,76 @@ export namespace Prisma {
     rejectionReason?: string | null
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
   }
 
   export type ConsumerUnitCreateOrConnectWithoutEnergyBillsInput = {
     where: ConsumerUnitWhereUniqueInput
     create: XOR<ConsumerUnitCreateWithoutEnergyBillsInput, ConsumerUnitUncheckedCreateWithoutEnergyBillsInput>
+  }
+
+  export type ChargeCreateWithoutEnergyBillInput = {
+    id?: string
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargesInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargesInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutChargesInput
+    payerUser?: UserCreateNestedOneWithoutPayerChargesInput
+  }
+
+  export type ChargeUncheckedCreateWithoutEnergyBillInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeCreateOrConnectWithoutEnergyBillInput = {
+    where: ChargeWhereUniqueInput
+    create: XOR<ChargeCreateWithoutEnergyBillInput, ChargeUncheckedCreateWithoutEnergyBillInput>
+  }
+
+  export type ChargeCreateManyEnergyBillInputEnvelope = {
+    data: ChargeCreateManyEnergyBillInput | ChargeCreateManyEnergyBillInput[]
+    skipDuplicates?: boolean
   }
 
   export type ClientUpsertWithoutEnergyBillsInput = {
@@ -34956,6 +42081,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutEnergyBillsInput = {
@@ -34984,6 +42112,9 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PlantUpsertWithoutEnergyBillsInput = {
@@ -35087,6 +42218,9 @@ export namespace Prisma {
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateWithoutEnergyBillsInput = {
@@ -35116,6 +42250,1431 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
+  }
+
+  export type ChargeUpsertWithWhereUniqueWithoutEnergyBillInput = {
+    where: ChargeWhereUniqueInput
+    update: XOR<ChargeUpdateWithoutEnergyBillInput, ChargeUncheckedUpdateWithoutEnergyBillInput>
+    create: XOR<ChargeCreateWithoutEnergyBillInput, ChargeUncheckedCreateWithoutEnergyBillInput>
+  }
+
+  export type ChargeUpdateWithWhereUniqueWithoutEnergyBillInput = {
+    where: ChargeWhereUniqueInput
+    data: XOR<ChargeUpdateWithoutEnergyBillInput, ChargeUncheckedUpdateWithoutEnergyBillInput>
+  }
+
+  export type ChargeUpdateManyWithWhereWithoutEnergyBillInput = {
+    where: ChargeScalarWhereInput
+    data: XOR<ChargeUpdateManyMutationInput, ChargeUncheckedUpdateManyWithoutEnergyBillInput>
+  }
+
+  export type ClientCreateWithoutChargeRulesInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutChargeRulesInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutChargeRulesInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutChargeRulesInput, ClientUncheckedCreateWithoutChargeRulesInput>
+  }
+
+  export type ConsumerUnitCreateWithoutChargeRuleInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    validationStatus?: string
+    rejectionReason?: string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutChargeRuleInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    validationStatus?: string
+    rejectionReason?: string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutChargeRuleInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutChargeRuleInput, ConsumerUnitUncheckedCreateWithoutChargeRuleInput>
+  }
+
+  export type ChargeCreateWithoutChargeRuleInput = {
+    id?: string
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargesInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargesInput
+    energyBill?: EnergyBillCreateNestedOneWithoutChargesInput
+    payerUser?: UserCreateNestedOneWithoutPayerChargesInput
+  }
+
+  export type ChargeUncheckedCreateWithoutChargeRuleInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeCreateOrConnectWithoutChargeRuleInput = {
+    where: ChargeWhereUniqueInput
+    create: XOR<ChargeCreateWithoutChargeRuleInput, ChargeUncheckedCreateWithoutChargeRuleInput>
+  }
+
+  export type ChargeCreateManyChargeRuleInputEnvelope = {
+    data: ChargeCreateManyChargeRuleInput | ChargeCreateManyChargeRuleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClientUpsertWithoutChargeRulesInput = {
+    update: XOR<ClientUpdateWithoutChargeRulesInput, ClientUncheckedUpdateWithoutChargeRulesInput>
+    create: XOR<ClientCreateWithoutChargeRulesInput, ClientUncheckedCreateWithoutChargeRulesInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutChargeRulesInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutChargeRulesInput, ClientUncheckedUpdateWithoutChargeRulesInput>
+  }
+
+  export type ClientUpdateWithoutChargeRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutChargeRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ConsumerUnitUpsertWithoutChargeRuleInput = {
+    update: XOR<ConsumerUnitUpdateWithoutChargeRuleInput, ConsumerUnitUncheckedUpdateWithoutChargeRuleInput>
+    create: XOR<ConsumerUnitCreateWithoutChargeRuleInput, ConsumerUnitUncheckedCreateWithoutChargeRuleInput>
+    where?: ConsumerUnitWhereInput
+  }
+
+  export type ConsumerUnitUpdateToOneWithWhereWithoutChargeRuleInput = {
+    where?: ConsumerUnitWhereInput
+    data: XOR<ConsumerUnitUpdateWithoutChargeRuleInput, ConsumerUnitUncheckedUpdateWithoutChargeRuleInput>
+  }
+
+  export type ConsumerUnitUpdateWithoutChargeRuleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutChargeRuleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
+  }
+
+  export type ChargeUpsertWithWhereUniqueWithoutChargeRuleInput = {
+    where: ChargeWhereUniqueInput
+    update: XOR<ChargeUpdateWithoutChargeRuleInput, ChargeUncheckedUpdateWithoutChargeRuleInput>
+    create: XOR<ChargeCreateWithoutChargeRuleInput, ChargeUncheckedCreateWithoutChargeRuleInput>
+  }
+
+  export type ChargeUpdateWithWhereUniqueWithoutChargeRuleInput = {
+    where: ChargeWhereUniqueInput
+    data: XOR<ChargeUpdateWithoutChargeRuleInput, ChargeUncheckedUpdateWithoutChargeRuleInput>
+  }
+
+  export type ChargeUpdateManyWithWhereWithoutChargeRuleInput = {
+    where: ChargeScalarWhereInput
+    data: XOR<ChargeUpdateManyMutationInput, ChargeUncheckedUpdateManyWithoutChargeRuleInput>
+  }
+
+  export type ClientCreateWithoutChargesInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutChargesInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutChargesInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutChargesInput, ClientUncheckedCreateWithoutChargesInput>
+  }
+
+  export type ConsumerUnitCreateWithoutChargesInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    validationStatus?: string
+    rejectionReason?: string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutConsumerUnitInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutChargesInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    validationStatus?: string
+    rejectionReason?: string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutConsumerUnitInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutChargesInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutChargesInput, ConsumerUnitUncheckedCreateWithoutChargesInput>
+  }
+
+  export type EnergyBillCreateWithoutChargesInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutEnergyBillsInput
+    plant: PlantCreateNestedOneWithoutEnergyBillsInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutEnergyBillsInput
+  }
+
+  export type EnergyBillUncheckedCreateWithoutChargesInput = {
+    id?: string
+    billFileUrl?: string | null
+    rawBillFileKey?: string | null
+    rawBillFileSize?: number | null
+    clientId: string
+    plantId: string
+    consumerUnitId: string
+    competenceDate: Date | string
+    referenceMonth: number
+    referenceYear: number
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    instalationNumber?: string | null
+    distributor?: string | null
+    consumerClass?: string | null
+    tariffModality?: string | null
+    connectionType?: string | null
+    tariffPeriod?: string | null
+    billingDays?: number | null
+    readingPeriodFrom?: Date | string | null
+    readingPeriodTo?: Date | string | null
+    creditExpiryDate?: Date | string | null
+    monitoredGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: Decimal | DecimalJsLike | number | string | null
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    energyCost?: Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: Decimal | DecimalJsLike | number | string | null
+    icmsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCost?: Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: string | null
+    tariffFlagCost?: Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: Decimal | DecimalJsLike | number | string | null
+    fineAmount?: Decimal | DecimalJsLike | number | string | null
+    interestAmount?: Decimal | DecimalJsLike | number | string | null
+    otherCharges?: Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: Decimal | DecimalJsLike | number | string | null
+    status?: string | null
+    paymentStatus?: $Enums.BillPaymentStatus
+    dueDate?: Date | string | null
+    paidAt?: Date | string | null
+    amountDue?: Decimal | DecimalJsLike | number | string | null
+    pixCode?: string | null
+    barcode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyBillCreateOrConnectWithoutChargesInput = {
+    where: EnergyBillWhereUniqueInput
+    create: XOR<EnergyBillCreateWithoutChargesInput, EnergyBillUncheckedCreateWithoutChargesInput>
+  }
+
+  export type ChargeRuleCreateWithoutChargesInput = {
+    id?: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    client: ClientCreateNestedOneWithoutChargeRulesInput
+    consumerUnit: ConsumerUnitCreateNestedOneWithoutChargeRuleInput
+  }
+
+  export type ChargeRuleUncheckedCreateWithoutChargesInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeRuleCreateOrConnectWithoutChargesInput = {
+    where: ChargeRuleWhereUniqueInput
+    create: XOR<ChargeRuleCreateWithoutChargesInput, ChargeRuleUncheckedCreateWithoutChargesInput>
+  }
+
+  export type UserCreateWithoutPayerChargesInput = {
+    id?: string
+    email: string
+    name: string
+    password: string
+    roles?: UserCreaterolesInput | string[]
+    permissions?: UserCreatepermissionsInput | string[]
+    isActive?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client?: ClientCreateNestedOneWithoutUsersInput
+    payerUnits?: ConsumerUnitCreateNestedManyWithoutPayerUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPayerChargesInput = {
+    id?: string
+    email: string
+    name: string
+    password: string
+    roles?: UserCreaterolesInput | string[]
+    permissions?: UserCreatepermissionsInput | string[]
+    clientId?: string | null
+    isActive?: boolean
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutPayerUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPayerChargesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPayerChargesInput, UserUncheckedCreateWithoutPayerChargesInput>
+  }
+
+  export type ClientUpsertWithoutChargesInput = {
+    update: XOR<ClientUpdateWithoutChargesInput, ClientUncheckedUpdateWithoutChargesInput>
+    create: XOR<ClientCreateWithoutChargesInput, ClientUncheckedCreateWithoutChargesInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutChargesInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutChargesInput, ClientUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type ClientUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ConsumerUnitUpsertWithoutChargesInput = {
+    update: XOR<ConsumerUnitUpdateWithoutChargesInput, ConsumerUnitUncheckedUpdateWithoutChargesInput>
+    create: XOR<ConsumerUnitCreateWithoutChargesInput, ConsumerUnitUncheckedCreateWithoutChargesInput>
+    where?: ConsumerUnitWhereInput
+  }
+
+  export type ConsumerUnitUpdateToOneWithWhereWithoutChargesInput = {
+    where?: ConsumerUnitWhereInput
+    data: XOR<ConsumerUnitUpdateWithoutChargesInput, ConsumerUnitUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type ConsumerUnitUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
+  }
+
+  export type EnergyBillUpsertWithoutChargesInput = {
+    update: XOR<EnergyBillUpdateWithoutChargesInput, EnergyBillUncheckedUpdateWithoutChargesInput>
+    create: XOR<EnergyBillCreateWithoutChargesInput, EnergyBillUncheckedCreateWithoutChargesInput>
+    where?: EnergyBillWhereInput
+  }
+
+  export type EnergyBillUpdateToOneWithWhereWithoutChargesInput = {
+    where?: EnergyBillWhereInput
+    data: XOR<EnergyBillUpdateWithoutChargesInput, EnergyBillUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type EnergyBillUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput
+  }
+
+  export type EnergyBillUncheckedUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    rawBillFileSize?: NullableIntFieldUpdateOperationsInput | number | null
+    clientId?: StringFieldUpdateOperationsInput | string
+    plantId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    competenceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    instalationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    consumerClass?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffModality?: NullableStringFieldUpdateOperationsInput | string | null
+    connectionType?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    billingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    readingPeriodFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readingPeriodTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creditExpiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    monitoredGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    billedConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    consumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    realConsumptionKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    injectedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    compensatedEnergyKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    previousCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentCreditsKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    expectedGenerationKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    generationEfficiency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingCurrent?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    meterReadingPrevious?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandContractedKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    demandMeasuredKw?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalBillValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    energyCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    availabilityCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    publicLightingCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    icmsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    cofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pisCofinsCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffPerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTeValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffTusdValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    tariffFlag?: NullableStringFieldUpdateOperationsInput | string | null
+    tariffFlagCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sectoralCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fineAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    interestAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherCharges?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedSavings?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    aiAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    aiExplanations?: NullableJsonNullValueInput | InputJsonValue
+    aiRecommendations?: NullableJsonNullValueInput | InputJsonValue
+    alerts?: NullableJsonNullValueInput | InputJsonValue
+    extraCharges?: NullableJsonNullValueInput | InputJsonValue
+    billingItems?: NullableJsonNullValueInput | InputJsonValue
+    creditSummary?: NullableJsonNullValueInput | InputJsonValue
+    billScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumBillPaymentStatusFieldUpdateOperationsInput | $Enums.BillPaymentStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pixCode?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChargeRuleUpsertWithoutChargesInput = {
+    update: XOR<ChargeRuleUpdateWithoutChargesInput, ChargeRuleUncheckedUpdateWithoutChargesInput>
+    create: XOR<ChargeRuleCreateWithoutChargesInput, ChargeRuleUncheckedCreateWithoutChargesInput>
+    where?: ChargeRuleWhereInput
+  }
+
+  export type ChargeRuleUpdateToOneWithWhereWithoutChargesInput = {
+    where?: ChargeRuleWhereInput
+    data: XOR<ChargeRuleUpdateWithoutChargesInput, ChargeRuleUncheckedUpdateWithoutChargesInput>
+  }
+
+  export type ChargeRuleUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargeRulesNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargeRuleNestedInput
+  }
+
+  export type ChargeRuleUncheckedUpdateWithoutChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserUpsertWithoutPayerChargesInput = {
+    update: XOR<UserUpdateWithoutPayerChargesInput, UserUncheckedUpdateWithoutPayerChargesInput>
+    create: XOR<UserCreateWithoutPayerChargesInput, UserUncheckedCreateWithoutPayerChargesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPayerChargesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPayerChargesInput, UserUncheckedUpdateWithoutPayerChargesInput>
+  }
+
+  export type UserUpdateWithoutPayerChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    roles?: UserUpdaterolesInput | string[]
+    permissions?: UserUpdatepermissionsInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneWithoutUsersNestedInput
+    payerUnits?: ConsumerUnitUpdateManyWithoutPayerUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPayerChargesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    roles?: UserUpdaterolesInput | string[]
+    permissions?: UserUpdatepermissionsInput | string[]
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPayerUserNestedInput
+  }
+
+  export type ClientCreateWithoutPayerInvitesInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutPayerInvitesInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutPayerInvitesInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutPayerInvitesInput, ClientUncheckedCreateWithoutPayerInvitesInput>
+  }
+
+  export type ConsumerUnitCreateWithoutPayerInvitesInput = {
+    id?: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    validationStatus?: string
+    rejectionReason?: string | null
+    client: ClientCreateNestedOneWithoutConsumerUnitsInput
+    payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
+    plant: PlantCreateNestedOneWithoutConsumerUnitsInput
+    energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeCreateNestedManyWithoutConsumerUnitInput
+  }
+
+  export type ConsumerUnitUncheckedCreateWithoutPayerInvitesInput = {
+    id?: string
+    clientId: string
+    name?: string | null
+    isGenerator?: boolean
+    isConsumer?: boolean
+    accountHolder?: string | null
+    accountNumber?: string | null
+    clientNumber?: string | null
+    installationNumber?: string | null
+    distributor?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    status?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    payerPhone?: string | null
+    payerUserId?: string | null
+    plantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    validationStatus?: string
+    rejectionReason?: string | null
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
+    allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
+    allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
+    chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutConsumerUnitInput
+  }
+
+  export type ConsumerUnitCreateOrConnectWithoutPayerInvitesInput = {
+    where: ConsumerUnitWhereUniqueInput
+    create: XOR<ConsumerUnitCreateWithoutPayerInvitesInput, ConsumerUnitUncheckedCreateWithoutPayerInvitesInput>
+  }
+
+  export type ClientUpsertWithoutPayerInvitesInput = {
+    update: XOR<ClientUpdateWithoutPayerInvitesInput, ClientUncheckedUpdateWithoutPayerInvitesInput>
+    create: XOR<ClientCreateWithoutPayerInvitesInput, ClientUncheckedCreateWithoutPayerInvitesInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutPayerInvitesInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutPayerInvitesInput, ClientUncheckedUpdateWithoutPayerInvitesInput>
+  }
+
+  export type ClientUpdateWithoutPayerInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutPayerInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ConsumerUnitUpsertWithoutPayerInvitesInput = {
+    update: XOR<ConsumerUnitUpdateWithoutPayerInvitesInput, ConsumerUnitUncheckedUpdateWithoutPayerInvitesInput>
+    create: XOR<ConsumerUnitCreateWithoutPayerInvitesInput, ConsumerUnitUncheckedCreateWithoutPayerInvitesInput>
+    where?: ConsumerUnitWhereInput
+  }
+
+  export type ConsumerUnitUpdateToOneWithWhereWithoutPayerInvitesInput = {
+    where?: ConsumerUnitWhereInput
+    data: XOR<ConsumerUnitUpdateWithoutPayerInvitesInput, ConsumerUnitUncheckedUpdateWithoutPayerInvitesInput>
+  }
+
+  export type ConsumerUnitUpdateWithoutPayerInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
+    plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+  }
+
+  export type ConsumerUnitUncheckedUpdateWithoutPayerInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGenerator?: BoolFieldUpdateOperationsInput | boolean
+    isConsumer?: BoolFieldUpdateOperationsInput | boolean
+    accountHolder?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    installationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    distributor?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    plantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    validationStatus?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
+    allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ClientCreateWithoutInvestmentsInput = {
@@ -35144,6 +43703,9 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutInvestmentsInput = {
@@ -35172,6 +43734,9 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutInvestmentsInput = {
@@ -35216,6 +43781,9 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutInvestmentsInput = {
@@ -35244,6 +43812,9 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ConsumerUnitCreateManyPayerUserInput = {
@@ -35270,6 +43841,32 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+  }
+
+  export type ChargeCreateManyPayerUserInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type ConsumerUnitUpdateWithoutPayerUserInput = {
@@ -35299,6 +43896,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateWithoutPayerUserInput = {
@@ -35328,6 +43928,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateManyWithoutPayerUserInput = {
@@ -35354,6 +43957,84 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChargeUpdateWithoutPayerUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargesNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargesNestedInput
+    energyBill?: EnergyBillUpdateOneWithoutChargesNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutChargesNestedInput
+  }
+
+  export type ChargeUncheckedUpdateWithoutPayerUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutPayerUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserCreateManyClientInput = {
@@ -35612,6 +44293,62 @@ export namespace Prisma {
     deletedAt?: Date | string | null
   }
 
+  export type ChargeRuleCreateManyClientInput = {
+    id?: string
+    consumerUnitId: string
+    mode?: $Enums.ChargeMode
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: number | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeCreateManyClientInput = {
+    id?: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type PayerInviteCreateManyClientInput = {
+    id?: string
+    consumerUnitId: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -35625,6 +44362,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payerUnits?: ConsumerUnitUpdateManyWithoutPayerUserNestedInput
+    payerCharges?: ChargeUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientInput = {
@@ -35640,6 +44378,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payerUnits?: ConsumerUnitUncheckedUpdateManyWithoutPayerUserNestedInput
+    payerCharges?: ChargeUncheckedUpdateManyWithoutPayerUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutClientInput = {
@@ -35888,6 +44627,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
     consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput
+    charges?: ChargeUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillUncheckedUpdateWithoutClientInput = {
@@ -35963,6 +44703,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillUncheckedUpdateManyWithoutClientInput = {
@@ -36242,6 +44983,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateWithoutClientInput = {
@@ -36271,6 +45015,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateManyWithoutClientInput = {
@@ -36396,6 +45143,176 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeRuleUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargeRuleNestedInput
+    charges?: ChargeUpdateManyWithoutChargeRuleNestedInput
+  }
+
+  export type ChargeRuleUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    charges?: ChargeUncheckedUpdateManyWithoutChargeRuleNestedInput
+  }
+
+  export type ChargeRuleUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dueDayOfMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargesNestedInput
+    energyBill?: EnergyBillUpdateOneWithoutChargesNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutChargesNestedInput
+    payerUser?: UserUpdateOneWithoutPayerChargesNestedInput
+  }
+
+  export type ChargeUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayerInviteUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutPayerInvitesNestedInput
+  }
+
+  export type PayerInviteUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayerInviteUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InverterCreateManyPlantInput = {
@@ -36682,6 +45599,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateWithoutPlantInput = {
@@ -36711,6 +45631,9 @@ export namespace Prisma {
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
+    chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutConsumerUnitNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutConsumerUnitNestedInput
   }
 
   export type ConsumerUnitUncheckedUpdateManyWithoutPlantInput = {
@@ -36878,6 +45801,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
     consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutEnergyBillsNestedInput
+    charges?: ChargeUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillUncheckedUpdateWithoutPlantInput = {
@@ -36953,6 +45877,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillUncheckedUpdateManyWithoutPlantInput = {
@@ -37205,6 +46130,48 @@ export namespace Prisma {
     deletedAt?: Date | string | null
   }
 
+  export type ChargeCreateManyConsumerUnitInput = {
+    id?: string
+    clientId: string
+    energyBillId?: string | null
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type PayerInviteCreateManyConsumerUnitInput = {
+    id?: string
+    clientId: string
+    name: string
+    email: string
+    tokenHash: string
+    expiresAt: Date | string
+    status?: $Enums.PayerInviteStatus
+    acceptedAt?: Date | string | null
+    revokedAt?: Date | string | null
+    invitedByUserId?: string | null
+    acceptedUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type EnergyBillUpdateWithoutConsumerUnitInput = {
     id?: StringFieldUpdateOperationsInput | string
     billFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37278,6 +46245,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
     plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
+    charges?: ChargeUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillUncheckedUpdateWithoutConsumerUnitInput = {
@@ -37353,6 +46321,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
   }
 
   export type EnergyBillUncheckedUpdateManyWithoutConsumerUnitInput = {
@@ -37562,6 +46531,132 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type ChargeUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargesNestedInput
+    energyBill?: EnergyBillUpdateOneWithoutChargesNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutChargesNestedInput
+    payerUser?: UserUpdateOneWithoutPayerChargesNestedInput
+  }
+
+  export type ChargeUncheckedUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayerInviteUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutPayerInvitesNestedInput
+  }
+
+  export type PayerInviteUncheckedUpdateWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayerInviteUncheckedUpdateManyWithoutConsumerUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPayerInviteStatusFieldUpdateOperationsInput | $Enums.PayerInviteStatus
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OfferRedemptionCreateManyOfferInput = {
     id?: string
     redemptionCode: string
@@ -37608,6 +46703,214 @@ export namespace Prisma {
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChargeCreateManyEnergyBillInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    chargeRuleId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeUpdateWithoutEnergyBillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargesNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargesNestedInput
+    chargeRule?: ChargeRuleUpdateOneWithoutChargesNestedInput
+    payerUser?: UserUpdateOneWithoutPayerChargesNestedInput
+  }
+
+  export type ChargeUncheckedUpdateWithoutEnergyBillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutEnergyBillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    chargeRuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeCreateManyChargeRuleInput = {
+    id?: string
+    clientId: string
+    consumerUnitId: string
+    energyBillId?: string | null
+    referenceMonth: number
+    referenceYear: number
+    mode: $Enums.ChargeMode
+    basisKwh?: Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    dueDate?: Date | string | null
+    status?: $Enums.ChargeStatus
+    payerUserId?: string | null
+    payerName?: string | null
+    payerEmail?: string | null
+    sentAt?: Date | string | null
+    paidAt?: Date | string | null
+    canceledAt?: Date | string | null
+    confirmedByUserId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type ChargeUpdateWithoutChargeRuleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    client?: ClientUpdateOneRequiredWithoutChargesNestedInput
+    consumerUnit?: ConsumerUnitUpdateOneRequiredWithoutChargesNestedInput
+    energyBill?: EnergyBillUpdateOneWithoutChargesNestedInput
+    payerUser?: UserUpdateOneWithoutPayerChargesNestedInput
+  }
+
+  export type ChargeUncheckedUpdateWithoutChargeRuleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ChargeUncheckedUpdateManyWithoutChargeRuleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    consumerUnitId?: StringFieldUpdateOperationsInput | string
+    energyBillId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceMonth?: IntFieldUpdateOperationsInput | number
+    referenceYear?: IntFieldUpdateOperationsInput | number
+    mode?: EnumChargeModeFieldUpdateOperationsInput | $Enums.ChargeMode
+    basisKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pricePerKwh?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
+    payerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    payerName?: NullableStringFieldUpdateOperationsInput | string | null
+    payerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

@@ -26,7 +26,13 @@ vi.mock('@/backend/auth/middleware/auth.middleware', () => ({
     },
 }));
 
+// Cadastrar UC é ação do titular; a rota agora barra usuários pagadores.
+vi.mock('@/backend/controle/scope', () => ({
+    assertNotPayer: vi.fn(),
+}));
+
 const { AuthMiddleware } = await import('@/backend/auth/middleware/auth.middleware');
+const { assertNotPayer } = await import('@/backend/controle/scope');
 
 async function callGET() {
     const { GET } = await import('./route');
@@ -235,6 +241,29 @@ describe('POST /api/client/consumer-units', () => {
                     }),
                 }),
             );
+        });
+    });
+
+    describe('payer guard', () => {
+        it('bloqueia um usuário pagador de cadastrar unidade', async () => {
+            vi.mocked(assertNotPayer).mockRejectedValueOnce(
+                new Error('Esta area e do titular da conta.'),
+            );
+
+            const res = await callPOST({ plantId: 'plant-1', name: 'Casa' });
+
+            expect(res.status).toBe(400);
+            expect(mockCreate).not.toHaveBeenCalled();
+        });
+
+        it('deixa o titular cadastrar normalmente', async () => {
+            mockFindFirst.mockResolvedValue(makePlant());
+            mockCreate.mockResolvedValue(makeConsumerUnit());
+
+            const res = await callPOST({ plantId: 'plant-1', name: 'Casa' });
+
+            expect(res.status).toBe(201);
+            expect(assertNotPayer).toHaveBeenCalledWith('user-1');
         });
     });
 });
