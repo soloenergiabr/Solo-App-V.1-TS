@@ -83,6 +83,9 @@ services:
 
       # Next
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      # Base publica do app. E a raiz do link de convite de pagador
+      # (/convite/<token>); sem ela o link cai no host interno do container.
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
 
       # Redis
       - REDIS_URL=redis://redis:6379
@@ -90,6 +93,7 @@ services:
       # Email
       - SMTP_HOST=${SMTP_HOST}
       - SMTP_PORT=${SMTP_PORT}
+      - SMTP_SECURE=${SMTP_SECURE}
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM}
