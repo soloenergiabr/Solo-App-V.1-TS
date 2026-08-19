@@ -110,27 +110,92 @@ não derruba o lote: volta na lista de `errors` com o motivo em pt-BR.
 | `npm run typecheck` | ✅ limpo |
 | `npm run build` | ✅ exit 0; rotas `/api/gd/*` e `/convite/[token]` no manifesto |
 
-Commits: `a936467` (feature) + `daaad18` (envs de produção), via PR #1,
-mergeado em `main` como `d52eaf3` em 2026-08-15.
+Commits: `a936467` (feature) + `daaad18` (envs) via PR #1, mergeado em `main`
+como `d52eaf3` em 2026-08-15; `de850e0` (correção do link do convite) em 2026-08-18.
 
 > Os erros `PrismaClientInitializationError` no build são **pré-existentes** —
 > prerender sem banco local (ver `sprint_7_destravar_v1.md`: não há Docker DB local).
 
 ---
 
+## Ambiente de produção — o que o env do Dokploy revelou (2026-08-18)
+
+Conferido contra o env real exportado do Dokploy. Três conclusões:
+
+**1. Dokploy NÃO usa o `docker-compose.prod.yml`.** O env define
+`DATABASE_URL=...@localhost:6001` e `DATABASE_HOST=localhost`, enquanto o compose
+fixa `postgres:5432`. Os dois não podem ser verdade — logo o Dokploy builda o
+**Dockerfile direto e injeta as envs ele mesmo**. Consequências:
+
+- Editar o compose é documentação; **variável de produção se altera na UI do Dokploy**.
+- Resolve a dúvida Docker vs PM2: é **Docker**, então o `ENTRYPOINT` roda e
+  `npx prisma migrate deploy` **executa no boot** (`docker-entrypoint-prod.sh`).
+
+**2. A variável do link não era a que eu usei.** Produção não tem
+`NEXT_PUBLIC_APP_URL`; tem `NEXT_PUBLIC_BASE_URL="https://soloapp.com.br"`, já
+lida por `src/config.ts` como `config.base_url` — a mesma fonte que o
+`forgot-password.use-case.ts:31` usa no link de reset de senha. Corrigido em
+`de850e0`, com teste de regressão. **Nada a adicionar no Dokploy.**
+
+**3. SMTP já está completo.** `SMTP_HOST/PORT/USER/PASS/FROM` presentes
+(Gmail, porta 587). `SMTP_SECURE` está ausente e **deve continuar assim**: 587 é
+STARTTLS e exige `secure: false`, que é o default de `lib/mail.ts`.
+
+> `Planning/assets/env_dokploy.md` tem segredos de produção e está no
+> `.gitignore`. Nunca versionar.
+
+---
+
+## ⚠️ Risco de deploy: drift de migrations pode derrubar o app
+
+Ao aplicar as migrations num Postgres real pela primeira vez (2026-08-18, banco
+de dev local), **4 migrations falharam** com `already exists`:
+
+```
+20251231010042_                       → relation "consumption" already exists
+20260616000000_add_controle_sprint2   → type "BillPaymentStatus" already exists
+20260619120000_add_rateio_enel_sync   → (mesma classe)
+20260619130000_add_validation_status  → (mesma classe)
+```
+
+Causa: `prisma db push` em algum momento criou os objetos sem registrar em
+`_prisma_migrations`. O `20260623` já tinha sido escrito à mão com `IF NOT EXISTS`
+por causa desse mesmo problema — ou seja, é recorrente no projeto.
+
+**Por que é perigoso em produção:** `docker-entrypoint-prod.sh` tem `set -e` e roda
+`migrate deploy` sem `|| true`. Migration que falha → entrypoint sai != 0 →
+com `restart: always` o container entra em **crash loop**. O deploy derruba o app,
+não apenas deixa a feature de fora.
+
+**Runbook — rodar ANTES de redeployar**, no terminal do Dokploy:
+
+```bash
+cd /app && npx prisma migrate status   # o shell do Dokploy abre em /, não em /app
+```
+
+- Só `20260814000000_add_distributed_generation` pendente → deploy limpo.
+- Migrations antigas pendentes → produção tem o mesmo drift. Para **cada** uma,
+  confirmar no banco que os objetos já existem e só então:
+  `npx prisma migrate resolve --applied <nome>`. Nunca marcar como aplicada sem
+  conferir — se a migration criava algo que falta, o schema fica inconsistente.
+
+A migration da GD em si foi validada de ponta a ponta contra um Postgres real:
+3 enums, todas as colunas, as 2 unique constraints e as 9 FKs. As invariantes
+foram testadas funcionalmente (transação com rollback): duas regras na mesma UC →
+bloqueado; cobrança duplicada na mesma competência → bloqueado (é a guarda de
+idempotência do `generateCharges`); `mode` inválido → rejeitado pelo enum.
+
+---
+
 ## Pendências antes de usar com cliente real
 
-- [x] `docker-compose.prod.yml` passa `NEXT_PUBLIC_APP_URL` e `SMTP_SECURE`
-      ao container — os dois faltavam e quebrariam convite e envio (`daaad18`)
-- [ ] **Definir os VALORES dessas duas envs no ambiente da VPS.** Passar a
-      variável não basta: sem `NEXT_PUBLIC_APP_URL`, o link do convite cai em
-      `new URL(request.url).origin` e atrás do proxy pode virar o host interno
-- [ ] Deploy na VPS. No caminho Docker a migration entra sozinha no boot
-      (`scripts/docker-entrypoint-prod.sh` roda `prisma migrate deploy`);
-      **se produção rodar em PM2** (ver `sprint_5.1_ai-analyzer_v1.md:16`,
-      que cita "VPS + PM2"), o entrypoint nunca dispara e o `migrate deploy`
-      volta a ser passo manual — confirmar qual dos dois está no ar
-- [ ] Conferir SMTP em produção (`lib/mail.ts` só serviu reset de senha até aqui)
+- [x] `docker-compose.prod.yml` e `env.example` alinhados a `NEXT_PUBLIC_BASE_URL`
+- [x] Link do convite usando `config.base_url` (`de850e0`)
+- [x] SMTP conferido no env de produção — completo, nada a fazer
+- [x] Migration validada contra Postgres real
+- [ ] **Rodar o `migrate status` do runbook acima na produção** — único gate
+      técnico restante antes do deploy
+- [ ] Deploy pelo Dokploy (a migration entra sozinha no boot)
 - [ ] Teste e2e com o caso do Afonso: 1 usina, 3 UCs, 3 modos diferentes
 - [ ] **PO decide o sequenciamento** — esta sprint foi executada fora da ordem
       do ROADMAP (S8 Hub de Integrações, S9 Suporte/Notificações, S10 Migração).
