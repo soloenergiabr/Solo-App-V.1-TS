@@ -47,3 +47,6 @@ dev-server*.log
 *.log
 *.bak
 .claude/worktrees/
+
+# Env de produção exportado do Dokploy — contém segredos, nunca versionar
+Planning/assets/

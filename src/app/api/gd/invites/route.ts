@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import prisma from '@/lib/prisma'
+import { config } from '@/config'
 import { withHandle } from '@/app/api/api-utils'
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware'
 import { assertNotPayer } from '@/backend/controle/scope'
@@ -36,8 +37,10 @@ const createInvite = async (request: NextRequest) => {
         select: { name: true },
     })
 
-    const appUrl =
-        process.env.NEXT_PUBLIC_APP_URL ?? new URL(request.url).origin
+    // Mesma fonte de verdade do link de reset de senha (forgot-password.use-case).
+    // Producao define NEXT_PUBLIC_BASE_URL; o fallback de origin so vale em dev,
+    // porque atras do proxy ele pode resolver para o host interno do container.
+    const appUrl = config.base_url || new URL(request.url).origin
 
     const invite = await invitePayer({
         clientId,
