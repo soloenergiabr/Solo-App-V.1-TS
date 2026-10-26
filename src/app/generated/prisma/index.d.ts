@@ -106,6 +106,12 @@ export type PayerInvite = $Result.DefaultSelection<Prisma.$PayerInvitePayload>
  * 
  */
 export type Investment = $Result.DefaultSelection<Prisma.$InvestmentPayload>
+/**
+ * Model FaturapiWebhookEvent
+ * Eventos de webhook da Faturapi — deduplica por Faturapi-Event-Id e guarda
+ * o payload para reprocessar quando o processamento (apos o 200) falha.
+ */
+export type FaturapiWebhookEvent = $Result.DefaultSelection<Prisma.$FaturapiWebhookEventPayload>
 
 /**
  * Enums
@@ -530,6 +536,16 @@ export class PrismaClient<
     * ```
     */
   get investment(): Prisma.InvestmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.faturapiWebhookEvent`: Exposes CRUD operations for the **FaturapiWebhookEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FaturapiWebhookEvents
+    * const faturapiWebhookEvents = await prisma.faturapiWebhookEvent.findMany()
+    * ```
+    */
+  get faturapiWebhookEvent(): Prisma.FaturapiWebhookEventDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -987,7 +1003,8 @@ export namespace Prisma {
     ChargeRule: 'ChargeRule',
     Charge: 'Charge',
     PayerInvite: 'PayerInvite',
-    Investment: 'Investment'
+    Investment: 'Investment',
+    FaturapiWebhookEvent: 'FaturapiWebhookEvent'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1006,7 +1023,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "chargeRule" | "charge" | "payerInvite" | "investment"
+      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "chargeRule" | "charge" | "payerInvite" | "investment" | "faturapiWebhookEvent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2342,6 +2359,80 @@ export namespace Prisma {
           }
         }
       }
+      FaturapiWebhookEvent: {
+        payload: Prisma.$FaturapiWebhookEventPayload<ExtArgs>
+        fields: Prisma.FaturapiWebhookEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FaturapiWebhookEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FaturapiWebhookEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>
+          }
+          findFirst: {
+            args: Prisma.FaturapiWebhookEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FaturapiWebhookEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>
+          }
+          findMany: {
+            args: Prisma.FaturapiWebhookEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>[]
+          }
+          create: {
+            args: Prisma.FaturapiWebhookEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>
+          }
+          createMany: {
+            args: Prisma.FaturapiWebhookEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FaturapiWebhookEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>[]
+          }
+          delete: {
+            args: Prisma.FaturapiWebhookEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>
+          }
+          update: {
+            args: Prisma.FaturapiWebhookEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.FaturapiWebhookEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FaturapiWebhookEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FaturapiWebhookEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.FaturapiWebhookEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiWebhookEventPayload>
+          }
+          aggregate: {
+            args: Prisma.FaturapiWebhookEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFaturapiWebhookEvent>
+          }
+          groupBy: {
+            args: Prisma.FaturapiWebhookEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FaturapiWebhookEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FaturapiWebhookEventCountArgs<ExtArgs>
+            result: $Utils.Optional<FaturapiWebhookEventCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2456,6 +2547,7 @@ export namespace Prisma {
     charge?: ChargeOmit
     payerInvite?: PayerInviteOmit
     investment?: InvestmentOmit
+    faturapiWebhookEvent?: FaturapiWebhookEventOmit
   }
 
   /* Types for Logging */
@@ -8743,6 +8835,8 @@ export namespace Prisma {
     deletedAt: Date | null
     validationStatus: string | null
     rejectionReason: string | null
+    faturapiUnitId: string | null
+    faturapiStatus: string | null
   }
 
   export type ConsumerUnitMaxAggregateOutputType = {
@@ -8770,6 +8864,8 @@ export namespace Prisma {
     deletedAt: Date | null
     validationStatus: string | null
     rejectionReason: string | null
+    faturapiUnitId: string | null
+    faturapiStatus: string | null
   }
 
   export type ConsumerUnitCountAggregateOutputType = {
@@ -8797,6 +8893,8 @@ export namespace Prisma {
     deletedAt: number
     validationStatus: number
     rejectionReason: number
+    faturapiUnitId: number
+    faturapiStatus: number
     _all: number
   }
 
@@ -8826,6 +8924,8 @@ export namespace Prisma {
     deletedAt?: true
     validationStatus?: true
     rejectionReason?: true
+    faturapiUnitId?: true
+    faturapiStatus?: true
   }
 
   export type ConsumerUnitMaxAggregateInputType = {
@@ -8853,6 +8953,8 @@ export namespace Prisma {
     deletedAt?: true
     validationStatus?: true
     rejectionReason?: true
+    faturapiUnitId?: true
+    faturapiStatus?: true
   }
 
   export type ConsumerUnitCountAggregateInputType = {
@@ -8880,6 +8982,8 @@ export namespace Prisma {
     deletedAt?: true
     validationStatus?: true
     rejectionReason?: true
+    faturapiUnitId?: true
+    faturapiStatus?: true
     _all?: true
   }
 
@@ -8980,6 +9084,8 @@ export namespace Prisma {
     deletedAt: Date | null
     validationStatus: string
     rejectionReason: string | null
+    faturapiUnitId: string | null
+    faturapiStatus: string | null
     _count: ConsumerUnitCountAggregateOutputType | null
     _min: ConsumerUnitMinAggregateOutputType | null
     _max: ConsumerUnitMaxAggregateOutputType | null
@@ -9024,6 +9130,8 @@ export namespace Prisma {
     deletedAt?: boolean
     validationStatus?: boolean
     rejectionReason?: boolean
+    faturapiUnitId?: boolean
+    faturapiStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -9061,6 +9169,8 @@ export namespace Prisma {
     deletedAt?: boolean
     validationStatus?: boolean
     rejectionReason?: boolean
+    faturapiUnitId?: boolean
+    faturapiStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -9091,6 +9201,8 @@ export namespace Prisma {
     deletedAt?: boolean
     validationStatus?: boolean
     rejectionReason?: boolean
+    faturapiUnitId?: boolean
+    faturapiStatus?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -9121,9 +9233,11 @@ export namespace Prisma {
     deletedAt?: boolean
     validationStatus?: boolean
     rejectionReason?: boolean
+    faturapiUnitId?: boolean
+    faturapiStatus?: boolean
   }
 
-  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus" | "rejectionReason", ExtArgs["result"]["consumerUnit"]>
+  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus" | "rejectionReason" | "faturapiUnitId" | "faturapiStatus", ExtArgs["result"]["consumerUnit"]>
   export type ConsumerUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
@@ -9185,6 +9299,11 @@ export namespace Prisma {
       deletedAt: Date | null
       validationStatus: string
       rejectionReason: string | null
+      faturapiUnitId: string | null
+      /**
+       * active | paused | needs_credentials | overdue (espelha Unit.status da Faturapi)
+       */
+      faturapiStatus: string | null
     }, ExtArgs["result"]["consumerUnit"]>
     composites: {}
   }
@@ -9641,6 +9760,8 @@ export namespace Prisma {
     readonly deletedAt: FieldRef<"ConsumerUnit", 'DateTime'>
     readonly validationStatus: FieldRef<"ConsumerUnit", 'String'>
     readonly rejectionReason: FieldRef<"ConsumerUnit", 'String'>
+    readonly faturapiUnitId: FieldRef<"ConsumerUnit", 'String'>
+    readonly faturapiStatus: FieldRef<"ConsumerUnit", 'String'>
   }
     
 
@@ -19670,6 +19791,7 @@ export namespace Prisma {
     amountDue: Decimal | null
     pixCode: string | null
     barcode: string | null
+    faturapiInvoiceId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19740,6 +19862,7 @@ export namespace Prisma {
     amountDue: Decimal | null
     pixCode: string | null
     barcode: string | null
+    faturapiInvoiceId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19816,6 +19939,8 @@ export namespace Prisma {
     amountDue: number
     pixCode: number
     barcode: number
+    faturapiInvoiceId: number
+    faturapiParsed: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -19970,6 +20095,7 @@ export namespace Prisma {
     amountDue?: true
     pixCode?: true
     barcode?: true
+    faturapiInvoiceId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -20040,6 +20166,7 @@ export namespace Prisma {
     amountDue?: true
     pixCode?: true
     barcode?: true
+    faturapiInvoiceId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -20116,6 +20243,8 @@ export namespace Prisma {
     amountDue?: true
     pixCode?: true
     barcode?: true
+    faturapiInvoiceId?: true
+    faturapiParsed?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -20279,6 +20408,8 @@ export namespace Prisma {
     amountDue: Decimal | null
     pixCode: string | null
     barcode: string | null
+    faturapiInvoiceId: string | null
+    faturapiParsed: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: EnergyBillCountAggregateOutputType | null
@@ -20374,6 +20505,8 @@ export namespace Prisma {
     amountDue?: boolean
     pixCode?: boolean
     barcode?: boolean
+    faturapiInvoiceId?: boolean
+    faturapiParsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -20455,6 +20588,8 @@ export namespace Prisma {
     amountDue?: boolean
     pixCode?: boolean
     barcode?: boolean
+    faturapiInvoiceId?: boolean
+    faturapiParsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -20534,6 +20669,8 @@ export namespace Prisma {
     amountDue?: boolean
     pixCode?: boolean
     barcode?: boolean
+    faturapiInvoiceId?: boolean
+    faturapiParsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -20613,11 +20750,13 @@ export namespace Prisma {
     amountDue?: boolean
     pixCode?: boolean
     barcode?: boolean
+    faturapiInvoiceId?: boolean
+    faturapiParsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EnergyBillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "billFileUrl" | "rawBillFileKey" | "rawBillFileSize" | "clientId" | "plantId" | "consumerUnitId" | "competenceDate" | "referenceMonth" | "referenceYear" | "accountHolder" | "accountNumber" | "clientNumber" | "instalationNumber" | "distributor" | "consumerClass" | "tariffModality" | "connectionType" | "tariffPeriod" | "billingDays" | "readingPeriodFrom" | "readingPeriodTo" | "creditExpiryDate" | "monitoredGenerationKwh" | "billedConsumptionKwh" | "consumptionKwh" | "realConsumptionKwh" | "injectedEnergyKwh" | "compensatedEnergyKwh" | "previousCreditsKwh" | "currentCreditsKwh" | "expectedGenerationKwh" | "generationEfficiency" | "meterReadingCurrent" | "meterReadingPrevious" | "demandContractedKw" | "demandMeasuredKw" | "totalBillValue" | "totalAmount" | "energyCost" | "availabilityCost" | "publicLightingCost" | "icmsCost" | "pisCost" | "cofinsCost" | "pisCofinsCost" | "tariffPerKwh" | "tariffTeValue" | "tariffTusdValue" | "tariffFlag" | "tariffFlagCost" | "sectoralCharges" | "fineAmount" | "interestAmount" | "otherCharges" | "estimatedSavings" | "aiAnalysis" | "aiExplanations" | "aiRecommendations" | "alerts" | "extraCharges" | "billingItems" | "creditSummary" | "billScore" | "status" | "paymentStatus" | "dueDate" | "paidAt" | "amountDue" | "pixCode" | "barcode" | "createdAt" | "updatedAt", ExtArgs["result"]["energyBill"]>
+  export type EnergyBillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "billFileUrl" | "rawBillFileKey" | "rawBillFileSize" | "clientId" | "plantId" | "consumerUnitId" | "competenceDate" | "referenceMonth" | "referenceYear" | "accountHolder" | "accountNumber" | "clientNumber" | "instalationNumber" | "distributor" | "consumerClass" | "tariffModality" | "connectionType" | "tariffPeriod" | "billingDays" | "readingPeriodFrom" | "readingPeriodTo" | "creditExpiryDate" | "monitoredGenerationKwh" | "billedConsumptionKwh" | "consumptionKwh" | "realConsumptionKwh" | "injectedEnergyKwh" | "compensatedEnergyKwh" | "previousCreditsKwh" | "currentCreditsKwh" | "expectedGenerationKwh" | "generationEfficiency" | "meterReadingCurrent" | "meterReadingPrevious" | "demandContractedKw" | "demandMeasuredKw" | "totalBillValue" | "totalAmount" | "energyCost" | "availabilityCost" | "publicLightingCost" | "icmsCost" | "pisCost" | "cofinsCost" | "pisCofinsCost" | "tariffPerKwh" | "tariffTeValue" | "tariffTusdValue" | "tariffFlag" | "tariffFlagCost" | "sectoralCharges" | "fineAmount" | "interestAmount" | "otherCharges" | "estimatedSavings" | "aiAnalysis" | "aiExplanations" | "aiRecommendations" | "alerts" | "extraCharges" | "billingItems" | "creditSummary" | "billScore" | "status" | "paymentStatus" | "dueDate" | "paidAt" | "amountDue" | "pixCode" | "barcode" | "faturapiInvoiceId" | "faturapiParsed" | "createdAt" | "updatedAt", ExtArgs["result"]["energyBill"]>
   export type EnergyBillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -20716,6 +20855,8 @@ export namespace Prisma {
       amountDue: Prisma.Decimal | null
       pixCode: string | null
       barcode: string | null
+      faturapiInvoiceId: string | null
+      faturapiParsed: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["energyBill"]>
@@ -21216,6 +21357,8 @@ export namespace Prisma {
     readonly amountDue: FieldRef<"EnergyBill", 'Decimal'>
     readonly pixCode: FieldRef<"EnergyBill", 'String'>
     readonly barcode: FieldRef<"EnergyBill", 'String'>
+    readonly faturapiInvoiceId: FieldRef<"EnergyBill", 'String'>
+    readonly faturapiParsed: FieldRef<"EnergyBill", 'Json'>
     readonly createdAt: FieldRef<"EnergyBill", 'DateTime'>
     readonly updatedAt: FieldRef<"EnergyBill", 'DateTime'>
   }
@@ -26673,6 +26816,1039 @@ export namespace Prisma {
 
 
   /**
+   * Model FaturapiWebhookEvent
+   */
+
+  export type AggregateFaturapiWebhookEvent = {
+    _count: FaturapiWebhookEventCountAggregateOutputType | null
+    _min: FaturapiWebhookEventMinAggregateOutputType | null
+    _max: FaturapiWebhookEventMaxAggregateOutputType | null
+  }
+
+  export type FaturapiWebhookEventMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    type: string | null
+    status: string | null
+    error: string | null
+    processedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type FaturapiWebhookEventMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    type: string | null
+    status: string | null
+    error: string | null
+    processedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type FaturapiWebhookEventCountAggregateOutputType = {
+    id: number
+    eventId: number
+    type: number
+    payload: number
+    status: number
+    error: number
+    processedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type FaturapiWebhookEventMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    type?: true
+    status?: true
+    error?: true
+    processedAt?: true
+    createdAt?: true
+  }
+
+  export type FaturapiWebhookEventMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    type?: true
+    status?: true
+    error?: true
+    processedAt?: true
+    createdAt?: true
+  }
+
+  export type FaturapiWebhookEventCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    type?: true
+    payload?: true
+    status?: true
+    error?: true
+    processedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type FaturapiWebhookEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FaturapiWebhookEvent to aggregate.
+     */
+    where?: FaturapiWebhookEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiWebhookEvents to fetch.
+     */
+    orderBy?: FaturapiWebhookEventOrderByWithRelationInput | FaturapiWebhookEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FaturapiWebhookEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiWebhookEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiWebhookEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FaturapiWebhookEvents
+    **/
+    _count?: true | FaturapiWebhookEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FaturapiWebhookEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FaturapiWebhookEventMaxAggregateInputType
+  }
+
+  export type GetFaturapiWebhookEventAggregateType<T extends FaturapiWebhookEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateFaturapiWebhookEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFaturapiWebhookEvent[P]>
+      : GetScalarType<T[P], AggregateFaturapiWebhookEvent[P]>
+  }
+
+
+
+
+  export type FaturapiWebhookEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FaturapiWebhookEventWhereInput
+    orderBy?: FaturapiWebhookEventOrderByWithAggregationInput | FaturapiWebhookEventOrderByWithAggregationInput[]
+    by: FaturapiWebhookEventScalarFieldEnum[] | FaturapiWebhookEventScalarFieldEnum
+    having?: FaturapiWebhookEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FaturapiWebhookEventCountAggregateInputType | true
+    _min?: FaturapiWebhookEventMinAggregateInputType
+    _max?: FaturapiWebhookEventMaxAggregateInputType
+  }
+
+  export type FaturapiWebhookEventGroupByOutputType = {
+    id: string
+    eventId: string
+    type: string
+    payload: JsonValue
+    status: string
+    error: string | null
+    processedAt: Date | null
+    createdAt: Date
+    _count: FaturapiWebhookEventCountAggregateOutputType | null
+    _min: FaturapiWebhookEventMinAggregateOutputType | null
+    _max: FaturapiWebhookEventMaxAggregateOutputType | null
+  }
+
+  type GetFaturapiWebhookEventGroupByPayload<T extends FaturapiWebhookEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FaturapiWebhookEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FaturapiWebhookEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FaturapiWebhookEventGroupByOutputType[P]>
+            : GetScalarType<T[P], FaturapiWebhookEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FaturapiWebhookEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    type?: boolean
+    payload?: boolean
+    status?: boolean
+    error?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["faturapiWebhookEvent"]>
+
+  export type FaturapiWebhookEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    type?: boolean
+    payload?: boolean
+    status?: boolean
+    error?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["faturapiWebhookEvent"]>
+
+  export type FaturapiWebhookEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    type?: boolean
+    payload?: boolean
+    status?: boolean
+    error?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["faturapiWebhookEvent"]>
+
+  export type FaturapiWebhookEventSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    type?: boolean
+    payload?: boolean
+    status?: boolean
+    error?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type FaturapiWebhookEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "type" | "payload" | "status" | "error" | "processedAt" | "createdAt", ExtArgs["result"]["faturapiWebhookEvent"]>
+
+  export type $FaturapiWebhookEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FaturapiWebhookEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      type: string
+      payload: Prisma.JsonValue
+      /**
+       * received | processed | failed
+       */
+      status: string
+      error: string | null
+      processedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["faturapiWebhookEvent"]>
+    composites: {}
+  }
+
+  type FaturapiWebhookEventGetPayload<S extends boolean | null | undefined | FaturapiWebhookEventDefaultArgs> = $Result.GetResult<Prisma.$FaturapiWebhookEventPayload, S>
+
+  type FaturapiWebhookEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FaturapiWebhookEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FaturapiWebhookEventCountAggregateInputType | true
+    }
+
+  export interface FaturapiWebhookEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FaturapiWebhookEvent'], meta: { name: 'FaturapiWebhookEvent' } }
+    /**
+     * Find zero or one FaturapiWebhookEvent that matches the filter.
+     * @param {FaturapiWebhookEventFindUniqueArgs} args - Arguments to find a FaturapiWebhookEvent
+     * @example
+     * // Get one FaturapiWebhookEvent
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FaturapiWebhookEventFindUniqueArgs>(args: SelectSubset<T, FaturapiWebhookEventFindUniqueArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FaturapiWebhookEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FaturapiWebhookEventFindUniqueOrThrowArgs} args - Arguments to find a FaturapiWebhookEvent
+     * @example
+     * // Get one FaturapiWebhookEvent
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FaturapiWebhookEventFindUniqueOrThrowArgs>(args: SelectSubset<T, FaturapiWebhookEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FaturapiWebhookEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiWebhookEventFindFirstArgs} args - Arguments to find a FaturapiWebhookEvent
+     * @example
+     * // Get one FaturapiWebhookEvent
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FaturapiWebhookEventFindFirstArgs>(args?: SelectSubset<T, FaturapiWebhookEventFindFirstArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FaturapiWebhookEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiWebhookEventFindFirstOrThrowArgs} args - Arguments to find a FaturapiWebhookEvent
+     * @example
+     * // Get one FaturapiWebhookEvent
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FaturapiWebhookEventFindFirstOrThrowArgs>(args?: SelectSubset<T, FaturapiWebhookEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FaturapiWebhookEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiWebhookEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FaturapiWebhookEvents
+     * const faturapiWebhookEvents = await prisma.faturapiWebhookEvent.findMany()
+     * 
+     * // Get first 10 FaturapiWebhookEvents
+     * const faturapiWebhookEvents = await prisma.faturapiWebhookEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const faturapiWebhookEventWithIdOnly = await prisma.faturapiWebhookEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FaturapiWebhookEventFindManyArgs>(args?: SelectSubset<T, FaturapiWebhookEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FaturapiWebhookEvent.
+     * @param {FaturapiWebhookEventCreateArgs} args - Arguments to create a FaturapiWebhookEvent.
+     * @example
+     * // Create one FaturapiWebhookEvent
+     * const FaturapiWebhookEvent = await prisma.faturapiWebhookEvent.create({
+     *   data: {
+     *     // ... data to create a FaturapiWebhookEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends FaturapiWebhookEventCreateArgs>(args: SelectSubset<T, FaturapiWebhookEventCreateArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FaturapiWebhookEvents.
+     * @param {FaturapiWebhookEventCreateManyArgs} args - Arguments to create many FaturapiWebhookEvents.
+     * @example
+     * // Create many FaturapiWebhookEvents
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FaturapiWebhookEventCreateManyArgs>(args?: SelectSubset<T, FaturapiWebhookEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FaturapiWebhookEvents and returns the data saved in the database.
+     * @param {FaturapiWebhookEventCreateManyAndReturnArgs} args - Arguments to create many FaturapiWebhookEvents.
+     * @example
+     * // Create many FaturapiWebhookEvents
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FaturapiWebhookEvents and only return the `id`
+     * const faturapiWebhookEventWithIdOnly = await prisma.faturapiWebhookEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FaturapiWebhookEventCreateManyAndReturnArgs>(args?: SelectSubset<T, FaturapiWebhookEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FaturapiWebhookEvent.
+     * @param {FaturapiWebhookEventDeleteArgs} args - Arguments to delete one FaturapiWebhookEvent.
+     * @example
+     * // Delete one FaturapiWebhookEvent
+     * const FaturapiWebhookEvent = await prisma.faturapiWebhookEvent.delete({
+     *   where: {
+     *     // ... filter to delete one FaturapiWebhookEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FaturapiWebhookEventDeleteArgs>(args: SelectSubset<T, FaturapiWebhookEventDeleteArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FaturapiWebhookEvent.
+     * @param {FaturapiWebhookEventUpdateArgs} args - Arguments to update one FaturapiWebhookEvent.
+     * @example
+     * // Update one FaturapiWebhookEvent
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FaturapiWebhookEventUpdateArgs>(args: SelectSubset<T, FaturapiWebhookEventUpdateArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FaturapiWebhookEvents.
+     * @param {FaturapiWebhookEventDeleteManyArgs} args - Arguments to filter FaturapiWebhookEvents to delete.
+     * @example
+     * // Delete a few FaturapiWebhookEvents
+     * const { count } = await prisma.faturapiWebhookEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FaturapiWebhookEventDeleteManyArgs>(args?: SelectSubset<T, FaturapiWebhookEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FaturapiWebhookEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiWebhookEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FaturapiWebhookEvents
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FaturapiWebhookEventUpdateManyArgs>(args: SelectSubset<T, FaturapiWebhookEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FaturapiWebhookEvents and returns the data updated in the database.
+     * @param {FaturapiWebhookEventUpdateManyAndReturnArgs} args - Arguments to update many FaturapiWebhookEvents.
+     * @example
+     * // Update many FaturapiWebhookEvents
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FaturapiWebhookEvents and only return the `id`
+     * const faturapiWebhookEventWithIdOnly = await prisma.faturapiWebhookEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FaturapiWebhookEventUpdateManyAndReturnArgs>(args: SelectSubset<T, FaturapiWebhookEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FaturapiWebhookEvent.
+     * @param {FaturapiWebhookEventUpsertArgs} args - Arguments to update or create a FaturapiWebhookEvent.
+     * @example
+     * // Update or create a FaturapiWebhookEvent
+     * const faturapiWebhookEvent = await prisma.faturapiWebhookEvent.upsert({
+     *   create: {
+     *     // ... data to create a FaturapiWebhookEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FaturapiWebhookEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FaturapiWebhookEventUpsertArgs>(args: SelectSubset<T, FaturapiWebhookEventUpsertArgs<ExtArgs>>): Prisma__FaturapiWebhookEventClient<$Result.GetResult<Prisma.$FaturapiWebhookEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FaturapiWebhookEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiWebhookEventCountArgs} args - Arguments to filter FaturapiWebhookEvents to count.
+     * @example
+     * // Count the number of FaturapiWebhookEvents
+     * const count = await prisma.faturapiWebhookEvent.count({
+     *   where: {
+     *     // ... the filter for the FaturapiWebhookEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends FaturapiWebhookEventCountArgs>(
+      args?: Subset<T, FaturapiWebhookEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FaturapiWebhookEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FaturapiWebhookEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiWebhookEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FaturapiWebhookEventAggregateArgs>(args: Subset<T, FaturapiWebhookEventAggregateArgs>): Prisma.PrismaPromise<GetFaturapiWebhookEventAggregateType<T>>
+
+    /**
+     * Group by FaturapiWebhookEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiWebhookEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FaturapiWebhookEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FaturapiWebhookEventGroupByArgs['orderBy'] }
+        : { orderBy?: FaturapiWebhookEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FaturapiWebhookEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFaturapiWebhookEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FaturapiWebhookEvent model
+   */
+  readonly fields: FaturapiWebhookEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FaturapiWebhookEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FaturapiWebhookEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FaturapiWebhookEvent model
+   */
+  interface FaturapiWebhookEventFieldRefs {
+    readonly id: FieldRef<"FaturapiWebhookEvent", 'String'>
+    readonly eventId: FieldRef<"FaturapiWebhookEvent", 'String'>
+    readonly type: FieldRef<"FaturapiWebhookEvent", 'String'>
+    readonly payload: FieldRef<"FaturapiWebhookEvent", 'Json'>
+    readonly status: FieldRef<"FaturapiWebhookEvent", 'String'>
+    readonly error: FieldRef<"FaturapiWebhookEvent", 'String'>
+    readonly processedAt: FieldRef<"FaturapiWebhookEvent", 'DateTime'>
+    readonly createdAt: FieldRef<"FaturapiWebhookEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FaturapiWebhookEvent findUnique
+   */
+  export type FaturapiWebhookEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FaturapiWebhookEvent to fetch.
+     */
+    where: FaturapiWebhookEventWhereUniqueInput
+  }
+
+  /**
+   * FaturapiWebhookEvent findUniqueOrThrow
+   */
+  export type FaturapiWebhookEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FaturapiWebhookEvent to fetch.
+     */
+    where: FaturapiWebhookEventWhereUniqueInput
+  }
+
+  /**
+   * FaturapiWebhookEvent findFirst
+   */
+  export type FaturapiWebhookEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FaturapiWebhookEvent to fetch.
+     */
+    where?: FaturapiWebhookEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiWebhookEvents to fetch.
+     */
+    orderBy?: FaturapiWebhookEventOrderByWithRelationInput | FaturapiWebhookEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FaturapiWebhookEvents.
+     */
+    cursor?: FaturapiWebhookEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiWebhookEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiWebhookEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FaturapiWebhookEvents.
+     */
+    distinct?: FaturapiWebhookEventScalarFieldEnum | FaturapiWebhookEventScalarFieldEnum[]
+  }
+
+  /**
+   * FaturapiWebhookEvent findFirstOrThrow
+   */
+  export type FaturapiWebhookEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FaturapiWebhookEvent to fetch.
+     */
+    where?: FaturapiWebhookEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiWebhookEvents to fetch.
+     */
+    orderBy?: FaturapiWebhookEventOrderByWithRelationInput | FaturapiWebhookEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FaturapiWebhookEvents.
+     */
+    cursor?: FaturapiWebhookEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiWebhookEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiWebhookEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FaturapiWebhookEvents.
+     */
+    distinct?: FaturapiWebhookEventScalarFieldEnum | FaturapiWebhookEventScalarFieldEnum[]
+  }
+
+  /**
+   * FaturapiWebhookEvent findMany
+   */
+  export type FaturapiWebhookEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FaturapiWebhookEvents to fetch.
+     */
+    where?: FaturapiWebhookEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiWebhookEvents to fetch.
+     */
+    orderBy?: FaturapiWebhookEventOrderByWithRelationInput | FaturapiWebhookEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FaturapiWebhookEvents.
+     */
+    cursor?: FaturapiWebhookEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiWebhookEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiWebhookEvents.
+     */
+    skip?: number
+    distinct?: FaturapiWebhookEventScalarFieldEnum | FaturapiWebhookEventScalarFieldEnum[]
+  }
+
+  /**
+   * FaturapiWebhookEvent create
+   */
+  export type FaturapiWebhookEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FaturapiWebhookEvent.
+     */
+    data: XOR<FaturapiWebhookEventCreateInput, FaturapiWebhookEventUncheckedCreateInput>
+  }
+
+  /**
+   * FaturapiWebhookEvent createMany
+   */
+  export type FaturapiWebhookEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FaturapiWebhookEvents.
+     */
+    data: FaturapiWebhookEventCreateManyInput | FaturapiWebhookEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FaturapiWebhookEvent createManyAndReturn
+   */
+  export type FaturapiWebhookEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many FaturapiWebhookEvents.
+     */
+    data: FaturapiWebhookEventCreateManyInput | FaturapiWebhookEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FaturapiWebhookEvent update
+   */
+  export type FaturapiWebhookEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FaturapiWebhookEvent.
+     */
+    data: XOR<FaturapiWebhookEventUpdateInput, FaturapiWebhookEventUncheckedUpdateInput>
+    /**
+     * Choose, which FaturapiWebhookEvent to update.
+     */
+    where: FaturapiWebhookEventWhereUniqueInput
+  }
+
+  /**
+   * FaturapiWebhookEvent updateMany
+   */
+  export type FaturapiWebhookEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FaturapiWebhookEvents.
+     */
+    data: XOR<FaturapiWebhookEventUpdateManyMutationInput, FaturapiWebhookEventUncheckedUpdateManyInput>
+    /**
+     * Filter which FaturapiWebhookEvents to update
+     */
+    where?: FaturapiWebhookEventWhereInput
+    /**
+     * Limit how many FaturapiWebhookEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FaturapiWebhookEvent updateManyAndReturn
+   */
+  export type FaturapiWebhookEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * The data used to update FaturapiWebhookEvents.
+     */
+    data: XOR<FaturapiWebhookEventUpdateManyMutationInput, FaturapiWebhookEventUncheckedUpdateManyInput>
+    /**
+     * Filter which FaturapiWebhookEvents to update
+     */
+    where?: FaturapiWebhookEventWhereInput
+    /**
+     * Limit how many FaturapiWebhookEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FaturapiWebhookEvent upsert
+   */
+  export type FaturapiWebhookEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FaturapiWebhookEvent to update in case it exists.
+     */
+    where: FaturapiWebhookEventWhereUniqueInput
+    /**
+     * In case the FaturapiWebhookEvent found by the `where` argument doesn't exist, create a new FaturapiWebhookEvent with this data.
+     */
+    create: XOR<FaturapiWebhookEventCreateInput, FaturapiWebhookEventUncheckedCreateInput>
+    /**
+     * In case the FaturapiWebhookEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FaturapiWebhookEventUpdateInput, FaturapiWebhookEventUncheckedUpdateInput>
+  }
+
+  /**
+   * FaturapiWebhookEvent delete
+   */
+  export type FaturapiWebhookEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+    /**
+     * Filter which FaturapiWebhookEvent to delete.
+     */
+    where: FaturapiWebhookEventWhereUniqueInput
+  }
+
+  /**
+   * FaturapiWebhookEvent deleteMany
+   */
+  export type FaturapiWebhookEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FaturapiWebhookEvents to delete
+     */
+    where?: FaturapiWebhookEventWhereInput
+    /**
+     * Limit how many FaturapiWebhookEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FaturapiWebhookEvent without action
+   */
+  export type FaturapiWebhookEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiWebhookEvent
+     */
+    select?: FaturapiWebhookEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiWebhookEvent
+     */
+    omit?: FaturapiWebhookEventOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -26811,7 +27987,9 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
     validationStatus: 'validationStatus',
-    rejectionReason: 'rejectionReason'
+    rejectionReason: 'rejectionReason',
+    faturapiUnitId: 'faturapiUnitId',
+    faturapiStatus: 'faturapiStatus'
   };
 
   export type ConsumerUnitScalarFieldEnum = (typeof ConsumerUnitScalarFieldEnum)[keyof typeof ConsumerUnitScalarFieldEnum]
@@ -27025,6 +28203,8 @@ export namespace Prisma {
     amountDue: 'amountDue',
     pixCode: 'pixCode',
     barcode: 'barcode',
+    faturapiInvoiceId: 'faturapiInvoiceId',
+    faturapiParsed: 'faturapiParsed',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -27115,6 +28295,20 @@ export namespace Prisma {
   export type InvestmentScalarFieldEnum = (typeof InvestmentScalarFieldEnum)[keyof typeof InvestmentScalarFieldEnum]
 
 
+  export const FaturapiWebhookEventScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    type: 'type',
+    payload: 'payload',
+    status: 'status',
+    error: 'error',
+    processedAt: 'processedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type FaturapiWebhookEventScalarFieldEnum = (typeof FaturapiWebhookEventScalarFieldEnum)[keyof typeof FaturapiWebhookEventScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -27129,6 +28323,13 @@ export namespace Prisma {
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -27986,6 +29187,8 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringFilter<"ConsumerUnit"> | string
     rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiUnitId?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiStatus?: StringNullableFilter<"ConsumerUnit"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -28022,6 +29225,8 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     validationStatus?: SortOrder
     rejectionReason?: SortOrderInput | SortOrder
+    faturapiUnitId?: SortOrderInput | SortOrder
+    faturapiStatus?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
     payerUser?: UserOrderByWithRelationInput
     plant?: PlantOrderByWithRelationInput
@@ -28035,6 +29240,7 @@ export namespace Prisma {
 
   export type ConsumerUnitWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    faturapiUnitId?: string
     AND?: ConsumerUnitWhereInput | ConsumerUnitWhereInput[]
     OR?: ConsumerUnitWhereInput[]
     NOT?: ConsumerUnitWhereInput | ConsumerUnitWhereInput[]
@@ -28061,6 +29267,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringFilter<"ConsumerUnit"> | string
     rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiStatus?: StringNullableFilter<"ConsumerUnit"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -28070,7 +29277,7 @@ export namespace Prisma {
     chargeRule?: XOR<ChargeRuleNullableScalarRelationFilter, ChargeRuleWhereInput> | null
     charges?: ChargeListRelationFilter
     payerInvites?: PayerInviteListRelationFilter
-  }, "id">
+  }, "id" | "faturapiUnitId">
 
   export type ConsumerUnitOrderByWithAggregationInput = {
     id?: SortOrder
@@ -28097,6 +29304,8 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     validationStatus?: SortOrder
     rejectionReason?: SortOrderInput | SortOrder
+    faturapiUnitId?: SortOrderInput | SortOrder
+    faturapiStatus?: SortOrderInput | SortOrder
     _count?: ConsumerUnitCountOrderByAggregateInput
     _max?: ConsumerUnitMaxOrderByAggregateInput
     _min?: ConsumerUnitMinOrderByAggregateInput
@@ -28130,6 +29339,8 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringWithAggregatesFilter<"ConsumerUnit"> | string
     rejectionReason?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    faturapiUnitId?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    faturapiStatus?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
   }
 
   export type CreditAllocationWhereInput = {
@@ -28913,6 +30124,8 @@ export namespace Prisma {
     amountDue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     pixCode?: StringNullableFilter<"EnergyBill"> | string | null
     barcode?: StringNullableFilter<"EnergyBill"> | string | null
+    faturapiInvoiceId?: StringNullableFilter<"EnergyBill"> | string | null
+    faturapiParsed?: JsonNullableFilter<"EnergyBill">
     createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
@@ -28993,6 +30206,8 @@ export namespace Prisma {
     amountDue?: SortOrderInput | SortOrder
     pixCode?: SortOrderInput | SortOrder
     barcode?: SortOrderInput | SortOrder
+    faturapiInvoiceId?: SortOrderInput | SortOrder
+    faturapiParsed?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     client?: ClientOrderByWithRelationInput
@@ -29003,6 +30218,7 @@ export namespace Prisma {
 
   export type EnergyBillWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    faturapiInvoiceId?: string
     consumerUnitId_referenceMonth_referenceYear?: EnergyBillConsumerUnitIdReferenceMonthReferenceYearCompoundUniqueInput
     AND?: EnergyBillWhereInput | EnergyBillWhereInput[]
     OR?: EnergyBillWhereInput[]
@@ -29077,13 +30293,14 @@ export namespace Prisma {
     amountDue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     pixCode?: StringNullableFilter<"EnergyBill"> | string | null
     barcode?: StringNullableFilter<"EnergyBill"> | string | null
+    faturapiParsed?: JsonNullableFilter<"EnergyBill">
     createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
     consumerUnit?: XOR<ConsumerUnitScalarRelationFilter, ConsumerUnitWhereInput>
     charges?: ChargeListRelationFilter
-  }, "id" | "consumerUnitId_referenceMonth_referenceYear">
+  }, "id" | "faturapiInvoiceId" | "consumerUnitId_referenceMonth_referenceYear">
 
   export type EnergyBillOrderByWithAggregationInput = {
     id?: SortOrder
@@ -29157,6 +30374,8 @@ export namespace Prisma {
     amountDue?: SortOrderInput | SortOrder
     pixCode?: SortOrderInput | SortOrder
     barcode?: SortOrderInput | SortOrder
+    faturapiInvoiceId?: SortOrderInput | SortOrder
+    faturapiParsed?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EnergyBillCountOrderByAggregateInput
@@ -29241,6 +30460,8 @@ export namespace Prisma {
     amountDue?: DecimalNullableWithAggregatesFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     pixCode?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
     barcode?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    faturapiInvoiceId?: StringNullableWithAggregatesFilter<"EnergyBill"> | string | null
+    faturapiParsed?: JsonNullableWithAggregatesFilter<"EnergyBill">
     createdAt?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EnergyBill"> | Date | string
   }
@@ -29686,6 +30907,73 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Investment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Investment"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Investment"> | Date | string | null
+  }
+
+  export type FaturapiWebhookEventWhereInput = {
+    AND?: FaturapiWebhookEventWhereInput | FaturapiWebhookEventWhereInput[]
+    OR?: FaturapiWebhookEventWhereInput[]
+    NOT?: FaturapiWebhookEventWhereInput | FaturapiWebhookEventWhereInput[]
+    id?: StringFilter<"FaturapiWebhookEvent"> | string
+    eventId?: StringFilter<"FaturapiWebhookEvent"> | string
+    type?: StringFilter<"FaturapiWebhookEvent"> | string
+    payload?: JsonFilter<"FaturapiWebhookEvent">
+    status?: StringFilter<"FaturapiWebhookEvent"> | string
+    error?: StringNullableFilter<"FaturapiWebhookEvent"> | string | null
+    processedAt?: DateTimeNullableFilter<"FaturapiWebhookEvent"> | Date | string | null
+    createdAt?: DateTimeFilter<"FaturapiWebhookEvent"> | Date | string
+  }
+
+  export type FaturapiWebhookEventOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    payload?: SortOrder
+    status?: SortOrder
+    error?: SortOrderInput | SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FaturapiWebhookEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    eventId?: string
+    AND?: FaturapiWebhookEventWhereInput | FaturapiWebhookEventWhereInput[]
+    OR?: FaturapiWebhookEventWhereInput[]
+    NOT?: FaturapiWebhookEventWhereInput | FaturapiWebhookEventWhereInput[]
+    type?: StringFilter<"FaturapiWebhookEvent"> | string
+    payload?: JsonFilter<"FaturapiWebhookEvent">
+    status?: StringFilter<"FaturapiWebhookEvent"> | string
+    error?: StringNullableFilter<"FaturapiWebhookEvent"> | string | null
+    processedAt?: DateTimeNullableFilter<"FaturapiWebhookEvent"> | Date | string | null
+    createdAt?: DateTimeFilter<"FaturapiWebhookEvent"> | Date | string
+  }, "id" | "eventId">
+
+  export type FaturapiWebhookEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    payload?: SortOrder
+    status?: SortOrder
+    error?: SortOrderInput | SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: FaturapiWebhookEventCountOrderByAggregateInput
+    _max?: FaturapiWebhookEventMaxOrderByAggregateInput
+    _min?: FaturapiWebhookEventMinOrderByAggregateInput
+  }
+
+  export type FaturapiWebhookEventScalarWhereWithAggregatesInput = {
+    AND?: FaturapiWebhookEventScalarWhereWithAggregatesInput | FaturapiWebhookEventScalarWhereWithAggregatesInput[]
+    OR?: FaturapiWebhookEventScalarWhereWithAggregatesInput[]
+    NOT?: FaturapiWebhookEventScalarWhereWithAggregatesInput | FaturapiWebhookEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FaturapiWebhookEvent"> | string
+    eventId?: StringWithAggregatesFilter<"FaturapiWebhookEvent"> | string
+    type?: StringWithAggregatesFilter<"FaturapiWebhookEvent"> | string
+    payload?: JsonWithAggregatesFilter<"FaturapiWebhookEvent">
+    status?: StringWithAggregatesFilter<"FaturapiWebhookEvent"> | string
+    error?: StringNullableWithAggregatesFilter<"FaturapiWebhookEvent"> | string | null
+    processedAt?: DateTimeNullableWithAggregatesFilter<"FaturapiWebhookEvent"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FaturapiWebhookEvent"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -30417,6 +31705,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -30453,6 +31743,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -30483,6 +31775,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -30519,6 +31813,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -30552,6 +31848,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
   }
 
   export type ConsumerUnitUpdateManyMutationInput = {
@@ -30576,6 +31874,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConsumerUnitUncheckedUpdateManyInput = {
@@ -30603,6 +31903,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationCreateInput = {
@@ -31451,6 +32753,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
@@ -31531,6 +32835,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
@@ -31605,6 +32911,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -31685,6 +32993,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
@@ -31762,6 +33072,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -31835,6 +33147,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31911,6 +33225,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32404,6 +33720,83 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type FaturapiWebhookEventCreateInput = {
+    id?: string
+    eventId: string
+    type: string
+    payload: JsonNullValueInput | InputJsonValue
+    status?: string
+    error?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type FaturapiWebhookEventUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    type: string
+    payload: JsonNullValueInput | InputJsonValue
+    status?: string
+    error?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type FaturapiWebhookEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FaturapiWebhookEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FaturapiWebhookEventCreateManyInput = {
+    id?: string
+    eventId: string
+    type: string
+    payload: JsonNullValueInput | InputJsonValue
+    status?: string
+    error?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type FaturapiWebhookEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FaturapiWebhookEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -33218,6 +34611,8 @@ export namespace Prisma {
     deletedAt?: SortOrder
     validationStatus?: SortOrder
     rejectionReason?: SortOrder
+    faturapiUnitId?: SortOrder
+    faturapiStatus?: SortOrder
   }
 
   export type ConsumerUnitMaxOrderByAggregateInput = {
@@ -33245,6 +34640,8 @@ export namespace Prisma {
     deletedAt?: SortOrder
     validationStatus?: SortOrder
     rejectionReason?: SortOrder
+    faturapiUnitId?: SortOrder
+    faturapiStatus?: SortOrder
   }
 
   export type ConsumerUnitMinOrderByAggregateInput = {
@@ -33272,6 +34669,8 @@ export namespace Prisma {
     deletedAt?: SortOrder
     validationStatus?: SortOrder
     rejectionReason?: SortOrder
+    faturapiUnitId?: SortOrder
+    faturapiStatus?: SortOrder
   }
 
   export type DecimalFilter<$PrismaModel = never> = {
@@ -33899,6 +35298,8 @@ export namespace Prisma {
     amountDue?: SortOrder
     pixCode?: SortOrder
     barcode?: SortOrder
+    faturapiInvoiceId?: SortOrder
+    faturapiParsed?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -34010,6 +35411,7 @@ export namespace Prisma {
     amountDue?: SortOrder
     pixCode?: SortOrder
     barcode?: SortOrder
+    faturapiInvoiceId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -34080,6 +35482,7 @@ export namespace Prisma {
     amountDue?: SortOrder
     pixCode?: SortOrder
     barcode?: SortOrder
+    faturapiInvoiceId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -34446,6 +35849,86 @@ export namespace Prisma {
   export type InvestmentSumOrderByAggregateInput = {
     totalInvested?: SortOrder
     monthlyReturn?: SortOrder
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type FaturapiWebhookEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    payload?: SortOrder
+    status?: SortOrder
+    error?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FaturapiWebhookEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    error?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FaturapiWebhookEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    error?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type UserCreaterolesInput = {
@@ -36770,6 +38253,29 @@ export namespace Prisma {
     _min?: NestedEnumPayerInviteStatusFilter<$PrismaModel>
     _max?: NestedEnumPayerInviteStatusFilter<$PrismaModel>
   }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type ClientCreateWithoutUsersInput = {
     id?: string
@@ -36860,6 +38366,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -36894,6 +38402,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -37091,6 +38601,8 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"ConsumerUnit"> | Date | string | null
     validationStatus?: StringFilter<"ConsumerUnit"> | string
     rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiUnitId?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiStatus?: StringNullableFilter<"ConsumerUnit"> | string | null
   }
 
   export type ChargeUpsertWithWhereUniqueWithoutPayerUserInput = {
@@ -37406,6 +38918,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     plant: PlantCreateNestedOneWithoutEnergyBillsInput
@@ -37484,6 +38998,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
@@ -37661,6 +39177,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -37695,6 +39213,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -38207,6 +39727,8 @@ export namespace Prisma {
     amountDue?: DecimalNullableFilter<"EnergyBill"> | Decimal | DecimalJsLike | number | string | null
     pixCode?: StringNullableFilter<"EnergyBill"> | string | null
     barcode?: StringNullableFilter<"EnergyBill"> | string | null
+    faturapiInvoiceId?: StringNullableFilter<"EnergyBill"> | string | null
+    faturapiParsed?: JsonNullableFilter<"EnergyBill">
     createdAt?: DateTimeFilter<"EnergyBill"> | Date | string
     updatedAt?: DateTimeFilter<"EnergyBill"> | Date | string
   }
@@ -38648,6 +40170,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -38682,6 +40206,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -38823,6 +40349,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
@@ -38901,6 +40429,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
@@ -39615,6 +41145,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
@@ -39693,6 +41225,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     charges?: ChargeUncheckedCreateNestedManyWithoutEnergyBillInput
@@ -40401,6 +41935,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -40436,6 +41972,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
     chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
@@ -40470,6 +42008,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -40505,6 +42045,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
@@ -40686,6 +42228,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -40721,6 +42265,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
     chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
@@ -40761,6 +42307,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -40796,6 +42344,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
@@ -41935,6 +43485,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -41970,6 +43522,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
     chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
@@ -42213,6 +43767,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -42248,6 +43804,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
     chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
@@ -42360,6 +43918,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -42395,6 +43955,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -42575,6 +44137,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -42610,6 +44174,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -42722,6 +44288,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -42757,6 +44325,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -42838,6 +44408,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     client: ClientCreateNestedOneWithoutEnergyBillsInput
@@ -42917,6 +44489,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -43104,6 +44678,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -43139,6 +44715,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -43226,6 +44804,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -43305,6 +44885,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -43482,6 +45064,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -43517,6 +45101,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -43635,6 +45221,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -43670,6 +45258,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -43841,6 +45431,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
   }
 
   export type ChargeCreateManyPayerUserInput = {
@@ -43891,6 +45483,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -43925,6 +45519,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -43957,6 +45553,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChargeUpdateWithoutPayerUserInput = {
@@ -44175,6 +45773,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -44258,6 +45858,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
   }
 
   export type CreditAllocationCreateManyClientInput = {
@@ -44623,6 +46225,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     plant?: PlantUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -44701,6 +46305,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
@@ -44777,6 +46383,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -44978,6 +46586,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -45012,6 +46622,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -45044,6 +46656,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationUpdateWithoutClientInput = {
@@ -45372,6 +46986,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     validationStatus?: string
     rejectionReason?: string | null
+    faturapiUnitId?: string | null
+    faturapiStatus?: string | null
   }
 
   export type CreditAllocationCreateManyPlantInput = {
@@ -45467,6 +47083,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -45594,6 +47212,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -45628,6 +47248,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -45660,6 +47282,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validationStatus?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationUpdateWithoutPlantInput = {
@@ -45797,6 +47421,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -45875,6 +47501,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
@@ -45951,6 +47579,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -46082,6 +47712,8 @@ export namespace Prisma {
     amountDue?: Decimal | DecimalJsLike | number | string | null
     pixCode?: string | null
     barcode?: string | null
+    faturapiInvoiceId?: string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -46241,6 +47873,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutEnergyBillsNestedInput
@@ -46319,6 +47953,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     charges?: ChargeUncheckedUpdateManyWithoutEnergyBillNestedInput
@@ -46395,6 +48031,8 @@ export namespace Prisma {
     amountDue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     pixCode?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiInvoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiParsed?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

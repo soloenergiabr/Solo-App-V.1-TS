@@ -23,6 +23,10 @@ export enum EventType {
     GD_CHARGE_PAID = 'gd.charge_paid',
     GD_PAYER_INVITED = 'gd.payer_invited',
     GD_PAYER_ACCEPTED = 'gd.payer_accepted',
+
+    // Faturapi (busca automatica da fatura na distribuidora)
+    FATURAPI_UNIT_OVERDUE = 'faturapi.unit_overdue',
+    FATURAPI_CREDENTIALS_INVALID = 'faturapi.credentials_invalid',
 }
 
 export interface IndicationCreatedPayload {
@@ -119,6 +123,18 @@ export interface GdPayerAcceptedPayload {
     userId: string;
 }
 
+// Faturapi payloads
+export interface FaturapiUnitOverduePayload {
+    consumerUnitId: string;
+    clientId: string;
+    overdueSince: string | null;
+}
+
+export interface FaturapiCredentialsInvalidPayload {
+    consumerUnitIds: string[];
+    clientIds: string[];
+}
+
 export class EventBus extends EventEmitter {
     private static instance: EventBus;
 
@@ -152,6 +168,9 @@ export class EventBus extends EventEmitter {
     public emit(event: EventType.GD_CHARGE_PAID, payload: GdChargePaidPayload): boolean;
     public emit(event: EventType.GD_PAYER_INVITED, payload: GdPayerInvitedPayload): boolean;
     public emit(event: EventType.GD_PAYER_ACCEPTED, payload: GdPayerAcceptedPayload): boolean;
+    // Faturapi events
+    public emit(event: EventType.FATURAPI_UNIT_OVERDUE, payload: FaturapiUnitOverduePayload): boolean;
+    public emit(event: EventType.FATURAPI_CREDENTIALS_INVALID, payload: FaturapiCredentialsInvalidPayload): boolean;
     // Fallback
     public emit(event: string, ...args: any[]): boolean {
         return super.emit(event, ...args);
@@ -176,6 +195,9 @@ export class EventBus extends EventEmitter {
     public on(event: EventType.GD_CHARGE_PAID, listener: (payload: GdChargePaidPayload) => void): this;
     public on(event: EventType.GD_PAYER_INVITED, listener: (payload: GdPayerInvitedPayload) => void): this;
     public on(event: EventType.GD_PAYER_ACCEPTED, listener: (payload: GdPayerAcceptedPayload) => void): this;
+    // Faturapi events
+    public on(event: EventType.FATURAPI_UNIT_OVERDUE, listener: (payload: FaturapiUnitOverduePayload) => void): this;
+    public on(event: EventType.FATURAPI_CREDENTIALS_INVALID, listener: (payload: FaturapiCredentialsInvalidPayload) => void): this;
     // Fallback
     public on(event: string, listener: (...args: any[]) => void): this {
         return super.on(event, listener);
