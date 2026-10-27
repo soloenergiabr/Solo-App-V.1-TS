@@ -233,7 +233,9 @@ exports.Prisma.ConsumerUnitScalarFieldEnum = {
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
   validationStatus: 'validationStatus',
-  rejectionReason: 'rejectionReason'
+  rejectionReason: 'rejectionReason',
+  faturapiUnitId: 'faturapiUnitId',
+  faturapiStatus: 'faturapiStatus'
 };
 
 exports.Prisma.CreditAllocationScalarFieldEnum = {
@@ -420,6 +422,8 @@ exports.Prisma.EnergyBillScalarFieldEnum = {
   amountDue: 'amountDue',
   pixCode: 'pixCode',
   barcode: 'barcode',
+  faturapiInvoiceId: 'faturapiInvoiceId',
+  faturapiParsed: 'faturapiParsed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -495,6 +499,17 @@ exports.Prisma.InvestmentScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
+exports.Prisma.FaturapiWebhookEventScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  type: 'type',
+  payload: 'payload',
+  status: 'status',
+  error: 'error',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -502,6 +517,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -596,7 +615,8 @@ exports.Prisma.ModelName = {
   ChargeRule: 'ChargeRule',
   Charge: 'Charge',
   PayerInvite: 'PayerInvite',
-  Investment: 'Investment'
+  Investment: 'Investment',
+  FaturapiWebhookEvent: 'FaturapiWebhookEvent'
 };
 
 /**

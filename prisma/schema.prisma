@@ -265,6 +265,11 @@ model ConsumerUnit {
   validationStatus String @default("pending_review")
   rejectionReason String?
 
+  // Faturapi (busca mensal automatica da fatura na distribuidora)
+  faturapiUnitId String? @unique
+  /// active | paused | needs_credentials | overdue (espelha Unit.status da Faturapi)
+  faturapiStatus String?
+
   @@index([clientId])
   @@index([plantId])
   @@index([clientId, plantId])
@@ -582,6 +587,10 @@ model EnergyBill {
   pixCode       String?
   barcode       String?
 
+  // Faturapi
+  faturapiInvoiceId String? @unique
+  faturapiParsed    Json? // Invoice.parsed bruto, como veio da Faturapi
+
   charges Charge[]
 
   createdAt DateTime @default(now())
@@ -737,4 +746,21 @@ model Investment {
 
   @@index([clientId])
   @@map("investment")
+}
+
+/// Eventos de webhook da Faturapi — deduplica por Faturapi-Event-Id e guarda
+/// o payload para reprocessar quando o processamento (apos o 200) falha.
+model FaturapiWebhookEvent {
+  id          String    @id @default(dbgenerated("(concat('faturapi_event_', gen_random_uuid()))::TEXT"))
+  eventId     String    @unique
+  type        String
+  payload     Json
+  /// received | processed | failed
+  status      String    @default("received")
+  error       String?
+  processedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([status])
+  @@map("faturapi_webhook_event")
 }
