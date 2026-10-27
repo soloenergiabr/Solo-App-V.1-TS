@@ -52,6 +52,9 @@ function makePrisma() {
             update: vi.fn(),
             updateMany: vi.fn(),
         },
+        faturapiConnection: {
+            updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+        },
         energyBill: {
             findUnique: vi.fn().mockResolvedValue(null),
             upsert: vi.fn().mockResolvedValue({ id: 'bill-1' }),
@@ -251,6 +254,51 @@ describe('ProcessFaturapiEventUseCase', () => {
         const { update } = prisma.energyBill.upsert.mock.calls[0][0]
         expect(update).not.toHaveProperty('aiAnalysis')
         expect(update).not.toHaveProperty('totalBillValue')
+    })
+
+    it('invoice.received grava a conexao da unidade na UC', async () => {
+        await run(event('invoice.received', { invoice, unit: { id: 'unit_9', uc: '7604645', status: 'active', connectionId: 'con_1' } }))
+
+        expect(prisma.consumerUnit.update).toHaveBeenCalledWith({
+            where: { id: 'cu-1' },
+            data: { faturapiUnitId: 'unit_9', faturapiStatus: 'active', faturapiConnectionId: 'con_1' },
+        })
+    })
+
+    it('unit.credentials_invalid por conexao marca todas as UCs dela e a conexao', async () => {
+        prisma.consumerUnit.findMany.mockResolvedValue([consumerUnit, { ...consumerUnit, id: 'cu-2' }])
+
+        await run(event('unit.credentials_invalid', { connection: { id: 'con_1', status: 'active' } }))
+
+        expect(prisma.faturapiConnection.updateMany).toHaveBeenCalledWith({
+            where: { faturapiConnectionId: 'con_1' },
+            data: { status: 'needs_credentials' },
+        })
+        expect(prisma.consumerUnit.findMany).toHaveBeenCalledWith({
+            where: { faturapiConnectionId: 'con_1', deletedAt: null },
+        })
+        expect(prisma.consumerUnit.updateMany).toHaveBeenCalledWith({
+            where: { id: { in: ['cu-1', 'cu-2'] } },
+            data: { faturapiStatus: 'needs_credentials' },
+        })
+    })
+
+    it.each(['connection.synced', 'connection.failed'])('%s espelha o status da conexao', async (type) => {
+        await run(event(type, {
+            connection: {
+                id: 'con_1', status: type === 'connection.synced' ? 'active' : 'error', credentialsHint: 'pr***',
+                lastSyncAt: '2026-10-26T01:56:05.207Z', lastError: type === 'connection.failed' ? { code: 'LOGIN_FAILED', message: 'x' } : null,
+            },
+        }))
+
+        expect(prisma.faturapiConnection.updateMany).toHaveBeenCalledWith({
+            where: { faturapiConnectionId: 'con_1' },
+            data: expect.objectContaining({
+                status: type === 'connection.synced' ? 'active' : 'error',
+                credentialsHint: 'pr***',
+                lastSyncAt: new Date('2026-10-26T01:56:05.207Z'),
+            }),
+        })
     })
 
     it('ignora eventos nao tratados', async () => {

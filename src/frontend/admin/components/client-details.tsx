@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BillPdfButton } from '@/frontend/economia/components/bill-pdf-button';
+import { ClientFaturapiTab } from '@/frontend/admin/components/faturapi/client-faturapi-tab';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -775,6 +776,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                     <TabsTrigger value="resumo">Resumo</TabsTrigger>
                     <TabsTrigger value="plants">Usinas e Estrutura</TabsTrigger>
                     <TabsTrigger value="bills">Faturas</TabsTrigger>
+                    <TabsTrigger value="faturapi">Faturapi</TabsTrigger>
                     <TabsTrigger value="gd">Geração Distribuída</TabsTrigger>
                     <TabsTrigger value="generation">Dashboard de Geração</TabsTrigger>
                     <TabsTrigger value="manual-generation">Geração (manual)</TabsTrigger>
@@ -798,6 +800,10 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
 
                 <TabsContent value="bills" className="mt-6">
                     <EnergyBillsTab clientId={clientId} />
+                </TabsContent>
+
+                <TabsContent value="faturapi" className="mt-6">
+                    <ClientFaturapiTab clientId={clientId} />
                 </TabsContent>
 
                 {/* Espelho do admin: mesma tela do titular, operando neste cliente. */}

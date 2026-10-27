@@ -122,6 +122,8 @@ model Client {
   creditAllocations CreditAllocation[]
   investments       Investment[]
 
+  faturapiConnections FaturapiConnection[]
+
   // Geracao distribuida (rateio de custo entre responsaveis)
   chargeRules  ChargeRule[]
   charges      Charge[]
@@ -269,12 +271,15 @@ model ConsumerUnit {
   faturapiUnitId String? @unique
   /// active | paused | needs_credentials | overdue (espelha Unit.status da Faturapi)
   faturapiStatus String?
+  /// Conexao da Faturapi (login compartilhado) pela qual a UC e monitorada
+  faturapiConnectionId String?
 
   @@index([clientId])
   @@index([plantId])
   @@index([clientId, plantId])
   @@index([clientId, clientNumber])
   @@index([payerUserId])
+  @@index([faturapiConnectionId])
   @@map("consumer_unit")
 }
 
@@ -763,4 +768,25 @@ model FaturapiWebhookEvent {
 
   @@index([status])
   @@map("faturapi_webhook_event")
+}
+
+/// Conexao da Faturapi (um login da distribuidora que lista todas as UCs da
+/// conta) ligada a um cliente. Os detalhes vivos (UCs descobertas etc.) vem da
+/// API; aqui fica o vinculo e o ultimo status recebido por webhook.
+model FaturapiConnection {
+  id                   String    @id @default(dbgenerated("(concat('faturapi_connection_', gen_random_uuid()))::TEXT"))
+  faturapiConnectionId String    @unique
+  client               Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId             String
+  source               String
+  /// syncing | active | needs_credentials | error
+  status               String
+  credentialsHint      String?
+  lastSyncAt           DateTime?
+  lastError            Json?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@index([clientId])
+  @@map("faturapi_connection")
 }

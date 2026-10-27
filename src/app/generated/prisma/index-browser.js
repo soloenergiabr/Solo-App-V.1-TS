@@ -235,7 +235,8 @@ exports.Prisma.ConsumerUnitScalarFieldEnum = {
   validationStatus: 'validationStatus',
   rejectionReason: 'rejectionReason',
   faturapiUnitId: 'faturapiUnitId',
-  faturapiStatus: 'faturapiStatus'
+  faturapiStatus: 'faturapiStatus',
+  faturapiConnectionId: 'faturapiConnectionId'
 };
 
 exports.Prisma.CreditAllocationScalarFieldEnum = {
@@ -510,6 +511,19 @@ exports.Prisma.FaturapiWebhookEventScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.FaturapiConnectionScalarFieldEnum = {
+  id: 'id',
+  faturapiConnectionId: 'faturapiConnectionId',
+  clientId: 'clientId',
+  source: 'source',
+  status: 'status',
+  credentialsHint: 'credentialsHint',
+  lastSyncAt: 'lastSyncAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -616,7 +630,8 @@ exports.Prisma.ModelName = {
   Charge: 'Charge',
   PayerInvite: 'PayerInvite',
   Investment: 'Investment',
-  FaturapiWebhookEvent: 'FaturapiWebhookEvent'
+  FaturapiWebhookEvent: 'FaturapiWebhookEvent',
+  FaturapiConnection: 'FaturapiConnection'
 };
 
 /**

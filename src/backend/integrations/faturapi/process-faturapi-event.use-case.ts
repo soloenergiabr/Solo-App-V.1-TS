@@ -4,6 +4,8 @@ import { eventBus, EventType } from '@/backend/shared/event-bus';
 import { uploadObject } from '@/lib/object-storage';
 import { FaturapiClient } from './faturapi.client';
 import type {
+    ConnectionEventData,
+    FaturapiConnection,
     FaturapiInvoice,
     FaturapiUnit,
     FaturapiWebhookEvent,
@@ -42,6 +44,9 @@ export class ProcessFaturapiEventUseCase {
                 return this.handleUnitOverdue(event.data as unknown as UnitOverdueData);
             case 'unit.credentials_invalid':
                 return this.handleCredentialsInvalid(event.data as unknown as UnitCredentialsInvalidData);
+            case 'connection.synced':
+            case 'connection.failed':
+                return this.syncConnectionStatus((event.data as unknown as ConnectionEventData).connection);
             default:
                 console.log(`[Faturapi] Evento ${event.type} (${event.id}) ignorado.`);
         }
@@ -132,6 +137,7 @@ export class ProcessFaturapiEventUseCase {
             data: {
                 faturapiUnitId: consumerUnit.faturapiUnitId ?? unit?.id,
                 faturapiStatus: unit?.status ?? 'active',
+                ...(unit?.connectionId ? { faturapiConnectionId: unit.connectionId } : {}),
             },
         });
 
@@ -207,15 +213,22 @@ export class ProcessFaturapiEventUseCase {
     }
 
     private async handleCredentialsInvalid({ unit, connection }: UnitCredentialsInvalidData): Promise<void> {
-        if (!unit) {
-            // As UCs sao vinculadas direto por unidade (createUnit), sem conexoes.
-            console.warn(`[Faturapi] credentials_invalid para conexao ${connection?.id} sem unidade vinculada; ignorado.`);
-            return;
+        let units;
+        if (unit) {
+            units = await this.findConsumerUnits(unit, undefined);
+        } else if (connection) {
+            // Senha da conexao recusada: todas as UCs monitoradas por ela param.
+            await this.syncConnectionStatus({ ...connection, status: 'needs_credentials' });
+            units = await this.prisma.consumerUnit.findMany({
+                where: { faturapiConnectionId: connection.id, deletedAt: null },
+            });
+        } else {
+            throw new Error('unit.credentials_invalid sem unit nem connection');
         }
 
-        const units = await this.findConsumerUnits(unit, undefined);
         if (units.length === 0) {
-            throw new Error(`Consumer unit not found for Faturapi unit ${unit.id}`);
+            if (unit) throw new Error(`Consumer unit not found for Faturapi unit ${unit.id}`);
+            return;
         }
 
         await this.prisma.consumerUnit.updateMany({
@@ -227,5 +240,21 @@ export class ProcessFaturapiEventUseCase {
             consumerUnitIds: units.map((u) => u.id),
             clientIds: [...new Set(units.map((u) => u.clientId))],
         });
+    }
+
+    /** Espelha o status da conexao, se ela estiver ligada a um cliente do app. */
+    private async syncConnectionStatus(connection: Pick<FaturapiConnection, 'id' | 'status'> & Partial<FaturapiConnection>): Promise<void> {
+        const { count } = await this.prisma.faturapiConnection.updateMany({
+            where: { faturapiConnectionId: connection.id },
+            data: {
+                status: connection.status,
+                ...(connection.credentialsHint !== undefined ? { credentialsHint: connection.credentialsHint } : {}),
+                ...(connection.lastSyncAt !== undefined ? { lastSyncAt: connection.lastSyncAt ? new Date(connection.lastSyncAt) : null } : {}),
+                ...(connection.lastError !== undefined ? { lastError: connection.lastError ? (connection.lastError as unknown as Prisma.InputJsonValue) : Prisma.JsonNull } : {}),
+            },
+        });
+        if (count === 0) {
+            console.warn(`[Faturapi] Conexao ${connection.id} (${connection.status}) nao esta ligada a nenhum cliente.`);
+        }
     }
 }

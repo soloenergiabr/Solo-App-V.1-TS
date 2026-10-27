@@ -2,6 +2,7 @@
 
 import { useState, type ComponentProps, type ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 
@@ -31,7 +32,7 @@ export function BillPdfButton({ billId, children, disabled, ...props }: BillPdfB
             setTimeout(() => URL.revokeObjectURL(url), 60_000);
         } catch {
             tab?.close();
-            window.alert('Nao foi possivel abrir o PDF da fatura.');
+            toast.error('Nao foi possivel abrir o PDF da fatura.');
         } finally {
             setLoading(false);
         }
