@@ -1,11 +1,28 @@
 import type {
+    AddConnectionUnitsRequest,
+    CreateConnectionRequest,
     CreateUnitRequest,
     CreateUnitResponse,
+    FaturapiBalance,
+    FaturapiConnection,
+    FaturapiExtraction,
     FaturapiInvoice,
     FaturapiPage,
     FaturapiUnit,
+    FaturapiUsage,
+    ListExtractionsParams,
     ListInvoicesParams,
+    ListUnitsParams,
+    UpdateUnitRequest,
 } from './faturapi.types';
+
+function toQuery(params: object): string {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+        if (value !== undefined && value !== null && value !== '') query.set(key, String(value));
+    }
+    return query.size > 0 ? `?${query.toString()}` : '';
+}
 
 // Uso exclusivo no servidor: FATURAPI_KEY nunca pode chegar ao bundle do cliente.
 
@@ -55,13 +72,87 @@ export class FaturapiClient {
         return unit;
     }
 
+    async listUnits(params: ListUnitsParams = {}): Promise<FaturapiPage<FaturapiUnit>> {
+        return this.request<FaturapiPage<FaturapiUnit>>('GET', `/units${toQuery(params)}`);
+    }
+
+    async updateUnit(unitId: string, input: UpdateUnitRequest): Promise<FaturapiUnit> {
+        const { unit } = await this.request<{ unit: FaturapiUnit }>('PATCH', `/units/${encodeURIComponent(unitId)}`, input);
+        return unit;
+    }
+
+    /** Remove a unidade monitorada; a Faturapi apaga as credenciais dela. */
+    async deleteUnit(unitId: string): Promise<void> {
+        await this.request<void>('DELETE', `/units/${encodeURIComponent(unitId)}`);
+    }
+
+    /** Busca a fatura agora, fora do agendamento. */
+    async checkUnit(unitId: string): Promise<FaturapiExtraction> {
+        const { extraction } = await this.request<{ extraction: FaturapiExtraction }>('POST', `/units/${encodeURIComponent(unitId)}/check`);
+        return extraction;
+    }
+
+    async backfillUnit(unitId: string, months: number): Promise<FaturapiExtraction> {
+        const { extraction } = await this.request<{ extraction: FaturapiExtraction }>(
+            'POST', `/units/${encodeURIComponent(unitId)}/backfill`, { months },
+        );
+        return extraction;
+    }
+
+    async listUnitExtractions(unitId: string, params: { limit?: number; cursor?: string } = {}): Promise<FaturapiPage<FaturapiExtraction>> {
+        return this.request<FaturapiPage<FaturapiExtraction>>('GET', `/units/${encodeURIComponent(unitId)}/extractions${toQuery(params)}`);
+    }
+
+    async listExtractions(params: ListExtractionsParams = {}): Promise<FaturapiPage<FaturapiExtraction>> {
+        return this.request<FaturapiPage<FaturapiExtraction>>('GET', `/extractions${toQuery(params)}`);
+    }
+
+    async createConnection(input: CreateConnectionRequest): Promise<FaturapiConnection> {
+        const { connection } = await this.request<{ connection: FaturapiConnection }>('POST', '/connections', input);
+        return connection;
+    }
+
+    async listConnections(): Promise<FaturapiConnection[]> {
+        const { data } = await this.request<{ data: FaturapiConnection[] }>('GET', '/connections');
+        return data;
+    }
+
+    async getConnection(connectionId: string): Promise<FaturapiConnection> {
+        const { connection } = await this.request<{ connection: FaturapiConnection }>('GET', `/connections/${encodeURIComponent(connectionId)}`);
+        return connection;
+    }
+
+    /** Troca a senha da conexao; a Faturapi sincroniza de novo em seguida. */
+    async updateConnectionCredentials(connectionId: string, credentials: CreateConnectionRequest['credentials']): Promise<void> {
+        await this.request<unknown>('PATCH', `/connections/${encodeURIComponent(connectionId)}`, { credentials });
+    }
+
+    async syncConnection(connectionId: string): Promise<FaturapiConnection> {
+        const { connection } = await this.request<{ connection: FaturapiConnection }>('POST', `/connections/${encodeURIComponent(connectionId)}/sync`);
+        return connection;
+    }
+
+    /** Passa a monitorar UCs descobertas pela conexao (todas usam o mesmo login). */
+    async addConnectionUnits(connectionId: string, input: AddConnectionUnitsRequest): Promise<FaturapiUnit[]> {
+        const { units } = await this.request<{ units: FaturapiUnit[] }>('POST', `/connections/${encodeURIComponent(connectionId)}/units`, input);
+        return units;
+    }
+
+    /** Remove a conexao; as unidades ligadas a ela ficam needs_credentials. */
+    async deleteConnection(connectionId: string): Promise<void> {
+        await this.request<void>('DELETE', `/connections/${encodeURIComponent(connectionId)}`);
+    }
+
+    async getBalance(): Promise<FaturapiBalance> {
+        return this.request<FaturapiBalance>('GET', '/balance');
+    }
+
+    async getUsage(): Promise<FaturapiUsage> {
+        return this.request<FaturapiUsage>('GET', '/usage');
+    }
+
     async listInvoices(params: ListInvoicesParams = {}): Promise<FaturapiPage<FaturapiInvoice>> {
-        const query = new URLSearchParams();
-        for (const [key, value] of Object.entries(params)) {
-            if (value !== undefined && value !== null && value !== '') query.set(key, String(value));
-        }
-        const suffix = query.size > 0 ? `?${query.toString()}` : '';
-        return this.request<FaturapiPage<FaturapiInvoice>>('GET', `/invoices${suffix}`);
+        return this.request<FaturapiPage<FaturapiInvoice>>('GET', `/invoices${toQuery(params)}`);
     }
 
     /** Percorre todas as paginas de listInvoices ate nextCursor ser null. */
@@ -101,7 +192,8 @@ export class FaturapiClient {
         const response = await this.send(method, path, body);
         if (!response.ok) await this.throwApiError(response);
         if (response.status === 204) return undefined as T;
-        return (await response.json()) as T;
+        const text = await response.text();
+        return (text ? JSON.parse(text) : undefined) as T;
     }
 
     private async send(

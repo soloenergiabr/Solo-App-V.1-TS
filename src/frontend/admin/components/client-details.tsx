@@ -22,6 +22,8 @@ import {
     Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BillPdfButton } from '@/frontend/economia/components/bill-pdf-button';
+import { ClientFaturapiTab } from '@/frontend/admin/components/faturapi/client-faturapi-tab';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -774,6 +776,7 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                     <TabsTrigger value="resumo">Resumo</TabsTrigger>
                     <TabsTrigger value="plants">Usinas e Estrutura</TabsTrigger>
                     <TabsTrigger value="bills">Faturas</TabsTrigger>
+                    <TabsTrigger value="faturapi">Faturapi</TabsTrigger>
                     <TabsTrigger value="gd">Geração Distribuída</TabsTrigger>
                     <TabsTrigger value="generation">Dashboard de Geração</TabsTrigger>
                     <TabsTrigger value="manual-generation">Geração (manual)</TabsTrigger>
@@ -797,6 +800,10 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
 
                 <TabsContent value="bills" className="mt-6">
                     <EnergyBillsTab clientId={clientId} />
+                </TabsContent>
+
+                <TabsContent value="faturapi" className="mt-6">
+                    <ClientFaturapiTab clientId={clientId} />
                 </TabsContent>
 
                 {/* Espelho do admin: mesma tela do titular, operando neste cliente. */}
@@ -1292,9 +1299,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-1">
                                                                 {bill.billFileUrl && (
-                                                                    <Button variant="ghost" size="sm" asChild>
-                                                                        <a href={bill.billFileUrl} target="_blank" rel="noreferrer">PDF</a>
-                                                                    </Button>
+                                                                    <BillPdfButton billId={bill.id} variant="ghost" size="sm">PDF</BillPdfButton>
                                                                 )}
                                                                 {bill.status !== 'reviewed' && (
                                                                     <Button variant="outline" size="sm" onClick={() => markReviewed(bill)}>Revisada</Button>

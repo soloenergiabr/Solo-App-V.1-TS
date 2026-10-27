@@ -3,7 +3,7 @@
 import { Sidebar, SidebarItem, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { ClipboardCheck, Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Zap } from "lucide-react"
+import { ClipboardCheck, Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Zap, Receipt } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useAdminApprovals } from "@/frontend/admin/hooks/use-admin-approvals"
 
@@ -88,6 +88,11 @@ export function AppSidebar() {
                         label: pendingCount > 0 ? `Aprovacoes (${pendingCount})` : 'Aprovacoes',
                         href: '/admin/approvals',
                         icon: <ClipboardCheck className="w-5 h-5" />,
+                    },
+                    {
+                        label: 'Faturapi',
+                        href: '/admin/faturapi',
+                        icon: <Receipt className="w-5 h-5" />,
                     },
                 ],
             };

@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/frontend/auth/contexts/auth-context";
 import { ThemeProvider } from "@/frontend/providers/theme-provider";
 import { QueryProvider } from "@/frontend/providers/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const dmSans = DM_Sans({
   variable: "--font-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
             <AuthProvider>
               {children}
             </AuthProvider>
+            <Toaster richColors closeButton />
           </QueryProvider>
         </ThemeProvider>
       </body>

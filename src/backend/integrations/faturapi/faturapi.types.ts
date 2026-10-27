@@ -29,7 +29,7 @@ export interface FaturapiUnit {
     expectedReadingDate: string | null;
     attempts: number;
     overdueSince: string | null;
-    lastError: string | null;
+    lastError: FaturapiApiError | string | null;
     createdAt: string;
     updatedAt: string;
 }
@@ -54,17 +54,79 @@ export interface FaturapiInvoice {
     createdAt: string;
 }
 
+export interface FaturapiApiError {
+    code: string;
+    message: string;
+}
+
+export type FaturapiConnectionStatus = 'syncing' | 'active' | 'needs_credentials' | 'error';
+
+export interface FaturapiDiscoveredUnit {
+    uc: string;
+    name: string | null;
+    address: string | null;
+    monitored: boolean;
+    unitId: string | null;
+}
+
 export interface FaturapiConnection {
     id: string;
     object: 'connection';
-    [key: string]: unknown;
+    provider: FaturapiProvider;
+    source: 'pessoa' | 'empresa';
+    status: FaturapiConnectionStatus;
+    credentialsHint: string | null;
+    discoveredUnits: FaturapiDiscoveredUnit[];
+    lastSyncAt: string | null;
+    lastError: FaturapiApiError | null;
+    createdAt: string;
 }
+
+export type FaturapiExtractionStatus = 'pending' | 'processing' | 'completed' | 'failed';
 
 export interface FaturapiExtraction {
     id: string;
     object: 'extraction';
-    status: string;
-    [key: string]: unknown;
+    provider: FaturapiProvider;
+    source: FaturapiInvoiceSource;
+    uc: string;
+    months: string[];
+    status: FaturapiExtractionStatus;
+    stage: string;
+    error: FaturapiApiError | null;
+    costCents: number | null;
+    unitId: string | null;
+    trigger: 'api' | 'dashboard' | 'schedule' | 'backfill' | 'retry' | (string & {});
+    createdAt: string;
+    updatedAt: string;
+    completedAt: string | null;
+}
+
+export interface FaturapiBalance {
+    balanceCents: number;
+    currency: string;
+}
+
+export interface FaturapiUsage {
+    days: Array<{ date: string; completed: number; failed: number; costCents: number }>;
+    totals: { completed: number; failed: number; costCents: number };
+}
+
+export interface UpdateUnitRequest {
+    credentials?: FaturapiCredentials;
+    label?: string;
+    status?: 'active' | 'paused';
+}
+
+export interface CreateConnectionRequest {
+    source: 'pessoa' | 'empresa';
+    credentials: FaturapiCredentials;
+    provider?: FaturapiProvider;
+}
+
+export interface AddConnectionUnitsRequest {
+    ucs: string[] | 'all';
+    backfill?: number;
 }
 
 export interface CreateUnitRequest {
@@ -79,6 +141,21 @@ export interface CreateUnitRequest {
 export interface CreateUnitResponse {
     unit: FaturapiUnit;
     extractions: FaturapiExtraction[];
+}
+
+export interface ListUnitsParams {
+    status?: FaturapiUnitStatus;
+    uc?: string;
+    connectionId?: string;
+    limit?: number;
+    cursor?: string;
+}
+
+export interface ListExtractionsParams {
+    status?: FaturapiExtractionStatus;
+    uc?: string;
+    limit?: number;
+    cursor?: string;
 }
 
 export interface ListInvoicesParams {
@@ -123,4 +200,8 @@ export interface UnitOverdueData {
 export interface UnitCredentialsInvalidData {
     unit?: FaturapiUnit;
     connection?: FaturapiConnection;
+}
+
+export interface ConnectionEventData {
+    connection: FaturapiConnection;
 }

@@ -112,6 +112,13 @@ export type Investment = $Result.DefaultSelection<Prisma.$InvestmentPayload>
  * o payload para reprocessar quando o processamento (apos o 200) falha.
  */
 export type FaturapiWebhookEvent = $Result.DefaultSelection<Prisma.$FaturapiWebhookEventPayload>
+/**
+ * Model FaturapiConnection
+ * Conexao da Faturapi (um login da distribuidora que lista todas as UCs da
+ * conta) ligada a um cliente. Os detalhes vivos (UCs descobertas etc.) vem da
+ * API; aqui fica o vinculo e o ultimo status recebido por webhook.
+ */
+export type FaturapiConnection = $Result.DefaultSelection<Prisma.$FaturapiConnectionPayload>
 
 /**
  * Enums
@@ -546,6 +553,16 @@ export class PrismaClient<
     * ```
     */
   get faturapiWebhookEvent(): Prisma.FaturapiWebhookEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.faturapiConnection`: Exposes CRUD operations for the **FaturapiConnection** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FaturapiConnections
+    * const faturapiConnections = await prisma.faturapiConnection.findMany()
+    * ```
+    */
+  get faturapiConnection(): Prisma.FaturapiConnectionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1004,7 +1021,8 @@ export namespace Prisma {
     Charge: 'Charge',
     PayerInvite: 'PayerInvite',
     Investment: 'Investment',
-    FaturapiWebhookEvent: 'FaturapiWebhookEvent'
+    FaturapiWebhookEvent: 'FaturapiWebhookEvent',
+    FaturapiConnection: 'FaturapiConnection'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1023,7 +1041,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "chargeRule" | "charge" | "payerInvite" | "investment" | "faturapiWebhookEvent"
+      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "chargeRule" | "charge" | "payerInvite" | "investment" | "faturapiWebhookEvent" | "faturapiConnection"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2433,6 +2451,80 @@ export namespace Prisma {
           }
         }
       }
+      FaturapiConnection: {
+        payload: Prisma.$FaturapiConnectionPayload<ExtArgs>
+        fields: Prisma.FaturapiConnectionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FaturapiConnectionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FaturapiConnectionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>
+          }
+          findFirst: {
+            args: Prisma.FaturapiConnectionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FaturapiConnectionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>
+          }
+          findMany: {
+            args: Prisma.FaturapiConnectionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>[]
+          }
+          create: {
+            args: Prisma.FaturapiConnectionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>
+          }
+          createMany: {
+            args: Prisma.FaturapiConnectionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FaturapiConnectionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>[]
+          }
+          delete: {
+            args: Prisma.FaturapiConnectionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>
+          }
+          update: {
+            args: Prisma.FaturapiConnectionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>
+          }
+          deleteMany: {
+            args: Prisma.FaturapiConnectionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FaturapiConnectionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FaturapiConnectionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>[]
+          }
+          upsert: {
+            args: Prisma.FaturapiConnectionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FaturapiConnectionPayload>
+          }
+          aggregate: {
+            args: Prisma.FaturapiConnectionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFaturapiConnection>
+          }
+          groupBy: {
+            args: Prisma.FaturapiConnectionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FaturapiConnectionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FaturapiConnectionCountArgs<ExtArgs>
+            result: $Utils.Optional<FaturapiConnectionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2548,6 +2640,7 @@ export namespace Prisma {
     payerInvite?: PayerInviteOmit
     investment?: InvestmentOmit
     faturapiWebhookEvent?: FaturapiWebhookEventOmit
+    faturapiConnection?: FaturapiConnectionOmit
   }
 
   /* Types for Logging */
@@ -2680,6 +2773,7 @@ export namespace Prisma {
     consumerUnits: number
     creditAllocations: number
     investments: number
+    faturapiConnections: number
     chargeRules: number
     charges: number
     payerInvites: number
@@ -2698,6 +2792,7 @@ export namespace Prisma {
     consumerUnits?: boolean | ClientCountOutputTypeCountConsumerUnitsArgs
     creditAllocations?: boolean | ClientCountOutputTypeCountCreditAllocationsArgs
     investments?: boolean | ClientCountOutputTypeCountInvestmentsArgs
+    faturapiConnections?: boolean | ClientCountOutputTypeCountFaturapiConnectionsArgs
     chargeRules?: boolean | ClientCountOutputTypeCountChargeRulesArgs
     charges?: boolean | ClientCountOutputTypeCountChargesArgs
     payerInvites?: boolean | ClientCountOutputTypeCountPayerInvitesArgs
@@ -2796,6 +2891,13 @@ export namespace Prisma {
    */
   export type ClientCountOutputTypeCountInvestmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvestmentWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountFaturapiConnectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FaturapiConnectionWhereInput
   }
 
   /**
@@ -4577,6 +4679,7 @@ export namespace Prisma {
     consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
     creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
     investments?: boolean | Client$investmentsArgs<ExtArgs>
+    faturapiConnections?: boolean | Client$faturapiConnectionsArgs<ExtArgs>
     chargeRules?: boolean | Client$chargeRulesArgs<ExtArgs>
     charges?: boolean | Client$chargesArgs<ExtArgs>
     payerInvites?: boolean | Client$payerInvitesArgs<ExtArgs>
@@ -4648,6 +4751,7 @@ export namespace Prisma {
     consumerUnits?: boolean | Client$consumerUnitsArgs<ExtArgs>
     creditAllocations?: boolean | Client$creditAllocationsArgs<ExtArgs>
     investments?: boolean | Client$investmentsArgs<ExtArgs>
+    faturapiConnections?: boolean | Client$faturapiConnectionsArgs<ExtArgs>
     chargeRules?: boolean | Client$chargeRulesArgs<ExtArgs>
     charges?: boolean | Client$chargesArgs<ExtArgs>
     payerInvites?: boolean | Client$payerInvitesArgs<ExtArgs>
@@ -4671,6 +4775,7 @@ export namespace Prisma {
       consumerUnits: Prisma.$ConsumerUnitPayload<ExtArgs>[]
       creditAllocations: Prisma.$CreditAllocationPayload<ExtArgs>[]
       investments: Prisma.$InvestmentPayload<ExtArgs>[]
+      faturapiConnections: Prisma.$FaturapiConnectionPayload<ExtArgs>[]
       chargeRules: Prisma.$ChargeRulePayload<ExtArgs>[]
       charges: Prisma.$ChargePayload<ExtArgs>[]
       payerInvites: Prisma.$PayerInvitePayload<ExtArgs>[]
@@ -5096,6 +5201,7 @@ export namespace Prisma {
     consumerUnits<T extends Client$consumerUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Client$consumerUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumerUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     creditAllocations<T extends Client$creditAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, Client$creditAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CreditAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     investments<T extends Client$investmentsArgs<ExtArgs> = {}>(args?: Subset<T, Client$investmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    faturapiConnections<T extends Client$faturapiConnectionsArgs<ExtArgs> = {}>(args?: Subset<T, Client$faturapiConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chargeRules<T extends Client$chargeRulesArgs<ExtArgs> = {}>(args?: Subset<T, Client$chargeRulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargeRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     charges<T extends Client$chargesArgs<ExtArgs> = {}>(args?: Subset<T, Client$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payerInvites<T extends Client$payerInvitesArgs<ExtArgs> = {}>(args?: Subset<T, Client$payerInvitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayerInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5815,6 +5921,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InvestmentScalarFieldEnum | InvestmentScalarFieldEnum[]
+  }
+
+  /**
+   * Client.faturapiConnections
+   */
+  export type Client$faturapiConnectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    where?: FaturapiConnectionWhereInput
+    orderBy?: FaturapiConnectionOrderByWithRelationInput | FaturapiConnectionOrderByWithRelationInput[]
+    cursor?: FaturapiConnectionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FaturapiConnectionScalarFieldEnum | FaturapiConnectionScalarFieldEnum[]
   }
 
   /**
@@ -8837,6 +8967,7 @@ export namespace Prisma {
     rejectionReason: string | null
     faturapiUnitId: string | null
     faturapiStatus: string | null
+    faturapiConnectionId: string | null
   }
 
   export type ConsumerUnitMaxAggregateOutputType = {
@@ -8866,6 +8997,7 @@ export namespace Prisma {
     rejectionReason: string | null
     faturapiUnitId: string | null
     faturapiStatus: string | null
+    faturapiConnectionId: string | null
   }
 
   export type ConsumerUnitCountAggregateOutputType = {
@@ -8895,6 +9027,7 @@ export namespace Prisma {
     rejectionReason: number
     faturapiUnitId: number
     faturapiStatus: number
+    faturapiConnectionId: number
     _all: number
   }
 
@@ -8926,6 +9059,7 @@ export namespace Prisma {
     rejectionReason?: true
     faturapiUnitId?: true
     faturapiStatus?: true
+    faturapiConnectionId?: true
   }
 
   export type ConsumerUnitMaxAggregateInputType = {
@@ -8955,6 +9089,7 @@ export namespace Prisma {
     rejectionReason?: true
     faturapiUnitId?: true
     faturapiStatus?: true
+    faturapiConnectionId?: true
   }
 
   export type ConsumerUnitCountAggregateInputType = {
@@ -8984,6 +9119,7 @@ export namespace Prisma {
     rejectionReason?: true
     faturapiUnitId?: true
     faturapiStatus?: true
+    faturapiConnectionId?: true
     _all?: true
   }
 
@@ -9086,6 +9222,7 @@ export namespace Prisma {
     rejectionReason: string | null
     faturapiUnitId: string | null
     faturapiStatus: string | null
+    faturapiConnectionId: string | null
     _count: ConsumerUnitCountAggregateOutputType | null
     _min: ConsumerUnitMinAggregateOutputType | null
     _max: ConsumerUnitMaxAggregateOutputType | null
@@ -9132,6 +9269,7 @@ export namespace Prisma {
     rejectionReason?: boolean
     faturapiUnitId?: boolean
     faturapiStatus?: boolean
+    faturapiConnectionId?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -9171,6 +9309,7 @@ export namespace Prisma {
     rejectionReason?: boolean
     faturapiUnitId?: boolean
     faturapiStatus?: boolean
+    faturapiConnectionId?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -9203,6 +9342,7 @@ export namespace Prisma {
     rejectionReason?: boolean
     faturapiUnitId?: boolean
     faturapiStatus?: boolean
+    faturapiConnectionId?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
     plant?: boolean | PlantDefaultArgs<ExtArgs>
@@ -9235,9 +9375,10 @@ export namespace Prisma {
     rejectionReason?: boolean
     faturapiUnitId?: boolean
     faturapiStatus?: boolean
+    faturapiConnectionId?: boolean
   }
 
-  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus" | "rejectionReason" | "faturapiUnitId" | "faturapiStatus", ExtArgs["result"]["consumerUnit"]>
+  export type ConsumerUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "name" | "isGenerator" | "isConsumer" | "accountHolder" | "accountNumber" | "clientNumber" | "installationNumber" | "distributor" | "address" | "city" | "state" | "status" | "payerName" | "payerEmail" | "payerPhone" | "payerUserId" | "plantId" | "createdAt" | "updatedAt" | "deletedAt" | "validationStatus" | "rejectionReason" | "faturapiUnitId" | "faturapiStatus" | "faturapiConnectionId", ExtArgs["result"]["consumerUnit"]>
   export type ConsumerUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     payerUser?: boolean | ConsumerUnit$payerUserArgs<ExtArgs>
@@ -9304,6 +9445,10 @@ export namespace Prisma {
        * active | paused | needs_credentials | overdue (espelha Unit.status da Faturapi)
        */
       faturapiStatus: string | null
+      /**
+       * Conexao da Faturapi (login compartilhado) pela qual a UC e monitorada
+       */
+      faturapiConnectionId: string | null
     }, ExtArgs["result"]["consumerUnit"]>
     composites: {}
   }
@@ -9762,6 +9907,7 @@ export namespace Prisma {
     readonly rejectionReason: FieldRef<"ConsumerUnit", 'String'>
     readonly faturapiUnitId: FieldRef<"ConsumerUnit", 'String'>
     readonly faturapiStatus: FieldRef<"ConsumerUnit", 'String'>
+    readonly faturapiConnectionId: FieldRef<"ConsumerUnit", 'String'>
   }
     
 
@@ -27849,6 +27995,1128 @@ export namespace Prisma {
 
 
   /**
+   * Model FaturapiConnection
+   */
+
+  export type AggregateFaturapiConnection = {
+    _count: FaturapiConnectionCountAggregateOutputType | null
+    _min: FaturapiConnectionMinAggregateOutputType | null
+    _max: FaturapiConnectionMaxAggregateOutputType | null
+  }
+
+  export type FaturapiConnectionMinAggregateOutputType = {
+    id: string | null
+    faturapiConnectionId: string | null
+    clientId: string | null
+    source: string | null
+    status: string | null
+    credentialsHint: string | null
+    lastSyncAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FaturapiConnectionMaxAggregateOutputType = {
+    id: string | null
+    faturapiConnectionId: string | null
+    clientId: string | null
+    source: string | null
+    status: string | null
+    credentialsHint: string | null
+    lastSyncAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FaturapiConnectionCountAggregateOutputType = {
+    id: number
+    faturapiConnectionId: number
+    clientId: number
+    source: number
+    status: number
+    credentialsHint: number
+    lastSyncAt: number
+    lastError: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FaturapiConnectionMinAggregateInputType = {
+    id?: true
+    faturapiConnectionId?: true
+    clientId?: true
+    source?: true
+    status?: true
+    credentialsHint?: true
+    lastSyncAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FaturapiConnectionMaxAggregateInputType = {
+    id?: true
+    faturapiConnectionId?: true
+    clientId?: true
+    source?: true
+    status?: true
+    credentialsHint?: true
+    lastSyncAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FaturapiConnectionCountAggregateInputType = {
+    id?: true
+    faturapiConnectionId?: true
+    clientId?: true
+    source?: true
+    status?: true
+    credentialsHint?: true
+    lastSyncAt?: true
+    lastError?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FaturapiConnectionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FaturapiConnection to aggregate.
+     */
+    where?: FaturapiConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiConnections to fetch.
+     */
+    orderBy?: FaturapiConnectionOrderByWithRelationInput | FaturapiConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FaturapiConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiConnections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FaturapiConnections
+    **/
+    _count?: true | FaturapiConnectionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FaturapiConnectionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FaturapiConnectionMaxAggregateInputType
+  }
+
+  export type GetFaturapiConnectionAggregateType<T extends FaturapiConnectionAggregateArgs> = {
+        [P in keyof T & keyof AggregateFaturapiConnection]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFaturapiConnection[P]>
+      : GetScalarType<T[P], AggregateFaturapiConnection[P]>
+  }
+
+
+
+
+  export type FaturapiConnectionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FaturapiConnectionWhereInput
+    orderBy?: FaturapiConnectionOrderByWithAggregationInput | FaturapiConnectionOrderByWithAggregationInput[]
+    by: FaturapiConnectionScalarFieldEnum[] | FaturapiConnectionScalarFieldEnum
+    having?: FaturapiConnectionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FaturapiConnectionCountAggregateInputType | true
+    _min?: FaturapiConnectionMinAggregateInputType
+    _max?: FaturapiConnectionMaxAggregateInputType
+  }
+
+  export type FaturapiConnectionGroupByOutputType = {
+    id: string
+    faturapiConnectionId: string
+    clientId: string
+    source: string
+    status: string
+    credentialsHint: string | null
+    lastSyncAt: Date | null
+    lastError: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FaturapiConnectionCountAggregateOutputType | null
+    _min: FaturapiConnectionMinAggregateOutputType | null
+    _max: FaturapiConnectionMaxAggregateOutputType | null
+  }
+
+  type GetFaturapiConnectionGroupByPayload<T extends FaturapiConnectionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FaturapiConnectionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FaturapiConnectionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FaturapiConnectionGroupByOutputType[P]>
+            : GetScalarType<T[P], FaturapiConnectionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FaturapiConnectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    faturapiConnectionId?: boolean
+    clientId?: boolean
+    source?: boolean
+    status?: boolean
+    credentialsHint?: boolean
+    lastSyncAt?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["faturapiConnection"]>
+
+  export type FaturapiConnectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    faturapiConnectionId?: boolean
+    clientId?: boolean
+    source?: boolean
+    status?: boolean
+    credentialsHint?: boolean
+    lastSyncAt?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["faturapiConnection"]>
+
+  export type FaturapiConnectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    faturapiConnectionId?: boolean
+    clientId?: boolean
+    source?: boolean
+    status?: boolean
+    credentialsHint?: boolean
+    lastSyncAt?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["faturapiConnection"]>
+
+  export type FaturapiConnectionSelectScalar = {
+    id?: boolean
+    faturapiConnectionId?: boolean
+    clientId?: boolean
+    source?: boolean
+    status?: boolean
+    credentialsHint?: boolean
+    lastSyncAt?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FaturapiConnectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "faturapiConnectionId" | "clientId" | "source" | "status" | "credentialsHint" | "lastSyncAt" | "lastError" | "createdAt" | "updatedAt", ExtArgs["result"]["faturapiConnection"]>
+  export type FaturapiConnectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type FaturapiConnectionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type FaturapiConnectionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+
+  export type $FaturapiConnectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FaturapiConnection"
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      faturapiConnectionId: string
+      clientId: string
+      source: string
+      /**
+       * syncing | active | needs_credentials | error
+       */
+      status: string
+      credentialsHint: string | null
+      lastSyncAt: Date | null
+      lastError: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["faturapiConnection"]>
+    composites: {}
+  }
+
+  type FaturapiConnectionGetPayload<S extends boolean | null | undefined | FaturapiConnectionDefaultArgs> = $Result.GetResult<Prisma.$FaturapiConnectionPayload, S>
+
+  type FaturapiConnectionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FaturapiConnectionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FaturapiConnectionCountAggregateInputType | true
+    }
+
+  export interface FaturapiConnectionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FaturapiConnection'], meta: { name: 'FaturapiConnection' } }
+    /**
+     * Find zero or one FaturapiConnection that matches the filter.
+     * @param {FaturapiConnectionFindUniqueArgs} args - Arguments to find a FaturapiConnection
+     * @example
+     * // Get one FaturapiConnection
+     * const faturapiConnection = await prisma.faturapiConnection.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FaturapiConnectionFindUniqueArgs>(args: SelectSubset<T, FaturapiConnectionFindUniqueArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FaturapiConnection that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FaturapiConnectionFindUniqueOrThrowArgs} args - Arguments to find a FaturapiConnection
+     * @example
+     * // Get one FaturapiConnection
+     * const faturapiConnection = await prisma.faturapiConnection.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FaturapiConnectionFindUniqueOrThrowArgs>(args: SelectSubset<T, FaturapiConnectionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FaturapiConnection that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiConnectionFindFirstArgs} args - Arguments to find a FaturapiConnection
+     * @example
+     * // Get one FaturapiConnection
+     * const faturapiConnection = await prisma.faturapiConnection.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FaturapiConnectionFindFirstArgs>(args?: SelectSubset<T, FaturapiConnectionFindFirstArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FaturapiConnection that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiConnectionFindFirstOrThrowArgs} args - Arguments to find a FaturapiConnection
+     * @example
+     * // Get one FaturapiConnection
+     * const faturapiConnection = await prisma.faturapiConnection.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FaturapiConnectionFindFirstOrThrowArgs>(args?: SelectSubset<T, FaturapiConnectionFindFirstOrThrowArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FaturapiConnections that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiConnectionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FaturapiConnections
+     * const faturapiConnections = await prisma.faturapiConnection.findMany()
+     * 
+     * // Get first 10 FaturapiConnections
+     * const faturapiConnections = await prisma.faturapiConnection.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const faturapiConnectionWithIdOnly = await prisma.faturapiConnection.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FaturapiConnectionFindManyArgs>(args?: SelectSubset<T, FaturapiConnectionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FaturapiConnection.
+     * @param {FaturapiConnectionCreateArgs} args - Arguments to create a FaturapiConnection.
+     * @example
+     * // Create one FaturapiConnection
+     * const FaturapiConnection = await prisma.faturapiConnection.create({
+     *   data: {
+     *     // ... data to create a FaturapiConnection
+     *   }
+     * })
+     * 
+     */
+    create<T extends FaturapiConnectionCreateArgs>(args: SelectSubset<T, FaturapiConnectionCreateArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FaturapiConnections.
+     * @param {FaturapiConnectionCreateManyArgs} args - Arguments to create many FaturapiConnections.
+     * @example
+     * // Create many FaturapiConnections
+     * const faturapiConnection = await prisma.faturapiConnection.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FaturapiConnectionCreateManyArgs>(args?: SelectSubset<T, FaturapiConnectionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FaturapiConnections and returns the data saved in the database.
+     * @param {FaturapiConnectionCreateManyAndReturnArgs} args - Arguments to create many FaturapiConnections.
+     * @example
+     * // Create many FaturapiConnections
+     * const faturapiConnection = await prisma.faturapiConnection.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FaturapiConnections and only return the `id`
+     * const faturapiConnectionWithIdOnly = await prisma.faturapiConnection.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FaturapiConnectionCreateManyAndReturnArgs>(args?: SelectSubset<T, FaturapiConnectionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FaturapiConnection.
+     * @param {FaturapiConnectionDeleteArgs} args - Arguments to delete one FaturapiConnection.
+     * @example
+     * // Delete one FaturapiConnection
+     * const FaturapiConnection = await prisma.faturapiConnection.delete({
+     *   where: {
+     *     // ... filter to delete one FaturapiConnection
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FaturapiConnectionDeleteArgs>(args: SelectSubset<T, FaturapiConnectionDeleteArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FaturapiConnection.
+     * @param {FaturapiConnectionUpdateArgs} args - Arguments to update one FaturapiConnection.
+     * @example
+     * // Update one FaturapiConnection
+     * const faturapiConnection = await prisma.faturapiConnection.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FaturapiConnectionUpdateArgs>(args: SelectSubset<T, FaturapiConnectionUpdateArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FaturapiConnections.
+     * @param {FaturapiConnectionDeleteManyArgs} args - Arguments to filter FaturapiConnections to delete.
+     * @example
+     * // Delete a few FaturapiConnections
+     * const { count } = await prisma.faturapiConnection.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FaturapiConnectionDeleteManyArgs>(args?: SelectSubset<T, FaturapiConnectionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FaturapiConnections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiConnectionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FaturapiConnections
+     * const faturapiConnection = await prisma.faturapiConnection.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FaturapiConnectionUpdateManyArgs>(args: SelectSubset<T, FaturapiConnectionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FaturapiConnections and returns the data updated in the database.
+     * @param {FaturapiConnectionUpdateManyAndReturnArgs} args - Arguments to update many FaturapiConnections.
+     * @example
+     * // Update many FaturapiConnections
+     * const faturapiConnection = await prisma.faturapiConnection.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FaturapiConnections and only return the `id`
+     * const faturapiConnectionWithIdOnly = await prisma.faturapiConnection.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FaturapiConnectionUpdateManyAndReturnArgs>(args: SelectSubset<T, FaturapiConnectionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FaturapiConnection.
+     * @param {FaturapiConnectionUpsertArgs} args - Arguments to update or create a FaturapiConnection.
+     * @example
+     * // Update or create a FaturapiConnection
+     * const faturapiConnection = await prisma.faturapiConnection.upsert({
+     *   create: {
+     *     // ... data to create a FaturapiConnection
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FaturapiConnection we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FaturapiConnectionUpsertArgs>(args: SelectSubset<T, FaturapiConnectionUpsertArgs<ExtArgs>>): Prisma__FaturapiConnectionClient<$Result.GetResult<Prisma.$FaturapiConnectionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FaturapiConnections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiConnectionCountArgs} args - Arguments to filter FaturapiConnections to count.
+     * @example
+     * // Count the number of FaturapiConnections
+     * const count = await prisma.faturapiConnection.count({
+     *   where: {
+     *     // ... the filter for the FaturapiConnections we want to count
+     *   }
+     * })
+    **/
+    count<T extends FaturapiConnectionCountArgs>(
+      args?: Subset<T, FaturapiConnectionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FaturapiConnectionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FaturapiConnection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiConnectionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FaturapiConnectionAggregateArgs>(args: Subset<T, FaturapiConnectionAggregateArgs>): Prisma.PrismaPromise<GetFaturapiConnectionAggregateType<T>>
+
+    /**
+     * Group by FaturapiConnection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FaturapiConnectionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FaturapiConnectionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FaturapiConnectionGroupByArgs['orderBy'] }
+        : { orderBy?: FaturapiConnectionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FaturapiConnectionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFaturapiConnectionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FaturapiConnection model
+   */
+  readonly fields: FaturapiConnectionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FaturapiConnection.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FaturapiConnectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FaturapiConnection model
+   */
+  interface FaturapiConnectionFieldRefs {
+    readonly id: FieldRef<"FaturapiConnection", 'String'>
+    readonly faturapiConnectionId: FieldRef<"FaturapiConnection", 'String'>
+    readonly clientId: FieldRef<"FaturapiConnection", 'String'>
+    readonly source: FieldRef<"FaturapiConnection", 'String'>
+    readonly status: FieldRef<"FaturapiConnection", 'String'>
+    readonly credentialsHint: FieldRef<"FaturapiConnection", 'String'>
+    readonly lastSyncAt: FieldRef<"FaturapiConnection", 'DateTime'>
+    readonly lastError: FieldRef<"FaturapiConnection", 'Json'>
+    readonly createdAt: FieldRef<"FaturapiConnection", 'DateTime'>
+    readonly updatedAt: FieldRef<"FaturapiConnection", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FaturapiConnection findUnique
+   */
+  export type FaturapiConnectionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * Filter, which FaturapiConnection to fetch.
+     */
+    where: FaturapiConnectionWhereUniqueInput
+  }
+
+  /**
+   * FaturapiConnection findUniqueOrThrow
+   */
+  export type FaturapiConnectionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * Filter, which FaturapiConnection to fetch.
+     */
+    where: FaturapiConnectionWhereUniqueInput
+  }
+
+  /**
+   * FaturapiConnection findFirst
+   */
+  export type FaturapiConnectionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * Filter, which FaturapiConnection to fetch.
+     */
+    where?: FaturapiConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiConnections to fetch.
+     */
+    orderBy?: FaturapiConnectionOrderByWithRelationInput | FaturapiConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FaturapiConnections.
+     */
+    cursor?: FaturapiConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiConnections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FaturapiConnections.
+     */
+    distinct?: FaturapiConnectionScalarFieldEnum | FaturapiConnectionScalarFieldEnum[]
+  }
+
+  /**
+   * FaturapiConnection findFirstOrThrow
+   */
+  export type FaturapiConnectionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * Filter, which FaturapiConnection to fetch.
+     */
+    where?: FaturapiConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiConnections to fetch.
+     */
+    orderBy?: FaturapiConnectionOrderByWithRelationInput | FaturapiConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FaturapiConnections.
+     */
+    cursor?: FaturapiConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiConnections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FaturapiConnections.
+     */
+    distinct?: FaturapiConnectionScalarFieldEnum | FaturapiConnectionScalarFieldEnum[]
+  }
+
+  /**
+   * FaturapiConnection findMany
+   */
+  export type FaturapiConnectionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * Filter, which FaturapiConnections to fetch.
+     */
+    where?: FaturapiConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FaturapiConnections to fetch.
+     */
+    orderBy?: FaturapiConnectionOrderByWithRelationInput | FaturapiConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FaturapiConnections.
+     */
+    cursor?: FaturapiConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FaturapiConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FaturapiConnections.
+     */
+    skip?: number
+    distinct?: FaturapiConnectionScalarFieldEnum | FaturapiConnectionScalarFieldEnum[]
+  }
+
+  /**
+   * FaturapiConnection create
+   */
+  export type FaturapiConnectionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FaturapiConnection.
+     */
+    data: XOR<FaturapiConnectionCreateInput, FaturapiConnectionUncheckedCreateInput>
+  }
+
+  /**
+   * FaturapiConnection createMany
+   */
+  export type FaturapiConnectionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FaturapiConnections.
+     */
+    data: FaturapiConnectionCreateManyInput | FaturapiConnectionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FaturapiConnection createManyAndReturn
+   */
+  export type FaturapiConnectionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * The data used to create many FaturapiConnections.
+     */
+    data: FaturapiConnectionCreateManyInput | FaturapiConnectionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FaturapiConnection update
+   */
+  export type FaturapiConnectionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FaturapiConnection.
+     */
+    data: XOR<FaturapiConnectionUpdateInput, FaturapiConnectionUncheckedUpdateInput>
+    /**
+     * Choose, which FaturapiConnection to update.
+     */
+    where: FaturapiConnectionWhereUniqueInput
+  }
+
+  /**
+   * FaturapiConnection updateMany
+   */
+  export type FaturapiConnectionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FaturapiConnections.
+     */
+    data: XOR<FaturapiConnectionUpdateManyMutationInput, FaturapiConnectionUncheckedUpdateManyInput>
+    /**
+     * Filter which FaturapiConnections to update
+     */
+    where?: FaturapiConnectionWhereInput
+    /**
+     * Limit how many FaturapiConnections to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FaturapiConnection updateManyAndReturn
+   */
+  export type FaturapiConnectionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * The data used to update FaturapiConnections.
+     */
+    data: XOR<FaturapiConnectionUpdateManyMutationInput, FaturapiConnectionUncheckedUpdateManyInput>
+    /**
+     * Filter which FaturapiConnections to update
+     */
+    where?: FaturapiConnectionWhereInput
+    /**
+     * Limit how many FaturapiConnections to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FaturapiConnection upsert
+   */
+  export type FaturapiConnectionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FaturapiConnection to update in case it exists.
+     */
+    where: FaturapiConnectionWhereUniqueInput
+    /**
+     * In case the FaturapiConnection found by the `where` argument doesn't exist, create a new FaturapiConnection with this data.
+     */
+    create: XOR<FaturapiConnectionCreateInput, FaturapiConnectionUncheckedCreateInput>
+    /**
+     * In case the FaturapiConnection was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FaturapiConnectionUpdateInput, FaturapiConnectionUncheckedUpdateInput>
+  }
+
+  /**
+   * FaturapiConnection delete
+   */
+  export type FaturapiConnectionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+    /**
+     * Filter which FaturapiConnection to delete.
+     */
+    where: FaturapiConnectionWhereUniqueInput
+  }
+
+  /**
+   * FaturapiConnection deleteMany
+   */
+  export type FaturapiConnectionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FaturapiConnections to delete
+     */
+    where?: FaturapiConnectionWhereInput
+    /**
+     * Limit how many FaturapiConnections to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FaturapiConnection without action
+   */
+  export type FaturapiConnectionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FaturapiConnection
+     */
+    select?: FaturapiConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FaturapiConnection
+     */
+    omit?: FaturapiConnectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FaturapiConnectionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -27989,7 +29257,8 @@ export namespace Prisma {
     validationStatus: 'validationStatus',
     rejectionReason: 'rejectionReason',
     faturapiUnitId: 'faturapiUnitId',
-    faturapiStatus: 'faturapiStatus'
+    faturapiStatus: 'faturapiStatus',
+    faturapiConnectionId: 'faturapiConnectionId'
   };
 
   export type ConsumerUnitScalarFieldEnum = (typeof ConsumerUnitScalarFieldEnum)[keyof typeof ConsumerUnitScalarFieldEnum]
@@ -28307,6 +29576,22 @@ export namespace Prisma {
   };
 
   export type FaturapiWebhookEventScalarFieldEnum = (typeof FaturapiWebhookEventScalarFieldEnum)[keyof typeof FaturapiWebhookEventScalarFieldEnum]
+
+
+  export const FaturapiConnectionScalarFieldEnum: {
+    id: 'id',
+    faturapiConnectionId: 'faturapiConnectionId',
+    clientId: 'clientId',
+    source: 'source',
+    status: 'status',
+    credentialsHint: 'credentialsHint',
+    lastSyncAt: 'lastSyncAt',
+    lastError: 'lastError',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FaturapiConnectionScalarFieldEnum = (typeof FaturapiConnectionScalarFieldEnum)[keyof typeof FaturapiConnectionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -28708,6 +29993,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitListRelationFilter
     creditAllocations?: CreditAllocationListRelationFilter
     investments?: InvestmentListRelationFilter
+    faturapiConnections?: FaturapiConnectionListRelationFilter
     chargeRules?: ChargeRuleListRelationFilter
     charges?: ChargeListRelationFilter
     payerInvites?: PayerInviteListRelationFilter
@@ -28740,6 +30026,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitOrderByRelationAggregateInput
     creditAllocations?: CreditAllocationOrderByRelationAggregateInput
     investments?: InvestmentOrderByRelationAggregateInput
+    faturapiConnections?: FaturapiConnectionOrderByRelationAggregateInput
     chargeRules?: ChargeRuleOrderByRelationAggregateInput
     charges?: ChargeOrderByRelationAggregateInput
     payerInvites?: PayerInviteOrderByRelationAggregateInput
@@ -28775,6 +30062,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitListRelationFilter
     creditAllocations?: CreditAllocationListRelationFilter
     investments?: InvestmentListRelationFilter
+    faturapiConnections?: FaturapiConnectionListRelationFilter
     chargeRules?: ChargeRuleListRelationFilter
     charges?: ChargeListRelationFilter
     payerInvites?: PayerInviteListRelationFilter
@@ -29189,6 +30477,7 @@ export namespace Prisma {
     rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
     faturapiUnitId?: StringNullableFilter<"ConsumerUnit"> | string | null
     faturapiStatus?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiConnectionId?: StringNullableFilter<"ConsumerUnit"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -29227,6 +30516,7 @@ export namespace Prisma {
     rejectionReason?: SortOrderInput | SortOrder
     faturapiUnitId?: SortOrderInput | SortOrder
     faturapiStatus?: SortOrderInput | SortOrder
+    faturapiConnectionId?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
     payerUser?: UserOrderByWithRelationInput
     plant?: PlantOrderByWithRelationInput
@@ -29268,6 +30558,7 @@ export namespace Prisma {
     validationStatus?: StringFilter<"ConsumerUnit"> | string
     rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
     faturapiStatus?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiConnectionId?: StringNullableFilter<"ConsumerUnit"> | string | null
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plant?: XOR<PlantScalarRelationFilter, PlantWhereInput>
@@ -29306,6 +30597,7 @@ export namespace Prisma {
     rejectionReason?: SortOrderInput | SortOrder
     faturapiUnitId?: SortOrderInput | SortOrder
     faturapiStatus?: SortOrderInput | SortOrder
+    faturapiConnectionId?: SortOrderInput | SortOrder
     _count?: ConsumerUnitCountOrderByAggregateInput
     _max?: ConsumerUnitMaxOrderByAggregateInput
     _min?: ConsumerUnitMinOrderByAggregateInput
@@ -29341,6 +30633,7 @@ export namespace Prisma {
     rejectionReason?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
     faturapiUnitId?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
     faturapiStatus?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
+    faturapiConnectionId?: StringNullableWithAggregatesFilter<"ConsumerUnit"> | string | null
   }
 
   export type CreditAllocationWhereInput = {
@@ -30976,6 +32269,86 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"FaturapiWebhookEvent"> | Date | string
   }
 
+  export type FaturapiConnectionWhereInput = {
+    AND?: FaturapiConnectionWhereInput | FaturapiConnectionWhereInput[]
+    OR?: FaturapiConnectionWhereInput[]
+    NOT?: FaturapiConnectionWhereInput | FaturapiConnectionWhereInput[]
+    id?: StringFilter<"FaturapiConnection"> | string
+    faturapiConnectionId?: StringFilter<"FaturapiConnection"> | string
+    clientId?: StringFilter<"FaturapiConnection"> | string
+    source?: StringFilter<"FaturapiConnection"> | string
+    status?: StringFilter<"FaturapiConnection"> | string
+    credentialsHint?: StringNullableFilter<"FaturapiConnection"> | string | null
+    lastSyncAt?: DateTimeNullableFilter<"FaturapiConnection"> | Date | string | null
+    lastError?: JsonNullableFilter<"FaturapiConnection">
+    createdAt?: DateTimeFilter<"FaturapiConnection"> | Date | string
+    updatedAt?: DateTimeFilter<"FaturapiConnection"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }
+
+  export type FaturapiConnectionOrderByWithRelationInput = {
+    id?: SortOrder
+    faturapiConnectionId?: SortOrder
+    clientId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    credentialsHint?: SortOrderInput | SortOrder
+    lastSyncAt?: SortOrderInput | SortOrder
+    lastError?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    client?: ClientOrderByWithRelationInput
+  }
+
+  export type FaturapiConnectionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    faturapiConnectionId?: string
+    AND?: FaturapiConnectionWhereInput | FaturapiConnectionWhereInput[]
+    OR?: FaturapiConnectionWhereInput[]
+    NOT?: FaturapiConnectionWhereInput | FaturapiConnectionWhereInput[]
+    clientId?: StringFilter<"FaturapiConnection"> | string
+    source?: StringFilter<"FaturapiConnection"> | string
+    status?: StringFilter<"FaturapiConnection"> | string
+    credentialsHint?: StringNullableFilter<"FaturapiConnection"> | string | null
+    lastSyncAt?: DateTimeNullableFilter<"FaturapiConnection"> | Date | string | null
+    lastError?: JsonNullableFilter<"FaturapiConnection">
+    createdAt?: DateTimeFilter<"FaturapiConnection"> | Date | string
+    updatedAt?: DateTimeFilter<"FaturapiConnection"> | Date | string
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }, "id" | "faturapiConnectionId">
+
+  export type FaturapiConnectionOrderByWithAggregationInput = {
+    id?: SortOrder
+    faturapiConnectionId?: SortOrder
+    clientId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    credentialsHint?: SortOrderInput | SortOrder
+    lastSyncAt?: SortOrderInput | SortOrder
+    lastError?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FaturapiConnectionCountOrderByAggregateInput
+    _max?: FaturapiConnectionMaxOrderByAggregateInput
+    _min?: FaturapiConnectionMinOrderByAggregateInput
+  }
+
+  export type FaturapiConnectionScalarWhereWithAggregatesInput = {
+    AND?: FaturapiConnectionScalarWhereWithAggregatesInput | FaturapiConnectionScalarWhereWithAggregatesInput[]
+    OR?: FaturapiConnectionScalarWhereWithAggregatesInput[]
+    NOT?: FaturapiConnectionScalarWhereWithAggregatesInput | FaturapiConnectionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FaturapiConnection"> | string
+    faturapiConnectionId?: StringWithAggregatesFilter<"FaturapiConnection"> | string
+    clientId?: StringWithAggregatesFilter<"FaturapiConnection"> | string
+    source?: StringWithAggregatesFilter<"FaturapiConnection"> | string
+    status?: StringWithAggregatesFilter<"FaturapiConnection"> | string
+    credentialsHint?: StringNullableWithAggregatesFilter<"FaturapiConnection"> | string | null
+    lastSyncAt?: DateTimeNullableWithAggregatesFilter<"FaturapiConnection"> | Date | string | null
+    lastError?: JsonNullableWithAggregatesFilter<"FaturapiConnection">
+    createdAt?: DateTimeWithAggregatesFilter<"FaturapiConnection"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FaturapiConnection"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -31115,6 +32488,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -31147,6 +32521,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -31179,6 +32554,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -31211,6 +32587,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -31707,6 +33084,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -31745,6 +33123,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -31777,6 +33156,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -31815,6 +33195,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -31850,6 +33231,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
   }
 
   export type ConsumerUnitUpdateManyMutationInput = {
@@ -31876,6 +33258,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConsumerUnitUncheckedUpdateManyInput = {
@@ -31905,6 +33288,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationCreateInput = {
@@ -33799,6 +35183,96 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FaturapiConnectionCreateInput = {
+    id?: string
+    faturapiConnectionId: string
+    source: string
+    status: string
+    credentialsHint?: string | null
+    lastSyncAt?: Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: ClientCreateNestedOneWithoutFaturapiConnectionsInput
+  }
+
+  export type FaturapiConnectionUncheckedCreateInput = {
+    id?: string
+    faturapiConnectionId: string
+    clientId: string
+    source: string
+    status: string
+    credentialsHint?: string | null
+    lastSyncAt?: Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FaturapiConnectionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    faturapiConnectionId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    credentialsHint?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutFaturapiConnectionsNestedInput
+  }
+
+  export type FaturapiConnectionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    faturapiConnectionId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    credentialsHint?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FaturapiConnectionCreateManyInput = {
+    id?: string
+    faturapiConnectionId: string
+    clientId: string
+    source: string
+    status: string
+    credentialsHint?: string | null
+    lastSyncAt?: Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FaturapiConnectionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    faturapiConnectionId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    credentialsHint?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FaturapiConnectionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    faturapiConnectionId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    credentialsHint?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -34096,6 +35570,12 @@ export namespace Prisma {
     none?: InvestmentWhereInput
   }
 
+  export type FaturapiConnectionListRelationFilter = {
+    every?: FaturapiConnectionWhereInput
+    some?: FaturapiConnectionWhereInput
+    none?: FaturapiConnectionWhereInput
+  }
+
   export type ChargeRuleListRelationFilter = {
     every?: ChargeRuleWhereInput
     some?: ChargeRuleWhereInput
@@ -34145,6 +35625,10 @@ export namespace Prisma {
   }
 
   export type InvestmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FaturapiConnectionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34613,6 +36097,7 @@ export namespace Prisma {
     rejectionReason?: SortOrder
     faturapiUnitId?: SortOrder
     faturapiStatus?: SortOrder
+    faturapiConnectionId?: SortOrder
   }
 
   export type ConsumerUnitMaxOrderByAggregateInput = {
@@ -34642,6 +36127,7 @@ export namespace Prisma {
     rejectionReason?: SortOrder
     faturapiUnitId?: SortOrder
     faturapiStatus?: SortOrder
+    faturapiConnectionId?: SortOrder
   }
 
   export type ConsumerUnitMinOrderByAggregateInput = {
@@ -34671,6 +36157,7 @@ export namespace Prisma {
     rejectionReason?: SortOrder
     faturapiUnitId?: SortOrder
     faturapiStatus?: SortOrder
+    faturapiConnectionId?: SortOrder
   }
 
   export type DecimalFilter<$PrismaModel = never> = {
@@ -35931,6 +37418,43 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type FaturapiConnectionCountOrderByAggregateInput = {
+    id?: SortOrder
+    faturapiConnectionId?: SortOrder
+    clientId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    credentialsHint?: SortOrder
+    lastSyncAt?: SortOrder
+    lastError?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FaturapiConnectionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    faturapiConnectionId?: SortOrder
+    clientId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    credentialsHint?: SortOrder
+    lastSyncAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FaturapiConnectionMinOrderByAggregateInput = {
+    id?: SortOrder
+    faturapiConnectionId?: SortOrder
+    clientId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    credentialsHint?: SortOrder
+    lastSyncAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type UserCreaterolesInput = {
     set: string[]
   }
@@ -36153,6 +37677,13 @@ export namespace Prisma {
     connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
   }
 
+  export type FaturapiConnectionCreateNestedManyWithoutClientInput = {
+    create?: XOR<FaturapiConnectionCreateWithoutClientInput, FaturapiConnectionUncheckedCreateWithoutClientInput> | FaturapiConnectionCreateWithoutClientInput[] | FaturapiConnectionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: FaturapiConnectionCreateOrConnectWithoutClientInput | FaturapiConnectionCreateOrConnectWithoutClientInput[]
+    createMany?: FaturapiConnectionCreateManyClientInputEnvelope
+    connect?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+  }
+
   export type ChargeRuleCreateNestedManyWithoutClientInput = {
     create?: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput> | ChargeRuleCreateWithoutClientInput[] | ChargeRuleUncheckedCreateWithoutClientInput[]
     connectOrCreate?: ChargeRuleCreateOrConnectWithoutClientInput | ChargeRuleCreateOrConnectWithoutClientInput[]
@@ -36256,6 +37787,13 @@ export namespace Prisma {
     connectOrCreate?: InvestmentCreateOrConnectWithoutClientInput | InvestmentCreateOrConnectWithoutClientInput[]
     createMany?: InvestmentCreateManyClientInputEnvelope
     connect?: InvestmentWhereUniqueInput | InvestmentWhereUniqueInput[]
+  }
+
+  export type FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<FaturapiConnectionCreateWithoutClientInput, FaturapiConnectionUncheckedCreateWithoutClientInput> | FaturapiConnectionCreateWithoutClientInput[] | FaturapiConnectionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: FaturapiConnectionCreateOrConnectWithoutClientInput | FaturapiConnectionCreateOrConnectWithoutClientInput[]
+    createMany?: FaturapiConnectionCreateManyClientInputEnvelope
+    connect?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
   }
 
   export type ChargeRuleUncheckedCreateNestedManyWithoutClientInput = {
@@ -36467,6 +38005,20 @@ export namespace Prisma {
     deleteMany?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
   }
 
+  export type FaturapiConnectionUpdateManyWithoutClientNestedInput = {
+    create?: XOR<FaturapiConnectionCreateWithoutClientInput, FaturapiConnectionUncheckedCreateWithoutClientInput> | FaturapiConnectionCreateWithoutClientInput[] | FaturapiConnectionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: FaturapiConnectionCreateOrConnectWithoutClientInput | FaturapiConnectionCreateOrConnectWithoutClientInput[]
+    upsert?: FaturapiConnectionUpsertWithWhereUniqueWithoutClientInput | FaturapiConnectionUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: FaturapiConnectionCreateManyClientInputEnvelope
+    set?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    disconnect?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    delete?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    connect?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    update?: FaturapiConnectionUpdateWithWhereUniqueWithoutClientInput | FaturapiConnectionUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: FaturapiConnectionUpdateManyWithWhereWithoutClientInput | FaturapiConnectionUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: FaturapiConnectionScalarWhereInput | FaturapiConnectionScalarWhereInput[]
+  }
+
   export type ChargeRuleUpdateManyWithoutClientNestedInput = {
     create?: XOR<ChargeRuleCreateWithoutClientInput, ChargeRuleUncheckedCreateWithoutClientInput> | ChargeRuleCreateWithoutClientInput[] | ChargeRuleUncheckedCreateWithoutClientInput[]
     connectOrCreate?: ChargeRuleCreateOrConnectWithoutClientInput | ChargeRuleCreateOrConnectWithoutClientInput[]
@@ -36675,6 +38227,20 @@ export namespace Prisma {
     update?: InvestmentUpdateWithWhereUniqueWithoutClientInput | InvestmentUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: InvestmentUpdateManyWithWhereWithoutClientInput | InvestmentUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: InvestmentScalarWhereInput | InvestmentScalarWhereInput[]
+  }
+
+  export type FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<FaturapiConnectionCreateWithoutClientInput, FaturapiConnectionUncheckedCreateWithoutClientInput> | FaturapiConnectionCreateWithoutClientInput[] | FaturapiConnectionUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: FaturapiConnectionCreateOrConnectWithoutClientInput | FaturapiConnectionCreateOrConnectWithoutClientInput[]
+    upsert?: FaturapiConnectionUpsertWithWhereUniqueWithoutClientInput | FaturapiConnectionUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: FaturapiConnectionCreateManyClientInputEnvelope
+    set?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    disconnect?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    delete?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    connect?: FaturapiConnectionWhereUniqueInput | FaturapiConnectionWhereUniqueInput[]
+    update?: FaturapiConnectionUpdateWithWhereUniqueWithoutClientInput | FaturapiConnectionUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: FaturapiConnectionUpdateManyWithWhereWithoutClientInput | FaturapiConnectionUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: FaturapiConnectionScalarWhereInput | FaturapiConnectionScalarWhereInput[]
   }
 
   export type ChargeRuleUncheckedUpdateManyWithoutClientNestedInput = {
@@ -37791,6 +39357,20 @@ export namespace Prisma {
     update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutInvestmentsInput, ClientUpdateWithoutInvestmentsInput>, ClientUncheckedUpdateWithoutInvestmentsInput>
   }
 
+  export type ClientCreateNestedOneWithoutFaturapiConnectionsInput = {
+    create?: XOR<ClientCreateWithoutFaturapiConnectionsInput, ClientUncheckedCreateWithoutFaturapiConnectionsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutFaturapiConnectionsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type ClientUpdateOneRequiredWithoutFaturapiConnectionsNestedInput = {
+    create?: XOR<ClientCreateWithoutFaturapiConnectionsInput, ClientUncheckedCreateWithoutFaturapiConnectionsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutFaturapiConnectionsInput
+    upsert?: ClientUpsertWithoutFaturapiConnectionsInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutFaturapiConnectionsInput, ClientUpdateWithoutFaturapiConnectionsInput>, ClientUncheckedUpdateWithoutFaturapiConnectionsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -38303,6 +39883,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -38334,6 +39915,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -38368,6 +39950,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -38404,6 +39987,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -38521,6 +40105,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -38552,6 +40137,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -38603,6 +40189,7 @@ export namespace Prisma {
     rejectionReason?: StringNullableFilter<"ConsumerUnit"> | string | null
     faturapiUnitId?: StringNullableFilter<"ConsumerUnit"> | string | null
     faturapiStatus?: StringNullableFilter<"ConsumerUnit"> | string | null
+    faturapiConnectionId?: StringNullableFilter<"ConsumerUnit"> | string | null
   }
 
   export type ChargeUpsertWithWhereUniqueWithoutPayerUserInput = {
@@ -39179,6 +40766,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -39215,6 +40803,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -39316,6 +40905,40 @@ export namespace Prisma {
 
   export type InvestmentCreateManyClientInputEnvelope = {
     data: InvestmentCreateManyClientInput | InvestmentCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FaturapiConnectionCreateWithoutClientInput = {
+    id?: string
+    faturapiConnectionId: string
+    source: string
+    status: string
+    credentialsHint?: string | null
+    lastSyncAt?: Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FaturapiConnectionUncheckedCreateWithoutClientInput = {
+    id?: string
+    faturapiConnectionId: string
+    source: string
+    status: string
+    credentialsHint?: string | null
+    lastSyncAt?: Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FaturapiConnectionCreateOrConnectWithoutClientInput = {
+    where: FaturapiConnectionWhereUniqueInput
+    create: XOR<FaturapiConnectionCreateWithoutClientInput, FaturapiConnectionUncheckedCreateWithoutClientInput>
+  }
+
+  export type FaturapiConnectionCreateManyClientInputEnvelope = {
+    data: FaturapiConnectionCreateManyClientInput | FaturapiConnectionCreateManyClientInput[]
     skipDuplicates?: boolean
   }
 
@@ -39917,6 +41540,38 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Investment"> | Date | string | null
   }
 
+  export type FaturapiConnectionUpsertWithWhereUniqueWithoutClientInput = {
+    where: FaturapiConnectionWhereUniqueInput
+    update: XOR<FaturapiConnectionUpdateWithoutClientInput, FaturapiConnectionUncheckedUpdateWithoutClientInput>
+    create: XOR<FaturapiConnectionCreateWithoutClientInput, FaturapiConnectionUncheckedCreateWithoutClientInput>
+  }
+
+  export type FaturapiConnectionUpdateWithWhereUniqueWithoutClientInput = {
+    where: FaturapiConnectionWhereUniqueInput
+    data: XOR<FaturapiConnectionUpdateWithoutClientInput, FaturapiConnectionUncheckedUpdateWithoutClientInput>
+  }
+
+  export type FaturapiConnectionUpdateManyWithWhereWithoutClientInput = {
+    where: FaturapiConnectionScalarWhereInput
+    data: XOR<FaturapiConnectionUpdateManyMutationInput, FaturapiConnectionUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type FaturapiConnectionScalarWhereInput = {
+    AND?: FaturapiConnectionScalarWhereInput | FaturapiConnectionScalarWhereInput[]
+    OR?: FaturapiConnectionScalarWhereInput[]
+    NOT?: FaturapiConnectionScalarWhereInput | FaturapiConnectionScalarWhereInput[]
+    id?: StringFilter<"FaturapiConnection"> | string
+    faturapiConnectionId?: StringFilter<"FaturapiConnection"> | string
+    clientId?: StringFilter<"FaturapiConnection"> | string
+    source?: StringFilter<"FaturapiConnection"> | string
+    status?: StringFilter<"FaturapiConnection"> | string
+    credentialsHint?: StringNullableFilter<"FaturapiConnection"> | string | null
+    lastSyncAt?: DateTimeNullableFilter<"FaturapiConnection"> | Date | string | null
+    lastError?: JsonNullableFilter<"FaturapiConnection">
+    createdAt?: DateTimeFilter<"FaturapiConnection"> | Date | string
+    updatedAt?: DateTimeFilter<"FaturapiConnection"> | Date | string
+  }
+
   export type ChargeRuleUpsertWithWhereUniqueWithoutClientInput = {
     where: ChargeRuleWhereUniqueInput
     update: XOR<ChargeRuleUpdateWithoutClientInput, ChargeRuleUncheckedUpdateWithoutClientInput>
@@ -40029,6 +41684,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -40060,6 +41716,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -40172,6 +41829,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     energyBills?: EnergyBillCreateNestedManyWithoutConsumerUnitInput
@@ -40208,6 +41866,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -40483,6 +42142,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -40514,6 +42174,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -40609,6 +42270,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -40640,6 +42302,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -40782,6 +42445,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -40813,6 +42477,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -40941,6 +42606,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -40972,6 +42638,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -41526,6 +43193,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -41557,6 +43225,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -41815,6 +43484,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -41846,6 +43516,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -41937,6 +43608,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -41974,6 +43646,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
     chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
@@ -42010,6 +43683,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -42047,6 +43721,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
@@ -42096,6 +43771,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -42127,6 +43803,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -42230,6 +43907,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -42267,6 +43945,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
     chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
@@ -42309,6 +43988,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -42346,6 +44026,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
@@ -42531,6 +44212,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -42562,6 +44244,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -42598,6 +44281,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -42629,6 +44313,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -42676,6 +44361,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -42707,6 +44393,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -42749,6 +44436,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -42780,6 +44468,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -42900,6 +44589,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -42931,6 +44621,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -43023,6 +44714,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -43054,6 +44746,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -43085,6 +44778,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -43116,6 +44810,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -43163,6 +44858,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -43194,6 +44890,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -43225,6 +44922,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -43256,6 +44954,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -43303,6 +45002,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -43334,6 +45034,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -43365,6 +45066,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -43396,6 +45098,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -43487,6 +45190,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -43524,6 +45228,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
     chargeRule?: ChargeRuleUncheckedCreateNestedOneWithoutConsumerUnitInput
@@ -43635,6 +45340,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -43666,6 +45372,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -43769,6 +45476,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -43806,6 +45514,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
     chargeRule?: ChargeRuleUncheckedUpdateOneWithoutConsumerUnitNestedInput
@@ -43856,6 +45565,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
@@ -43887,6 +45597,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
@@ -43920,6 +45631,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -43957,6 +45669,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -44069,6 +45782,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
@@ -44100,6 +45814,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -44139,6 +45854,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -44176,6 +45892,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -44226,6 +45943,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
   }
@@ -44257,6 +45975,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
   }
@@ -44290,6 +46009,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -44327,6 +46047,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -44610,6 +46331,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
   }
@@ -44641,6 +46363,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -44680,6 +46403,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -44717,6 +46441,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -45002,6 +46727,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
     investments?: InvestmentCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
   }
@@ -45033,6 +46759,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
     investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
   }
@@ -45066,6 +46793,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     client: ClientCreateNestedOneWithoutConsumerUnitsInput
     payerUser?: UserCreateNestedOneWithoutPayerUnitsInput
     plant: PlantCreateNestedOneWithoutConsumerUnitsInput
@@ -45103,6 +46831,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
     energyBills?: EnergyBillUncheckedCreateNestedManyWithoutConsumerUnitInput
     allocationsFrom?: CreditAllocationUncheckedCreateNestedManyWithoutFromInput
     allocationsTo?: CreditAllocationUncheckedCreateNestedManyWithoutToInput
@@ -45153,6 +46882,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
     investments?: InvestmentUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
   }
@@ -45184,6 +46914,7 @@ export namespace Prisma {
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
     investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -45223,6 +46954,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
@@ -45260,6 +46992,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -45293,6 +47026,7 @@ export namespace Prisma {
     inverters?: InverterCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
     charges?: ChargeCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
@@ -45324,6 +47058,7 @@ export namespace Prisma {
     inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
     consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
     creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    faturapiConnections?: FaturapiConnectionUncheckedCreateNestedManyWithoutClientInput
     chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
     charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
     payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
@@ -45371,6 +47106,7 @@ export namespace Prisma {
     inverters?: InverterUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
     charges?: ChargeUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
@@ -45402,6 +47138,151 @@ export namespace Prisma {
     inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
     consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
     creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    faturapiConnections?: FaturapiConnectionUncheckedUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
+    charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientCreateWithoutFaturapiConnectionsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationCreateNestedManyWithoutReferredInput
+    transactions?: TransactionCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillCreateNestedManyWithoutClientInput
+    plants?: PlantCreateNestedManyWithoutClientInput
+    inverters?: InverterCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationCreateNestedManyWithoutClientInput
+    investments?: InvestmentCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleCreateNestedManyWithoutClientInput
+    charges?: ChargeCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutFaturapiConnectionsInput = {
+    id?: string
+    name: string
+    email: string
+    cpfCnpj: string
+    phone?: string | null
+    address?: string | null
+    avgEnergyCost?: number | null
+    enelInvoiceFile?: string | null
+    soloCoinBalance?: number
+    indicationCode: string
+    status?: $Enums.ClientStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    users?: UserUncheckedCreateNestedManyWithoutClientInput
+    consumptions?: ConsumptionUncheckedCreateNestedManyWithoutClientInput
+    indicationsAsReferrer?: IndicationUncheckedCreateNestedManyWithoutReferrerInput
+    indicationsAsReferred?: IndicationUncheckedCreateNestedManyWithoutReferredInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutClientInput
+    offerRedemptions?: OfferRedemptionUncheckedCreateNestedManyWithoutClientInput
+    energyBills?: EnergyBillUncheckedCreateNestedManyWithoutClientInput
+    plants?: PlantUncheckedCreateNestedManyWithoutClientInput
+    inverters?: InverterUncheckedCreateNestedManyWithoutClientInput
+    consumerUnits?: ConsumerUnitUncheckedCreateNestedManyWithoutClientInput
+    creditAllocations?: CreditAllocationUncheckedCreateNestedManyWithoutClientInput
+    investments?: InvestmentUncheckedCreateNestedManyWithoutClientInput
+    chargeRules?: ChargeRuleUncheckedCreateNestedManyWithoutClientInput
+    charges?: ChargeUncheckedCreateNestedManyWithoutClientInput
+    payerInvites?: PayerInviteUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutFaturapiConnectionsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutFaturapiConnectionsInput, ClientUncheckedCreateWithoutFaturapiConnectionsInput>
+  }
+
+  export type ClientUpsertWithoutFaturapiConnectionsInput = {
+    update: XOR<ClientUpdateWithoutFaturapiConnectionsInput, ClientUncheckedUpdateWithoutFaturapiConnectionsInput>
+    create: XOR<ClientCreateWithoutFaturapiConnectionsInput, ClientUncheckedCreateWithoutFaturapiConnectionsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutFaturapiConnectionsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutFaturapiConnectionsInput, ClientUncheckedUpdateWithoutFaturapiConnectionsInput>
+  }
+
+  export type ClientUpdateWithoutFaturapiConnectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUpdateManyWithoutClientNestedInput
+    plants?: PlantUpdateManyWithoutClientNestedInput
+    inverters?: InverterUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUpdateManyWithoutClientNestedInput
+    chargeRules?: ChargeRuleUpdateManyWithoutClientNestedInput
+    charges?: ChargeUpdateManyWithoutClientNestedInput
+    payerInvites?: PayerInviteUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutFaturapiConnectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cpfCnpj?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    avgEnergyCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    enelInvoiceFile?: NullableStringFieldUpdateOperationsInput | string | null
+    soloCoinBalance?: FloatFieldUpdateOperationsInput | number
+    indicationCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumClientStatusFieldUpdateOperationsInput | $Enums.ClientStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserUncheckedUpdateManyWithoutClientNestedInput
+    consumptions?: ConsumptionUncheckedUpdateManyWithoutClientNestedInput
+    indicationsAsReferrer?: IndicationUncheckedUpdateManyWithoutReferrerNestedInput
+    indicationsAsReferred?: IndicationUncheckedUpdateManyWithoutReferredNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutClientNestedInput
+    offerRedemptions?: OfferRedemptionUncheckedUpdateManyWithoutClientNestedInput
+    energyBills?: EnergyBillUncheckedUpdateManyWithoutClientNestedInput
+    plants?: PlantUncheckedUpdateManyWithoutClientNestedInput
+    inverters?: InverterUncheckedUpdateManyWithoutClientNestedInput
+    consumerUnits?: ConsumerUnitUncheckedUpdateManyWithoutClientNestedInput
+    creditAllocations?: CreditAllocationUncheckedUpdateManyWithoutClientNestedInput
+    investments?: InvestmentUncheckedUpdateManyWithoutClientNestedInput
     chargeRules?: ChargeRuleUncheckedUpdateManyWithoutClientNestedInput
     charges?: ChargeUncheckedUpdateManyWithoutClientNestedInput
     payerInvites?: PayerInviteUncheckedUpdateManyWithoutClientNestedInput
@@ -45433,6 +47314,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
   }
 
   export type ChargeCreateManyPayerUserInput = {
@@ -45485,6 +47367,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -45521,6 +47404,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -45555,6 +47439,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChargeUpdateWithoutPayerUserInput = {
@@ -45860,6 +47745,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
   }
 
   export type CreditAllocationCreateManyClientInput = {
@@ -45893,6 +47779,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+  }
+
+  export type FaturapiConnectionCreateManyClientInput = {
+    id?: string
+    faturapiConnectionId: string
+    source: string
+    status: string
+    credentialsHint?: string | null
+    lastSyncAt?: Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ChargeRuleCreateManyClientInput = {
@@ -46588,6 +48486,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     plant?: PlantUpdateOneRequiredWithoutConsumerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -46624,6 +48523,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -46658,6 +48558,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationUpdateWithoutClientInput = {
@@ -46757,6 +48658,42 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type FaturapiConnectionUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    faturapiConnectionId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    credentialsHint?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FaturapiConnectionUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    faturapiConnectionId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    credentialsHint?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FaturapiConnectionUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    faturapiConnectionId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    credentialsHint?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastError?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ChargeRuleUpdateWithoutClientInput = {
@@ -46988,6 +48925,7 @@ export namespace Prisma {
     rejectionReason?: string | null
     faturapiUnitId?: string | null
     faturapiStatus?: string | null
+    faturapiConnectionId?: string | null
   }
 
   export type CreditAllocationCreateManyPlantInput = {
@@ -47214,6 +49152,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneRequiredWithoutConsumerUnitsNestedInput
     payerUser?: UserUpdateOneWithoutPayerUnitsNestedInput
     energyBills?: EnergyBillUpdateManyWithoutConsumerUnitNestedInput
@@ -47250,6 +49189,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
     energyBills?: EnergyBillUncheckedUpdateManyWithoutConsumerUnitNestedInput
     allocationsFrom?: CreditAllocationUncheckedUpdateManyWithoutFromNestedInput
     allocationsTo?: CreditAllocationUncheckedUpdateManyWithoutToNestedInput
@@ -47284,6 +49224,7 @@ export namespace Prisma {
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiUnitId?: NullableStringFieldUpdateOperationsInput | string | null
     faturapiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    faturapiConnectionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CreditAllocationUpdateWithoutPlantInput = {
