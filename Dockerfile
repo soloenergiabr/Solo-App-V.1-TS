@@ -11,7 +11,7 @@ COPY package.json pnpm-lock.yaml ./
 
 # Instalar dependências
 FROM base AS deps
-RUN npm i pnpm -g
+RUN npm i -g pnpm@10.33.2
 RUN pnpm install
 
 # Build da aplicação
@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Instalar pnpm global
-RUN npm i pnpm -g
+RUN npm i -g pnpm@10.33.2
 
 # Gerar Prisma Client (não precisa de DATABASE_URL)
 RUN pnpm run db:generate
