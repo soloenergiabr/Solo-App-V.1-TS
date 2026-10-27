@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@/app/generated/prisma';
+import { analyzeBillPdf } from '@/backend/economia/bill-pdf-analysis';
 import { eventBus, EventType } from '@/backend/shared/event-bus';
 import { uploadObject } from '@/lib/object-storage';
 import { FaturapiClient } from './faturapi.client';
@@ -12,6 +13,7 @@ import type {
 } from './faturapi.types';
 
 type UploadFn = typeof uploadObject;
+type AnalyzeFn = typeof analyzeBillPdf;
 
 /** "MM/AAAA" -> { referenceMonth, referenceYear } */
 export function parseReferenceMonth(value: string): { referenceMonth: number; referenceYear: number } {
@@ -29,6 +31,7 @@ export class ProcessFaturapiEventUseCase {
         private prisma: PrismaClient,
         private faturapi: Pick<FaturapiClient, 'downloadPdf'>,
         private upload: UploadFn = uploadObject,
+        private analyze: AnalyzeFn = analyzeBillPdf,
     ) { }
 
     async execute(event: FaturapiWebhookEvent): Promise<void> {
@@ -84,30 +87,42 @@ export class ProcessFaturapiEventUseCase {
             pixCode: invoice.pixCode,
         };
 
-        const file = existing?.rawBillFileKey ? null : await this.storePdf(invoice, consumerUnit.clientId, consumerUnit.id);
+        const needsFile = !existing?.rawBillFileKey;
+        // Fatura criada por upload/admin nao e reanalisada (preserva o que ja foi preenchido).
+        const needsAnalysis = !existing || (existing.faturapiInvoiceId != null && !existing.aiAnalysis);
+        const pdf = needsFile || needsAnalysis ? await this.downloadPdf(invoice) : null;
+
+        const file = pdf && needsFile ? await this.storePdf(pdf, invoice, consumerUnit.clientId, consumerUnit.id) : null;
+        const analyzed = pdf && needsAnalysis ? await this.analyzePdf(pdf, invoice, consumerUnit) : null;
+
+        // Valor, vencimento e codigos de pagamento da Faturapi prevalecem sobre a
+        // extracao por IA; o mes de referencia tambem (vem da distribuidora).
+        const totalBillValue = invoice.amount ?? analyzed?.totalBillValue ?? null;
 
         const bill = await this.prisma.energyBill.upsert({
             where: { consumerUnitId_referenceMonth_referenceYear: key },
-            // Fatura ja existente (ex.: upload manual): so completa os dados de pagamento,
+            // Fatura ja existente vinda de upload/admin: so completa os dados de pagamento,
             // sem sobrescrever o que o analisador ou o admin ja preencheram.
             update: {
+                ...(analyzed ?? {}),
                 ...faturapiData,
-                ...(existing?.totalBillValue == null ? { totalBillValue: invoice.amount } : {}),
+                ...(existing?.totalBillValue == null || analyzed ? { totalBillValue } : {}),
                 ...(file ?? {}),
             },
             create: {
+                accountHolder: consumerUnit.accountHolder,
+                accountNumber: consumerUnit.accountNumber,
+                clientNumber: consumerUnit.clientNumber,
+                instalationNumber: consumerUnit.installationNumber,
+                distributor: consumerUnit.distributor,
+                ...(analyzed ?? {}),
                 ...key,
                 ...faturapiData,
                 ...(file ?? {}),
                 clientId: consumerUnit.clientId,
                 plantId: consumerUnit.plantId,
                 competenceDate: new Date(referenceYear, referenceMonth - 1, 1),
-                totalBillValue: invoice.amount,
-                accountHolder: consumerUnit.accountHolder,
-                accountNumber: consumerUnit.accountNumber,
-                clientNumber: consumerUnit.clientNumber,
-                instalationNumber: consumerUnit.installationNumber,
-                distributor: consumerUnit.distributor,
+                totalBillValue,
                 status: 'draft',
             },
         });
@@ -127,9 +142,18 @@ export class ProcessFaturapiEventUseCase {
         });
     }
 
-    private async storePdf(invoice: FaturapiInvoice, clientId: string, consumerUnitId: string) {
+    private async downloadPdf(invoice: FaturapiInvoice): Promise<Buffer | null> {
         try {
-            const buffer = await this.faturapi.downloadPdf(invoice.id);
+            return await this.faturapi.downloadPdf(invoice.id);
+        } catch (error) {
+            // Os dados da fatura sao salvos mesmo sem o PDF.
+            console.error(`[Faturapi] Falha ao baixar PDF da fatura ${invoice.id}:`, error);
+            return null;
+        }
+    }
+
+    private async storePdf(buffer: Buffer, invoice: FaturapiInvoice, clientId: string, consumerUnitId: string) {
+        try {
             const uploaded = await this.upload({
                 key: ['energy-bills', clientId, consumerUnitId, `${Date.now()}-faturapi-${invoice.id}.pdf`].join('/'),
                 body: buffer,
@@ -141,8 +165,23 @@ export class ProcessFaturapiEventUseCase {
                 rawBillFileSize: buffer.byteLength,
             };
         } catch (error) {
-            // Os dados da fatura sao salvos mesmo sem o PDF; o PDF pode ser baixado depois.
             console.error(`[Faturapi] Falha ao armazenar PDF da fatura ${invoice.id}:`, error);
+            return null;
+        }
+    }
+
+    /** Mesma analise do upload manual (extracao por IA + flags + recomendacoes). */
+    private async analyzePdf(
+        buffer: Buffer,
+        invoice: FaturapiInvoice,
+        consumerUnit: Parameters<AnalyzeFn>[0]['fallback'],
+    ) {
+        try {
+            const { fields } = await this.analyze({ buffer, mimeType: 'application/pdf', fallback: consumerUnit });
+            return fields;
+        } catch (error) {
+            // A fatura e salva sem analise; da para reprocessar o evento depois.
+            console.error(`[Faturapi] Falha ao analisar a fatura ${invoice.id}:`, error);
             return null;
         }
     }

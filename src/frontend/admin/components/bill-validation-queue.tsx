@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { Button } from '@/components/ui/button';
+import { BillPdfButton } from '@/frontend/economia/components/bill-pdf-button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -286,11 +287,9 @@ export function BillValidationQueue() {
                                         <TableCell className="text-right">
                                             <div className="flex justify-end gap-2">
                                                 {bill.billFileUrl && (
-                                                    <Button variant="outline" size="sm" asChild>
-                                                        <a href={bill.billFileUrl} target="_blank" rel="noreferrer">
-                                                            PDF
-                                                        </a>
-                                                    </Button>
+                                                    <BillPdfButton billId={bill.id} variant="outline" size="sm">
+                                                        PDF
+                                                    </BillPdfButton>
                                                 )}
                                                 <Button
                                                     variant="default"

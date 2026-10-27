@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { FileText, ChevronLeft, CheckCircle2, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { BillPdfButton } from '@/frontend/economia/components/bill-pdf-button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { PageLayout, PageHeader } from '@/components/ui/page-layout'
@@ -290,11 +291,9 @@ export function BillAnalysisScreen({
 
                 {/* PDF link */}
                 {bill.billFileUrl && (
-                    <Button asChild variant="outline" size="sm">
-                        <a href={bill.billFileUrl} target="_blank" rel="noreferrer">
-                            <FileText className="size-4" /> Ver fatura em PDF
-                        </a>
-                    </Button>
+                    <BillPdfButton billId={bill.id} variant="outline" size="sm">
+                        <FileText className="size-4" /> Ver fatura em PDF
+                    </BillPdfButton>
                 )}
 
                 {/* ───────── Clarifier dashboard ───────── */}

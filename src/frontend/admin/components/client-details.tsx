@@ -22,6 +22,7 @@ import {
     Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BillPdfButton } from '@/frontend/economia/components/bill-pdf-button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -1292,9 +1293,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-1">
                                                                 {bill.billFileUrl && (
-                                                                    <Button variant="ghost" size="sm" asChild>
-                                                                        <a href={bill.billFileUrl} target="_blank" rel="noreferrer">PDF</a>
-                                                                    </Button>
+                                                                    <BillPdfButton billId={bill.id} variant="ghost" size="sm">PDF</BillPdfButton>
                                                                 )}
                                                                 {bill.status !== 'reviewed' && (
                                                                     <Button variant="outline" size="sm" onClick={() => markReviewed(bill)}>Revisada</Button>

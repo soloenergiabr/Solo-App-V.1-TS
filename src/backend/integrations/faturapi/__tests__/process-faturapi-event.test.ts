@@ -6,6 +6,7 @@ vi.mock('@/backend/shared/event-bus', async (importOriginal) => {
     return { ...actual, eventBus: { emit: mockEmit } }
 })
 vi.mock('@/lib/object-storage', () => ({ uploadObject: vi.fn() }))
+vi.mock('@/backend/economia/bill-pdf-analysis', () => ({ analyzeBillPdf: vi.fn() }))
 
 const { ProcessFaturapiEventUseCase, parseReferenceMonth } = await import('../process-faturapi-event.use-case')
 type UseCaseArgs = ConstructorParameters<typeof ProcessFaturapiEventUseCase>
@@ -76,16 +77,20 @@ describe('ProcessFaturapiEventUseCase', () => {
     let prisma: ReturnType<typeof makePrisma>
     const downloadPdf = vi.fn()
     const upload = vi.fn()
+    const analyze = vi.fn()
 
     beforeEach(() => {
         prisma = makePrisma()
         mockEmit.mockReset()
         downloadPdf.mockReset().mockResolvedValue(Buffer.from('%PDF'))
+        analyze.mockReset().mockResolvedValue({
+            fields: { aiAnalysis: 'Conta ok', billScore: 82, totalBillValue: 999, consumptionKwh: 150, consumerClass: 'B1' },
+        })
         upload.mockReset().mockResolvedValue({ key: 'energy-bills/k.pdf', url: 'https://s3/k.pdf' })
     })
 
     const run = (e: FaturapiEvent) =>
-        new ProcessFaturapiEventUseCase(prisma as unknown as UseCaseArgs[0], { downloadPdf }, upload).execute(e)
+        new ProcessFaturapiEventUseCase(prisma as unknown as UseCaseArgs[0], { downloadPdf }, upload, analyze).execute(e)
 
     it('invoice.received cria a fatura na chave (UC, mes, ano) com os campos da Faturapi e o PDF', async () => {
         await run(event('invoice.received', { invoice }))
@@ -187,6 +192,65 @@ describe('ProcessFaturapiEventUseCase', () => {
         expect(mockEmit).toHaveBeenCalledWith(EventType.FATURAPI_CREDENTIALS_INVALID, {
             consumerUnitIds: ['cu-1'], clientIds: ['client-1'],
         })
+    })
+
+    it('invoice.received roda a analise da Solo no PDF e mantem valor/vencimento da Faturapi', async () => {
+        await run(event('invoice.received', { invoice }))
+
+        expect(analyze).toHaveBeenCalledWith({
+            buffer: Buffer.from('%PDF'),
+            mimeType: 'application/pdf',
+            fallback: consumerUnit,
+        })
+        expect(downloadPdf).toHaveBeenCalledTimes(1)
+        const { create } = prisma.energyBill.upsert.mock.calls[0][0]
+        expect(create).toMatchObject({
+            aiAnalysis: 'Conta ok',
+            billScore: 82,
+            consumptionKwh: 150,
+            consumerClass: 'B1',
+            totalBillValue: 312.45,
+            referenceMonth: 9,
+            referenceYear: 2026,
+        })
+    })
+
+    it('invoice.received salva a fatura mesmo se a analise falhar', async () => {
+        vi.spyOn(console, 'error').mockImplementation(() => {})
+        analyze.mockRejectedValue(new Error('LLM fora'))
+
+        await run(event('invoice.received', { invoice }))
+
+        const { create } = prisma.energyBill.upsert.mock.calls[0][0]
+        expect(create).toMatchObject({ totalBillValue: 312.45, faturapiInvoiceId: 'inv_1' })
+        expect(create).not.toHaveProperty('aiAnalysis')
+    })
+
+    it('reanalisa fatura da Faturapi ainda sem analise, sem baixar o PDF de novo para o storage', async () => {
+        prisma.energyBill.findUnique.mockResolvedValue({
+            id: 'bill-1', rawBillFileKey: 'faturapi.pdf', totalBillValue: 312.45, faturapiInvoiceId: 'inv_1', aiAnalysis: null,
+        })
+
+        await run(event('invoice.received', { invoice }))
+
+        expect(analyze).toHaveBeenCalled()
+        expect(upload).not.toHaveBeenCalled()
+        const { update } = prisma.energyBill.upsert.mock.calls[0][0]
+        expect(update).toMatchObject({ aiAnalysis: 'Conta ok', totalBillValue: 312.45 })
+        expect(update).not.toHaveProperty('rawBillFileKey')
+    })
+
+    it('nao reanalisa fatura criada por upload/admin', async () => {
+        prisma.energyBill.findUnique.mockResolvedValue({
+            id: 'bill-1', rawBillFileKey: null, totalBillValue: 300, faturapiInvoiceId: null, aiAnalysis: null,
+        })
+
+        await run(event('invoice.received', { invoice }))
+
+        expect(analyze).not.toHaveBeenCalled()
+        const { update } = prisma.energyBill.upsert.mock.calls[0][0]
+        expect(update).not.toHaveProperty('aiAnalysis')
+        expect(update).not.toHaveProperty('totalBillValue')
     })
 
     it('ignora eventos nao tratados', async () => {
