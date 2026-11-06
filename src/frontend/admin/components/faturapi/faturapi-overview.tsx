@@ -346,7 +346,7 @@ function EventsTable({ events, actions }: { events: FaturapiOverview['events']; 
                                     </div>
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    {event.status === 'failed' && (
+                                    {(event.status === 'failed' || (event.status === 'processed' && event.type === 'invoice.received')) && (
                                         <Button size="sm" variant="outline" disabled={actions.reprocessEvent.isPending}
                                             onClick={() => actions.reprocessEvent.mutate(event.eventId)}>
                                             <RotateCcw className="size-4" /> Reprocessar

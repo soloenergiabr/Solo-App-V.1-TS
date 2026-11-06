@@ -3,6 +3,7 @@ import { analyzeBillPdf } from '@/backend/economia/bill-pdf-analysis';
 import { eventBus, EventType } from '@/backend/shared/event-bus';
 import { uploadObject } from '@/lib/object-storage';
 import { FaturapiClient } from './faturapi.client';
+import { mapFaturapiParsedToBill } from './faturapi-parsed';
 import type {
     ConnectionEventData,
     FaturapiConnection,
@@ -100,6 +101,13 @@ export class ProcessFaturapiEventUseCase {
         const file = pdf && needsFile ? await this.storePdf(pdf, invoice, consumerUnit.clientId, consumerUnit.id) : null;
         const analyzed = pdf && needsAnalysis ? await this.analyzePdf(pdf, invoice, consumerUnit) : null;
 
+        // Campos ja extraidos pela Faturapi (consumo, compensacao, creditos, encargos)
+        // prevalecem sobre a extracao por IA e garantem os dados mesmo se ela falhar.
+        // Em fatura vinda de upload/admin nada disso e sobrescrito.
+        const extracted = needsAnalysis
+            ? { ...(analyzed ?? {}), ...mapFaturapiParsedToBill(invoice.parsed) }
+            : null;
+
         // Valor, vencimento e codigos de pagamento da Faturapi prevalecem sobre a
         // extracao por IA; o mes de referencia tambem (vem da distribuidora).
         const totalBillValue = invoice.amount ?? analyzed?.totalBillValue ?? null;
@@ -109,9 +117,9 @@ export class ProcessFaturapiEventUseCase {
             // Fatura ja existente vinda de upload/admin: so completa os dados de pagamento,
             // sem sobrescrever o que o analisador ou o admin ja preencheram.
             update: {
-                ...(analyzed ?? {}),
+                ...(extracted ?? {}),
                 ...faturapiData,
-                ...(existing?.totalBillValue == null || analyzed ? { totalBillValue } : {}),
+                ...(existing?.totalBillValue == null || extracted ? { totalBillValue } : {}),
                 ...(file ?? {}),
             },
             create: {
@@ -120,7 +128,7 @@ export class ProcessFaturapiEventUseCase {
                 clientNumber: consumerUnit.clientNumber,
                 instalationNumber: consumerUnit.installationNumber,
                 distributor: consumerUnit.distributor,
-                ...(analyzed ?? {}),
+                ...(extracted ?? {}),
                 ...key,
                 ...faturapiData,
                 ...(file ?? {}),

@@ -125,10 +125,12 @@ export class FaturapiAdminService {
     /** Marca o evento para reprocessar; quem chama dispara processFaturapiEvent depois da resposta. */
     async resetEventForReprocess(eventId: string): Promise<void> {
         const { count } = await this.prisma.faturapiWebhookEvent.updateMany({
-            where: { eventId, status: { not: 'processed' } },
+            // 'received' ainda esta em processamento; processado ou com falha pode rodar de novo
+            // (ex.: fatura salva antes da analise existir).
+            where: { eventId, status: { not: 'received' } },
             data: { status: 'received', error: null },
         });
-        if (count === 0) throw new FaturapiAdminError(404, 'Evento nao encontrado ou ja processado');
+        if (count === 0) throw new FaturapiAdminError(404, 'Evento nao encontrado ou ainda em processamento');
     }
 
     /** Liga uma conexao criada direto na Faturapi a um cliente do app. */

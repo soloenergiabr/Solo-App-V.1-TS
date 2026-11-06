@@ -224,7 +224,14 @@ describe('FaturapiAdminService', () => {
         expect(prisma.faturapiConnection.delete).toHaveBeenCalledWith({ where: { faturapiConnectionId: 'con_1' } })
     })
 
-    it('resetEventForReprocess falha para evento inexistente ou ja processado', async () => {
+    it('resetEventForReprocess libera evento processado ou com falha, mas nao o que esta em andamento', async () => {
+        prisma.faturapiWebhookEvent.updateMany.mockResolvedValue({ count: 1 })
+        await service.resetEventForReprocess('evt_1')
+        expect(prisma.faturapiWebhookEvent.updateMany).toHaveBeenCalledWith({
+            where: { eventId: 'evt_1', status: { not: 'received' } },
+            data: { status: 'received', error: null },
+        })
+
         prisma.faturapiWebhookEvent.updateMany.mockResolvedValue({ count: 0 })
         await expect(service.resetEventForReprocess('evt_1')).rejects.toBeInstanceOf(FaturapiAdminError)
     })
