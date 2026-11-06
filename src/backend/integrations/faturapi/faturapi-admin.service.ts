@@ -291,6 +291,17 @@ export class FaturapiAdminService {
             if (!plant) throw new FaturapiAdminError(404, 'Usina nao encontrada');
         }
 
+        // UC do app que ja e monitorada por outra unidade da Faturapi (ex.: outra conexao
+        // com o mesmo login): monitorar de novo duplicaria a busca e a cobranca.
+        const elsewhere = input.ucs.filter((uc) => {
+            const current = existingByUc.get(uc);
+            const found = discovered.get(uc)!;
+            return !!current?.faturapiUnitId && current.faturapiUnitId !== found.unitId;
+        });
+        if (elsewhere.length > 0) {
+            throw new FaturapiAdminError(409, `UC ja monitorada por outra unidade da Faturapi: ${elsewhere.join(', ')}. Desvincule antes.`);
+        }
+
         // Primeiro a API: se falhar (ex.: sem credito), nada e criado no app.
         const pending = input.ucs.filter((uc) => !discovered.get(uc)!.monitored);
         const created = pending.length > 0
@@ -304,12 +315,15 @@ export class FaturapiAdminService {
 
         return this.prisma.$transaction(input.ucs.map((uc) => {
             const unit = unitByUc.get(uc);
-            const link = {
-                faturapiUnitId: unit?.id ?? null,
-                faturapiStatus: unit?.status ?? null,
-                faturapiConnectionId,
-            };
             const current = existingByUc.get(uc);
+            // Se a Faturapi nao devolveu a unidade, nao apaga o vinculo que ja existia.
+            const link = unit
+                ? { faturapiUnitId: unit.id, faturapiStatus: unit.status, faturapiConnectionId }
+                : {
+                    faturapiUnitId: current?.faturapiUnitId ?? null,
+                    faturapiStatus: current?.faturapiStatus ?? null,
+                    faturapiConnectionId: current?.faturapiUnitId ? current.faturapiConnectionId : faturapiConnectionId,
+                };
             if (current) {
                 return this.prisma.consumerUnit.update({ where: { id: current.id }, data: link });
             }

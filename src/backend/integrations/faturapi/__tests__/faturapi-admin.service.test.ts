@@ -126,6 +126,29 @@ describe('FaturapiAdminService', () => {
             expect(prisma.$transaction).not.toHaveBeenCalled()
         })
 
+        it('recusa UC ja monitorada por outra unidade (outra conexao), sem chamar a API', async () => {
+            prisma.consumerUnit.findMany.mockResolvedValue([
+                { id: 'cu-222', clientNumber: '222', faturapiUnitId: 'unt_old', faturapiConnectionId: 'con_old' },
+            ])
+
+            await expect(service.monitorConnectionUnits('client-1', 'con_1', { ucs: ['222'] }))
+                .rejects.toMatchObject({ status: 409 })
+            expect(faturapi.addConnectionUnits).not.toHaveBeenCalled()
+            expect(prisma.$transaction).not.toHaveBeenCalled()
+        })
+
+        it('nao apaga o vinculo da UC se a Faturapi nao devolver a unidade', async () => {
+            prisma.consumerUnit.findMany.mockResolvedValue([{ id: 'cu-222', clientNumber: '222', faturapiUnitId: null }])
+            faturapi.addConnectionUnits.mockResolvedValue([])
+
+            await service.monitorConnectionUnits('client-1', 'con_1', { ucs: ['222'] })
+
+            expect(prisma.consumerUnit.update).toHaveBeenCalledWith({
+                where: { id: 'cu-222' },
+                data: { faturapiUnitId: null, faturapiStatus: null, faturapiConnectionId: 'con_1' },
+            })
+        })
+
         it('so opera em conexoes do proprio cliente', async () => {
             prisma.faturapiConnection.findFirst.mockResolvedValue(null)
             await expect(service.monitorConnectionUnits('client-2', 'con_1', { ucs: ['111'] }))

@@ -107,8 +107,14 @@ function ConnectionCard({
     const [removing, setRemoving] = useState(false);
 
     const discovered = connection?.discoveredUnits ?? [];
+    // UC do app ja ligada a outra unidade da Faturapi (ex.: outra conexao com o mesmo login).
+    const linkedElsewhere = (u: { uc: string; unitId: string | null }) => {
+        const unitId = appUcs.get(u.uc)?.consumerUnit.faturapiUnitId;
+        return !!unitId && unitId !== u.unitId;
+    };
     // Selecionavel: ainda nao monitorada, ou monitorada mas sem UC vinculada no app.
-    const selectable = discovered.filter((u) => !u.monitored || appUcs.get(u.uc)?.consumerUnit.faturapiUnitId !== u.unitId);
+    const selectable = discovered.filter((u) =>
+        !linkedElsewhere(u) && (!u.monitored || appUcs.get(u.uc)?.consumerUnit.faturapiUnitId !== u.unitId));
     const needsPlant = selected.some((uc) => !appUcs.has(uc));
 
     const toggle = (uc: string, checked: boolean) =>
@@ -192,6 +198,8 @@ function ConnectionCard({
                                         <TableCell className="text-sm">
                                             {linked ? (
                                                 <span className="text-success">Monitorada · {app?.consumerUnit.name ?? 'UC'}</span>
+                                            ) : linkedElsewhere(unit) ? (
+                                                <span className="text-muted-foreground">Ja monitorada por outra conexao</span>
                                             ) : unit.monitored ? (
                                                 <span className="text-amber-500">Monitorada, sem vinculo{app ? ` (UC ${app.consumerUnit.name ?? unit.uc} existe)` : ''}</span>
                                             ) : app ? (
