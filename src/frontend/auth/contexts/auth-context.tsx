@@ -1,11 +1,11 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useAuth, AuthState, LoginCredentials, RegisterData } from '@/frontend/auth/hooks/useAuth';
+import { useAuth, AuthState, LoginCredentials, RegisterData, User } from '@/frontend/auth/hooks/useAuth';
 import { AxiosInstance } from 'axios';
 
 interface AuthContextType extends AuthState {
-    login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
+    login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string; user?: User }>;
     register: (userData: RegisterData) => Promise<{ success: boolean; error?: string; message?: string }>;
     logout: () => void;
     refreshToken: () => Promise<boolean>;
