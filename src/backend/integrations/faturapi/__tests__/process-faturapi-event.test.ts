@@ -6,7 +6,10 @@ vi.mock('@/backend/shared/event-bus', async (importOriginal) => {
     return { ...actual, eventBus: { emit: mockEmit } }
 })
 vi.mock('@/lib/object-storage', () => ({ uploadObject: vi.fn() }))
-vi.mock('@/backend/economia/bill-pdf-analysis', () => ({ analyzeBillPdf: vi.fn() }))
+vi.mock('@/backend/economia/bill-pdf-analysis', async (importOriginal) => ({
+    ...(await importOriginal<typeof import('@/backend/economia/bill-pdf-analysis')>()),
+    analyzeBillPdf: vi.fn(),
+}))
 
 const { ProcessFaturapiEventUseCase, parseReferenceMonth } = await import('../process-faturapi-event.use-case')
 type UseCaseArgs = ConstructorParameters<typeof ProcessFaturapiEventUseCase>
@@ -241,6 +244,40 @@ describe('ProcessFaturapiEventUseCase', () => {
         const { update } = prisma.energyBill.upsert.mock.calls[0][0]
         expect(update).toMatchObject({ aiAnalysis: 'Conta ok', totalBillValue: 312.45 })
         expect(update).not.toHaveProperty('rawBillFileKey')
+    })
+
+    it('preenche consumo, compensacao e creditos a partir do parsed da Faturapi, mesmo sem a analise', async () => {
+        vi.spyOn(console, 'error').mockImplementation(() => {})
+        analyze.mockRejectedValue(new Error('LLM fora'))
+        const withParsed = {
+            ...invoice,
+            parsed: {
+                consumption: { totalKwh: 194, billedKwh: 194 },
+                distributedGeneration: { compensatedKwh: 164, creditBalanceKwh: 2190.4 },
+                tariffFlag: { flag: 'AMARELA', value: 3.41 },
+            },
+        }
+
+        await run(event('invoice.received', { invoice: withParsed }))
+
+        const { create } = prisma.energyBill.upsert.mock.calls[0][0]
+        expect(create).toMatchObject({
+            consumptionKwh: 194,
+            billedConsumptionKwh: 194,
+            compensatedEnergyKwh: 164,
+            currentCreditsKwh: 2190.4,
+            tariffFlag: 'AMARELA',
+            totalBillValue: 312.45,
+        })
+    })
+
+    it('o parsed da Faturapi prevalece sobre a IA, que completa o resto', async () => {
+        const withParsed = { ...invoice, parsed: { consumption: { totalKwh: 194 } } }
+
+        await run(event('invoice.received', { invoice: withParsed }))
+
+        const { create } = prisma.energyBill.upsert.mock.calls[0][0]
+        expect(create).toMatchObject({ consumptionKwh: 194, consumerClass: 'B1', aiAnalysis: 'Conta ok' })
     })
 
     it('nao reanalisa fatura criada por upload/admin', async () => {
