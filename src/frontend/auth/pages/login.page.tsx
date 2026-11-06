@@ -25,7 +25,8 @@ export function LoginPage() {
         try {
             const result = await login({ email, password });
             if (result.success) {
-                router.push('/controle');
+                // /controle e a home do cliente; o admin (master) nao tem essa rota.
+                router.push(result.user?.roles?.includes('master') ? '/dashboard' : '/controle');
             } else {
                 setError(result.error || 'Não foi possível entrar');
             }

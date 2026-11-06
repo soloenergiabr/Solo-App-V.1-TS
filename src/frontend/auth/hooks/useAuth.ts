@@ -195,7 +195,7 @@ export function useAuth() {
                     error: null,
                 });
 
-                return { success: true };
+                return { success: true, user: response.data.data.user as User };
             } else {
                 setAuthState(prev => ({
                     ...prev,
