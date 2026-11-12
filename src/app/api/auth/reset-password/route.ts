@@ -3,14 +3,11 @@ import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { PrismaUserRepository } from '@/backend/auth/repositories/prisma-user.repository';
 import { ResetPasswordUseCase } from '@/backend/auth/use-cases/reset-password.use-case';
+import { passwordSchema } from '@/shared/admin-users/permissions';
 
 const resetPasswordSchema = z.object({
     token: z.string(),
-    password: z.string()
-        .min(8, 'A senha deve ter no mínimo 8 caracteres')
-        .regex(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
-        .regex(/[a-z]/, 'A senha deve conter pelo menos uma letra minúscula')
-        .regex(/[0-9]/, 'A senha deve conter pelo menos um número'),
+    password: passwordSchema,
 });
 
 export async function POST(request: NextRequest) {
