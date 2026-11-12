@@ -50,7 +50,7 @@ export function FaturapiOverviewScreen() {
             {data.errors.length > 0 && (
                 <Alert variant="destructive">
                     <AlertTriangle className="size-4" />
-                    <AlertTitle>Parte dos dados da Faturapi nao carregou</AlertTitle>
+                    <AlertTitle>Parte dos dados da Faturapi não carregou</AlertTitle>
                     <AlertDescription>{data.errors.join(' · ')}</AlertDescription>
                 </Alert>
             )}
@@ -60,9 +60,9 @@ export function FaturapiOverviewScreen() {
                 <StatCard title="Buscas (30 dias)" value={data.usage ? `${data.usage.completed} ok · ${data.usage.failed} falhas` : '—'}
                     hint={data.usage ? `Custo ${formatCents(data.usage.costCents)}` : undefined} />
                 <StatCard title="Unidades monitoradas" value={String(data.units.length)}
-                    hint={attention > 0 ? `${attention} precisam de atencao` : 'Todas em dia'} warn={attention > 0} />
+                    hint={attention > 0 ? `${attention} precisam de atenção` : 'Todas em dia'} warn={attention > 0} />
                 <StatCard title="Pendencias" value={String(orphanUnits + orphanConnections + failedEvents)}
-                    hint={`${orphanUnits} unidades e ${orphanConnections} conexoes sem vinculo · ${failedEvents} webhooks com falha`}
+                    hint={`${orphanUnits} unidades e ${orphanConnections} conexões sem vínculo · ${failedEvents} webhooks com falha`}
                     warn={orphanUnits + orphanConnections + failedEvents > 0} />
             </div>
 
@@ -76,7 +76,7 @@ export function FaturapiOverviewScreen() {
                 <TabsList>
                     <TabsTrigger value="units">Unidades ({data.units.length})</TabsTrigger>
                     <TabsTrigger value="connections">Conexoes ({data.connections.length})</TabsTrigger>
-                    <TabsTrigger value="extractions">Extracoes</TabsTrigger>
+                    <TabsTrigger value="extractions">Extrações</TabsTrigger>
                     <TabsTrigger value="events">Webhooks{failedEvents > 0 ? ` (${failedEvents} falhas)` : ''}</TabsTrigger>
                 </TabsList>
                 <TabsContent value="units" className="mt-4"><UnitsTable units={data.units} actions={actions} /></TabsContent>
@@ -131,8 +131,8 @@ function UnitsTable({ units, actions }: { units: FaturapiOverview['units']; acti
                             <TableHead>UC</TableHead>
                             <TableHead>Cliente no app</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead>Ultima fatura</TableHead>
-                            <TableHead>Proxima busca</TableHead>
+                            <TableHead>Última fatura</TableHead>
+                            <TableHead>Próxima busca</TableHead>
                             <TableHead>Leitura prevista</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -177,7 +177,7 @@ function AssignUnit({
     if (candidates.length === 0) {
         return (
             <div className="text-xs text-amber-500">
-                Sem UC no app com este numero. Cadastre a UC no cliente (numero do cliente = UC) para vincular.
+                Sem UC no app com este número. Cadastre a UC no cliente (número do cliente = UC) para vincular.
             </div>
         );
     }
@@ -200,7 +200,7 @@ function AssignUnit({
 }
 
 function ConnectionsTable({ connections, actions }: { connections: FaturapiOverview['connections']; actions: Actions }) {
-    if (connections.length === 0) return <Empty text="Nenhuma conexao na Faturapi. Crie pela aba Faturapi do cliente." />;
+    if (connections.length === 0) return <Empty text="Nenhuma conexão na Faturapi. Crie pela aba Faturapi do cliente." />;
     return (
         <Card>
             <CardContent className="p-0">
@@ -211,7 +211,7 @@ function ConnectionsTable({ connections, actions }: { connections: FaturapiOverv
                             <TableHead>Cliente no app</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>UCs (monitoradas / na conta)</TableHead>
-                            <TableHead>Ultima sincronizacao</TableHead>
+                            <TableHead>Última sincronização</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -219,7 +219,7 @@ function ConnectionsTable({ connections, actions }: { connections: FaturapiOverv
                             <TableRow key={connection.id}>
                                 <TableCell>
                                     <div className="text-sm">{connection.credentialsHint ?? connection.id}</div>
-                                    <div className="text-xs text-muted-foreground">{connection.source === 'empresa' ? 'Empresa' : 'Pessoa fisica'}</div>
+                                    <div className="text-xs text-muted-foreground">{connection.source === 'empresa' ? 'Empresa' : 'Pessoa física'}</div>
                                 </TableCell>
                                 <TableCell>
                                     {client ? (
@@ -279,7 +279,7 @@ function AssignConnection({ connectionId, actions }: { connectionId: string; act
 }
 
 function ExtractionsTable({ extractions }: { extractions: FaturapiOverview['extractions'] }) {
-    if (extractions.length === 0) return <Empty text="Nenhuma extracao ainda." />;
+    if (extractions.length === 0) return <Empty text="Nenhuma extração ainda." />;
     return (
         <Card>
             <CardContent className="p-0">
@@ -328,7 +328,7 @@ function EventsTable({ events, actions }: { events: FaturapiOverview['events']; 
                             <TableHead>Recebido</TableHead>
                             <TableHead>Evento</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead className="text-right">Acoes</TableHead>
+                            <TableHead className="text-right">Ações</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>

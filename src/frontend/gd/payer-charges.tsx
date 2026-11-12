@@ -43,7 +43,7 @@ export function PayerCharges() {
         return (
             <PageEmpty
                 icon={<Zap className="h-8 w-8 text-muted-foreground" />}
-                title="Nenhuma conta neste mes"
+                title="Nenhuma conta neste mês"
                 description="Assim que o titular gerar a conta desta competencia, ela aparece aqui."
             />
         )

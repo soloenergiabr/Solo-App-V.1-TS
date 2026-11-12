@@ -48,7 +48,7 @@ export function AcceptInviteScreen({ token }: { token: string }) {
                 setLoadError(
                     axios.isAxiosError(err) && err.response?.data?.message
                         ? err.response.data.message
-                        : 'Convite nao encontrado.',
+                        : 'Convite não encontrado.',
                 )
             })
             .finally(() => {
@@ -65,7 +65,7 @@ export function AcceptInviteScreen({ token }: { token: string }) {
         setSubmitError(null)
 
         if (password !== confirmPassword) {
-            setSubmitError('As senhas nao conferem.')
+            setSubmitError('As senhas não conferem.')
             return
         }
 
@@ -78,7 +78,7 @@ export function AcceptInviteScreen({ token }: { token: string }) {
             setSubmitError(
                 axios.isAxiosError(err) && err.response?.data?.message
                     ? err.response.data.message
-                    : 'Nao foi possivel criar seu acesso.',
+                    : 'Não foi possível criar seu acesso.',
             )
         } finally {
             setSubmitting(false)
@@ -97,8 +97,8 @@ export function AcceptInviteScreen({ token }: { token: string }) {
     if (loadError || !invite) {
         return (
             <Alert variant="destructive">
-                <AlertTitle>Convite indisponivel</AlertTitle>
-                <AlertDescription>{loadError ?? 'Convite nao encontrado.'}</AlertDescription>
+                <AlertTitle>Convite indisponível</AlertTitle>
+                <AlertDescription>{loadError ?? 'Convite não encontrado.'}</AlertDescription>
             </Alert>
         )
     }
@@ -106,7 +106,7 @@ export function AcceptInviteScreen({ token }: { token: string }) {
     if (!invite.valid) {
         return (
             <Alert variant="destructive">
-                <AlertTitle>Convite indisponivel</AlertTitle>
+                <AlertTitle>Convite indisponível</AlertTitle>
                 <AlertDescription>{invite.reason}</AlertDescription>
             </Alert>
         )
@@ -121,7 +121,7 @@ export function AcceptInviteScreen({ token }: { token: string }) {
                 </AlertTitle>
                 <AlertDescription>
                     Redirecionando para o login. Use <strong>{invite.email}</strong> e a senha que
-                    voce acabou de criar.
+                    você acabou de criar.
                 </AlertDescription>
             </Alert>
         )
@@ -132,7 +132,7 @@ export function AcceptInviteScreen({ token }: { token: string }) {
             <div className="space-y-2">
                 <h2 className="font-display text-2xl font-bold">Ola, {invite.name}!</h2>
                 <p className="text-sm text-muted-foreground">
-                    <strong>{invite.titularName}</strong> convidou voce para acompanhar a conta de
+                    <strong>{invite.titularName}</strong> convidou você para acompanhar a conta de
                     energia da unidade <strong>{invite.consumerUnitName}</strong>. Crie sua senha
                     para entrar.
                 </p>
@@ -154,7 +154,7 @@ export function AcceptInviteScreen({ token }: { token: string }) {
                     autoComplete="new-password"
                 />
                 <p className="text-xs text-muted-foreground">
-                    Minimo 8 caracteres, com maiuscula, minuscula e numero.
+                    Mínimo 8 caracteres, com maiúscula, minúscula e número.
                 </p>
             </div>
 

@@ -155,10 +155,10 @@ function RejectDialog({
                 </DialogHeader>
 
                 <div className="space-y-2">
-                    <Label htmlFor="rejection-reason">Motivo da rejeicao (opcional)</Label>
+                    <Label htmlFor="rejection-reason">Motivo da rejeição (opcional)</Label>
                     <Textarea
                         id="rejection-reason"
-                        placeholder="Descreva o motivo da rejeicao..."
+                        placeholder="Descreva o motivo da rejeição..."
                         value={reason}
                         onChange={(e) => setReason(e.target.value)}
                         rows={3}
@@ -213,8 +213,8 @@ function ApprovalsPage() {
         <PageLayout
             header={
                 <PageHeader
-                    title="Aprovacoes Pendentes"
-                    subtitle="Plantas e unidades consumidoras aguardando validacao"
+                    title="Aprovações Pendentes"
+                    subtitle="Plantas e unidades consumidoras aguardando validação"
                 />
             }
         >
@@ -231,11 +231,11 @@ function ApprovalsPage() {
                     {isError && !isLoading && (
                         <div className="flex h-48 flex-col items-center justify-center text-center">
                             <XCircle className="mb-3 h-9 w-9 text-destructive" />
-                            <p className="font-medium text-destructive">Erro ao carregar aprovacoes</p>
+                            <p className="font-medium text-destructive">Erro ao carregar aprovações</p>
                             <p className="mt-1 max-w-md text-sm text-muted-foreground">
                                 {error instanceof Error
                                     ? error.message
-                                    : 'Nao foi possivel carregar as aprovacoes pendentes.'}
+                                    : 'Não foi possível carregar as aprovações pendentes.'}
                             </p>
                         </div>
                     )}
@@ -260,7 +260,7 @@ function ApprovalsPage() {
                                     <TableHead>Tipo</TableHead>
                                     <TableHead>Nome</TableHead>
                                     <TableHead>Data do Pedido</TableHead>
-                                    <TableHead className="text-right">Acoes</TableHead>
+                                    <TableHead className="text-right">Ações</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>

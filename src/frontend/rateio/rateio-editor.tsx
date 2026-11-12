@@ -223,7 +223,7 @@ export function RateioEditor({ plants, generatorUnits, consumerUnits, onSuccess,
 
                     {form.allocationPercentage && Number(form.allocationPercentage) > 0 && (
                         <div className="rounded-md bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
-                            Programado para o proximo ciclo de faturamento
+                            Programado para o próximo ciclo de faturamento
                         </div>
                     )}
                 </div>

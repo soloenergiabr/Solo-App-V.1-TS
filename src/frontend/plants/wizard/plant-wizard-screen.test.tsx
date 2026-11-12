@@ -69,14 +69,14 @@ describe('PlantWizardScreen existing plant statuses', () => {
         })
 
         await user.type(screen.getByLabelText('Nome da Usina *'), 'Nova Usina')
-        await user.click(screen.getByRole('button', { name: /Proximo/ }))
-        await user.click(screen.getByRole('button', { name: /Proximo/ }))
+        await user.click(screen.getByRole('button', { name: /Próximo/ }))
+        await user.click(screen.getByRole('button', { name: /Próximo/ }))
         await user.type(screen.getByLabelText('Nome *'), 'UC Centro')
-        await user.click(screen.getByRole('button', { name: /Proximo/ }))
+        await user.click(screen.getByRole('button', { name: /Próximo/ }))
 
         expect(await screen.findByText('Suas Usinas')).toBeInTheDocument()
         expect(screen.getByText('Usina Pendente')).toBeInTheDocument()
-        expect(screen.getByText('Aguardando aprovacao')).toBeInTheDocument()
+        expect(screen.getByText('Aguardando aprovação')).toBeInTheDocument()
         expect(screen.getByText('Criada em 05/07/2026')).toBeInTheDocument()
 
         expect(screen.getByText('Usina Rejeitada')).toBeInTheDocument()

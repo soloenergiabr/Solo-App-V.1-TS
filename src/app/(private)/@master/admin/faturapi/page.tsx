@@ -10,7 +10,7 @@ function FaturapiPage() {
             header={
                 <PageHeader
                     title="Faturapi"
-                    subtitle="Busca automatica das faturas de energia: saldo, unidades monitoradas, conexoes e webhooks"
+                    subtitle="Busca automática das faturas de energia: saldo, unidades monitoradas, conexões e webhooks"
                 />
             }
         >

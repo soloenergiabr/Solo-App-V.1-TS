@@ -68,7 +68,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
         try {
             await action()
         } catch (err) {
-            setActionError(err instanceof Error ? err.message : 'Falha na operacao')
+            setActionError(err instanceof Error ? err.message : 'Falha na operação')
         }
     }
 
@@ -84,7 +84,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                         {MONTHS[month - 1]} / {year}
                     </span>
                     <Button variant="outline" size="sm" onClick={() => shiftMonth(1)}>
-                        Proximo
+                        Próximo
                     </Button>
                 </div>
                 <Button
@@ -98,13 +98,13 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                     ) : (
                         <RefreshCw className="mr-2 size-4" />
                     )}
-                    Gerar cobrancas do mes
+                    Gerar cobranças do mês
                 </Button>
             </div>
 
             {actionError && (
                 <Alert variant="destructive">
-                    <AlertTitle>Nao foi possivel concluir</AlertTitle>
+                    <AlertTitle>Não foi possível concluir</AlertTitle>
                     <AlertDescription>{actionError}</AlertDescription>
                 </Alert>
             )}
@@ -153,7 +153,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                 <CardHeader>
                     <CardTitle className="text-lg">Cobrancas de {MONTHS[month - 1]}</CardTitle>
                     <CardDescription>
-                        Envie a cobranca ao responsavel e registre o recebimento.
+                        Envie a cobrança ao responsável e registre o recebimento.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -173,7 +173,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                         <PageEmpty
                             icon={<Users className="h-8 w-8 text-muted-foreground" />}
                             title="Nenhuma cobranca nesta competencia"
-                            description="Defina a regra de cobranca de cada unidade abaixo e clique em 'Gerar cobrancas do mes'."
+                            description="Defina a regra de cobrança de cada unidade abaixo e clique em 'Gerar cobranças do mês'."
                         />
                     )}
 
@@ -183,12 +183,12 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Unidade</TableHead>
-                                        <TableHead>Responsavel</TableHead>
+                                        <TableHead>Responsável</TableHead>
                                         <TableHead>Base</TableHead>
                                         <TableHead>Valor</TableHead>
                                         <TableHead>Vencimento</TableHead>
                                         <TableHead>Status</TableHead>
-                                        <TableHead className="text-right">Acoes</TableHead>
+                                        <TableHead className="text-right">Ações</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -200,7 +200,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                             <TableCell className="text-sm">
                                                 {charge.payerName ?? (
                                                     <span className="text-muted-foreground">
-                                                        sem responsavel
+                                                        sem responsável
                                                     </span>
                                                 )}
                                             </TableCell>
@@ -233,7 +233,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                                                 title={
                                                                     charge.payerEmail
                                                                         ? 'Enviar por e-mail'
-                                                                        : 'Cadastre o e-mail do responsavel'
+                                                                        : 'Cadastre o e-mail do responsável'
                                                                 }
                                                                 onClick={() =>
                                                                     run(() => send.mutateAsync(charge.id))
@@ -272,7 +272,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                 <CardHeader>
                     <CardTitle className="text-lg">Unidades e responsaveis</CardTitle>
                     <CardDescription>
-                        Quem paga cada unidade e como o valor do mes e calculado.
+                        Quem paga cada unidade e como o valor do mês é calculado.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -282,7 +282,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                         <PageEmpty
                             icon={<Users className="h-8 w-8 text-muted-foreground" />}
                             title="Nenhuma unidade consumidora cadastrada"
-                            description="Cadastre as unidades do imovel para comecar a ratear a energia e as contas."
+                            description="Cadastre as unidades do imóvel para começar a ratear a energia e as contas."
                         />
                     )}
 
@@ -292,10 +292,10 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Unidade</TableHead>
-                                        <TableHead>Responsavel</TableHead>
+                                        <TableHead>Responsável</TableHead>
                                         <TableHead>Cobranca</TableHead>
                                         <TableHead>Acesso</TableHead>
-                                        <TableHead className="text-right">Acoes</TableHead>
+                                        <TableHead className="text-right">Ações</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -314,7 +314,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                                     </div>
                                                 ) : (
                                                     <span className="text-muted-foreground">
-                                                        nao definido
+                                                        não definido
                                                     </span>
                                                 )}
                                             </TableCell>
@@ -388,7 +388,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
             <p className="flex items-start gap-2 text-xs text-muted-foreground">
                 <Mail className="mt-0.5 size-3.5 shrink-0" />
                 O Solo App calcula, envia e registra as cobrancas. O pagamento acontece fora do app,
-                direto entre voce e o responsavel.
+                direto entre você e o responsável.
             </p>
         </div>
     )
@@ -399,7 +399,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
         <PageLayout
             header={
                 <PageHeader
-                    title="Geracao Distribuida"
+                    title="Geração Distribuída"
                     subtitle="Ratear a energia gerada e a conta entre os responsaveis de cada unidade"
                 />
             }

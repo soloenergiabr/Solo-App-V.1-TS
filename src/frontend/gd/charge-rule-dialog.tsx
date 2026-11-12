@@ -63,7 +63,7 @@ export function ChargeRuleDialog({
                 <DialogHeader>
                     <DialogTitle>Como cobrar {rule.consumerUnitName}</DialogTitle>
                     <DialogDescription>
-                        Defina o que o responsavel por esta unidade paga a cada mes.
+                        Defina o que o responsável por esta unidade paga a cada mês.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -97,7 +97,7 @@ export function ChargeRuleDialog({
                                 onChange={(e) => setPricePerKwh(e.target.value)}
                             />
                             <p className="text-xs text-muted-foreground">
-                                O valor do mes sera a energia compensada da fatura multiplicada por
+                                O valor do mês será a energia compensada da fatura multiplicada por
                                 este preco.
                             </p>
                         </div>

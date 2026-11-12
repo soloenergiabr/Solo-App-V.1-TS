@@ -63,7 +63,7 @@ export function InvitePayerDialog({
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Convidar responsavel</DialogTitle>
+                    <DialogTitle>Convidar responsável</DialogTitle>
                     <DialogDescription>
                         O responsavel por {consumerUnitName} recebe um e-mail para criar o proprio
                         acesso e acompanhar so esta unidade.
@@ -79,7 +79,7 @@ export function InvitePayerDialog({
                 ) : (
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="payer-name">Nome do responsavel</Label>
+                            <Label htmlFor="payer-name">Nome do responsável</Label>
                             <Input
                                 id="payer-name"
                                 value={name}

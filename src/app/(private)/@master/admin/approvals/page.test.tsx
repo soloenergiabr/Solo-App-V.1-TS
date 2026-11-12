@@ -41,7 +41,7 @@ function ApprovalsBadgeProbe() {
         enabled: true,
     })
 
-    return <span>{pendingCount > 0 ? `Aprovacoes (${pendingCount})` : 'Aprovacoes'}</span>
+    return <span>{pendingCount > 0 ? `Aprovações (${pendingCount})` : 'Aprovações'}</span>
 }
 
 vi.mock('@/frontend/auth/contexts/auth-context', () => ({
@@ -129,14 +129,14 @@ describe('Admin approvals query sharing', () => {
             { wrapper: Wrapper },
         )
 
-        expect(await screen.findByText('Aprovacoes (1)')).toBeInTheDocument()
+        expect(await screen.findByText('Aprovações (1)')).toBeInTheDocument()
         expect(await screen.findByText('Usina Centro')).toBeInTheDocument()
         expect(mockGet).toHaveBeenCalledTimes(1)
 
         await user.click(screen.getByRole('button', { name: /Aprovar/ }))
 
         await waitFor(() => {
-            expect(screen.getByText('Aprovacoes')).toBeInTheDocument()
+            expect(screen.getByText('Aprovações')).toBeInTheDocument()
         })
         await waitFor(() => {
             expect(screen.getByText('Nenhuma pendencia')).toBeInTheDocument()

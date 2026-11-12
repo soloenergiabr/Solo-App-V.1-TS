@@ -43,7 +43,7 @@ const STEPS: { key: Step; label: string; icon: React.ReactNode }[] = [
     { key: 'plant', label: 'Dados da Usina', icon: <Home className="w-4 h-4" /> },
     { key: 'inverter', label: 'Inversor', icon: <Bluetooth className="w-4 h-4" /> },
     { key: 'consumer-units', label: 'Unidades Consumidoras', icon: <Sun className="w-4 h-4" /> },
-    { key: 'review', label: 'Revisao', icon: <CheckCircle2 className="w-4 h-4" /> },
+    { key: 'review', label: 'Revisão', icon: <CheckCircle2 className="w-4 h-4" /> },
 ];
 
 /* ─── Helpers ─── */
@@ -169,7 +169,7 @@ export function PlantWizardScreen() {
                 await api.post('/client/consumer-units', unitPayload);
             }
 
-            toast.success('Sua usina foi cadastrada com sucesso! Ela sera analisada por nossa equipe.');
+            toast.success('Sua usina foi cadastrada com sucesso! Ela será analisada por nossa equipe.');
             router.push('/dashboard');
         } catch (err: any) {
             const msg =
@@ -208,7 +208,7 @@ export function PlantWizardScreen() {
             <Card>
                 <CardHeader>
                     <CardTitle>Dados da Usina</CardTitle>
-                    <CardDescription>Informe os dados basicos da sua usina solar.</CardDescription>
+                    <CardDescription>Informe os dados básicos da sua usina solar.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
@@ -221,7 +221,7 @@ export function PlantWizardScreen() {
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="plant-power">Potencia Instalada (kW)</Label>
+                        <Label htmlFor="plant-power">Potência Instalada (kW)</Label>
                         <Input
                             id="plant-power"
                             type="number"
@@ -233,10 +233,10 @@ export function PlantWizardScreen() {
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="plant-address">Endereco</Label>
+                        <Label htmlFor="plant-address">Endereço</Label>
                         <Input
                             id="plant-address"
-                            placeholder="Rua, numero, bairro"
+                            placeholder="Rua, número, bairro"
                             value={plantData.address}
                             onChange={(e) => setPlantData((p) => ({ ...p, address: e.target.value }))}
                         />
@@ -246,7 +246,7 @@ export function PlantWizardScreen() {
                             <Label htmlFor="plant-city">Cidade</Label>
                             <Input
                                 id="plant-city"
-                                placeholder="Sao Paulo"
+                                placeholder="São Paulo"
                                 value={plantData.city}
                                 onChange={(e) => setPlantData((p) => ({ ...p, city: e.target.value }))}
                             />
@@ -270,7 +270,7 @@ export function PlantWizardScreen() {
         <div className="space-y-4">
             <Card>
                 <CardHeader>
-                    <CardTitle>Conexao do Inversor</CardTitle>
+                    <CardTitle>Conexão do Inversor</CardTitle>
                     <CardDescription>
                         Informe os dados do inversor. Este passo e opcional.
                     </CardDescription>
@@ -289,13 +289,13 @@ export function PlantWizardScreen() {
                         <Label htmlFor="inv-provider-id">ID do Inversor / Serial</Label>
                         <Input
                             id="inv-provider-id"
-                            placeholder="Ex: serial number ou codigo"
+                            placeholder="Ex: número de série ou código"
                             value={inverterData.providerId}
                             onChange={(e) => setInverterData((p) => ({ ...p, providerId: e.target.value }))}
                         />
                     </div>
                     <p className="text-sm text-muted-foreground">
-                        Se voce nao tem esses dados agora, pode pular esta etapa.
+                        Se você não tem esses dados agora, pode pular esta etapa.
                     </p>
                 </CardContent>
             </Card>
@@ -335,10 +335,10 @@ export function PlantWizardScreen() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor={`cu-number-${index}`}>Numero do Cliente</Label>
+                            <Label htmlFor={`cu-number-${index}`}>Número do Cliente</Label>
                             <Input
                                 id={`cu-number-${index}`}
-                                placeholder="Codigo na conta de energia"
+                                placeholder="Código na conta de energia"
                                 value={unit.clientNumber}
                                 onChange={(e) => updateConsumerUnit(index, 'clientNumber', e.target.value)}
                             />
@@ -374,11 +374,11 @@ export function PlantWizardScreen() {
                         <span className="font-medium">{plantData.name || '---'}</span>
                     </div>
                     <div className="flex justify-between">
-                        <span className="text-muted-foreground">Potencia:</span>
+                        <span className="text-muted-foreground">Potência:</span>
                         <span>{plantData.installedPowerKw ? `${plantData.installedPowerKw} kW` : '---'}</span>
                     </div>
                     <div className="flex justify-between">
-                        <span className="text-muted-foreground">Endereco:</span>
+                        <span className="text-muted-foreground">Endereço:</span>
                         <span>{plantData.address || '---'}</span>
                     </div>
                     <div className="flex justify-between">
@@ -396,11 +396,11 @@ export function PlantWizardScreen() {
                 <CardContent className="space-y-2 text-sm">
                     <div className="flex justify-between">
                         <span className="text-muted-foreground">Fabricante:</span>
-                        <span>{inverterData.provider || 'Nao informado'}</span>
+                        <span>{inverterData.provider || 'Não informado'}</span>
                     </div>
                     <div className="flex justify-between">
                         <span className="text-muted-foreground">ID / Serial:</span>
-                        <span>{inverterData.providerId || 'Nao informado'}</span>
+                        <span>{inverterData.providerId || 'Não informado'}</span>
                     </div>
                 </CardContent>
             </Card>
@@ -437,7 +437,7 @@ export function PlantWizardScreen() {
                     <CardHeader>
                         <CardTitle>Suas Usinas</CardTitle>
                         <CardDescription>
-                            Voce ja possui {existingPlants.length} usina(s) cadastrada(s).
+                            Você já possui {existingPlants.length} usina(s) cadastrada(s).
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
@@ -462,7 +462,7 @@ export function PlantWizardScreen() {
                                 default:
                                     badge = (
                                         <Badge className="bg-amber-500 hover:bg-amber-500 text-white">
-                                            Aguardando aprovacao
+                                            Aguardando aprovação
                                         </Badge>
                                     );
                                     break;
@@ -594,7 +594,7 @@ export function PlantWizardScreen() {
                     </Button>
                 ) : (
                     <Button onClick={goNext} disabled={!canGoNext()}>
-                        Proximo
+                        Próximo
                         <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                 )}

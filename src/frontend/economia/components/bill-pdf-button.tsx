@@ -32,7 +32,7 @@ export function BillPdfButton({ billId, children, disabled, ...props }: BillPdfB
             setTimeout(() => URL.revokeObjectURL(url), 60_000);
         } catch {
             tab?.close();
-            toast.error('Nao foi possivel abrir o PDF da fatura.');
+            toast.error('Não foi possível abrir o PDF da fatura.');
         } finally {
             setLoading(false);
         }

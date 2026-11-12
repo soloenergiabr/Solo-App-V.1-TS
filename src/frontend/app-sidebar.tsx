@@ -85,7 +85,7 @@ export function AppSidebar() {
                 items: [
                     ...section.items,
                     {
-                        label: pendingCount > 0 ? `Aprovacoes (${pendingCount})` : 'Aprovacoes',
+                        label: pendingCount > 0 ? `Aprovações (${pendingCount})` : 'Aprovações',
                         href: '/admin/approvals',
                         icon: <ClipboardCheck className="w-5 h-5" />,
                     },

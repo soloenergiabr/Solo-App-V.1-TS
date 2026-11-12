@@ -510,7 +510,7 @@ function PlantAllocationsSection({
                             </Select>
                         </div>
                         <div className="space-y-2">
-                            <Label>Data de efetivacao (opcional)</Label>
+                            <Label>Data de efetivação (opcional)</Label>
                             <Input type="date" value={applyForm.effectiveDate} onChange={(e) => setApplyForm(prev => ({ ...prev, effectiveDate: e.target.value }))} />
                         </div>
                         <div className="space-y-2">
@@ -668,14 +668,14 @@ function AddInverterDialog({ plant, mutations }: { plant: AdminPlant; mutations:
                     )}
                     <Field label="Nome" value={form.name} onChange={value => setForm(prev => ({ ...prev, name: value }))} />
                 </FormSection>
-                <FormSection title="Hardware e sincronizacao">
+                <FormSection title="Hardware e sincronização">
                     <Field label="Serial" value={form.serialNumber} onChange={value => setForm(prev => ({ ...prev, serialNumber: value }))} />
                     <Field label="Fabricante" value={form.manufacturer} onChange={value => setForm(prev => ({ ...prev, manufacturer: value }))} />
                     <Field label="Modelo" value={form.modelName} onChange={value => setForm(prev => ({ ...prev, modelName: value }))} />
                     <Field label="Firmware" value={form.firmwareVersion} onChange={value => setForm(prev => ({ ...prev, firmwareVersion: value }))} />
                     <Field label="Potência nominal (kW)" type="number" value={form.nominalPowerKw} onChange={value => setForm(prev => ({ ...prev, nominalPowerKw: value }))} />
                     <Field label="Intervalo sync (min)" type="number" value={form.syncIntervalMinutes} onChange={value => setForm(prev => ({ ...prev, syncIntervalMinutes: value }))} />
-                    <SwitchField label="Sincronizacao ativa" checked={form.syncEnabled} onChange={value => setForm(prev => ({ ...prev, syncEnabled: value }))} />
+                    <SwitchField label="Sincronização ativa" checked={form.syncEnabled} onChange={value => setForm(prev => ({ ...prev, syncEnabled: value }))} />
                 </FormSection>
                 <DialogFooter>
                     <Button onClick={submit} disabled={!provider || !form.providerId || mutations.create.isPending}>Salvar inversor</Button>
