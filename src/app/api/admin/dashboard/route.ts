@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { withHandle } from '@/app/api/api-utils';
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { findSilentInverters } from '@/backend/notifications/triggers';
 
 // Indicadores do painel do admin (contrato 2.10): base de clientes, faturas, consumo,
 // clube e o que esta pendente de acao.
@@ -17,7 +18,7 @@ const getDashboard = async (request: NextRequest) => {
         billsPaid, billsOverdue, billsOpen, billsLast12,
         pendingPlants, pendingUnits, pendingBills, pendingGeneration,
         activeOffers, redemptions, indicationsByStatus, coinsIssued, topClients,
-        recentBills,
+        recentBills, silentInverters, invalidCredentials,
     ] = await Promise.all([
         prisma.client.groupBy({ by: ['status'], where: { deletedAt: null }, _count: true }),
         prisma.plant.count({ where: { deletedAt: null } }),
@@ -60,6 +61,9 @@ const getDashboard = async (request: NextRequest) => {
                 consumerUnit: { select: { name: true } },
             },
         }),
+        // Alertas criticos: inversores parados e UCs com a senha da distribuidora recusada.
+        findSilentInverters(now),
+        prisma.consumerUnit.count({ where: { deletedAt: null, faturapiStatus: 'needs_credentials' } }),
     ]);
 
     const topClientNames = await prisma.client.findMany({
@@ -95,6 +99,8 @@ const getDashboard = async (request: NextRequest) => {
                 consumerUnits: pendingUnits,
                 bills: pendingBills,
                 generation: pendingGeneration,
+                silentInverters: silentInverters.length,
+                invalidCredentials,
             },
             club: {
                 activeOffers,

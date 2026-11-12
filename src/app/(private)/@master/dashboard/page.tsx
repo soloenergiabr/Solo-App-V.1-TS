@@ -22,7 +22,7 @@ type Dashboard = {
         paid: number; overdue: number; open: number; last12Months: number;
         avgConsumptionKwh: number; savingsLast12Months: number; billedLast12Months: number;
     };
-    pending: { plants: number; consumerUnits: number; bills: number; generation: number };
+    pending: { plants: number; consumerUnits: number; bills: number; generation: number; silentInverters: number; invalidCredentials: number };
     club: {
         activeOffers: number; redemptions: number; indications: number; indicationsApproved: number;
         coinsIssued: number; ranking: { clientId: string; name: string; coins: number }[];
@@ -43,6 +43,8 @@ function AdminDashboardPage() {
     const d = query.data;
 
     const pendingItems = d ? [
+        { count: d.pending.silentInverters, label: 'inversores sem geração há 48h', href: '/clients' },
+        { count: d.pending.invalidCredentials, label: 'UCs com senha da Enel inválida', href: '/admin/faturapi' },
         { count: d.pending.plants + d.pending.consumerUnits, label: 'usinas/UCs aguardando aprovação', href: '/admin/approvals' },
         { count: d.pending.bills, label: 'faturas enviadas por clientes para validar', href: '/admin/bills/validation' },
         { count: d.pending.generation, label: 'gerações manuais para validar', href: '/admin/bills/validation' },

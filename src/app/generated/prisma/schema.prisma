@@ -129,6 +129,8 @@ model Client {
   charges      Charge[]
   payerInvites PayerInvite[]
 
+  notifications Notification[]
+
   @@index([email])
   @@index([cpfCnpj])
   @@map("client")
@@ -794,4 +796,26 @@ model FaturapiConnection {
 
   @@index([clientId])
   @@map("faturapi_connection")
+}
+
+/// Notificacao enviada ao cliente (in-app + e-mail + WhatsApp) ou aos admins (clientId nulo).
+/// dedupeKey unica garante envio unico mesmo com reinicios ou varias instancias.
+model Notification {
+  id String @id @default(dbgenerated("(concat('notification_', gen_random_uuid()))::TEXT"))
+
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String?
+
+  type      String
+  title     String
+  body      String
+  link      String?
+  dedupeKey String    @unique
+  channels  String[]  @default([])
+  error     String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([clientId, createdAt])
+  @@map("notification")
 }

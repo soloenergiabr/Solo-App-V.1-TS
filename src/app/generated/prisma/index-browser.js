@@ -527,6 +527,20 @@ exports.Prisma.FaturapiConnectionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  dedupeKey: 'dedupeKey',
+  channels: 'channels',
+  error: 'error',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -634,7 +648,8 @@ exports.Prisma.ModelName = {
   PayerInvite: 'PayerInvite',
   Investment: 'Investment',
   FaturapiWebhookEvent: 'FaturapiWebhookEvent',
-  FaturapiConnection: 'FaturapiConnection'
+  FaturapiConnection: 'FaturapiConnection',
+  Notification: 'Notification'
 };
 
 /**

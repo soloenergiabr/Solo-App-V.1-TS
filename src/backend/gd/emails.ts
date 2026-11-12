@@ -18,14 +18,14 @@ function ptDate(value: Date | string | null): string | null {
     return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
 }
 
-function shell(title: string, body: string): string {
+export function shell(title: string, body: string): string {
     return `
 <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111827">
   <h1 style="font-size:20px;margin:0 0 16px;color:${BRAND}">${title}</h1>
   ${body}
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0" />
   <p style="font-size:12px;color:#6b7280;margin:0">
-    Enviado pelo Solo App — a gestao de energia do seu imovel.
+    Enviado pelo Solo App — a gestão de energia do seu imóvel.
   </p>
 </div>`.trim()
 }

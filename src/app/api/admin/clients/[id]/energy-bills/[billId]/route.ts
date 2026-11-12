@@ -5,6 +5,7 @@ import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
 import { Prisma } from '@/app/generated/prisma';
 import prisma from '@/lib/prisma';
 import { EnergyBillStatus } from '@/shared/economia/types';
+import { eventBus, EventType } from '@/backend/shared/event-bus';
 
 const optionalNumber = z.coerce.number().optional().nullable();
 const optionalDate = z.coerce.date().optional().nullable();
@@ -127,6 +128,14 @@ const updateEnergyBill = async (
             creditSummary: jsonValue(data.creditSummary),
         },
     });
+
+    if (bill.paymentStatus === 'paga' && existing.paymentStatus !== 'paga') {
+        eventBus.emit(EventType.BILL_PAID, {
+            billId,
+            clientId,
+            paidAt: (bill.paidAt ?? new Date()).toISOString(),
+        });
+    }
 
     return NextResponse.json({ success: true, message: 'Fatura atualizada com sucesso', data: bill });
 };

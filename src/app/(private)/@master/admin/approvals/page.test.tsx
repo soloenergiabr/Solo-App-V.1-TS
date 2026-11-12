@@ -46,6 +46,7 @@ function ApprovalsBadgeProbe() {
 
 vi.mock('@/frontend/auth/contexts/auth-context', () => ({
     useAuthContext: () => mockAuthContext(),
+    useOptionalAuthContext: () => mockAuthContext(),
     withAuth: (Component: React.ComponentType) => Component,
 }))
 

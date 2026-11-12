@@ -29,6 +29,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     );
 }
 
+/** Como useAuthContext, mas devolve undefined fora do AuthProvider (componentes compartilhados). */
+export function useOptionalAuthContext() {
+    return useContext(AuthContext);
+}
+
 export function useAuthContext() {
     const context = useContext(AuthContext);
     if (context === undefined) {

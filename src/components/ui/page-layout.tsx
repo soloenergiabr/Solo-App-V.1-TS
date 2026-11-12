@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ThemeToggle } from './theme-toggle'
+import { useOptionalAuthContext } from '@/frontend/auth/contexts/auth-context'
+import { NotificationBell } from '@/frontend/notifications/notification-bell'
 
 interface PageLayoutProps {
     children: ReactNode
@@ -183,6 +185,10 @@ const actionsVariants = {
 }
 
 export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps) {
+    // Sino so para o cliente (admin nao recebe notificacoes in-app).
+    const roles = useOptionalAuthContext()?.user?.roles ?? []
+    const showBell = roles.includes('user') && !roles.includes('master')
+
     return (
         <motion.div
             initial="hidden"
@@ -206,6 +212,7 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
                             {actions}
                         </motion.div>
                     )}
+                    {showBell && <div className="print:hidden"><NotificationBell /></div>}
                     <div className="print:hidden"><ThemeToggle /></div>
                 </div>
             </div>
