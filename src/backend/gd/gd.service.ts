@@ -26,6 +26,8 @@ import {
     resolveInviteUsability,
 } from './invite-token'
 import { payerInviteEmail, chargeNotificationEmail } from './emails'
+import type Stripe from 'stripe'
+import { getStripe, isOnlinePaymentEnabled, toCents } from './stripe'
 
 /** Permissoes minimas de um usuario pagador: ve as contas das UCs dele e nada mais. */
 const PAYER_PERMISSIONS = ['read_generation_data']
@@ -277,6 +279,7 @@ function toChargeDTO(charge: {
     payerEmail: string | null
     sentAt: Date | null
     paidAt: Date | null
+    paymentProvider: string | null
     notes: string | null
     energyBillId: string | null
     energyBill?: { amountDue: unknown; totalBillValue: unknown } | null
@@ -302,6 +305,7 @@ function toChargeDTO(charge: {
         payerEmail: charge.payerEmail,
         sentAt: charge.sentAt ? charge.sentAt.toISOString() : null,
         paidAt: charge.paidAt ? charge.paidAt.toISOString() : null,
+        paymentProvider: charge.paymentProvider,
         notes: charge.notes,
         energyBillId: charge.energyBillId,
         billAmountDue: toNum(charge.energyBill?.amountDue) ?? toNum(charge.energyBill?.totalBillValue),
@@ -346,6 +350,7 @@ export async function listCharges(
             referenceMonth,
         ),
         charges: dtos,
+        onlinePaymentEnabled: isOnlinePaymentEnabled(),
     }
 }
 
@@ -401,6 +406,8 @@ export async function sendCharge(chargeId: string, clientId: string, titularName
             // O billFileUrl salvo e o endereco interno do MinIO (http://minio:9000), que nao abre
             // fora do servidor. O responsavel ve a conta e o PDF pelo app, logado.
             billFileUrl: charge.energyBill?.billFileUrl && appUrl ? `${appUrl.replace(/\/$/, '')}/consumo?tab=gd` : null,
+            // Aponta para o app, nao para o Stripe: a sessao de Checkout expira em 24h.
+            payUrl: isOnlinePaymentEnabled() && appUrl ? `${appUrl.replace(/\/$/, '')}/consumo?tab=gd` : null,
         }),
     })
 
@@ -420,14 +427,15 @@ export async function sendCharge(chargeId: string, clientId: string, titularName
 }
 
 /**
- * Baixa de pagamento. Vale tanto para o titular (recebi) quanto para o pagador
- * (paguei) — o app registra a declaracao, nao processa o dinheiro.
+ * Baixa de pagamento. Vale para o titular (recebi), o pagador (paguei) e o
+ * webhook do gateway (`userId` nulo, `payment` com provedor e meio).
  */
 export async function confirmChargePayment(
     chargeId: string,
     clientId: string,
     scope: AccessibleUnits,
-    userId: string,
+    userId: string | null,
+    payment?: { provider: string; method: string | null },
 ) {
     const charge = await findChargeInScope(chargeId, clientId, scope)
 
@@ -435,10 +443,26 @@ export async function confirmChargePayment(
     if (charge.status === 'canceled') throw new Error('Esta cobranca foi cancelada.')
 
     const paidAt = new Date()
-    const updated = await prisma.charge.update({
-        where: { id: chargeId },
-        data: { status: 'paid', paidAt, confirmedByUserId: userId },
-    })
+    // O filtro de status torna a baixa atomica: duas confirmacoes simultaneas
+    // (ex.: reentrega do webhook) nao baixam nem emitem o evento duas vezes.
+    const updated = await prisma.charge
+        .update({
+            where: { id: chargeId, status: { notIn: ['paid', 'canceled'] } },
+            data: {
+                status: 'paid',
+                paidAt,
+                confirmedByUserId: userId,
+                // Baixa manual zera o provedor: "Pago online" so quando o gateway confirmou.
+                paymentProvider: payment?.provider ?? null,
+                paymentMethod: payment?.method ?? null,
+            },
+        })
+        .catch((error: unknown) => {
+            if ((error as { code?: string }).code === 'P2025') {
+                throw new Error('Esta cobranca ja foi baixada.')
+            }
+            throw error
+        })
 
     eventBus.emit(EventType.GD_CHARGE_PAID, {
         chargeId,
@@ -448,6 +472,133 @@ export async function confirmChargePayment(
     })
 
     return updated
+}
+
+// ---------------------------------------------------------------------------
+// Pagamento online (Stripe Checkout)
+// ---------------------------------------------------------------------------
+
+/**
+ * Cria (ou reaproveita) a sessao de Checkout da cobranca e devolve a URL de
+ * pagamento. Cartao + PIX; se a conta Stripe nao tiver PIX, so cartao.
+ */
+export async function createChargeCheckout(
+    chargeId: string,
+    clientId: string,
+    scope: AccessibleUnits,
+    appUrl: string,
+): Promise<{ url: string }> {
+    const stripe = getStripe()
+    const charge = await findChargeInScope(chargeId, clientId, scope)
+
+    if (charge.status === 'paid') throw new Error('Esta cobrança já foi paga.')
+    if (charge.status === 'canceled') throw new Error('Esta cobrança foi cancelada.')
+
+    const amount = toCents(charge.amount)
+    if (amount <= 0) throw new Error('Esta cobrança não tem valor a pagar.')
+
+    if (charge.paymentSessionId) {
+        const existing = await stripe.checkout.sessions.retrieve(charge.paymentSessionId).catch(() => null)
+        // Reaproveita so se ainda estiver aberta por mais 5 min e com o mesmo valor.
+        if (
+            existing?.status === 'open' &&
+            existing.url &&
+            existing.amount_total === amount &&
+            existing.expires_at * 1000 > Date.now() + 5 * 60 * 1000
+        ) {
+            return { url: existing.url }
+        }
+    }
+
+    const base = appUrl.replace(/\/$/, '')
+    const unitName = charge.consumerUnit?.name ?? charge.consumerUnit?.clientNumber ?? 'Unidade consumidora'
+    const competencia = `${String(charge.referenceMonth).padStart(2, '0')}/${charge.referenceYear}`
+    const params: Stripe.Checkout.SessionCreateParams = {
+        mode: 'payment',
+        line_items: [
+            {
+                quantity: 1,
+                price_data: {
+                    currency: 'brl',
+                    unit_amount: amount,
+                    product_data: { name: `Conta de energia — ${unitName} (${competencia})` },
+                },
+            },
+        ],
+        client_reference_id: charge.id,
+        metadata: { chargeId: charge.id },
+        payment_intent_data: { metadata: { chargeId: charge.id } },
+        ...(charge.payerEmail && { customer_email: charge.payerEmail }),
+        success_url: `${base}/consumo?tab=gd`,
+        cancel_url: `${base}/consumo?tab=gd`,
+    }
+
+    let session: Stripe.Checkout.Session
+    try {
+        session = await stripe.checkout.sessions.create({ ...params, allowed_payment_method_types: ['card', 'pix'] })
+    } catch (error) {
+        if (!(error instanceof Error && error.name === 'StripeInvalidRequestError')) throw error
+        // Conta sem PIX habilitado: segue so com cartao.
+        session = await stripe.checkout.sessions.create({ ...params, allowed_payment_method_types: ['card'] })
+    }
+
+    if (!session.url) throw new Error('O Stripe não devolveu a URL de pagamento.')
+
+    await prisma.charge.update({
+        where: { id: charge.id },
+        data: { paymentProvider: 'stripe', paymentSessionId: session.id },
+    })
+
+    return { url: session.url }
+}
+
+/** Meio usado no pagamento (card, pix), lido do PaymentIntent. Melhor esforco. */
+async function resolvePaymentMethod(session: Stripe.Checkout.Session): Promise<string | null> {
+    const intentId = typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id
+    if (!intentId) return null
+    try {
+        const intent = await getStripe().paymentIntents.retrieve(intentId, { expand: ['latest_charge'] })
+        const latest = intent.latest_charge
+        return typeof latest === 'object' && latest ? (latest.payment_method_details?.type ?? null) : null
+    } catch {
+        return null
+    }
+}
+
+/**
+ * Baixa a cobranca a partir de uma sessao de Checkout paga. Idempotente: uma
+ * cobranca ja paga (ou reentrega do evento) e ignorada sem erro.
+ */
+export async function confirmOnlinePayment(session: Stripe.Checkout.Session): Promise<'paid' | 'ignored'> {
+    // PIX conclui o Checkout antes de compensar; a baixa vem no async_payment_succeeded.
+    if (session.payment_status !== 'paid') return 'ignored'
+
+    const chargeId = session.metadata?.chargeId ?? session.client_reference_id
+    if (!chargeId) return 'ignored'
+
+    const charge = await prisma.charge.findUnique({
+        where: { id: chargeId },
+        select: { id: true, clientId: true, status: true },
+    })
+    if (!charge) {
+        console.warn(`[stripe] cobranca ${chargeId} da sessao ${session.id} nao encontrada`)
+        return 'ignored'
+    }
+    if (charge.status === 'paid') return 'ignored'
+    if (charge.status === 'canceled') {
+        // Dinheiro recebido numa cobranca cancelada: precisa de acao manual (reativar ou estornar).
+        console.error(`[stripe] pagamento ${session.id} recebido para cobranca cancelada ${chargeId}`)
+        return 'ignored'
+    }
+
+    const method = await resolvePaymentMethod(session)
+    try {
+        await confirmChargePayment(chargeId, charge.clientId, 'all', null, { provider: 'stripe', method })
+    } catch (error) {
+        if (error instanceof Error && error.message.includes('ja foi baixada')) return 'ignored'
+        throw error
+    }
+    return 'paid'
 }
 
 export async function cancelCharge(chargeId: string, clientId: string) {

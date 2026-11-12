@@ -92,7 +92,7 @@ export type ChargeRule = $Result.DefaultSelection<Prisma.$ChargeRulePayload>
 /**
  * Model Charge
  * Cobranca de uma competencia para uma unidade consumidora.
- * Nao processa pagamento — registra o valor devido, o envio e a baixa.
+ * Registra o valor devido, o envio e a baixa — manual ou via gateway (Stripe Checkout).
  */
 export type Charge = $Result.DefaultSelection<Prisma.$ChargePayload>
 /**
@@ -23232,6 +23232,9 @@ export namespace Prisma {
     paidAt: Date | null
     canceledAt: Date | null
     confirmedByUserId: string | null
+    paymentProvider: string | null
+    paymentSessionId: string | null
+    paymentMethod: string | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -23259,6 +23262,9 @@ export namespace Prisma {
     paidAt: Date | null
     canceledAt: Date | null
     confirmedByUserId: string | null
+    paymentProvider: string | null
+    paymentSessionId: string | null
+    paymentMethod: string | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -23286,6 +23292,9 @@ export namespace Prisma {
     paidAt: number
     canceledAt: number
     confirmedByUserId: number
+    paymentProvider: number
+    paymentSessionId: number
+    paymentMethod: number
     notes: number
     createdAt: number
     updatedAt: number
@@ -23331,6 +23340,9 @@ export namespace Prisma {
     paidAt?: true
     canceledAt?: true
     confirmedByUserId?: true
+    paymentProvider?: true
+    paymentSessionId?: true
+    paymentMethod?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -23358,6 +23370,9 @@ export namespace Prisma {
     paidAt?: true
     canceledAt?: true
     confirmedByUserId?: true
+    paymentProvider?: true
+    paymentSessionId?: true
+    paymentMethod?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -23385,6 +23400,9 @@ export namespace Prisma {
     paidAt?: true
     canceledAt?: true
     confirmedByUserId?: true
+    paymentProvider?: true
+    paymentSessionId?: true
+    paymentMethod?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -23499,6 +23517,9 @@ export namespace Prisma {
     paidAt: Date | null
     canceledAt: Date | null
     confirmedByUserId: string | null
+    paymentProvider: string | null
+    paymentSessionId: string | null
+    paymentMethod: string | null
     notes: string | null
     createdAt: Date
     updatedAt: Date
@@ -23545,6 +23566,9 @@ export namespace Prisma {
     paidAt?: boolean
     canceledAt?: boolean
     confirmedByUserId?: boolean
+    paymentProvider?: boolean
+    paymentSessionId?: boolean
+    paymentMethod?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -23577,6 +23601,9 @@ export namespace Prisma {
     paidAt?: boolean
     canceledAt?: boolean
     confirmedByUserId?: boolean
+    paymentProvider?: boolean
+    paymentSessionId?: boolean
+    paymentMethod?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -23609,6 +23636,9 @@ export namespace Prisma {
     paidAt?: boolean
     canceledAt?: boolean
     confirmedByUserId?: boolean
+    paymentProvider?: boolean
+    paymentSessionId?: boolean
+    paymentMethod?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -23641,13 +23671,16 @@ export namespace Prisma {
     paidAt?: boolean
     canceledAt?: boolean
     confirmedByUserId?: boolean
+    paymentProvider?: boolean
+    paymentSessionId?: boolean
+    paymentMethod?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type ChargeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "consumerUnitId" | "energyBillId" | "chargeRuleId" | "referenceMonth" | "referenceYear" | "mode" | "basisKwh" | "pricePerKwh" | "amount" | "dueDate" | "status" | "payerUserId" | "payerName" | "payerEmail" | "sentAt" | "paidAt" | "canceledAt" | "confirmedByUserId" | "notes" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["charge"]>
+  export type ChargeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "consumerUnitId" | "energyBillId" | "chargeRuleId" | "referenceMonth" | "referenceYear" | "mode" | "basisKwh" | "pricePerKwh" | "amount" | "dueDate" | "status" | "payerUserId" | "payerName" | "payerEmail" | "sentAt" | "paidAt" | "canceledAt" | "confirmedByUserId" | "paymentProvider" | "paymentSessionId" | "paymentMethod" | "notes" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["charge"]>
   export type ChargeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     consumerUnit?: boolean | ConsumerUnitDefaultArgs<ExtArgs>
@@ -23703,6 +23736,12 @@ export namespace Prisma {
       paidAt: Date | null
       canceledAt: Date | null
       confirmedByUserId: string | null
+      /**
+       * pagamento online (gateway). Nulos quando a baixa foi manual.
+       */
+      paymentProvider: string | null
+      paymentSessionId: string | null
+      paymentMethod: string | null
       notes: string | null
       createdAt: Date
       updatedAt: Date
@@ -24155,6 +24194,9 @@ export namespace Prisma {
     readonly paidAt: FieldRef<"Charge", 'DateTime'>
     readonly canceledAt: FieldRef<"Charge", 'DateTime'>
     readonly confirmedByUserId: FieldRef<"Charge", 'String'>
+    readonly paymentProvider: FieldRef<"Charge", 'String'>
+    readonly paymentSessionId: FieldRef<"Charge", 'String'>
+    readonly paymentMethod: FieldRef<"Charge", 'String'>
     readonly notes: FieldRef<"Charge", 'String'>
     readonly createdAt: FieldRef<"Charge", 'DateTime'>
     readonly updatedAt: FieldRef<"Charge", 'DateTime'>
@@ -29520,6 +29562,9 @@ export namespace Prisma {
     paidAt: 'paidAt',
     canceledAt: 'canceledAt',
     confirmedByUserId: 'confirmedByUserId',
+    paymentProvider: 'paymentProvider',
+    paymentSessionId: 'paymentSessionId',
+    paymentMethod: 'paymentMethod',
     notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -31881,6 +31926,9 @@ export namespace Prisma {
     paidAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
     canceledAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
     confirmedByUserId?: StringNullableFilter<"Charge"> | string | null
+    paymentProvider?: StringNullableFilter<"Charge"> | string | null
+    paymentSessionId?: StringNullableFilter<"Charge"> | string | null
+    paymentMethod?: StringNullableFilter<"Charge"> | string | null
     notes?: StringNullableFilter<"Charge"> | string | null
     createdAt?: DateTimeFilter<"Charge"> | Date | string
     updatedAt?: DateTimeFilter<"Charge"> | Date | string
@@ -31913,6 +31961,9 @@ export namespace Prisma {
     paidAt?: SortOrderInput | SortOrder
     canceledAt?: SortOrderInput | SortOrder
     confirmedByUserId?: SortOrderInput | SortOrder
+    paymentProvider?: SortOrderInput | SortOrder
+    paymentSessionId?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -31926,6 +31977,7 @@ export namespace Prisma {
 
   export type ChargeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    paymentSessionId?: string
     consumerUnitId_referenceYear_referenceMonth?: ChargeConsumerUnitIdReferenceYearReferenceMonthCompoundUniqueInput
     AND?: ChargeWhereInput | ChargeWhereInput[]
     OR?: ChargeWhereInput[]
@@ -31949,6 +32001,8 @@ export namespace Prisma {
     paidAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
     canceledAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
     confirmedByUserId?: StringNullableFilter<"Charge"> | string | null
+    paymentProvider?: StringNullableFilter<"Charge"> | string | null
+    paymentMethod?: StringNullableFilter<"Charge"> | string | null
     notes?: StringNullableFilter<"Charge"> | string | null
     createdAt?: DateTimeFilter<"Charge"> | Date | string
     updatedAt?: DateTimeFilter<"Charge"> | Date | string
@@ -31958,7 +32012,7 @@ export namespace Prisma {
     energyBill?: XOR<EnergyBillNullableScalarRelationFilter, EnergyBillWhereInput> | null
     chargeRule?: XOR<ChargeRuleNullableScalarRelationFilter, ChargeRuleWhereInput> | null
     payerUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-  }, "id" | "consumerUnitId_referenceYear_referenceMonth">
+  }, "id" | "paymentSessionId" | "consumerUnitId_referenceYear_referenceMonth">
 
   export type ChargeOrderByWithAggregationInput = {
     id?: SortOrder
@@ -31981,6 +32035,9 @@ export namespace Prisma {
     paidAt?: SortOrderInput | SortOrder
     canceledAt?: SortOrderInput | SortOrder
     confirmedByUserId?: SortOrderInput | SortOrder
+    paymentProvider?: SortOrderInput | SortOrder
+    paymentSessionId?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -32016,6 +32073,9 @@ export namespace Prisma {
     paidAt?: DateTimeNullableWithAggregatesFilter<"Charge"> | Date | string | null
     canceledAt?: DateTimeNullableWithAggregatesFilter<"Charge"> | Date | string | null
     confirmedByUserId?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    paymentProvider?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    paymentSessionId?: StringNullableWithAggregatesFilter<"Charge"> | string | null
+    paymentMethod?: StringNullableWithAggregatesFilter<"Charge"> | string | null
     notes?: StringNullableWithAggregatesFilter<"Charge"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Charge"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Charge"> | Date | string
@@ -34738,6 +34798,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34770,6 +34833,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34792,6 +34858,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34824,6 +34893,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34851,6 +34923,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34873,6 +34948,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34900,6 +34978,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37138,6 +37219,9 @@ export namespace Prisma {
     paidAt?: SortOrder
     canceledAt?: SortOrder
     confirmedByUserId?: SortOrder
+    paymentProvider?: SortOrder
+    paymentSessionId?: SortOrder
+    paymentMethod?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -37173,6 +37257,9 @@ export namespace Prisma {
     paidAt?: SortOrder
     canceledAt?: SortOrder
     confirmedByUserId?: SortOrder
+    paymentProvider?: SortOrder
+    paymentSessionId?: SortOrder
+    paymentMethod?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -37200,6 +37287,9 @@ export namespace Prisma {
     paidAt?: SortOrder
     canceledAt?: SortOrder
     confirmedByUserId?: SortOrder
+    paymentProvider?: SortOrder
+    paymentSessionId?: SortOrder
+    paymentMethod?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -40022,6 +40112,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40052,6 +40145,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40232,6 +40328,9 @@ export namespace Prisma {
     paidAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
     canceledAt?: DateTimeNullableFilter<"Charge"> | Date | string | null
     confirmedByUserId?: StringNullableFilter<"Charge"> | string | null
+    paymentProvider?: StringNullableFilter<"Charge"> | string | null
+    paymentSessionId?: StringNullableFilter<"Charge"> | string | null
+    paymentMethod?: StringNullableFilter<"Charge"> | string | null
     notes?: StringNullableFilter<"Charge"> | string | null
     createdAt?: DateTimeFilter<"Charge"> | Date | string
     updatedAt?: DateTimeFilter<"Charge"> | Date | string
@@ -40998,6 +41097,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -41028,6 +41130,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43068,6 +43173,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43098,6 +43206,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -45257,6 +45368,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -45287,6 +45401,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -45698,6 +45815,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -45728,6 +45848,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -47337,6 +47460,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -47458,6 +47584,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47488,6 +47617,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47514,6 +47646,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47827,6 +47962,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -48756,6 +48894,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48786,6 +48927,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48812,6 +48956,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49723,6 +49870,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50126,6 +50276,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50156,6 +50309,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50182,6 +50338,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50304,6 +50463,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50326,6 +50488,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50356,6 +50521,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50382,6 +50550,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50408,6 +50579,9 @@ export namespace Prisma {
     paidAt?: Date | string | null
     canceledAt?: Date | string | null
     confirmedByUserId?: string | null
+    paymentProvider?: string | null
+    paymentSessionId?: string | null
+    paymentMethod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50430,6 +50604,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50460,6 +50637,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50486,6 +50666,9 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     confirmedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -68,6 +68,8 @@ export function chargeNotificationEmail(params: {
     basisKwh: number | null
     pricePerKwh: number | null
     billFileUrl: string | null
+    /** Link para pagar pelo app (cartão/PIX); nulo quando o pagamento online está desligado. */
+    payUrl?: string | null
 }): string {
     const due = ptDate(params.dueDate)
 
@@ -100,10 +102,22 @@ export function chargeNotificationEmail(params: {
     ${basisLine}
     ${due ? `<p style="font-size:13px;margin:12px 0 0">Vencimento: <strong>${due}</strong></p>` : ''}
   </div>
+  ${
+      params.payUrl
+          ? `<p style="margin:24px 0">
+    <a href="${params.payUrl}"
+       style="background:${BRAND};color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:14px;display:inline-block">
+      Pagar agora
+    </a>
+  </p>
   <p style="font-size:13px;color:#6b7280;line-height:1.6">
+    Pague com cartão de crédito ou PIX pelo Solo App. A baixa é automática assim que o pagamento é confirmado.
+  </p>`
+          : `<p style="font-size:13px;color:#6b7280;line-height:1.6">
     Combine o pagamento diretamente com ${params.titularName}. Depois de pagar, entre no Solo App
     e confirme o pagamento para manter o historico em dia.
-  </p>
+  </p>`
+  }
   ${billLink}`,
     )
 }

@@ -55,12 +55,19 @@ A lista completa está em `env.example` (local) e `env.docker.example` (Docker/p
 | `FATURAPI_KEY`, `FATURAPI_WEBHOOK_SECRET` | Busca automática de faturas |
 | `BILL_ANALYZER_PROVIDER` + `ANTHROPIC_API_KEY` (ou `GEMINI_API_KEY`) | Análise da conta por IA. Sem provedor configurado, o padrão é Claude, e sem a chave a análise não roda |
 | `OPENAI_API_KEY` | Chat de suporte |
+| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Pagamento online das cobranças de GD (cartão e PIX). Sem a chave secreta, o recurso fica desligado |
 | `GENERATION_SYNC_INTERVAL_MINUTES` | Sync automático dos inversores em segundo plano. Sem ela, a geração só atualiza quando a tela é aberta |
 | `SOLIS_*`, `SOLPLANET_*`, `DEYE_*`, `HOYMILES_*`, `AUXSOL_*` | Contas de integração dos inversores |
 
 ## Integrações
 
 - **Faturapi:** configure o webhook da conta Faturapi para `https://<seu-domínio>/api/webhooks/faturapi`, com o mesmo segredo de `FATURAPI_WEBHOOK_SECRET` (assinatura HMAC verificada). O fluxo é: a Faturapi extrai a fatura, envia `invoice.received`, o app cria ou atualiza a `EnergyBill` (valor, vencimento, PIX, consumo e créditos), salva o PDF e roda a análise por IA. Pelo painel **Admin → Busca de faturas** dá para ver saldo, UCs monitoradas, conexões e eventos, e reprocessar um evento.
+- **Stripe (pagamento das cobranças de GD):** o responsável paga a cobrança com cartão ou PIX pelo Stripe Checkout (botão **Pagar com cartão ou PIX** na aba GD do Consumo), e o titular pode usar **Copiar link de pagamento** (o link do Checkout vale por 24 horas). A baixa é automática pelo webhook. Configuração no painel do Stripe:
+  1. Em **Developers → API keys**, copie a chave secreta para `STRIPE_SECRET_KEY`.
+  2. Em **Developers → Webhooks**, crie um endpoint para `https://<seu-domínio>/api/webhooks/stripe` com os eventos `checkout.session.completed` e `checkout.session.async_payment_succeeded` (este último é o do PIX). Copie o *signing secret* (`whsec_...`) para `STRIPE_WEBHOOK_SECRET`.
+  3. Em **Settings → Payment methods**, ative Cartões e PIX. Se o PIX não estiver disponível na conta, o Checkout oferece só cartão.
+
+  Os links de pagamento do e-mail de cobrança apontam para o app (`/consumo?tab=gd`), nunca direto para o Stripe, porque a sessão de Checkout expira.
 - **Inversores:** `src/backend/generation/repositories/inverter-api.factory.ts` escolhe a integração pelo `provider` do inversor.
 - **IA:** `src/backend/economia/analyzer` (Claude, Gemini ou OpenAI, escolhido por `BILL_ANALYZER_PROVIDER`).
 
