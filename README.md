@@ -32,12 +32,12 @@ cp env.example .env          # preencha as variáveis (veja abaixo)
 make dev                     # sobe Postgres, Redis e MinIO (docker compose)
 npm install
 npx prisma generate
-npx prisma db push           # cria o schema (veja a nota sobre migrations)
+npx prisma migrate deploy    # cria o schema a partir das migrations
 npm run db:seed              # cria admin@solo-energia.com e cliente@teste.com
 npm run dev                  # http://localhost:3000
 ```
 
-> **Migrations:** o histórico em `prisma/migrations` não cria algumas tabelas (`consumer_unit`, `credit_allocation`), porque elas foram criadas com `db push`. Em banco novo use `prisma db push`. O banco de produção já tem o schema completo, e `migrate deploy` aplica apenas as migrations novas.
+> **Migrations:** a migration `20260615000000_baseline_db_push_tables` cria as tabelas que, no passado, entraram no banco via `db push`. Ela só roda em banco vazio: se `consumer_unit` já existe (como em produção), o bloco é pulado. Use sempre `migrate dev`/`migrate deploy`, nunca `db push`, para o histórico não divergir de novo.
 
 > **Senhas do seed:** o seed usa a senha padrão `Admin@123456`. **Troque-a em qualquer ambiente acessível pela internet.**
 
