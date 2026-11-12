@@ -83,7 +83,7 @@ export function chargeNotificationEmail(params: {
 
     const billLink = params.billFileUrl
         ? `<p style="font-size:13px;margin:16px 0 0">
-             <a href="${params.billFileUrl}" style="color:${BRAND}">Ver a fatura da distribuidora</a>
+             <a href="${params.billFileUrl}" style="color:${BRAND}">Ver a conta no Solo App</a>
            </p>`
         : ''
 

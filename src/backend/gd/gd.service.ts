@@ -371,7 +371,7 @@ async function findChargeInScope(chargeId: string, clientId: string, scope: Acce
 }
 
 /** Envia a cobranca ao responsavel por e-mail e marca como enviada. */
-export async function sendCharge(chargeId: string, clientId: string, titularName: string) {
+export async function sendCharge(chargeId: string, clientId: string, titularName: string, appUrl?: string) {
     const charge = await findChargeInScope(chargeId, clientId, 'all')
 
     if (charge.status === 'paid') throw new Error('Esta cobranca ja foi paga.')
@@ -398,7 +398,9 @@ export async function sendCharge(chargeId: string, clientId: string, titularName
             mode: charge.mode as ChargeMode,
             basisKwh: toNum(charge.basisKwh),
             pricePerKwh: toNum(charge.pricePerKwh),
-            billFileUrl: charge.energyBill?.billFileUrl ?? null,
+            // O billFileUrl salvo e o endereco interno do MinIO (http://minio:9000), que nao abre
+            // fora do servidor. O responsavel ve a conta e o PDF pelo app, logado.
+            billFileUrl: charge.energyBill?.billFileUrl && appUrl ? `${appUrl.replace(/\/$/, '')}/consumo?tab=gd` : null,
         }),
     })
 

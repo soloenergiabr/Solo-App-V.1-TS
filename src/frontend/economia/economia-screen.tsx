@@ -59,8 +59,9 @@ export function EconomiaScreen({ embedded = false }: EconomiaScreenProps) {
         selectedId != null ? (bills ?? []).find((b) => b.id === selectedId) : undefined
 
     const actions = (
-        <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-2">
+        <div className="flex flex-col items-stretch gap-1 sm:items-end">
+            {/* Quebra em telas estreitas; antes os botoes vazavam para fora no celular. */}
+            <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                 <div className="flex items-center gap-1 rounded-lg border bg-card p-0.5 text-sm">
                     <button
                         onClick={() => setTab('consolidado')}
