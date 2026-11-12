@@ -620,7 +620,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/sergiobanhos/.t3/worktrees/solo-energy/t3-b6c40da9-fe8a61be0cc1e4b0/src/app/generated/prisma",
+      "value": "/Users/sergiobanhos/www/nook/solo-energy/src/app/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -634,11 +634,12 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/sergiobanhos/.t3/worktrees/solo-energy/t3-b6c40da9-fe8a61be0cc1e4b0/prisma/schema.prisma",
+    "sourceFilePath": "/Users/sergiobanhos/www/nook/solo-energy/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../../../../prisma",
   "clientVersion": "6.16.2",
