@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { OfferModel } from '@/backend/club/models/offer.model';
-import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
+import { apiErrorMessage, useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { toast } from 'sonner';
 import { Loader2, Upload, X, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -24,10 +24,26 @@ const offerSchema = z.object({
     imageUrl: z.string().optional(),
     confirmationCode: z.string().optional(),
     maxRedemptionsPerClient: z.coerce.number().min(1, 'Mínimo de 1 resgate').default(1),
+    externalUrl: z.string().trim().refine(
+        (val) => !val || (/^https?:\/\//i.test(val) && URL.canParse(val)),
+        'Informe um link começando com http:// ou https://',
+    ).optional(),
+    originalPrice: z.string().optional(),
+    promoPrice: z.string().optional(),
     validFrom: z.string().optional(),
     validTo: z.string().optional(),
     isActive: z.boolean().default(true),
-});
+}).refine(
+    (d) => !d.originalPrice || !d.promoPrice || Number(d.promoPrice) <= Number(d.originalPrice),
+    { message: 'O preço promocional não pode ser maior que o preço normal', path: ['promoPrice'] },
+).refine(
+    (d) => !d.validFrom || !d.validTo || d.validFrom <= d.validTo,
+    { message: 'A data final deve ser depois da data inicial', path: ['validTo'] },
+);
+
+const toPrice = (val?: string) => (val ? Number(val) : null);
+// Data local (AAAA-MM-DD) para o input type="date", sem deslocar o dia pelo fuso.
+const toDateInput = (date?: Date | string | null) => (date ? new Date(date).toLocaleDateString('en-CA') : '');
 
 type OfferFormValues = z.infer<typeof offerSchema>;
 
@@ -55,8 +71,11 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
             imageUrl: offer?.imageUrl || '',
             confirmationCode: offer?.confirmationCode || '',
             maxRedemptionsPerClient: offer?.maxRedemptionsPerClient ?? 1,
-            validFrom: offer?.validFrom ? new Date(offer.validFrom).toISOString().split('T')[0] : '',
-            validTo: offer?.validTo ? new Date(offer.validTo).toISOString().split('T')[0] : '',
+            externalUrl: offer?.externalUrl ?? '',
+            originalPrice: offer?.originalPrice != null ? String(offer.originalPrice) : '',
+            promoPrice: offer?.promoPrice != null ? String(offer.promoPrice) : '',
+            validFrom: toDateInput(offer?.validFrom),
+            validTo: toDateInput(offer?.validTo),
             isActive: offer?.isActive ?? true,
         },
     });
@@ -117,6 +136,11 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
         try {
             const payload = {
                 ...data,
+                externalUrl: data.externalUrl || null,
+                originalPrice: toPrice(data.originalPrice),
+                promoPrice: toPrice(data.promoPrice),
+                validFrom: data.validFrom || null,
+                validTo: data.validTo || null,
                 id: offer?.id,
             };
 
@@ -128,9 +152,9 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
                 toast.success('Oferta criada com sucesso!');
             }
             onSuccess();
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error saving offer:', error);
-            toast.error(error.response?.data?.message || 'Erro ao salvar oferta');
+            toast.error(apiErrorMessage(error, 'Erro ao salvar oferta'));
         } finally {
             setIsSubmitting(false);
         }
@@ -250,6 +274,51 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
                     />
                 </div>
 
+                <FormField
+                    control={form.control}
+                    name="externalUrl"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Link do produto (opcional)</FormLabel>
+                            <FormControl>
+                                <Input type="url" placeholder="https://loja-do-parceiro.com.br/produto" {...field} />
+                            </FormControl>
+                            <FormDescription>O cliente verá o botão “Ver produto”, que abre este link em nova aba.</FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                        control={form.control}
+                        name="originalPrice"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Preço normal (R$)</FormLabel>
+                                <FormControl>
+                                    <Input type="number" min="0" step="0.01" placeholder="Ex: 199,90" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="promoPrice"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Preço promocional (R$)</FormLabel>
+                                <FormControl>
+                                    <Input type="number" min="0" step="0.01" placeholder="Ex: 149,90" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                     <FormField
                         control={form.control}
@@ -283,13 +352,19 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
                     />
                 </div>
 
+                <div className="space-y-1">
+                    <p className="text-sm font-medium">Período da promoção</p>
+                    <p className="text-xs text-muted-foreground">
+                        Opcional. Antes do início a oferta fica agendada e depois do fim ela sai sozinha da vitrine do cliente.
+                    </p>
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                     <FormField
                         control={form.control}
                         name="validFrom"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Válido de</FormLabel>
+                                <FormLabel>Começa em</FormLabel>
                                 <FormControl>
                                     <Input type="date" {...field} />
                                 </FormControl>
@@ -303,7 +378,7 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
                         name="validTo"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Válido até</FormLabel>
+                                <FormLabel>Termina em (inclusive)</FormLabel>
                                 <FormControl>
                                     <Input type="date" {...field} />
                                 </FormControl>

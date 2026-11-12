@@ -5,4 +5,5 @@ export interface TransactionRepository {
     findByClientId(clientId: string): Promise<TransactionModel[]>
     findById(id: string): Promise<TransactionModel | null>
     getBalance(clientId: string): Promise<number>
+    hasIndicationReward(indicationId: string): Promise<boolean>
 }

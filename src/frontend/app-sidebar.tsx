@@ -3,7 +3,7 @@
 import { Sidebar, SidebarItem, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { ClipboardCheck, Coins, DollarSign, FileCheck, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Users, Zap, Receipt, ShieldCheck, UserCog } from "lucide-react"
+import { ClipboardCheck, Coins, DollarSign, FileCheck, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Users, Zap, Receipt, ShieldCheck, SlidersHorizontal, UserCog, UserPlus } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useAdminApprovals } from "@/frontend/admin/hooks/use-admin-approvals"
 
@@ -37,6 +37,8 @@ const buildAdminSections = (pendingCount: number): SidebarSection[] => [
         title: 'Clube e suporte',
         items: [
             { label: 'Ofertas do clube', href: '/offers', icon: <Gift className="w-5 h-5" /> },
+            { label: 'Indicações', href: '/admin/indications', icon: <UserPlus className="w-5 h-5" /> },
+            { label: 'Regras do clube', href: '/admin/club-settings', icon: <SlidersHorizontal className="w-5 h-5" /> },
             { label: 'FAQ', href: '/faqs', icon: <HelpCircleIcon className="w-5 h-5" /> },
         ],
     },

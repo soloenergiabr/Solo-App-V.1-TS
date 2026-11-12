@@ -1,5 +1,25 @@
 import { uuid } from "@/lib/uuid"
 
+type OfferProps = {
+    id?: string
+    title: string
+    description: string
+    partner: string
+    cost: number
+    discount?: string
+    imageUrl?: string
+    confirmationCode?: string
+    maxRedemptionsPerClient?: number
+    externalUrl?: string | null
+    originalPrice?: number | null
+    promoPrice?: number | null
+    validFrom?: Date | null
+    validTo?: Date | null
+    isActive?: boolean
+    createdAt?: Date
+    updatedAt?: Date
+}
+
 export class OfferModel {
     id: string
     title: string
@@ -10,43 +30,32 @@ export class OfferModel {
     imageUrl?: string
     confirmationCode?: string
     maxRedemptionsPerClient: number
-    validFrom?: Date
-    validTo?: Date
+    externalUrl: string | null
+    originalPrice: number | null
+    promoPrice: number | null
+    validFrom: Date | null
+    validTo: Date | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
 
-    constructor(
-        { id, title, description, partner, cost, discount, imageUrl, confirmationCode, maxRedemptionsPerClient, validFrom, validTo, isActive, createdAt, updatedAt }: {
-            id?: string,
-            title: string,
-            description: string,
-            partner: string,
-            cost: number,
-            discount?: string,
-            imageUrl?: string,
-            confirmationCode?: string,
-            maxRedemptionsPerClient?: number,
-            validFrom?: Date,
-            validTo?: Date,
-            isActive?: boolean,
-            createdAt?: Date,
-            updatedAt?: Date
-        }
-    ) {
-        this.id = id ?? `offer_${uuid()}`
-        this.title = title
-        this.description = description
-        this.partner = partner
-        this.cost = cost
-        this.discount = discount
-        this.imageUrl = imageUrl
-        this.confirmationCode = confirmationCode
-        this.maxRedemptionsPerClient = maxRedemptionsPerClient ?? 1
-        this.validFrom = validFrom
-        this.validTo = validTo
-        this.isActive = isActive ?? true
-        this.createdAt = createdAt || new Date()
-        this.updatedAt = updatedAt || new Date()
+    constructor(props: OfferProps) {
+        this.id = props.id ?? `offer_${uuid()}`
+        this.title = props.title
+        this.description = props.description
+        this.partner = props.partner
+        this.cost = props.cost
+        this.discount = props.discount
+        this.imageUrl = props.imageUrl
+        this.confirmationCode = props.confirmationCode
+        this.maxRedemptionsPerClient = props.maxRedemptionsPerClient ?? 1
+        this.externalUrl = props.externalUrl ?? null
+        this.originalPrice = props.originalPrice ?? null
+        this.promoPrice = props.promoPrice ?? null
+        this.validFrom = props.validFrom ?? null
+        this.validTo = props.validTo ?? null
+        this.isActive = props.isActive ?? true
+        this.createdAt = props.createdAt || new Date()
+        this.updatedAt = props.updatedAt || new Date()
     }
 }

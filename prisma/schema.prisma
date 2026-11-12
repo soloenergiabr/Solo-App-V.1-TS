@@ -392,6 +392,11 @@ model Offer {
   confirmationCode        String? // Código secreto para parceiro confirmar uso
   maxRedemptionsPerClient Int     @default(1) // Máximo de vezes que cada cliente pode resgatar
 
+  // Produto do parceiro: link externo e preços (contrato 2.7/2.9)
+  externalUrl   String?
+  originalPrice Float?
+  promoPrice    Float?
+
   validFrom DateTime?
   validTo   DateTime?
 
@@ -403,6 +408,16 @@ model Offer {
   redemptions OfferRedemption[]
 
   @@map("offer")
+}
+
+/// Regras do Clube Solo editáveis pelo admin (linha única, id = "default").
+model ClubSettings {
+  id                    String   @id @default("default")
+  referralRewardPercent Float    @default(5)
+  coinsDescription      String?
+  updatedAt             DateTime @updatedAt
+
+  @@map("club_settings")
 }
 
 enum RedemptionStatus {

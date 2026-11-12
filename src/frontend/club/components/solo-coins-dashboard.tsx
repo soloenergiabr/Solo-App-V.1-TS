@@ -35,6 +35,9 @@ export function SoloCoinsDashboard() {
                         </span>
                         <span className="text-muted-foreground">Solo Coins</span>
                     </div>
+                    {balance.balance?.coinsDescription && (
+                        <p className="text-sm text-muted-foreground mt-2">{balance.balance.coinsDescription}</p>
+                    )}
                     {balance.error && (
                         <p className="text-sm text-destructive mt-2">{balance.error}</p>
                     )}
@@ -49,7 +52,7 @@ export function SoloCoinsDashboard() {
                         <CardTitle className="text-lg">Indicar Amigos</CardTitle>
                     </div>
                     <CardDescription>
-                        Compartilhe seu link e ganhe 5% do valor do projeto em Solo Coins
+                        Compartilhe seu link e ganhe {(balance.balance?.referralRewardPercent ?? 5).toLocaleString('pt-BR')}% do valor do projeto em Solo Coins
                     </CardDescription>
                 </CardHeader>
                 <CardContent>

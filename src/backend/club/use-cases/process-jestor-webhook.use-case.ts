@@ -1,7 +1,8 @@
 import { IndicationRepository } from "../repositories/indication.repository";
 import { TransactionRepository } from "../repositories/transaction.repository";
-import { IndicationStatus } from "../models/indication.model";
+import { IndicationModel, IndicationStatus } from "../models/indication.model";
 import { TransactionModel, TransactionType } from "../models/transaction.model";
+import { calculateReferralReward, DEFAULT_REFERRAL_REWARD_PERCENT } from "../club-settings";
 
 export interface ProcessJestorWebhookRequest {
     jestorId: string;
@@ -15,7 +16,8 @@ export interface ProcessJestorWebhookRequest {
 export class ProcessJestorWebhookUseCase {
     constructor(
         private indicationRepository: IndicationRepository,
-        private transactionRepository: TransactionRepository
+        private transactionRepository: TransactionRepository,
+        private getRewardPercent: () => Promise<number> = async () => DEFAULT_REFERRAL_REWARD_PERCENT
     ) { }
 
     async execute(request: ProcessJestorWebhookRequest): Promise<void> {
@@ -36,34 +38,39 @@ export class ProcessJestorWebhookUseCase {
             throw new Error(`Indication not found for Jestor ID: ${request.jestorId} or Internal ID: ${request.internalId}`);
         }
 
-        const newStatus = this.mapStatus(request.status);
-        const oldStatus = indication.status;
-
-        indication.status = newStatus;
-        if (request.projectValue) indication.projectValue = request.projectValue;
         // Ensure jestorId is set if it wasn't already (redundant but safe)
         if (!indication.jestorId) indication.jestorId = request.jestorId;
 
+        await this.applyStatus(indication, this.mapStatus(request.status), request.projectValue);
+    }
+
+    /** Muda o status e, na conversão, credita a comissão ao indicador (uma única vez). Usado também pelo admin. */
+    async applyStatus(indication: IndicationModel, newStatus: IndicationStatus, projectValue?: number): Promise<void> {
+        indication.status = newStatus;
+        if (projectValue) indication.projectValue = projectValue;
+
         await this.indicationRepository.update(indication);
 
-        if (newStatus === IndicationStatus.approved && oldStatus !== IndicationStatus.approved) {
-            if (!indication.projectValue) {
-                console.warn(`Indication ${indication.id} approved but no project value.`);
-                return;
-            }
+        if (newStatus !== IndicationStatus.approved) return;
 
-            const rewardAmount = indication.projectValue * 0.05;
-
-            const transaction = new TransactionModel({
-                clientId: indication.referrerId,
-                type: TransactionType.indication_reward,
-                amount: rewardAmount,
-                description: `Comissão por indicação (Projeto: ${indication.projectValue})`,
-                indicationId: indication.id
-            });
-
-            await this.transactionRepository.create(transaction);
+        if (!indication.projectValue) {
+            console.warn(`Indication ${indication.id} approved but no project value.`);
+            return;
         }
+
+        // Idempotente: reaprovar (webhook repetido ou admin) não paga de novo.
+        if (await this.transactionRepository.hasIndicationReward(indication.id)) return;
+
+        const percent = await this.getRewardPercent();
+        const transaction = new TransactionModel({
+            clientId: indication.referrerId,
+            type: TransactionType.indication_reward,
+            amount: calculateReferralReward(indication.projectValue, percent),
+            description: `Comissão por indicação (${percent}% do projeto de R$ ${indication.projectValue.toLocaleString("pt-BR")})`,
+            indicationId: indication.id
+        });
+
+        await this.transactionRepository.create(transaction);
     }
 
     private mapStatus(jestorStatus: string): IndicationStatus {
