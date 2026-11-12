@@ -94,7 +94,6 @@ function DashboardPage() {
                                             className="mt-1 block w-full border-border rounded-md shadow-sm focus:ring-primary focus:border-primary"
                                         >
                                             <option value="solis">Solis</option>
-                                            <option value="growatt">Growatt</option>
                                             <option value="solplanet">SolPlanet</option>
                                         </select>
                                     </div>

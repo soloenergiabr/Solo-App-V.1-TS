@@ -617,7 +617,15 @@ function AddInverterDialog({ plant, mutations }: { plant: AdminPlant; mutations:
         syncEnabled: true,
         syncIntervalMinutes: '15',
     });
-    const providerOptions = ['solis', 'solplanet', 'growatt', 'deye', 'hoymiles', 'mock', 'other'].map(value => ({ value, label: value }));
+    // So provedores com integracao implementada (inverter-api.factory) + "outro".
+    const providerOptions = [
+        { value: 'solis', label: 'Solis' },
+        { value: 'solplanet', label: 'Solplanet' },
+        { value: 'deye', label: 'Deye' },
+        { value: 'hoymiles', label: 'Hoymiles' },
+        { value: 'auxsol', label: 'Auxsol' },
+        { value: 'other', label: 'Outro' },
+    ];
 
     const submit = async () => {
         try {
