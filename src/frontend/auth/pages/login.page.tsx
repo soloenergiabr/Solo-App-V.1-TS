@@ -19,7 +19,8 @@ export function LoginPage() {
         mode: 'onTouched',
         defaultValues: { email: '', password: '' },
     });
-    const { isSubmitting, isValid } = form.formState;
+    // Botão sempre ativo: o autofill do Chrome só libera a senha após um clique na página.
+    const { isSubmitting } = form.formState;
 
     const { login } = useAuthContext();
     const router = useRouter();
@@ -84,7 +85,7 @@ export function LoginPage() {
                         )}
                     />
 
-                    <Button type="submit" disabled={isSubmitting || !isValid} className="h-11 w-full">
+                    <Button type="submit" disabled={isSubmitting} className="h-11 w-full">
                         {isSubmitting ? 'Entrando...' : 'Entrar'}
                     </Button>
 
