@@ -79,7 +79,7 @@ export function PageLayout({ children, header, footer, tabs, className = '' }: P
 
     return (
         <motion.div
-            className={`flex flex-col h-full bg-background ${className} overflow-hidden`}
+            className={`flex flex-col h-full bg-background ${className} overflow-hidden print:h-auto print:overflow-visible`}
             variants={containerVariants as any}
             initial="hidden"
             animate="visible"
@@ -121,7 +121,7 @@ export function PageLayout({ children, header, footer, tabs, className = '' }: P
 
 
             <motion.div
-                className="flex-1 overflow-auto h-full p-4"
+                className="flex-1 overflow-auto h-full p-4 print:h-auto print:overflow-visible"
                 variants={contentVariants as any}
             >
                 {children}
@@ -206,7 +206,7 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
                             {actions}
                         </motion.div>
                     )}
-                    <ThemeToggle />
+                    <div className="print:hidden"><ThemeToggle /></div>
                 </div>
             </div>
             {extra && (

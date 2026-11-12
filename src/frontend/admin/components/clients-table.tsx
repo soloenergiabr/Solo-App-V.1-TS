@@ -18,6 +18,9 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
+import { ExportMenu, downloadCsv } from '@/frontend/lib/export';
+
+const STATUS_LABEL: Record<string, string> = { client: 'Cliente', lead: 'Lead', inactive: 'Inativo' };
 
 interface Client {
     id: string;
@@ -91,7 +94,8 @@ export function ClientsTable() {
 
     return (
         <div className="space-y-3">
-        <div className="relative max-w-sm">
+        <div className="flex items-center justify-between gap-3">
+        <div className="relative w-full max-w-sm">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
                 value={search}
@@ -100,6 +104,22 @@ export function ClientsTable() {
                 className="pl-9"
                 aria-label="Buscar clientes"
             />
+        </div>
+        <ExportMenu
+            disabled={visible.length === 0}
+            onCsv={() => downloadCsv(
+                'clientes',
+                ['Nome', 'E-mail', 'CPF/CNPJ', 'Telefone', 'Status', 'Data de cadastro'],
+                visible.map((c) => [
+                    c.name,
+                    c.email,
+                    c.cpfCnpj,
+                    c.phone ?? '',
+                    STATUS_LABEL[c.status] ?? c.status,
+                    new Date(c.createdAt).toLocaleDateString('pt-BR'),
+                ]),
+            )}
+        />
         </div>
         <div className="rounded-md border">
             <Table>

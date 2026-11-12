@@ -59,8 +59,8 @@ function ControlePage() {
                         <div className="space-y-4">
                             <Skeleton className="h-10 w-24" />
                             <Skeleton className="h-48" />
-                            <div className="grid grid-cols-3 gap-3">
-                                {[...Array(3)].map((_, i) => (
+                            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                                {[...Array(4)].map((_, i) => (
                                     <Skeleton key={i} className="h-24" />
                                 ))}
                             </div>
@@ -83,8 +83,8 @@ function ControlePage() {
                                 payoffLabel={overview.investment.expectedPayoffLabel ?? undefined}
                             />
 
-                            {/* 3-tile MetricTile row */}
-                            <div className="grid grid-cols-3 gap-3">
+                            {/* 4 indicadores do mês: 2x2 no celular, linha única no desktop */}
+                            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                                 <MetricTile
                                     label="DINHEIRO"
                                     value={formatBRL(overview.month.moneySaved)}
@@ -94,6 +94,11 @@ function ControlePage() {
                                     label="ENERGIA"
                                     value={formatKwh(overview.month.energyGeneratedKwh)}
                                     sublabel="gerada"
+                                />
+                                <MetricTile
+                                    label="CONSUMO"
+                                    value={formatKwh(overview.month.energyConsumedKwh)}
+                                    sublabel="consumida"
                                 />
                                 <MetricTile
                                     label="RETORNO"

@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatBRL, formatKwh, MetricTile } from '@/frontend/telemetry-kit';
+import { ExportMenu, downloadCsv } from '@/frontend/lib/export';
 
 type Dashboard = {
     clients: { active: number; leads: number; inactive: number };
@@ -54,7 +55,10 @@ function AdminDashboardPage() {
                 <PageHeader
                     title="Dashboard"
                     subtitle="Visão geral da base de clientes, faturas e Clube Solo"
-                    actions={<Button asChild size="sm"><Link href="/clients"><Users className="mr-2 h-4 w-4" />Clientes</Link></Button>}
+                    actions={<>
+                        <ExportMenu disabled={!d} onCsv={() => d && downloadCsv('indicadores-admin', ['Indicador', 'Valor'], kpiRows(d))} />
+                        <Button asChild size="sm"><Link href="/clients"><Users className="mr-2 h-4 w-4" />Clientes</Link></Button>
+                    </>}
                 />
             }
         >
@@ -166,6 +170,30 @@ function AdminDashboardPage() {
             )}
         </PageLayout>
     );
+}
+
+// Mesmos números dos cards, em valores brutos para a planilha.
+function kpiRows(d: Dashboard): (string | number)[][] {
+    return [
+        ['Clientes ativos', d.clients.active],
+        ['Leads', d.clients.leads],
+        ['Clientes inativos', d.clients.inactive],
+        ['Usinas', d.plants],
+        ['Unidades consumidoras', d.consumerUnits],
+        ['UCs com busca automática de faturas', d.monitoredUnits],
+        ['Consumo médio por fatura, 12 meses (kWh)', d.bills.avgConsumptionKwh],
+        ['Faturas, 12 meses', d.bills.last12Months],
+        ['Valor faturado, 12 meses (R$)', d.bills.billedLast12Months],
+        ['Faturas pagas', d.bills.paid],
+        ['Faturas a pagar', d.bills.open],
+        ['Faturas vencidas', d.bills.overdue],
+        ['Economia gerada aos clientes, 12 meses (R$)', d.bills.savingsLast12Months],
+        ['Ofertas ativas do clube', d.club.activeOffers],
+        ['Resgates do clube', d.club.redemptions],
+        ['Indicações', d.club.indications],
+        ['Indicações convertidas', d.club.indicationsApproved],
+        ['Solo Coins emitidos', d.club.coinsIssued],
+    ];
 }
 
 export default withAuth(AdminDashboardPage);
