@@ -81,3 +81,7 @@ Produção roda em Docker (`docker-compose.prod.yml`) com `scripts/deploy-prod.s
 npm test            # vitest
 npm run typecheck   # tsc --noEmit
 ```
+
+## Operação
+
+Guia do painel administrativo para a equipe: [`docs/manual-admin.md`](docs/manual-admin.md).
