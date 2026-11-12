@@ -5,7 +5,9 @@ export function resolveBillStatus(
     now: Date = new Date(),
 ): BillPaymentStatus {
     if (bill.paidAt || bill.paymentStatus === 'paga') return 'paga'
-    if (bill.dueDate && new Date(bill.dueDate) < now) return 'vencida'
+    // Vence no fim do dia: compara so a data (vencimento e data pura em UTC; hoje no fuso local).
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+    if (bill.dueDate && bill.dueDate.slice(0, 10) < today) return 'vencida'
     return 'a_pagar'
 }
 

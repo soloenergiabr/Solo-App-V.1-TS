@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { formatBRL, CopyPixButton } from '@/frontend/telemetry-kit'
 import type { AccountBill } from '@/shared/controle/types'
 import { resolveBillStatus, statusToBadge } from '../lib/bill-status'
+import { apiErrorMessage, useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi'
 
 const TONE: Record<'success' | 'warning' | 'destructive', string> = {
     success: 'text-success',
@@ -17,6 +18,7 @@ const TONE: Record<'success' | 'warning' | 'destructive', string> = {
 export function ContasAPagar({ bills, className }: { bills: AccountBill[]; className?: string }) {
     const [confirmingIds, setConfirmingIds] = useState<Set<string>>(new Set())
     const [confirmedIds, setConfirmedIds] = useState<Set<string>>(new Set())
+    const api = useAuthenticatedApi()
     const [errorMap, setErrorMap] = useState<Record<string, string>>({})
 
     // Filter out locally confirmed bills
@@ -30,17 +32,10 @@ export function ContasAPagar({ bills, className }: { bills: AccountBill[]; class
             return next
         })
         try {
-            const res = await fetch(`/api/economia/bills/${bill.id}/confirm-payment`, {
-                method: 'POST',
-            })
-            const json = await res.json()
-            if (!res.ok || !json.success) {
-                setErrorMap((prev) => ({ ...prev, [bill.id]: json.message ?? 'Falha ao confirmar pagamento' }))
-                return
-            }
+            await api.post(`/economia/bills/${bill.id}/confirm-payment`)
             setConfirmedIds((prev) => new Set(prev).add(bill.id))
         } catch (err) {
-            setErrorMap((prev) => ({ ...prev, [bill.id]: err instanceof Error ? err.message : 'Erro inesperado' }))
+            setErrorMap((prev) => ({ ...prev, [bill.id]: apiErrorMessage(err, 'Falha ao confirmar pagamento') }))
         } finally {
             setConfirmingIds((prev) => {
                 const next = new Set(prev)
@@ -80,7 +75,7 @@ export function ContasAPagar({ bills, className }: { bills: AccountBill[]; class
                             <div className="text-xs text-muted-foreground">
                                 <span>{formatBRL(b.amountDue)}</span>
                                 {' · '}
-                                <span>{b.dueDate ? `vence ${new Date(b.dueDate).toLocaleDateString('pt-BR')}` : 'sem vencimento'}</span>
+                                <span>{b.dueDate ? `vence ${new Date(b.dueDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}` : 'sem vencimento'}</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">

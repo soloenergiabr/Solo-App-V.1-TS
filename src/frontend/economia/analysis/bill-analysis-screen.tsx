@@ -27,6 +27,7 @@ import { TechnicalDataViewer } from './technical-data-viewer'
 import { BillSummaryCard } from './clarifier/bill-summary-card'
 import { BillChatDrawer } from './chat/bill-chat-drawer'
 import { EducationalFaq } from '@/frontend/education/educational-faq'
+import { apiErrorMessage, useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi'
 
 function monthName(m: number): string {
     const names = [
@@ -64,6 +65,12 @@ export function BillAnalysisScreen({
     isLoading: boolean
     error: string | null
 }) {
+    // Hooks antes dos returns antecipados (carregando/erro), senao o React quebra.
+    const api = useAuthenticatedApi()
+    const [isConfirming, setIsConfirming] = useState(false)
+    const [confirmError, setConfirmError] = useState<string | null>(null)
+    const [confirmedPaidAt, setConfirmedPaidAt] = useState<string | null>(null)
+
     /* ---------- Loading ---------- */
     if (isLoading) {
         return (
@@ -113,26 +120,16 @@ export function BillAnalysisScreen({
         )
     }
 
-    const [isConfirming, setIsConfirming] = useState(false)
-    const [confirmError, setConfirmError] = useState<string | null>(null)
-    const [confirmedPaidAt, setConfirmedPaidAt] = useState<string | null>(null)
 
     async function handleConfirmPayment() {
         if (!bill) return
         setIsConfirming(true)
         setConfirmError(null)
         try {
-            const res = await fetch(`/api/economia/bills/${bill.id}/confirm-payment`, {
-                method: 'POST',
-            })
-            const json = await res.json()
-            if (!res.ok || !json.success) {
-                setConfirmError(json.message ?? 'Falha ao confirmar pagamento')
-                return
-            }
-            setConfirmedPaidAt(json.data.paidAt ?? new Date().toISOString())
+            const { data: json } = await api.post(`/economia/bills/${bill.id}/confirm-payment`)
+            setConfirmedPaidAt(json.data?.paidAt ?? new Date().toISOString())
         } catch (err) {
-            setConfirmError(err instanceof Error ? err.message : 'Erro inesperado')
+            setConfirmError(apiErrorMessage(err, 'Falha ao confirmar pagamento'))
         } finally {
             setIsConfirming(false)
         }
@@ -224,7 +221,7 @@ export function BillAnalysisScreen({
                             </p>
                         )}
                         <p className="mt-1 text-xs text-muted-foreground">
-                            Vencimento: {bill.dueDate ? new Date(bill.dueDate).toLocaleDateString('pt-BR') : '—'}
+                            Vencimento: {bill.dueDate ? new Date(bill.dueDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '—'}
                         </p>
                     </div>
                 </div>
@@ -327,7 +324,7 @@ export function BillAnalysisScreen({
                                 availabilityCost={clarifier.availabilityCost}
                                 publicLightingCost={clarifier.publicLightingCost}
                                 uncompensatedCost={clarifier.uncompensatedCost}
-                                extraCharges={bill.extraCharges as Array<{ description: string; value: number; type: 'service' | 'installment'; remaining_installments?: number }> | undefined}
+                                extraCharges={bill.extraCharges as Array<{ description: string; value: number; type: 'service' | 'installment'; remaining_installments?: number }> | null}
                                 connectionType={bill.connectionType}
                             />
                         </div>

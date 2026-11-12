@@ -4,6 +4,11 @@ import { render, screen } from '@testing-library/react'
 import { AccountCard } from './account-card'
 import type { AccountBill } from '@/shared/controle/types'
 
+vi.mock('@/frontend/auth/hooks/useAuthenticatedApi', () => ({
+    useAuthenticatedApi: () => ({ post: vi.fn(), isAuthenticated: true }),
+    apiErrorMessage: (_e: unknown, fallback: string) => fallback,
+}))
+
 const bill: AccountBill = {
     id: 'b1', consumerUnitId: 'u1', consumerUnitName: 'Casa', distributor: 'Enel', accountNumber: 'UC 123456',
     referenceMonth: 3, referenceYear: 2026, amountDue: 187, dueDate: '2026-04-12', paidAt: null,

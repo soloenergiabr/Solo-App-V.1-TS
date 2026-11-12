@@ -19,7 +19,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
     return (
         <main className="flex flex-row max-w-screen overflow-x-hidden">
-            <div className="max-w-sm w-full h-screen sticky top-0">
+            <div className="w-64 shrink-0 h-screen sticky top-0">
                 <AppSidebar />
             </div>
             <div className="w-full max-h-screen overflow-y-auto h-screen">

@@ -51,3 +51,9 @@ export function useAuthenticatedApi() {
         isAuthenticated,
     };
 }
+
+/** Mensagem do backend (`{ message }`) quando houver; senao o texto padrao. */
+export function apiErrorMessage(error: unknown, fallback: string): string {
+    const message = (error as { response?: { data?: { message?: unknown } } })?.response?.data?.message;
+    return typeof message === 'string' && message ? message : fallback;
+}

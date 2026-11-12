@@ -15,7 +15,7 @@ interface CostCompositionCardProps {
   availabilityCost: number
   publicLightingCost: number
   uncompensatedCost: number
-  extraCharges?: ExtraCharge[]
+  extraCharges?: ExtraCharge[] | null
   connectionType?: string | null
 }
 
@@ -31,14 +31,16 @@ export function CostCompositionCard({
   availabilityCost,
   publicLightingCost,
   uncompensatedCost,
-  extraCharges = [],
+  extraCharges,
   connectionType,
 }: CostCompositionCardProps) {
+  // A API devolve null quando a fatura nao tem cobrancas extras.
+  const charges = extraCharges ?? []
   const totalFixedFees = availabilityCost + publicLightingCost
   const hasUncompensated = uncompensatedCost > 1
-  const services = extraCharges.filter((c) => c.type === 'service')
-  const installments = extraCharges.filter((c) => c.type === 'installment')
-  const hasExtras = extraCharges.length > 0
+  const services = charges.filter((c) => c.type === 'service')
+  const installments = charges.filter((c) => c.type === 'installment')
+  const hasExtras = charges.length > 0
 
   return (
     <motion.div
