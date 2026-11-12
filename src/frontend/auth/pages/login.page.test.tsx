@@ -10,10 +10,13 @@ vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 import { LoginPage } from './login.page';
 
 describe('LoginPage', () => {
-    it('mostra erro de email ao sair do campo e só habilita o envio com dados válidos', async () => {
+    it('mostra erro de email ao sair do campo e não envia dados inválidos', async () => {
         render(<LoginPage />);
         const submit = screen.getByRole('button', { name: 'Entrar' });
-        expect(submit).toBeDisabled();
+        // Sempre ativo (autofill do Chrome); a validação barra o envio.
+        expect(submit).toBeEnabled();
+        await userEvent.click(submit);
+        expect(login).not.toHaveBeenCalled();
 
         await userEvent.type(screen.getByLabelText('Email'), 'abc');
         await userEvent.tab();
