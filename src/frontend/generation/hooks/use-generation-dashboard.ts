@@ -183,21 +183,24 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         staleTime: filters.generationUnitType === 'real_time' ? 0 : 1000 * 60, // 0 for real_time, 1 min otherwise
     });
 
+    // Admin vendo um cliente precisa dizer qual (ele nao tem cliente vinculado).
+    const syncUrl = clientId ? `/generation/sync/client?clientId=${encodeURIComponent(clientId)}` : '/generation/sync/client'
+
     // Sync on mount (once) — guard prevents the 5s poll from re-triggering sync
     const syncedRef = useRef(false)
     useEffect(() => {
         if (!isAuthenticated || syncedRef.current) return
         syncedRef.current = true
-        apiRef.current.post('/generation/sync/client')
+        apiRef.current.post(syncUrl)
             .then((res) => {
                 if (!res.data.success) {
-                    setSyncError(res.data.message || 'Erro ao sincronizar dados de geraÃ§Ã£o')
+                    setSyncError(res.data.message || 'Erro ao sincronizar dados de geração')
                     return
                 }
 
                 const errorCount = res.data.data?.errors?.length ?? 0
                 if (errorCount > 0) {
-                    setSyncError(`${errorCount} inversor(es) falharam na sincronizaÃ§Ã£o.`)
+                    setSyncError(`${errorCount} inversor(es) falharam na sincronização.`)
                     return
                 }
 
@@ -205,24 +208,24 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
             })
             .catch((err) => console.error('[geracao] sync on mount failed', err))
             .finally(() => { refetch() })
-    }, [isAuthenticated, refetch])
+    }, [isAuthenticated, refetch, syncUrl])
 
     // Manual refresh also triggers a fresh sync
     const refetchWithSync = useCallback(async () => {
         try {
-            const res = await apiRef.current.post('/generation/sync/client')
+            const res = await apiRef.current.post(syncUrl)
             if (!res.data.success) {
-                setSyncError(res.data.message || 'Erro ao sincronizar dados de geraÃ§Ã£o')
+                setSyncError(res.data.message || 'Erro ao sincronizar dados de geração')
             } else {
                 const errorCount = res.data.data?.errors?.length ?? 0
-                setSyncError(errorCount > 0 ? `${errorCount} inversor(es) falharam na sincronizaÃ§Ã£o.` : null)
+                setSyncError(errorCount > 0 ? `${errorCount} inversor(es) falharam na sincronização.` : null)
             }
         } catch (e) {
             console.error('[geracao] manual sync failed', e)
-            setSyncError('Erro de rede ao sincronizar dados de geraÃ§Ã£o')
+            setSyncError('Erro de rede ao sincronizar dados de geração')
         }
         return refetch()
-    }, [refetch])
+    }, [refetch, syncUrl])
 
     const updateFilters = useCallback((newFilters: Partial<DashboardFilters>) => {
         setFilters(prev => ({ ...prev, ...newFilters }));

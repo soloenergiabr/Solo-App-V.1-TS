@@ -27,6 +27,7 @@ import {
     CredentialsFields, credentialsReady, emptyCredentials, errorText, formatDate, formatDateTime,
     FaturapiStatusBadge, triggerLabel, type CredentialsForm,
 } from './faturapi-shared';
+import { apiErrorMessage } from '@/frontend/auth/hooks/useAuthenticatedApi';
 
 type Actions = ReturnType<typeof useClientFaturapiActions>;
 type ConnectionItem = ClientFaturapiOverview['connections'][number];
@@ -44,7 +45,7 @@ export function ClientFaturapiTab({ clientId }: { clientId: string }) {
         return (
             <Alert variant="destructive">
                 <AlertTitle>Erro ao carregar a Faturapi</AlertTitle>
-                <AlertDescription>{error instanceof Error ? error.message : 'Tente novamente.'}</AlertDescription>
+                <AlertDescription>{apiErrorMessage(error, 'Tente novamente.')}</AlertDescription>
             </Alert>
         );
     }

@@ -18,6 +18,7 @@ import {
 import {
     errorText, formatCents, formatDate, formatDateTime, FaturapiStatusBadge, triggerLabel,
 } from './faturapi-shared';
+import { apiErrorMessage } from '@/frontend/auth/hooks/useAuthenticatedApi';
 
 // Custo atual de uma busca na Faturapi; usado so para estimar quantas buscas o saldo cobre.
 const ESTIMATED_COST_CENTS = 39;
@@ -35,7 +36,7 @@ export function FaturapiOverviewScreen() {
         return (
             <Alert variant="destructive">
                 <AlertTitle>Erro ao carregar a Faturapi</AlertTitle>
-                <AlertDescription>{error instanceof Error ? error.message : 'Tente novamente.'}</AlertDescription>
+                <AlertDescription>{apiErrorMessage(error, 'Tente novamente.')}</AlertDescription>
             </Alert>
         );
     }

@@ -65,12 +65,12 @@ export type ClientFaturapiOverview = {
 
 function errorMessage(error: unknown): string {
     const response = (error as { response?: { data?: { message?: string } } })?.response;
-    return response?.data?.message ?? (error instanceof Error ? error.message : 'Operacao nao concluida');
+    return response?.data?.message ?? (error instanceof Error ? error.message : 'Operação não concluída');
 }
 
 async function unwrap<T>(request: Promise<{ data: ApiEnvelope<T> }>): Promise<T> {
     const response = await request;
-    if (!response.data.success) throw new Error(response.data.message || 'Operacao nao concluida');
+    if (!response.data.success) throw new Error(response.data.message || 'Operação não concluída');
     return response.data.data;
 }
 

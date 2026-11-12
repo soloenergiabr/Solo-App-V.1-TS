@@ -3,19 +3,41 @@
 import { Sidebar, SidebarItem, SidebarSection } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/frontend/auth/contexts/auth-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { ClipboardCheck, Coins, DollarSign, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Zap, Receipt } from "lucide-react"
+import { ClipboardCheck, Coins, DollarSign, FileCheck, Gauge, Gift, HelpCircleIcon, Home, Percent, Ticket, Users, Zap, Receipt } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useAdminApprovals } from "@/frontend/admin/hooks/use-admin-approvals"
 
-const baseAdminSections: SidebarSection[] = [
+// Admin: o dia a dia (clientes e pendencias) em cima; integracoes e clube depois.
+const buildAdminSections = (pendingCount: number): SidebarSection[] => [
     {
         title: 'Principal',
         items: [
             { label: 'Dashboard', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
-            { label: 'Clientes', href: '/clients', icon: <DollarSign className="w-5 h-5" /> },
-            { label: 'Ofertas', href: '/offers', icon: <Gift className="w-5 h-5" /> },
+            { label: 'Clientes', href: '/clients', icon: <Users className="w-5 h-5" /> },
+        ],
+    },
+    {
+        title: 'Pendências',
+        items: [
+            {
+                label: pendingCount > 0 ? `Aprovações (${pendingCount})` : 'Aprovações',
+                href: '/admin/approvals',
+                icon: <ClipboardCheck className="w-5 h-5" />,
+            },
+            { label: 'Validação de faturas', href: '/admin/bills/validation', icon: <FileCheck className="w-5 h-5" /> },
+        ],
+    },
+    {
+        title: 'Integrações',
+        items: [
+            { label: 'Busca de faturas (Faturapi)', href: '/admin/faturapi', icon: <Receipt className="w-5 h-5" /> },
+        ],
+    },
+    {
+        title: 'Clube e suporte',
+        items: [
+            { label: 'Ofertas do clube', href: '/offers', icon: <Gift className="w-5 h-5" /> },
             { label: 'FAQ', href: '/faqs', icon: <HelpCircleIcon className="w-5 h-5" /> },
-            { label: 'Investor Demo', href: '/investor-demo', icon: <DollarSign className="w-5 h-5 text-yellow-500" /> },
         ],
     },
 ]
@@ -78,27 +100,7 @@ export function AppSidebar() {
     const isMaster = user?.roles.includes("master");
     const role = isMaster ? 'admin' : 'vendedor';
 
-    const adminSections: SidebarSection[] = baseAdminSections.map((section) => {
-        if (section.title === 'Principal') {
-            return {
-                ...section,
-                items: [
-                    ...section.items,
-                    {
-                        label: pendingCount > 0 ? `Aprovações (${pendingCount})` : 'Aprovações',
-                        href: '/admin/approvals',
-                        icon: <ClipboardCheck className="w-5 h-5" />,
-                    },
-                    {
-                        label: 'Faturapi',
-                        href: '/admin/faturapi',
-                        icon: <Receipt className="w-5 h-5" />,
-                    },
-                ],
-            };
-        }
-        return section;
-    });
+    const adminSections = buildAdminSections(pendingCount);
 
     const sectionsMapper = {
         admin: adminSections,

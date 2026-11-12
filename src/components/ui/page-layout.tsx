@@ -196,15 +196,18 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
                         <p className="text-sm text-muted-foreground">{subtitle}</p>
                     )}
                 </motion.div>
-                {actions && (
-                    <motion.div
-                        className="flex items-center gap-2"
-                        variants={actionsVariants as any}
-                    >
-                        {actions}
-                    </motion.div>
-                )}
-                <ThemeToggle />
+                {/* Acoes e tema juntos a direita (com justify-between soltos, as acoes ficavam no meio). */}
+                <div className="flex items-center gap-2">
+                    {actions && (
+                        <motion.div
+                            className="flex items-center gap-2"
+                            variants={actionsVariants as any}
+                        >
+                            {actions}
+                        </motion.div>
+                    )}
+                    <ThemeToggle />
+                </div>
             </div>
             {extra && (
                 <motion.div

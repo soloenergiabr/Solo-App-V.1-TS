@@ -105,7 +105,7 @@ function GenerationDashboardPage() {
                             {syncError && (
                                 <Alert variant="destructive">
                                     <AlertCircle className="h-4 w-4" />
-                                    <AlertTitle>AtenÃ§Ã£o na sincronizaÃ§Ã£o</AlertTitle>
+                                    <AlertTitle>Atenção na sincronização</AlertTitle>
                                     <AlertDescription>{syncError}</AlertDescription>
                                 </Alert>
                             )}

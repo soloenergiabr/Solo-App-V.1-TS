@@ -41,6 +41,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { resolveBillStatus, statusToBadge } from '@/frontend/economia/lib/bill-status';
 import { ManualTransactionDialog } from './manual-transaction-dialog';
+import { buildSetupSteps, ClientSetupChecklist, type ClientTab } from './client-setup-checklist';
 import { AddGenerationDialog } from './add-generation-dialog';
 import { AddBillDialog } from './add-bill-dialog';
 import { useGenerationDashboard } from '@/frontend/generation/hooks/use-generation-dashboard';
@@ -692,6 +693,8 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
     const units = useAdminConsumerUnits(clientId);
     const allocations = useAdminCreditAllocations(clientId);
     const bills = useAdminEnergyBills(clientId);
+    const investment = useAdminInvestment(clientId);
+    const [tab, setTab] = useState<ClientTab>('resumo');
     const {
         analytics,
         filters,
@@ -754,6 +757,22 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
     }
 
     const client = clientDetails.data.client;
+    const setupSteps = buildSetupSteps({
+        plants: plants.plants,
+        units: units.consumerUnits,
+        inverters: clientDetails.data.inverters,
+        bills: bills.bills,
+        hasInvestment: !!investment.data,
+    });
+    const pendingApprovals = [...plants.plants, ...units.consumerUnits]
+        .filter((item) => (item as { validationStatus?: string }).validationStatus === 'pending_review').length;
+    const navigate = (next: ClientTab, stepKey: string) => {
+        setTab(next);
+        // O investimento fica no Resumo, abaixo do checklist.
+        if (stepKey === 'investment') {
+            setTimeout(() => document.getElementById('investimento')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -766,23 +785,23 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                         <h1 className="text-2xl font-bold tracking-tight">{client.name}</h1>
                         <p className="text-sm text-muted-foreground">{client.email}</p>
                     </div>
-                    <Badge variant={client.status === 'client' ? 'default' : 'secondary'}>{client.status}</Badge>
+                    <Badge variant={client.status === 'client' ? 'default' : 'secondary'}>{CLIENT_STATUS_LABEL[client.status] ?? client.status}</Badge>
                 </div>
                 <ManualTransactionDialog clientId={clientId} onSuccess={() => clientDetails.refetch()} />
             </div>
 
-            <Tabs defaultValue="resumo" className="w-full">
+            <Tabs value={tab} onValueChange={(value) => setTab(value as ClientTab)} className="w-full">
                 <TabsList className="flex h-auto flex-wrap justify-start">
                     <TabsTrigger value="resumo">Resumo</TabsTrigger>
-                    <TabsTrigger value="plants">Usinas e Estrutura</TabsTrigger>
+                    <TabsTrigger value="plants">Usinas e UCs</TabsTrigger>
+                    <TabsTrigger value="faturapi">Busca de faturas (Enel)</TabsTrigger>
                     <TabsTrigger value="bills">Faturas</TabsTrigger>
-                    <TabsTrigger value="faturapi">Faturapi</TabsTrigger>
-                    <TabsTrigger value="gd">Geração Distribuída</TabsTrigger>
-                    <TabsTrigger value="generation">Dashboard de Geração</TabsTrigger>
-                    <TabsTrigger value="manual-generation">Geração (manual)</TabsTrigger>
+                    <TabsTrigger value="generation">Geração</TabsTrigger>
+                    <TabsTrigger value="gd">Cobranças (GD)</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="resumo" className="mt-6 space-y-6">
+                    <ClientSetupChecklist steps={setupSteps} pendingApprovals={pendingApprovals} onNavigate={navigate} />
                     <SummaryTab
                         clientId={clientId}
                         client={client}
@@ -830,13 +849,18 @@ export function ClientDetails({ clientId }: ClientDetailsProps) {
                     ) : (
                         <Card>
                             <CardContent className="flex h-48 flex-col items-center justify-center py-12 text-center">
-                                <p className="text-muted-foreground">O dashboard de geração aparecerá aqui após o registro dos inversores.</p>
+                                <p className="text-muted-foreground">O gráfico de geração aparece aqui depois que um inversor for conectado (aba Usinas e UCs).</p>
                             </CardContent>
                         </Card>
                     )}
-                </TabsContent>
-                <TabsContent value="manual-generation" className="space-y-4">
-                    <AddGenerationDialog clientId={clientId} onSuccess={fetchManualGeneration} />
+
+                    <div className="flex flex-wrap items-end justify-between gap-3 pt-2">
+                        <div>
+                            <h3 className="font-semibold">Lançamentos manuais</h3>
+                            <p className="text-sm text-muted-foreground">Para usinas sem inversor conectado: informe a geração do mês.</p>
+                        </div>
+                        <AddGenerationDialog clientId={clientId} onSuccess={fetchManualGeneration} />
+                    </div>
                     {manualGenerationLoading ? (
                         <div className="flex h-32 items-center justify-center">
                             <Loader2 className="h-6 w-6 animate-spin text-primary" />
@@ -946,6 +970,8 @@ function InvestmentSection({ clientId }: { clientId: string }) {
     );
 }
 
+const CLIENT_STATUS_LABEL: Record<string, string> = { lead: 'Lead', client: 'Cliente', inactive: 'Inativo' };
+
 function SummaryTab({
     clientId,
     client,
@@ -1024,7 +1050,9 @@ function SummaryTab({
                 </CardContent>
             </Card>
 
-            <InvestmentSection clientId={clientId} />
+            <div id="investimento" className="scroll-mt-4">
+                <InvestmentSection clientId={clientId} />
+            </div>
         </>
     );
 }
@@ -1127,7 +1155,7 @@ function PlantsTab({ clientId, inverters }: { clientId: string; inverters: Admin
                                         <div className="grid flex-1 gap-3 text-left md:grid-cols-[1.5fr_1fr_1fr_1fr]">
                                             <div>
                                                 <p className="font-medium">{plant.name || 'Usina sem nome'}</p>
-                                                <p className="text-xs text-muted-foreground">{plant.providerPlantId || plant.id}</p>
+                                                {plant.providerPlantId && <p className="text-xs text-muted-foreground">ID no provedor: {plant.providerPlantId}</p>}
                                             </div>
                                             <div className="text-sm">
                                                 <span className="text-muted-foreground">Provedor: </span>{plant.provider || '-'}
@@ -1213,7 +1241,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle>Faturas de Energia</CardTitle>
-                    <CardDescription>Importe PDFs para preencher o EnergyBill canônico e revisar os campos extraídos por IA.</CardDescription>
+                    <CardDescription>Faturas de cada UC. Chegam pela busca automática; também dá para importar o PDF (a IA preenche os campos) ou lançar à mão.</CardDescription>
                 </div>
                 <div className="flex gap-2">
                     <AddBillDialog clientId={clientId} onSuccess={() => { bills.refetch(); }} />
@@ -1263,7 +1291,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                         <div className="grid flex-1 gap-3 text-left md:grid-cols-[1.4fr_1fr_1fr_1fr]">
                                             <div>
                                                 <p className="font-medium">{unit.name || unit.clientNumber || 'Unidade sem nome'}</p>
-                                                <p className="text-xs text-muted-foreground">{unit.installationNumber || unit.id}</p>
+                                                {(unit.clientNumber || unit.installationNumber) && <p className="text-xs text-muted-foreground">UC {unit.clientNumber || unit.installationNumber}</p>}
                                             </div>
                                             <div className="text-sm"><span className="text-muted-foreground">Faturas: </span>{unitBills.length}</div>
                                             <div className="text-sm"><span className="text-muted-foreground">Última: </span>{monthYear(latest)}</div>
