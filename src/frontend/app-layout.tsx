@@ -2,6 +2,7 @@
 
 import { AppSidebar } from "./app-sidebar"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { HelpButton } from "@/frontend/support/components/help-button"
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
     const isMobile = useIsMobile();
@@ -13,6 +14,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     {children}
                 </div>
                 <AppSidebar />
+                <HelpButton />
             </main>
         )
     }
@@ -25,6 +27,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="w-full max-h-screen overflow-y-auto h-screen">
                 {children}
             </div>
+            <HelpButton />
         </main>
     )
 }
