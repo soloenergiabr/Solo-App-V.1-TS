@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuthContext } from '@/frontend/auth/contexts/auth-context';
+import { registerSchema, type RegisterValues } from '@/frontend/auth/validation';
+import { supportWhatsAppUrl } from '@/frontend/support/support-links';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -43,16 +48,15 @@ const steps = [
 
 export function RegisterPage() {
     const [currentStep, setCurrentStep] = useState(1);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        cpfCnpj: '',
-        phone: '',
-        address: '',
-        avgEnergyCost: '',
-        enelInvoiceFile: null as File | null,
+    const form = useForm<RegisterValues>({
+        resolver: zodResolver(registerSchema),
+        mode: 'onTouched',
+        defaultValues: { name: '', email: '', cpfCnpj: '', phone: '', address: '', avgEnergyCost: '' },
     });
-    const [isLoading, setIsLoading] = useState(false);
+    const { isSubmitting, isValid } = form.formState;
+    const [enelInvoiceFile, setEnelInvoiceFile] = useState<File | null>(null);
+    const avgEnergyCost = form.watch('avgEnergyCost');
+    const missingEnergyInfo = !avgEnergyCost && !enelInvoiceFile;
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [indicationCode, setIndicationCode] = useState<string | null>(null);
@@ -76,21 +80,6 @@ export function RegisterPage() {
         });
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, files } = e.target;
-        if (files && files[0]) {
-            setFormData(prev => ({
-                ...prev,
-                [name]: files[0],
-            }));
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                [name]: value,
-            }));
-        }
-    };
-
     const nextStep = () => {
         if (currentStep < steps.length) {
             setCurrentStep(currentStep + 1);
@@ -103,32 +92,28 @@ export function RegisterPage() {
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
+    const onSubmit = async (values: RegisterValues) => {
         setError('');
         setSuccess('');
 
-        // Validate required fields
-        if (!formData.avgEnergyCost && !formData.enelInvoiceFile) {
+        if (!values.avgEnergyCost && !enelInvoiceFile) {
             setError('Você deve fornecer a média de custo de energia ou o arquivo da conta ENEL.');
-            setIsLoading(false);
             return;
         }
 
         try {
             let enelInvoiceFileBase64: string | undefined;
-            if (formData.enelInvoiceFile) {
-                enelInvoiceFileBase64 = await fileToBase64(formData.enelInvoiceFile);
+            if (enelInvoiceFile) {
+                enelInvoiceFileBase64 = await fileToBase64(enelInvoiceFile);
             }
 
             const result = await register({
-                name: formData.name,
-                email: formData.email,
-                cpfCnpj: formData.cpfCnpj,
-                phone: formData.phone || undefined,
-                address: formData.address || undefined,
-                avgEnergyCost: formData.avgEnergyCost ? parseFloat(formData.avgEnergyCost) : undefined,
+                name: values.name,
+                email: values.email,
+                cpfCnpj: values.cpfCnpj,
+                phone: values.phone || undefined,
+                address: values.address || undefined,
+                avgEnergyCost: values.avgEnergyCost ? parseFloat(values.avgEnergyCost) : undefined,
                 enelInvoiceFile: enelInvoiceFileBase64,
                 indicationCode: indicationCode || undefined,
             });
@@ -138,17 +123,32 @@ export function RegisterPage() {
             } else {
                 setError(result.error || 'Erro no cadastro');
             }
-        } catch (error) {
+        } catch {
             setError('Erro inesperado');
-        } finally {
-            setIsLoading(false);
         }
     };
 
-    const handleWhatsAppContact = () => {
-        const message = encodeURIComponent('Olá! Tenho dúvidas sobre o cadastro na Solo Energy.');
-        window.open(`https://wa.me/5511999999999?text=${message}`, '_blank');
-    };
+    const whatsapp = supportWhatsAppUrl('Olá! Tenho dúvidas sobre o cadastro na Solo Energy.');
+
+    const textField = (
+        name: keyof RegisterValues,
+        label: string,
+        props: React.ComponentProps<typeof Input>,
+    ) => (
+        <FormField
+            control={form.control}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel className="text-foreground">{label}</FormLabel>
+                    <FormControl>
+                        <Input className="h-12 sm:h-10" {...props} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
 
     const renderStepContent = () => {
         switch (currentStep) {
@@ -180,92 +180,22 @@ export function RegisterPage() {
             case 2:
                 return (
                     <div className="text-left space-y-4">
-                        <div>
-                            <Label htmlFor="name" className="text-foreground">Nome Completo</Label>
-                            <Input
-                                id="name"
-                                name="name"
-                                type="text"
-                                required
-                                value={formData.name}
-                                onChange={handleChange}
-                                placeholder="Seu nome completo"
-                                className="h-12 sm:h-10"
-                            />
-                        </div>
-                        <div>
-                            <Label htmlFor="email" className="text-foreground">Email</Label>
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                required
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="seu@email.com"
-                                className="h-12 sm:h-10"
-                            />
-                        </div>
-                        <div>
-                            <Label htmlFor="cpfCnpj" className="text-foreground">CPF/CNPJ</Label>
-                            <Input
-                                id="cpfCnpj"
-                                name="cpfCnpj"
-                                type="text"
-                                required
-                                value={formData.cpfCnpj}
-                                onChange={handleChange}
-                                placeholder="CPF ou CNPJ"
-                                className="h-12 sm:h-10"
-                            />
-                        </div>
+                        {textField('name', 'Nome Completo', { type: 'text', autoComplete: 'name', placeholder: 'Seu nome completo' })}
+                        {textField('email', 'Email', { type: 'email', autoComplete: 'email', placeholder: 'seu@email.com' })}
+                        {textField('cpfCnpj', 'CPF/CNPJ', { type: 'text', inputMode: 'numeric', placeholder: 'CPF ou CNPJ' })}
                     </div>
                 );
             case 3:
                 return (
                     <div className="text-left space-y-4">
-                        <div>
-                            <Label htmlFor="phone" className="text-foreground">Telefone</Label>
-                            <Input
-                                id="phone"
-                                name="phone"
-                                type="tel"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                placeholder="(11) 99999-9999"
-                                className="h-12 sm:h-10"
-                            />
-                        </div>
-                        <div>
-                            <Label htmlFor="address" className="text-foreground">Endereço</Label>
-                            <Input
-                                id="address"
-                                name="address"
-                                type="text"
-                                value={formData.address}
-                                onChange={handleChange}
-                                placeholder="Rua, número, bairro, cidade"
-                                className="h-12 sm:h-10"
-                            />
-                        </div>
+                        {textField('phone', 'Telefone', { type: 'tel', autoComplete: 'tel', placeholder: '(11) 99999-9999' })}
+                        {textField('address', 'Endereço', { type: 'text', autoComplete: 'street-address', placeholder: 'Rua, número, bairro, cidade' })}
                     </div>
                 );
             case 4:
                 return (
                     <div className="text-left space-y-4">
-                        <div>
-                            <Label htmlFor="avgEnergyCost" className="text-foreground">Custo Médio de Energia (R$/mês)</Label>
-                            <Input
-                                id="avgEnergyCost"
-                                name="avgEnergyCost"
-                                type="number"
-                                step="0.01"
-                                value={formData.avgEnergyCost}
-                                onChange={handleChange}
-                                placeholder="Ex: 250.00"
-                                className="h-12 sm:h-10"
-                            />
-                        </div>
+                        {textField('avgEnergyCost', 'Custo Médio de Energia (R$/mês)', { type: 'number', step: '0.01', min: '0', placeholder: 'Ex: 250.00' })}
                         <div>
                             <Label htmlFor="enelInvoiceFile" className="text-foreground">Conta de Energia ENEL (opcional)</Label>
                             <Input
@@ -273,10 +203,15 @@ export function RegisterPage() {
                                 name="enelInvoiceFile"
                                 type="file"
                                 accept=".pdf,.jpg,.jpeg,.png"
-                                onChange={handleChange}
+                                onChange={(e) => setEnelInvoiceFile(e.target.files?.[0] ?? null)}
                                 className="file:bg-primary file:text-primary-foreground file:border-0 file:rounded-md file:px-3 file:py-1 file:mr-3 file:font-medium h-12 sm:h-10"
                             />
                             <p className="text-muted-foreground text-sm mt-1">Envie uma foto ou PDF da sua última conta</p>
+                            {missingEnergyInfo && (
+                                <p className="text-sm text-muted-foreground mt-2">
+                                    Informe o custo médio ou envie a conta para finalizar.
+                                </p>
+                            )}
                         </div>
                     </div>
                 );
@@ -297,9 +232,13 @@ export function RegisterPage() {
                         <p className="text-sm text-muted-foreground">
                             Em breve nossa equipe entrará em contato para análise do seu perfil.
                         </p>
-                        <Button onClick={handleWhatsAppContact} className="w-full">
-                            Entrar em contato pelo WhatsApp
-                        </Button>
+                        {whatsapp && (
+                            <Button asChild className="w-full">
+                                <a href={whatsapp} target="_blank" rel="noopener noreferrer">
+                                    Entrar em contato pelo WhatsApp
+                                </a>
+                            </Button>
+                        )}
                     </CardContent>
                 </Card>
             </div>
@@ -347,9 +286,11 @@ export function RegisterPage() {
                     )}
 
                     {/* Form Content */}
-                    <div className="mb-8">
-                        {renderStepContent()}
-                    </div>
+                    <Form {...form}>
+                        <div className="mb-8">
+                            {renderStepContent()}
+                        </div>
+                    </Form>
 
                     {/* Navigation */}
                     <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -368,6 +309,7 @@ export function RegisterPage() {
                             <Button
                                 type="button"
                                 onClick={nextStep}
+                                disabled={currentStep === 2 && !isValid}
                                 className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 h-12 sm:h-10 text-base sm:text-sm"
                             >
                                 Próximo
@@ -376,11 +318,11 @@ export function RegisterPage() {
                         ) : (
                             <Button
                                 type="button"
-                                onClick={handleSubmit}
-                                disabled={isLoading}
+                                onClick={form.handleSubmit(onSubmit)}
+                                disabled={isSubmitting || !isValid || missingEnergyInfo}
                                 className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 h-12 sm:h-10 text-base sm:text-sm"
                             >
-                                {isLoading ? 'Cadastrando...' : 'Finalizar Cadastro'}
+                                {isSubmitting ? 'Cadastrando...' : 'Finalizar Cadastro'}
                             </Button>
                         )}
                     </div>
