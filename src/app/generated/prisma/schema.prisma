@@ -647,7 +647,7 @@ model ChargeRule {
 }
 
 /// Cobranca de uma competencia para uma unidade consumidora.
-/// Nao processa pagamento — registra o valor devido, o envio e a baixa.
+/// Registra o valor devido, o envio e a baixa — manual ou via gateway (Stripe Checkout).
 model Charge {
   id String @id @default(dbgenerated("(concat('charge_', gen_random_uuid()))::TEXT"))
 
@@ -684,6 +684,11 @@ model Charge {
   paidAt            DateTime?
   canceledAt        DateTime?
   confirmedByUserId String?
+
+  /// pagamento online (gateway). Nulos quando a baixa foi manual.
+  paymentProvider  String?
+  paymentSessionId String? @unique
+  paymentMethod    String?
 
   notes String?
 

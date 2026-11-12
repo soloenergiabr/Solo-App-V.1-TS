@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Loader2, Mail, RefreshCw, Send, UserPlus, Users } from 'lucide-react'
+import { Link2, Loader2, Mail, RefreshCw, Send, UserPlus, Users } from 'lucide-react'
+import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -10,11 +11,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
 import { formatBRL } from '@/frontend/telemetry-kit'
+import { apiErrorMessage } from '@/frontend/auth/hooks/useAuthenticatedApi'
 import { CHARGE_MODE_LABEL } from '@/shared/gd/types'
 import { ChargeStatusBadge } from './charge-status-badge'
 import { ChargeRuleDialog } from './charge-rule-dialog'
 import { InvitePayerDialog } from './invite-payer-dialog'
 import {
+    useChargeCheckout,
     useChargeRules,
     useCharges,
     useConfirmChargePayment,
@@ -53,6 +56,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
     const generate = useGenerateCharges(clientId)
     const send = useSendCharge(clientId)
     const confirm = useConfirmChargePayment(clientId)
+    const checkout = useChargeCheckout(clientId)
 
     const summary = charges.data?.summary
     const list = charges.data?.charges ?? []
@@ -69,6 +73,24 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
             await action()
         } catch (err) {
             setActionError(err instanceof Error ? err.message : 'Falha na operação')
+        }
+    }
+
+    async function copyPaymentLink(chargeId: string) {
+        setActionError(null)
+        try {
+            const { url } = await checkout.mutateAsync(chargeId)
+            try {
+                await navigator.clipboard.writeText(url)
+                toast.success('Link de pagamento copiado', {
+                    description: 'Envie ao responsável. O link vale por 24 horas.',
+                })
+            } catch {
+                // Safari bloqueia a área de transferência depois de uma chamada assíncrona.
+                window.prompt('Copie o link de pagamento (vale por 24 horas):', url)
+            }
+        } catch (err) {
+            setActionError(apiErrorMessage(err, 'Não foi possível gerar o link de pagamento.'))
         }
     }
 
@@ -221,6 +243,12 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                             </TableCell>
                                             <TableCell>
                                                 <ChargeStatusBadge status={charge.status} />
+                                                {charge.status === 'paid' &&
+                                                    charge.paymentProvider === 'stripe' && (
+                                                        <div className="mt-1 text-xs text-success">
+                                                            Pago online
+                                                        </div>
+                                                    )}
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex justify-end gap-2">
@@ -241,6 +269,21 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                                             >
                                                                 <Send className="size-3.5" />
                                                                 <span className="ml-1">Enviar</span>
+                                                            </Button>
+                                                        )}
+                                                    {charges.data?.onlinePaymentEnabled &&
+                                                        charge.status !== 'paid' &&
+                                                        charge.status !== 'canceled' &&
+                                                        charge.amount > 0 && (
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                disabled={checkout.isPending}
+                                                                title="Copiar link de pagamento (cartão ou PIX)"
+                                                                onClick={() => copyPaymentLink(charge.id)}
+                                                            >
+                                                                <Link2 className="size-3.5" />
+                                                                <span className="ml-1">Copiar link de pagamento</span>
                                                             </Button>
                                                         )}
                                                     {charge.status !== 'paid' &&
@@ -387,8 +430,9 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
 
             <p className="flex items-start gap-2 text-xs text-muted-foreground">
                 <Mail className="mt-0.5 size-3.5 shrink-0" />
-                O Solo App calcula, envia e registra as cobrancas. O pagamento acontece fora do app,
-                direto entre você e o responsável.
+                {charges.data?.onlinePaymentEnabled
+                    ? 'O Solo App calcula, envia e registra as cobranças. O responsável pode pagar com cartão ou PIX pelo app, e a baixa é automática.'
+                    : 'O Solo App calcula, envia e registra as cobranças. O pagamento acontece fora do app, direto entre você e o responsável.'}
             </p>
         </div>
     )
