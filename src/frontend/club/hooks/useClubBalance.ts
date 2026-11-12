@@ -7,6 +7,8 @@ import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 export interface ClubBalance {
     balance: number;
     currency: string;
+    referralRewardPercent?: number;
+    coinsDescription?: string | null;
 }
 
 export interface BalanceState {

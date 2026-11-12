@@ -3,6 +3,7 @@ import { PrismaIndicationRepository } from '@/backend/club/repositories/implemen
 import { PrismaTransactionRepository } from '@/backend/club/repositories/implementations/prisma.transaction.repository';
 import { ProcessJestorWebhookUseCase } from '@/backend/club/use-cases/process-jestor-webhook.use-case';
 import prisma from '@/lib/prisma';
+import { getReferralRewardPercent } from '@/backend/club/club-settings';
 
 export async function POST(request: NextRequest) {
     try {
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
 
         const indicationRepository = new PrismaIndicationRepository(prisma);
         const transactionRepository = new PrismaTransactionRepository(prisma);
-        const useCase = new ProcessJestorWebhookUseCase(indicationRepository, transactionRepository);
+        const useCase = new ProcessJestorWebhookUseCase(indicationRepository, transactionRepository, getReferralRewardPercent);
 
         await useCase.execute({
             jestorId: String(jestorId),
@@ -33,8 +34,8 @@ export async function POST(request: NextRequest) {
         });
 
         return NextResponse.json({ success: true });
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error processing Jestor webhook:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: error instanceof Error ? error.message : 'Erro interno' }, { status: 500 });
     }
 }

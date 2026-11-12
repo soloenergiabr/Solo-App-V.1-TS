@@ -59,6 +59,11 @@ export type Indication = $Result.DefaultSelection<Prisma.$IndicationPayload>
  */
 export type Offer = $Result.DefaultSelection<Prisma.$OfferPayload>
 /**
+ * Model ClubSettings
+ * Regras do Clube Solo editáveis pelo admin (linha única, id = "default").
+ */
+export type ClubSettings = $Result.DefaultSelection<Prisma.$ClubSettingsPayload>
+/**
  * Model OfferRedemption
  * 
  */
@@ -453,6 +458,16 @@ export class PrismaClient<
     * ```
     */
   get offer(): Prisma.OfferDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.clubSettings`: Exposes CRUD operations for the **ClubSettings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ClubSettings
+    * const clubSettings = await prisma.clubSettings.findMany()
+    * ```
+    */
+  get clubSettings(): Prisma.ClubSettingsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.offerRedemption`: Exposes CRUD operations for the **OfferRedemption** model.
@@ -1012,6 +1027,7 @@ export namespace Prisma {
     GenerationUnit: 'GenerationUnit',
     Indication: 'Indication',
     Offer: 'Offer',
+    ClubSettings: 'ClubSettings',
     OfferRedemption: 'OfferRedemption',
     FAQ: 'FAQ',
     Transaction: 'Transaction',
@@ -1041,7 +1057,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "chargeRule" | "charge" | "payerInvite" | "investment" | "faturapiWebhookEvent" | "faturapiConnection"
+      modelProps: "user" | "client" | "plant" | "inverter" | "consumerUnit" | "creditAllocation" | "generationUnit" | "indication" | "offer" | "clubSettings" | "offerRedemption" | "fAQ" | "transaction" | "consumption" | "energyBill" | "chargeRule" | "charge" | "payerInvite" | "investment" | "faturapiWebhookEvent" | "faturapiConnection"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1708,6 +1724,80 @@ export namespace Prisma {
           count: {
             args: Prisma.OfferCountArgs<ExtArgs>
             result: $Utils.Optional<OfferCountAggregateOutputType> | number
+          }
+        }
+      }
+      ClubSettings: {
+        payload: Prisma.$ClubSettingsPayload<ExtArgs>
+        fields: Prisma.ClubSettingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ClubSettingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ClubSettingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>
+          }
+          findFirst: {
+            args: Prisma.ClubSettingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ClubSettingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>
+          }
+          findMany: {
+            args: Prisma.ClubSettingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>[]
+          }
+          create: {
+            args: Prisma.ClubSettingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>
+          }
+          createMany: {
+            args: Prisma.ClubSettingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ClubSettingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>[]
+          }
+          delete: {
+            args: Prisma.ClubSettingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>
+          }
+          update: {
+            args: Prisma.ClubSettingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.ClubSettingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ClubSettingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ClubSettingsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>[]
+          }
+          upsert: {
+            args: Prisma.ClubSettingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClubSettingsPayload>
+          }
+          aggregate: {
+            args: Prisma.ClubSettingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateClubSettings>
+          }
+          groupBy: {
+            args: Prisma.ClubSettingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ClubSettingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ClubSettingsCountArgs<ExtArgs>
+            result: $Utils.Optional<ClubSettingsCountAggregateOutputType> | number
           }
         }
       }
@@ -2630,6 +2720,7 @@ export namespace Prisma {
     generationUnit?: GenerationUnitOmit
     indication?: IndicationOmit
     offer?: OfferOmit
+    clubSettings?: ClubSettingsOmit
     offerRedemption?: OfferRedemptionOmit
     fAQ?: FAQOmit
     transaction?: TransactionOmit
@@ -14128,11 +14219,15 @@ export namespace Prisma {
   export type OfferAvgAggregateOutputType = {
     cost: number | null
     maxRedemptionsPerClient: number | null
+    originalPrice: number | null
+    promoPrice: number | null
   }
 
   export type OfferSumAggregateOutputType = {
     cost: number | null
     maxRedemptionsPerClient: number | null
+    originalPrice: number | null
+    promoPrice: number | null
   }
 
   export type OfferMinAggregateOutputType = {
@@ -14145,6 +14240,9 @@ export namespace Prisma {
     imageUrl: string | null
     confirmationCode: string | null
     maxRedemptionsPerClient: number | null
+    externalUrl: string | null
+    originalPrice: number | null
+    promoPrice: number | null
     validFrom: Date | null
     validTo: Date | null
     isActive: boolean | null
@@ -14162,6 +14260,9 @@ export namespace Prisma {
     imageUrl: string | null
     confirmationCode: string | null
     maxRedemptionsPerClient: number | null
+    externalUrl: string | null
+    originalPrice: number | null
+    promoPrice: number | null
     validFrom: Date | null
     validTo: Date | null
     isActive: boolean | null
@@ -14179,6 +14280,9 @@ export namespace Prisma {
     imageUrl: number
     confirmationCode: number
     maxRedemptionsPerClient: number
+    externalUrl: number
+    originalPrice: number
+    promoPrice: number
     validFrom: number
     validTo: number
     isActive: number
@@ -14191,11 +14295,15 @@ export namespace Prisma {
   export type OfferAvgAggregateInputType = {
     cost?: true
     maxRedemptionsPerClient?: true
+    originalPrice?: true
+    promoPrice?: true
   }
 
   export type OfferSumAggregateInputType = {
     cost?: true
     maxRedemptionsPerClient?: true
+    originalPrice?: true
+    promoPrice?: true
   }
 
   export type OfferMinAggregateInputType = {
@@ -14208,6 +14316,9 @@ export namespace Prisma {
     imageUrl?: true
     confirmationCode?: true
     maxRedemptionsPerClient?: true
+    externalUrl?: true
+    originalPrice?: true
+    promoPrice?: true
     validFrom?: true
     validTo?: true
     isActive?: true
@@ -14225,6 +14336,9 @@ export namespace Prisma {
     imageUrl?: true
     confirmationCode?: true
     maxRedemptionsPerClient?: true
+    externalUrl?: true
+    originalPrice?: true
+    promoPrice?: true
     validFrom?: true
     validTo?: true
     isActive?: true
@@ -14242,6 +14356,9 @@ export namespace Prisma {
     imageUrl?: true
     confirmationCode?: true
     maxRedemptionsPerClient?: true
+    externalUrl?: true
+    originalPrice?: true
+    promoPrice?: true
     validFrom?: true
     validTo?: true
     isActive?: true
@@ -14346,6 +14463,9 @@ export namespace Prisma {
     imageUrl: string | null
     confirmationCode: string | null
     maxRedemptionsPerClient: number
+    externalUrl: string | null
+    originalPrice: number | null
+    promoPrice: number | null
     validFrom: Date | null
     validTo: Date | null
     isActive: boolean
@@ -14382,6 +14502,9 @@ export namespace Prisma {
     imageUrl?: boolean
     confirmationCode?: boolean
     maxRedemptionsPerClient?: boolean
+    externalUrl?: boolean
+    originalPrice?: boolean
+    promoPrice?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
@@ -14401,6 +14524,9 @@ export namespace Prisma {
     imageUrl?: boolean
     confirmationCode?: boolean
     maxRedemptionsPerClient?: boolean
+    externalUrl?: boolean
+    originalPrice?: boolean
+    promoPrice?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
@@ -14418,6 +14544,9 @@ export namespace Prisma {
     imageUrl?: boolean
     confirmationCode?: boolean
     maxRedemptionsPerClient?: boolean
+    externalUrl?: boolean
+    originalPrice?: boolean
+    promoPrice?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
@@ -14435,6 +14564,9 @@ export namespace Prisma {
     imageUrl?: boolean
     confirmationCode?: boolean
     maxRedemptionsPerClient?: boolean
+    externalUrl?: boolean
+    originalPrice?: boolean
+    promoPrice?: boolean
     validFrom?: boolean
     validTo?: boolean
     isActive?: boolean
@@ -14442,7 +14574,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type OfferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "partner" | "cost" | "discount" | "imageUrl" | "confirmationCode" | "maxRedemptionsPerClient" | "validFrom" | "validTo" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["offer"]>
+  export type OfferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "partner" | "cost" | "discount" | "imageUrl" | "confirmationCode" | "maxRedemptionsPerClient" | "externalUrl" | "originalPrice" | "promoPrice" | "validFrom" | "validTo" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["offer"]>
   export type OfferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     redemptions?: boolean | Offer$redemptionsArgs<ExtArgs>
     _count?: boolean | OfferCountOutputTypeDefaultArgs<ExtArgs>
@@ -14465,6 +14597,9 @@ export namespace Prisma {
       imageUrl: string | null
       confirmationCode: string | null
       maxRedemptionsPerClient: number
+      externalUrl: string | null
+      originalPrice: number | null
+      promoPrice: number | null
       validFrom: Date | null
       validTo: Date | null
       isActive: boolean
@@ -14903,6 +15038,9 @@ export namespace Prisma {
     readonly imageUrl: FieldRef<"Offer", 'String'>
     readonly confirmationCode: FieldRef<"Offer", 'String'>
     readonly maxRedemptionsPerClient: FieldRef<"Offer", 'Int'>
+    readonly externalUrl: FieldRef<"Offer", 'String'>
+    readonly originalPrice: FieldRef<"Offer", 'Float'>
+    readonly promoPrice: FieldRef<"Offer", 'Float'>
     readonly validFrom: FieldRef<"Offer", 'DateTime'>
     readonly validTo: FieldRef<"Offer", 'DateTime'>
     readonly isActive: FieldRef<"Offer", 'Boolean'>
@@ -15335,6 +15473,1022 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OfferInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ClubSettings
+   */
+
+  export type AggregateClubSettings = {
+    _count: ClubSettingsCountAggregateOutputType | null
+    _avg: ClubSettingsAvgAggregateOutputType | null
+    _sum: ClubSettingsSumAggregateOutputType | null
+    _min: ClubSettingsMinAggregateOutputType | null
+    _max: ClubSettingsMaxAggregateOutputType | null
+  }
+
+  export type ClubSettingsAvgAggregateOutputType = {
+    referralRewardPercent: number | null
+  }
+
+  export type ClubSettingsSumAggregateOutputType = {
+    referralRewardPercent: number | null
+  }
+
+  export type ClubSettingsMinAggregateOutputType = {
+    id: string | null
+    referralRewardPercent: number | null
+    coinsDescription: string | null
+    updatedAt: Date | null
+  }
+
+  export type ClubSettingsMaxAggregateOutputType = {
+    id: string | null
+    referralRewardPercent: number | null
+    coinsDescription: string | null
+    updatedAt: Date | null
+  }
+
+  export type ClubSettingsCountAggregateOutputType = {
+    id: number
+    referralRewardPercent: number
+    coinsDescription: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ClubSettingsAvgAggregateInputType = {
+    referralRewardPercent?: true
+  }
+
+  export type ClubSettingsSumAggregateInputType = {
+    referralRewardPercent?: true
+  }
+
+  export type ClubSettingsMinAggregateInputType = {
+    id?: true
+    referralRewardPercent?: true
+    coinsDescription?: true
+    updatedAt?: true
+  }
+
+  export type ClubSettingsMaxAggregateInputType = {
+    id?: true
+    referralRewardPercent?: true
+    coinsDescription?: true
+    updatedAt?: true
+  }
+
+  export type ClubSettingsCountAggregateInputType = {
+    id?: true
+    referralRewardPercent?: true
+    coinsDescription?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ClubSettingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ClubSettings to aggregate.
+     */
+    where?: ClubSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClubSettings to fetch.
+     */
+    orderBy?: ClubSettingsOrderByWithRelationInput | ClubSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ClubSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClubSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClubSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ClubSettings
+    **/
+    _count?: true | ClubSettingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ClubSettingsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ClubSettingsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClubSettingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClubSettingsMaxAggregateInputType
+  }
+
+  export type GetClubSettingsAggregateType<T extends ClubSettingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateClubSettings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateClubSettings[P]>
+      : GetScalarType<T[P], AggregateClubSettings[P]>
+  }
+
+
+
+
+  export type ClubSettingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClubSettingsWhereInput
+    orderBy?: ClubSettingsOrderByWithAggregationInput | ClubSettingsOrderByWithAggregationInput[]
+    by: ClubSettingsScalarFieldEnum[] | ClubSettingsScalarFieldEnum
+    having?: ClubSettingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ClubSettingsCountAggregateInputType | true
+    _avg?: ClubSettingsAvgAggregateInputType
+    _sum?: ClubSettingsSumAggregateInputType
+    _min?: ClubSettingsMinAggregateInputType
+    _max?: ClubSettingsMaxAggregateInputType
+  }
+
+  export type ClubSettingsGroupByOutputType = {
+    id: string
+    referralRewardPercent: number
+    coinsDescription: string | null
+    updatedAt: Date
+    _count: ClubSettingsCountAggregateOutputType | null
+    _avg: ClubSettingsAvgAggregateOutputType | null
+    _sum: ClubSettingsSumAggregateOutputType | null
+    _min: ClubSettingsMinAggregateOutputType | null
+    _max: ClubSettingsMaxAggregateOutputType | null
+  }
+
+  type GetClubSettingsGroupByPayload<T extends ClubSettingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ClubSettingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ClubSettingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ClubSettingsGroupByOutputType[P]>
+            : GetScalarType<T[P], ClubSettingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ClubSettingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referralRewardPercent?: boolean
+    coinsDescription?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["clubSettings"]>
+
+  export type ClubSettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referralRewardPercent?: boolean
+    coinsDescription?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["clubSettings"]>
+
+  export type ClubSettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referralRewardPercent?: boolean
+    coinsDescription?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["clubSettings"]>
+
+  export type ClubSettingsSelectScalar = {
+    id?: boolean
+    referralRewardPercent?: boolean
+    coinsDescription?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ClubSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referralRewardPercent" | "coinsDescription" | "updatedAt", ExtArgs["result"]["clubSettings"]>
+
+  export type $ClubSettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ClubSettings"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      referralRewardPercent: number
+      coinsDescription: string | null
+      updatedAt: Date
+    }, ExtArgs["result"]["clubSettings"]>
+    composites: {}
+  }
+
+  type ClubSettingsGetPayload<S extends boolean | null | undefined | ClubSettingsDefaultArgs> = $Result.GetResult<Prisma.$ClubSettingsPayload, S>
+
+  type ClubSettingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ClubSettingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ClubSettingsCountAggregateInputType | true
+    }
+
+  export interface ClubSettingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ClubSettings'], meta: { name: 'ClubSettings' } }
+    /**
+     * Find zero or one ClubSettings that matches the filter.
+     * @param {ClubSettingsFindUniqueArgs} args - Arguments to find a ClubSettings
+     * @example
+     * // Get one ClubSettings
+     * const clubSettings = await prisma.clubSettings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ClubSettingsFindUniqueArgs>(args: SelectSubset<T, ClubSettingsFindUniqueArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ClubSettings that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ClubSettingsFindUniqueOrThrowArgs} args - Arguments to find a ClubSettings
+     * @example
+     * // Get one ClubSettings
+     * const clubSettings = await prisma.clubSettings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ClubSettingsFindUniqueOrThrowArgs>(args: SelectSubset<T, ClubSettingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ClubSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClubSettingsFindFirstArgs} args - Arguments to find a ClubSettings
+     * @example
+     * // Get one ClubSettings
+     * const clubSettings = await prisma.clubSettings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ClubSettingsFindFirstArgs>(args?: SelectSubset<T, ClubSettingsFindFirstArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ClubSettings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClubSettingsFindFirstOrThrowArgs} args - Arguments to find a ClubSettings
+     * @example
+     * // Get one ClubSettings
+     * const clubSettings = await prisma.clubSettings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ClubSettingsFindFirstOrThrowArgs>(args?: SelectSubset<T, ClubSettingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ClubSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClubSettingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ClubSettings
+     * const clubSettings = await prisma.clubSettings.findMany()
+     * 
+     * // Get first 10 ClubSettings
+     * const clubSettings = await prisma.clubSettings.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const clubSettingsWithIdOnly = await prisma.clubSettings.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ClubSettingsFindManyArgs>(args?: SelectSubset<T, ClubSettingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ClubSettings.
+     * @param {ClubSettingsCreateArgs} args - Arguments to create a ClubSettings.
+     * @example
+     * // Create one ClubSettings
+     * const ClubSettings = await prisma.clubSettings.create({
+     *   data: {
+     *     // ... data to create a ClubSettings
+     *   }
+     * })
+     * 
+     */
+    create<T extends ClubSettingsCreateArgs>(args: SelectSubset<T, ClubSettingsCreateArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ClubSettings.
+     * @param {ClubSettingsCreateManyArgs} args - Arguments to create many ClubSettings.
+     * @example
+     * // Create many ClubSettings
+     * const clubSettings = await prisma.clubSettings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ClubSettingsCreateManyArgs>(args?: SelectSubset<T, ClubSettingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ClubSettings and returns the data saved in the database.
+     * @param {ClubSettingsCreateManyAndReturnArgs} args - Arguments to create many ClubSettings.
+     * @example
+     * // Create many ClubSettings
+     * const clubSettings = await prisma.clubSettings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ClubSettings and only return the `id`
+     * const clubSettingsWithIdOnly = await prisma.clubSettings.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ClubSettingsCreateManyAndReturnArgs>(args?: SelectSubset<T, ClubSettingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ClubSettings.
+     * @param {ClubSettingsDeleteArgs} args - Arguments to delete one ClubSettings.
+     * @example
+     * // Delete one ClubSettings
+     * const ClubSettings = await prisma.clubSettings.delete({
+     *   where: {
+     *     // ... filter to delete one ClubSettings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ClubSettingsDeleteArgs>(args: SelectSubset<T, ClubSettingsDeleteArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ClubSettings.
+     * @param {ClubSettingsUpdateArgs} args - Arguments to update one ClubSettings.
+     * @example
+     * // Update one ClubSettings
+     * const clubSettings = await prisma.clubSettings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ClubSettingsUpdateArgs>(args: SelectSubset<T, ClubSettingsUpdateArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ClubSettings.
+     * @param {ClubSettingsDeleteManyArgs} args - Arguments to filter ClubSettings to delete.
+     * @example
+     * // Delete a few ClubSettings
+     * const { count } = await prisma.clubSettings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ClubSettingsDeleteManyArgs>(args?: SelectSubset<T, ClubSettingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ClubSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClubSettingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ClubSettings
+     * const clubSettings = await prisma.clubSettings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ClubSettingsUpdateManyArgs>(args: SelectSubset<T, ClubSettingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ClubSettings and returns the data updated in the database.
+     * @param {ClubSettingsUpdateManyAndReturnArgs} args - Arguments to update many ClubSettings.
+     * @example
+     * // Update many ClubSettings
+     * const clubSettings = await prisma.clubSettings.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ClubSettings and only return the `id`
+     * const clubSettingsWithIdOnly = await prisma.clubSettings.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ClubSettingsUpdateManyAndReturnArgs>(args: SelectSubset<T, ClubSettingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ClubSettings.
+     * @param {ClubSettingsUpsertArgs} args - Arguments to update or create a ClubSettings.
+     * @example
+     * // Update or create a ClubSettings
+     * const clubSettings = await prisma.clubSettings.upsert({
+     *   create: {
+     *     // ... data to create a ClubSettings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ClubSettings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ClubSettingsUpsertArgs>(args: SelectSubset<T, ClubSettingsUpsertArgs<ExtArgs>>): Prisma__ClubSettingsClient<$Result.GetResult<Prisma.$ClubSettingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ClubSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClubSettingsCountArgs} args - Arguments to filter ClubSettings to count.
+     * @example
+     * // Count the number of ClubSettings
+     * const count = await prisma.clubSettings.count({
+     *   where: {
+     *     // ... the filter for the ClubSettings we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClubSettingsCountArgs>(
+      args?: Subset<T, ClubSettingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ClubSettingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ClubSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClubSettingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClubSettingsAggregateArgs>(args: Subset<T, ClubSettingsAggregateArgs>): Prisma.PrismaPromise<GetClubSettingsAggregateType<T>>
+
+    /**
+     * Group by ClubSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClubSettingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ClubSettingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ClubSettingsGroupByArgs['orderBy'] }
+        : { orderBy?: ClubSettingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ClubSettingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClubSettingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ClubSettings model
+   */
+  readonly fields: ClubSettingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ClubSettings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ClubSettingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ClubSettings model
+   */
+  interface ClubSettingsFieldRefs {
+    readonly id: FieldRef<"ClubSettings", 'String'>
+    readonly referralRewardPercent: FieldRef<"ClubSettings", 'Float'>
+    readonly coinsDescription: FieldRef<"ClubSettings", 'String'>
+    readonly updatedAt: FieldRef<"ClubSettings", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ClubSettings findUnique
+   */
+  export type ClubSettingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which ClubSettings to fetch.
+     */
+    where: ClubSettingsWhereUniqueInput
+  }
+
+  /**
+   * ClubSettings findUniqueOrThrow
+   */
+  export type ClubSettingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which ClubSettings to fetch.
+     */
+    where: ClubSettingsWhereUniqueInput
+  }
+
+  /**
+   * ClubSettings findFirst
+   */
+  export type ClubSettingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which ClubSettings to fetch.
+     */
+    where?: ClubSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClubSettings to fetch.
+     */
+    orderBy?: ClubSettingsOrderByWithRelationInput | ClubSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ClubSettings.
+     */
+    cursor?: ClubSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClubSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClubSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ClubSettings.
+     */
+    distinct?: ClubSettingsScalarFieldEnum | ClubSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * ClubSettings findFirstOrThrow
+   */
+  export type ClubSettingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which ClubSettings to fetch.
+     */
+    where?: ClubSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClubSettings to fetch.
+     */
+    orderBy?: ClubSettingsOrderByWithRelationInput | ClubSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ClubSettings.
+     */
+    cursor?: ClubSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClubSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClubSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ClubSettings.
+     */
+    distinct?: ClubSettingsScalarFieldEnum | ClubSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * ClubSettings findMany
+   */
+  export type ClubSettingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which ClubSettings to fetch.
+     */
+    where?: ClubSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClubSettings to fetch.
+     */
+    orderBy?: ClubSettingsOrderByWithRelationInput | ClubSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ClubSettings.
+     */
+    cursor?: ClubSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClubSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClubSettings.
+     */
+    skip?: number
+    distinct?: ClubSettingsScalarFieldEnum | ClubSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * ClubSettings create
+   */
+  export type ClubSettingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ClubSettings.
+     */
+    data: XOR<ClubSettingsCreateInput, ClubSettingsUncheckedCreateInput>
+  }
+
+  /**
+   * ClubSettings createMany
+   */
+  export type ClubSettingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ClubSettings.
+     */
+    data: ClubSettingsCreateManyInput | ClubSettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ClubSettings createManyAndReturn
+   */
+  export type ClubSettingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * The data used to create many ClubSettings.
+     */
+    data: ClubSettingsCreateManyInput | ClubSettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ClubSettings update
+   */
+  export type ClubSettingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ClubSettings.
+     */
+    data: XOR<ClubSettingsUpdateInput, ClubSettingsUncheckedUpdateInput>
+    /**
+     * Choose, which ClubSettings to update.
+     */
+    where: ClubSettingsWhereUniqueInput
+  }
+
+  /**
+   * ClubSettings updateMany
+   */
+  export type ClubSettingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ClubSettings.
+     */
+    data: XOR<ClubSettingsUpdateManyMutationInput, ClubSettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which ClubSettings to update
+     */
+    where?: ClubSettingsWhereInput
+    /**
+     * Limit how many ClubSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ClubSettings updateManyAndReturn
+   */
+  export type ClubSettingsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * The data used to update ClubSettings.
+     */
+    data: XOR<ClubSettingsUpdateManyMutationInput, ClubSettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which ClubSettings to update
+     */
+    where?: ClubSettingsWhereInput
+    /**
+     * Limit how many ClubSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ClubSettings upsert
+   */
+  export type ClubSettingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ClubSettings to update in case it exists.
+     */
+    where: ClubSettingsWhereUniqueInput
+    /**
+     * In case the ClubSettings found by the `where` argument doesn't exist, create a new ClubSettings with this data.
+     */
+    create: XOR<ClubSettingsCreateInput, ClubSettingsUncheckedCreateInput>
+    /**
+     * In case the ClubSettings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ClubSettingsUpdateInput, ClubSettingsUncheckedUpdateInput>
+  }
+
+  /**
+   * ClubSettings delete
+   */
+  export type ClubSettingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
+    /**
+     * Filter which ClubSettings to delete.
+     */
+    where: ClubSettingsWhereUniqueInput
+  }
+
+  /**
+   * ClubSettings deleteMany
+   */
+  export type ClubSettingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ClubSettings to delete
+     */
+    where?: ClubSettingsWhereInput
+    /**
+     * Limit how many ClubSettings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ClubSettings without action
+   */
+  export type ClubSettingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClubSettings
+     */
+    select?: ClubSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClubSettings
+     */
+    omit?: ClubSettingsOmit<ExtArgs> | null
   }
 
 
@@ -29332,6 +30486,9 @@ export namespace Prisma {
     imageUrl: 'imageUrl',
     confirmationCode: 'confirmationCode',
     maxRedemptionsPerClient: 'maxRedemptionsPerClient',
+    externalUrl: 'externalUrl',
+    originalPrice: 'originalPrice',
+    promoPrice: 'promoPrice',
     validFrom: 'validFrom',
     validTo: 'validTo',
     isActive: 'isActive',
@@ -29340,6 +30497,16 @@ export namespace Prisma {
   };
 
   export type OfferScalarFieldEnum = (typeof OfferScalarFieldEnum)[keyof typeof OfferScalarFieldEnum]
+
+
+  export const ClubSettingsScalarFieldEnum: {
+    id: 'id',
+    referralRewardPercent: 'referralRewardPercent',
+    coinsDescription: 'coinsDescription',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ClubSettingsScalarFieldEnum = (typeof ClubSettingsScalarFieldEnum)[keyof typeof ClubSettingsScalarFieldEnum]
 
 
   export const OfferRedemptionScalarFieldEnum: {
@@ -30958,6 +32125,9 @@ export namespace Prisma {
     imageUrl?: StringNullableFilter<"Offer"> | string | null
     confirmationCode?: StringNullableFilter<"Offer"> | string | null
     maxRedemptionsPerClient?: IntFilter<"Offer"> | number
+    externalUrl?: StringNullableFilter<"Offer"> | string | null
+    originalPrice?: FloatNullableFilter<"Offer"> | number | null
+    promoPrice?: FloatNullableFilter<"Offer"> | number | null
     validFrom?: DateTimeNullableFilter<"Offer"> | Date | string | null
     validTo?: DateTimeNullableFilter<"Offer"> | Date | string | null
     isActive?: BoolFilter<"Offer"> | boolean
@@ -30976,6 +32146,9 @@ export namespace Prisma {
     imageUrl?: SortOrderInput | SortOrder
     confirmationCode?: SortOrderInput | SortOrder
     maxRedemptionsPerClient?: SortOrder
+    externalUrl?: SortOrderInput | SortOrder
+    originalPrice?: SortOrderInput | SortOrder
+    promoPrice?: SortOrderInput | SortOrder
     validFrom?: SortOrderInput | SortOrder
     validTo?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -30997,6 +32170,9 @@ export namespace Prisma {
     imageUrl?: StringNullableFilter<"Offer"> | string | null
     confirmationCode?: StringNullableFilter<"Offer"> | string | null
     maxRedemptionsPerClient?: IntFilter<"Offer"> | number
+    externalUrl?: StringNullableFilter<"Offer"> | string | null
+    originalPrice?: FloatNullableFilter<"Offer"> | number | null
+    promoPrice?: FloatNullableFilter<"Offer"> | number | null
     validFrom?: DateTimeNullableFilter<"Offer"> | Date | string | null
     validTo?: DateTimeNullableFilter<"Offer"> | Date | string | null
     isActive?: BoolFilter<"Offer"> | boolean
@@ -31015,6 +32191,9 @@ export namespace Prisma {
     imageUrl?: SortOrderInput | SortOrder
     confirmationCode?: SortOrderInput | SortOrder
     maxRedemptionsPerClient?: SortOrder
+    externalUrl?: SortOrderInput | SortOrder
+    originalPrice?: SortOrderInput | SortOrder
+    promoPrice?: SortOrderInput | SortOrder
     validFrom?: SortOrderInput | SortOrder
     validTo?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -31040,11 +32219,63 @@ export namespace Prisma {
     imageUrl?: StringNullableWithAggregatesFilter<"Offer"> | string | null
     confirmationCode?: StringNullableWithAggregatesFilter<"Offer"> | string | null
     maxRedemptionsPerClient?: IntWithAggregatesFilter<"Offer"> | number
+    externalUrl?: StringNullableWithAggregatesFilter<"Offer"> | string | null
+    originalPrice?: FloatNullableWithAggregatesFilter<"Offer"> | number | null
+    promoPrice?: FloatNullableWithAggregatesFilter<"Offer"> | number | null
     validFrom?: DateTimeNullableWithAggregatesFilter<"Offer"> | Date | string | null
     validTo?: DateTimeNullableWithAggregatesFilter<"Offer"> | Date | string | null
     isActive?: BoolWithAggregatesFilter<"Offer"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Offer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Offer"> | Date | string
+  }
+
+  export type ClubSettingsWhereInput = {
+    AND?: ClubSettingsWhereInput | ClubSettingsWhereInput[]
+    OR?: ClubSettingsWhereInput[]
+    NOT?: ClubSettingsWhereInput | ClubSettingsWhereInput[]
+    id?: StringFilter<"ClubSettings"> | string
+    referralRewardPercent?: FloatFilter<"ClubSettings"> | number
+    coinsDescription?: StringNullableFilter<"ClubSettings"> | string | null
+    updatedAt?: DateTimeFilter<"ClubSettings"> | Date | string
+  }
+
+  export type ClubSettingsOrderByWithRelationInput = {
+    id?: SortOrder
+    referralRewardPercent?: SortOrder
+    coinsDescription?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClubSettingsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ClubSettingsWhereInput | ClubSettingsWhereInput[]
+    OR?: ClubSettingsWhereInput[]
+    NOT?: ClubSettingsWhereInput | ClubSettingsWhereInput[]
+    referralRewardPercent?: FloatFilter<"ClubSettings"> | number
+    coinsDescription?: StringNullableFilter<"ClubSettings"> | string | null
+    updatedAt?: DateTimeFilter<"ClubSettings"> | Date | string
+  }, "id">
+
+  export type ClubSettingsOrderByWithAggregationInput = {
+    id?: SortOrder
+    referralRewardPercent?: SortOrder
+    coinsDescription?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    _count?: ClubSettingsCountOrderByAggregateInput
+    _avg?: ClubSettingsAvgOrderByAggregateInput
+    _max?: ClubSettingsMaxOrderByAggregateInput
+    _min?: ClubSettingsMinOrderByAggregateInput
+    _sum?: ClubSettingsSumOrderByAggregateInput
+  }
+
+  export type ClubSettingsScalarWhereWithAggregatesInput = {
+    AND?: ClubSettingsScalarWhereWithAggregatesInput | ClubSettingsScalarWhereWithAggregatesInput[]
+    OR?: ClubSettingsScalarWhereWithAggregatesInput[]
+    NOT?: ClubSettingsScalarWhereWithAggregatesInput | ClubSettingsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ClubSettings"> | string
+    referralRewardPercent?: FloatWithAggregatesFilter<"ClubSettings"> | number
+    coinsDescription?: StringNullableWithAggregatesFilter<"ClubSettings"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"ClubSettings"> | Date | string
   }
 
   export type OfferRedemptionWhereInput = {
@@ -33637,6 +34868,9 @@ export namespace Prisma {
     imageUrl?: string | null
     confirmationCode?: string | null
     maxRedemptionsPerClient?: number
+    externalUrl?: string | null
+    originalPrice?: number | null
+    promoPrice?: number | null
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
@@ -33655,6 +34889,9 @@ export namespace Prisma {
     imageUrl?: string | null
     confirmationCode?: string | null
     maxRedemptionsPerClient?: number
+    externalUrl?: string | null
+    originalPrice?: number | null
+    promoPrice?: number | null
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
@@ -33673,6 +34910,9 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
     maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    promoPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -33691,6 +34931,9 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
     maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    promoPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -33709,6 +34952,9 @@ export namespace Prisma {
     imageUrl?: string | null
     confirmationCode?: string | null
     maxRedemptionsPerClient?: number
+    externalUrl?: string | null
+    originalPrice?: number | null
+    promoPrice?: number | null
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
@@ -33726,6 +34972,9 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
     maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    promoPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -33743,10 +34992,62 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
     maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    promoPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClubSettingsCreateInput = {
+    id?: string
+    referralRewardPercent?: number
+    coinsDescription?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type ClubSettingsUncheckedCreateInput = {
+    id?: string
+    referralRewardPercent?: number
+    coinsDescription?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type ClubSettingsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referralRewardPercent?: FloatFieldUpdateOperationsInput | number
+    coinsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClubSettingsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referralRewardPercent?: FloatFieldUpdateOperationsInput | number
+    coinsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClubSettingsCreateManyInput = {
+    id?: string
+    referralRewardPercent?: number
+    coinsDescription?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type ClubSettingsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referralRewardPercent?: FloatFieldUpdateOperationsInput | number
+    coinsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClubSettingsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referralRewardPercent?: FloatFieldUpdateOperationsInput | number
+    coinsDescription?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -36429,6 +37730,9 @@ export namespace Prisma {
     imageUrl?: SortOrder
     confirmationCode?: SortOrder
     maxRedemptionsPerClient?: SortOrder
+    externalUrl?: SortOrder
+    originalPrice?: SortOrder
+    promoPrice?: SortOrder
     validFrom?: SortOrder
     validTo?: SortOrder
     isActive?: SortOrder
@@ -36439,6 +37743,8 @@ export namespace Prisma {
   export type OfferAvgOrderByAggregateInput = {
     cost?: SortOrder
     maxRedemptionsPerClient?: SortOrder
+    originalPrice?: SortOrder
+    promoPrice?: SortOrder
   }
 
   export type OfferMaxOrderByAggregateInput = {
@@ -36451,6 +37757,9 @@ export namespace Prisma {
     imageUrl?: SortOrder
     confirmationCode?: SortOrder
     maxRedemptionsPerClient?: SortOrder
+    externalUrl?: SortOrder
+    originalPrice?: SortOrder
+    promoPrice?: SortOrder
     validFrom?: SortOrder
     validTo?: SortOrder
     isActive?: SortOrder
@@ -36468,6 +37777,9 @@ export namespace Prisma {
     imageUrl?: SortOrder
     confirmationCode?: SortOrder
     maxRedemptionsPerClient?: SortOrder
+    externalUrl?: SortOrder
+    originalPrice?: SortOrder
+    promoPrice?: SortOrder
     validFrom?: SortOrder
     validTo?: SortOrder
     isActive?: SortOrder
@@ -36478,6 +37790,8 @@ export namespace Prisma {
   export type OfferSumOrderByAggregateInput = {
     cost?: SortOrder
     maxRedemptionsPerClient?: SortOrder
+    originalPrice?: SortOrder
+    promoPrice?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -36494,6 +37808,35 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type ClubSettingsCountOrderByAggregateInput = {
+    id?: SortOrder
+    referralRewardPercent?: SortOrder
+    coinsDescription?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClubSettingsAvgOrderByAggregateInput = {
+    referralRewardPercent?: SortOrder
+  }
+
+  export type ClubSettingsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    referralRewardPercent?: SortOrder
+    coinsDescription?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClubSettingsMinOrderByAggregateInput = {
+    id?: SortOrder
+    referralRewardPercent?: SortOrder
+    coinsDescription?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClubSettingsSumOrderByAggregateInput = {
+    referralRewardPercent?: SortOrder
   }
 
   export type EnumRedemptionStatusFilter<$PrismaModel = never> = {
@@ -44534,6 +45877,9 @@ export namespace Prisma {
     imageUrl?: string | null
     confirmationCode?: string | null
     maxRedemptionsPerClient?: number
+    externalUrl?: string | null
+    originalPrice?: number | null
+    promoPrice?: number | null
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
@@ -44551,6 +45897,9 @@ export namespace Prisma {
     imageUrl?: string | null
     confirmationCode?: string | null
     maxRedemptionsPerClient?: number
+    externalUrl?: string | null
+    originalPrice?: number | null
+    promoPrice?: number | null
     validFrom?: Date | string | null
     validTo?: Date | string | null
     isActive?: boolean
@@ -44653,6 +46002,9 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
     maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    promoPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -44670,6 +46022,9 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     confirmationCode?: NullableStringFieldUpdateOperationsInput | string | null
     maxRedemptionsPerClient?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    promoPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     validFrom?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     validTo?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean

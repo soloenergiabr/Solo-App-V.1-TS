@@ -65,4 +65,11 @@ export class PrismaTransactionRepository implements TransactionRepository {
 
         return result._sum.amount || 0;
     }
+
+    async hasIndicationReward(indicationId: string): Promise<boolean> {
+        const count = await this.prisma.transaction.count({
+            where: { indicationId, type: 'indication_reward' },
+        });
+        return count > 0;
+    }
 }

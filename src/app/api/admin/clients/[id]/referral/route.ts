@@ -1,11 +1,16 @@
-import { PrismaTransactionRepository } from "@/backend/club/repositories/implementations/prisma.transaction.repository";
-import { TransactionService } from "@/backend/club/services/transaction.service";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import { withHandle } from '@/app/api/api-utils';
+import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware';
+import { listIndicationsForAdmin } from '@/backend/club/admin-indications';
 
-const clienteReferral = async () => {
-    // Status lead -> client
-    // Criar um usuário pro cliente
-    // Criar uma transcacao de entrada do tipo indicacao no client que indicou com 5% do vlaor total do projeto
-}
+// Indicações feitas por um cliente (ele como indicador).
+const getClientReferrals = async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> },
+) => {
+    await AuthMiddleware.requireRole(request, 'master');
+    const { id } = await params;
+    return NextResponse.json({ success: true, data: await listIndicationsForAdmin({ referrerId: id }) });
+};
 
-export const POST = clienteReferral;
+export const GET = withHandle(getClientReferrals);
