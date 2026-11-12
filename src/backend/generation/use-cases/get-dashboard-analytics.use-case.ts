@@ -90,6 +90,26 @@ export const GetDashboardAnalyticsResponseSchema = z.object({
 export type GetDashboardAnalyticsRequest = z.infer<typeof GetDashboardAnalyticsRequestSchema>;
 export type GetDashboardAnalyticsResponse = z.infer<typeof GetDashboardAnalyticsResponseSchema>;
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Inicio do periodo anterior. Mes e ano voltam pelo calendario (subtrair a duracao
+ * fazia o "mes anterior" comecar no dia 2, ou 1 dia antes, conforme o tamanho do mes).
+ */
+export function previousPeriodStart(start: Date, end: Date): Date {
+    const days = (end.getTime() - start.getTime()) / DAY_MS;
+    const shifted = new Date(start);
+    if (days >= 27 && days <= 32) {
+        shifted.setUTCMonth(shifted.getUTCMonth() - 1);
+        return shifted;
+    }
+    if (days >= 364 && days <= 367) {
+        shifted.setUTCFullYear(shifted.getUTCFullYear() - 1);
+        return shifted;
+    }
+    return new Date(start.getTime() - (end.getTime() - start.getTime()));
+}
+
 export class GetDashboardAnalyticsUseCase {
     constructor(
         private inverterRepository: InverterRepository,
@@ -332,9 +352,7 @@ export class GetDashboardAnalyticsUseCase {
         if (request?.startDate && request?.endDate) {
             const start = new Date(request.startDate);
             const end = new Date(request.endDate);
-            const periodDuration = end.getTime() - start.getTime();
-
-            const previousStart = new Date(start.getTime() - periodDuration);
+            const previousStart = previousPeriodStart(start, end);
             const previousEnd = start;
 
             const previousUnits = await this.generationUnitRepository.findByInverterIds(
