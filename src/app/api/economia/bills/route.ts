@@ -53,6 +53,8 @@ const getEconomiaBillsRoute = async (request: NextRequest): Promise<NextResponse
         barcode: b.barcode ?? null,
         billFileUrl: b.billFileUrl ?? null,
         estimatedSavings: Number(b.estimatedSavings ?? 0),
+        consumptionKwh: b.consumptionKwh != null ? Number(b.consumptionKwh) : null,
+        compensatedEnergyKwh: b.compensatedEnergyKwh != null ? Number(b.compensatedEnergyKwh) : null,
         titularName: b.consumerUnit?.accountHolder ?? b.accountHolder ?? null,
         payerName: b.consumerUnit?.payerName ?? null,
         aiAnalysis: b.aiAnalysis ?? null,

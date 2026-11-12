@@ -18,6 +18,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
+import { ExportMenu, downloadCsv } from '@/frontend/lib/export'
 
 function capitalize(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1)
@@ -30,6 +31,24 @@ const statusConfig: Record<
     paga: { variant: 'secondary', label: 'Paga' },
     a_pagar: { variant: 'outline', label: 'A pagar' },
     vencida: { variant: 'destructive', label: 'Vencida' },
+}
+
+function exportBills(bills: AccountBill[]) {
+    downloadCsv(
+        'historico-de-contas',
+        ['Mês/ano', 'UC', 'Consumo (kWh)', 'Compensado (kWh)', 'Valor (R$)', 'Economia (R$)', 'Vencimento', 'Status'],
+        bills.map((bill) => [
+            `${String(bill.referenceMonth).padStart(2, '0')}/${bill.referenceYear}`,
+            bill.consumerUnitName,
+            bill.consumptionKwh,
+            bill.compensatedEnergyKwh,
+            bill.amountDue,
+            bill.estimatedSavings,
+            // dueDate é @db.Date: formatar em UTC para não voltar um dia.
+            bill.dueDate ? new Date(bill.dueDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : null,
+            statusConfig[bill.paymentStatus]?.label ?? bill.paymentStatus,
+        ]),
+    )
 }
 
 export function BillHistory() {
@@ -79,6 +98,9 @@ export function BillHistory() {
 
     return (
         <div className="space-y-8" data-testid="bill-history-table">
+            <div className="flex justify-end">
+                <ExportMenu onCsv={() => exportBills(bills)} />
+            </div>
             {grouped.map(([year, yearBills]) => (
                 <section key={year}>
                     <h3 className="text-lg font-semibold mb-3">{year}</h3>
