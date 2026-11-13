@@ -46,14 +46,14 @@ export function InvertersTable({ analytics }: InvertersTableProps) {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Inversor</TableHead>
-                                <TableHead>Provider</TableHead>
+                                <TableHead className="hidden sm:table-cell">Provider</TableHead>
                                 <TableHead className="text-right">
                                     <div className="flex items-center justify-end gap-1">
                                         <Zap className="h-3 w-3" />
                                         Energia Total
                                     </div>
                                 </TableHead>
-                                <TableHead className="text-right">
+                                <TableHead className="hidden sm:table-cell text-right">
                                     <div className="flex items-center justify-end gap-1">
                                         <Activity className="h-3 w-3" />
                                         Potência Média
@@ -65,8 +65,8 @@ export function InvertersTable({ analytics }: InvertersTableProps) {
                                         Pico
                                     </div>
                                 </TableHead>
-                                <TableHead className="text-right">Pontos</TableHead>
-                                <TableHead>Última Atualização</TableHead>
+                                <TableHead className="hidden sm:table-cell text-right">Pontos</TableHead>
+                                <TableHead className="hidden sm:table-cell">Última Atualização</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -74,7 +74,8 @@ export function InvertersTable({ analytics }: InvertersTableProps) {
                                 const status = deriveStatus(inverter);
                                 return (
                                     <TableRow key={inverter.inverterId}>
-                                        <TableCell className="font-medium">
+                                        {/* No celular ficam só inversor, energia e pico; o resto aparece a partir de sm. */}
+                                        <TableCell className="font-medium whitespace-normal sm:whitespace-nowrap">
                                             <div className="flex items-center gap-2">
                                                 <span
                                                     className={`inline-block h-2 w-2 rounded-full bg-current ${statusToColor(status)}`}
@@ -83,7 +84,7 @@ export function InvertersTable({ analytics }: InvertersTableProps) {
                                                 {inverter.inverterName}
                                             </div>
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell className="hidden sm:table-cell">
                                             <Badge
                                                 variant="secondary"
                                                 className="bg-muted text-muted-foreground"
@@ -94,16 +95,16 @@ export function InvertersTable({ analytics }: InvertersTableProps) {
                                         <TableCell className="text-right font-semibold">
                                             {formatNumber(inverter.totalEnergy)} kWh
                                         </TableCell>
-                                        <TableCell className="text-right">
+                                        <TableCell className="hidden sm:table-cell text-right">
                                             {formatNumber(inverter.averagePower)} W
                                         </TableCell>
                                         <TableCell className="text-right font-medium text-foreground">
                                             {formatNumber(inverter.peakPower)} W
                                         </TableCell>
-                                        <TableCell className="text-right text-muted-foreground">
+                                        <TableCell className="hidden sm:table-cell text-right text-muted-foreground">
                                             {inverter.dataPoints}
                                         </TableCell>
-                                        <TableCell className="text-sm text-muted-foreground">
+                                        <TableCell className="hidden sm:table-cell text-sm text-muted-foreground">
                                             {inverter.lastUpdate
                                                 ? new Date(inverter.lastUpdate).toLocaleString('pt-BR')
                                                 : 'N/A'

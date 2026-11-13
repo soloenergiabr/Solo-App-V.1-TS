@@ -188,7 +188,7 @@ describe('TechnicalDataViewer', () => {
 
     fireEvent.click(screen.getByText('Dados Técnicos da Fatura'))
 
-    expect(screen.getByText('320')).toBeDefined()
+    expect(screen.getByText('320', { exact: false })).toBeDefined()
     expect(screen.getByText('R$ 0.51')).toBeDefined()
     expect(screen.getByText('R$ 163.2')).toBeDefined()
     expect(screen.getByText('R$ -120')).toBeDefined()

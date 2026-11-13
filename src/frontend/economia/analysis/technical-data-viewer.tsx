@@ -185,8 +185,8 @@ function BillingItemsTable({ billingItems }: { billingItems: unknown[] | null })
           <TableRow>
             <TableHead>Descrição</TableHead>
             <TableHead className="text-right">Quantidade</TableHead>
-            <TableHead className="text-right">Unidade</TableHead>
-            <TableHead className="text-right">Preço Unitário</TableHead>
+            <TableHead className="hidden sm:table-cell text-right">Unidade</TableHead>
+            <TableHead className="hidden sm:table-cell text-right">Preço Unitário</TableHead>
             <TableHead className="text-right">Total</TableHead>
           </TableRow>
         </TableHeader>
@@ -201,7 +201,8 @@ function BillingItemsTable({ billingItems }: { billingItems: unknown[] | null })
             const total = item.total ?? item.total_value
             return (
               <TableRow key={idx} className={isCredit ? 'text-success' : ''}>
-                <TableCell>
+                {/* No celular: descrição quebra linha e a unidade vai junto da quantidade. */}
+                <TableCell className="whitespace-normal sm:whitespace-nowrap">
                   <span className="flex items-center gap-1">
                     {desc}
                     {term && (
@@ -218,9 +219,12 @@ function BillingItemsTable({ billingItems }: { billingItems: unknown[] | null })
                     )}
                   </span>
                 </TableCell>
-                <TableCell className="text-right">{quantity ?? '—'}</TableCell>
-                <TableCell className="text-right">{unit ?? '—'}</TableCell>
                 <TableCell className="text-right">
+                  {quantity ?? '—'}
+                  {quantity != null && unit && <span className="sm:hidden"> {unit}</span>}
+                </TableCell>
+                <TableCell className="hidden sm:table-cell text-right">{unit ?? '—'}</TableCell>
+                <TableCell className="hidden sm:table-cell text-right">
                   {unitPrice != null ? formatBRL(unitPrice, { cents: true }) : '—'}
                 </TableCell>
                 <TableCell className="text-right font-medium">
