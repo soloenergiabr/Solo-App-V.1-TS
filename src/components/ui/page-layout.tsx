@@ -172,18 +172,6 @@ const titleVariants = {
     },
 }
 
-const actionsVariants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-        opacity: 1,
-        x: 0,
-        transition: {
-            duration: 0.4,
-            ease: [0.4, 0, 0.2, 1],
-        },
-    },
-}
-
 export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps) {
     // Sino so para o cliente (admin nao recebe notificacoes in-app).
     const roles = useOptionalAuthContext()?.user?.roles ?? []
@@ -195,24 +183,21 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
             animate="visible"
             variants={pageHeaderVariants as any}
         >
-            {/* No celular título/subtítulo ocupam a largura toda e as ações descem para a linha de baixo. */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <motion.div className="min-w-0" variants={titleVariants as any}>
+            {/* Celular: sino e tema na linha do título; as ações descem para uma linha própria. */}
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-3">
+                <motion.div className="min-w-0 flex-1" variants={titleVariants as any}>
                     <h1 className="font-display text-2xl font-bold text-foreground">{title}</h1>
                     {subtitle && (
                         <p className="text-sm text-muted-foreground">{subtitle}</p>
                     )}
                 </motion.div>
-                {/* Acoes e tema juntos a direita (com justify-between soltos, as acoes ficavam no meio). */}
-                <div className="flex flex-wrap items-center gap-2">
-                    {actions && (
-                        <motion.div
-                            className="flex flex-wrap items-center gap-2"
-                            variants={actionsVariants as any}
-                        >
-                            {actions}
-                        </motion.div>
-                    )}
+                {/* Sem animação própria: no celular a variante ficava presa em opacity 0. */}
+                {actions && (
+                    <div className="order-last flex w-full flex-wrap items-center gap-2 sm:order-none sm:w-auto">
+                        {actions}
+                    </div>
+                )}
+                <div className="flex shrink-0 items-center gap-2">
                     {showBell && <div className="print:hidden"><NotificationBell /></div>}
                     <div className="print:hidden"><ThemeToggle /></div>
                 </div>
