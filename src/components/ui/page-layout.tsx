@@ -195,18 +195,19 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
             animate="visible"
             variants={pageHeaderVariants as any}
         >
-            <div className="flex items-center justify-between">
-                <motion.div variants={titleVariants as any}>
+            {/* No celular título/subtítulo ocupam a largura toda e as ações descem para a linha de baixo. */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <motion.div className="min-w-0" variants={titleVariants as any}>
                     <h1 className="font-display text-2xl font-bold text-foreground">{title}</h1>
                     {subtitle && (
                         <p className="text-sm text-muted-foreground">{subtitle}</p>
                     )}
                 </motion.div>
                 {/* Acoes e tema juntos a direita (com justify-between soltos, as acoes ficavam no meio). */}
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                     {actions && (
                         <motion.div
-                            className="flex items-center gap-2"
+                            className="flex flex-wrap items-center gap-2"
                             variants={actionsVariants as any}
                         >
                             {actions}
