@@ -174,7 +174,10 @@ export class GetDashboardAnalyticsUseCase {
         const averageEnergy = allUnits.length > 0 ? totalEnergy / allUnits.length : 0;
         const currentPower = allUnits[allUnits.length - 1]?.power || 0;
         const totalPower = currentPower;
-        const averagePower = allUnits.length > 0 ? totalPower / allUnits.length : 0;
+        // Média das leituras reais (antes era a potência atual dividida pelo nº de pontos).
+        const averagePower = allUnits.length > 0
+            ? allUnits.reduce((sum, unit) => sum + unit.power, 0) / allUnits.length
+            : 0;
 
         const peakPowerUnit = allUnits.reduce((max, unit) =>
             unit.power > max.power ? unit : max,
