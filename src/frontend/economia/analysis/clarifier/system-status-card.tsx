@@ -80,15 +80,15 @@ export function SystemStatusCard({ expectedGeneration, actualGeneration, status 
           />
         </div>
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>{fmt(actualGeneration)} kWh</span>
-          <span>{fmt(expectedGeneration)} kWh</span>
+          <span>{fmt(actualGeneration)}</span>
+          <span>{fmt(expectedGeneration)}</span>
         </div>
       </div>
 
       {status !== 'adequate' && gap > 0 && (
         <div className="flex items-center justify-between px-3 py-2 bg-background/60 rounded-lg border border-border/50">
           <span className="text-xs text-muted-foreground">Déficit de geração</span>
-          <span className="text-sm font-semibold tabular-nums" style={{ color: cfg.color }}>{fmt(gap)} kWh</span>
+          <span className="text-sm font-semibold tabular-nums" style={{ color: cfg.color }}>{fmt(gap)}</span>
         </div>
       )}
     </motion.div>

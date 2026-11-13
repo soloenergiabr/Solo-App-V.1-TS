@@ -21,6 +21,7 @@ export function mapFaturapiParsedToBill(parsed: Obj | null | undefined) {
     const tariffFlag = section(parsed, 'tariffFlag');
     const demand = section(parsed, 'demand');
     const dg = section(parsed, 'distributedGeneration');
+    const dgCredit = numberOrNull(dg.valueTotal);
 
     const fields = {
         consumerClass: stringOrNull(customer.consumerClass),
@@ -42,6 +43,8 @@ export function mapFaturapiParsedToBill(parsed: Obj | null | undefined) {
         tariffTusdValue: numberOrNull(charges.rateTusd),
         tariffFlag: stringOrNull(tariffFlag.flag),
         tariffFlagCost: numberOrNull(tariffFlag.value),
+        // Credito da geracao distribuida vem negativo na fatura: e quanto o solar abateu da conta.
+        estimatedSavings: dgCredit != null && dgCredit < 0 ? Math.round(-dgCredit * 100) / 100 : null,
     };
 
     // Sem nulos: assim os campos se combinam com a analise por IA sem apagar nada.

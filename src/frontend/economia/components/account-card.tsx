@@ -8,10 +8,12 @@ import { FileText, CheckCircle2, Loader2 } from 'lucide-react'
 import { formatBRL, CopyPixButton } from '@/frontend/telemetry-kit'
 import type { AccountBill } from '@/shared/controle/types'
 import { resolveBillStatus, statusToBadge } from '../lib/bill-status'
+import { apiErrorMessage, useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi'
 
 const TONE = { success: 'text-success', warning: 'text-warning', destructive: 'text-destructive' } as const
 
 export function AccountCard({ bill, className }: { bill: AccountBill; className?: string }) {
+    const api = useAuthenticatedApi()
     const [isConfirming, setIsConfirming] = useState(false)
     const [confirmError, setConfirmError] = useState<string | null>(null)
     const [isConfirmed, setIsConfirmed] = useState(false)
@@ -23,17 +25,10 @@ export function AccountCard({ bill, className }: { bill: AccountBill; className?
         setIsConfirming(true)
         setConfirmError(null)
         try {
-            const res = await fetch(`/api/economia/bills/${bill.id}/confirm-payment`, {
-                method: 'POST',
-            })
-            const json = await res.json()
-            if (!res.ok || !json.success) {
-                setConfirmError(json.message ?? 'Falha ao confirmar pagamento')
-                return
-            }
+            await api.post(`/economia/bills/${bill.id}/confirm-payment`)
             setIsConfirmed(true)
         } catch (err) {
-            setConfirmError(err instanceof Error ? err.message : 'Erro inesperado')
+            setConfirmError(apiErrorMessage(err, 'Falha ao confirmar pagamento'))
         } finally {
             setIsConfirming(false)
         }

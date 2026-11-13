@@ -98,7 +98,7 @@ export function Sidebar({ items, sections, type, user, onLogout, logoSrc, onItem
               <Link href="/" className="flex items-center justify-center">
                 <Image
                   src={logoSrc || "/logo.svg"}
-                  alt="Aura Health"
+                  alt="Solo Energia"
                   width={180}
                   height={180}
                   className="object-contain"

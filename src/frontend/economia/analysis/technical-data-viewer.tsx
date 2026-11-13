@@ -72,7 +72,8 @@ function connectionLabel(v: string | null): string {
 function formatDate(d: string | null): string {
   if (!d) return '—'
   try {
-    return new Date(d).toLocaleDateString('pt-BR')
+    // Datas puras (@db.Date) chegam em UTC; sem timeZone o Brasil mostra o dia anterior.
+    return new Date(d).toLocaleDateString('pt-BR', { timeZone: 'UTC' })
   } catch {
     return d
   }

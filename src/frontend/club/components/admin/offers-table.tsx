@@ -10,7 +10,25 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { OfferForm } from './offer-form';
 import { toast } from 'sonner';
+import { formatBRL } from '@/frontend/telemetry-kit';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+
+const formatDay = (date: Date | string) => new Date(date).toLocaleDateString('pt-BR');
+
+function offerStatus(offer: OfferModel): { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' } {
+    const now = new Date();
+    if (!offer.isActive) return { label: 'Inativa', variant: 'secondary' };
+    if (offer.validTo && new Date(offer.validTo) < now) return { label: 'Expirada', variant: 'destructive' };
+    if (offer.validFrom && new Date(offer.validFrom) > now) return { label: 'Agendada', variant: 'outline' };
+    return { label: 'Ativa', variant: 'default' };
+}
+
+function validityLabel(offer: OfferModel) {
+    if (offer.validFrom && offer.validTo) return `${formatDay(offer.validFrom)} a ${formatDay(offer.validTo)}`;
+    if (offer.validFrom) return `a partir de ${formatDay(offer.validFrom)}`;
+    if (offer.validTo) return `até ${formatDay(offer.validTo)}`;
+    return 'Sem prazo';
+}
 
 export function OffersTable() {
     const api = useAuthenticatedApi();
@@ -23,20 +41,7 @@ export function OffersTable() {
     const fetchOffers = useCallback(async () => {
         try {
             setIsLoading(true);
-            const response = await api.get('/club/offers'); // Using public endpoint for list, or admin specific if needed to see inactive
-            // Assuming public endpoint returns all for now, or we might need an admin endpoint to see inactive ones.
-            // Let's use the public one for now, but ideally we should have an admin one that returns ALL offers including inactive.
-            // Since we didn't create a specific admin list endpoint, let's assume the public one filters.
-            // Wait, if I want to manage them, I need to see inactive ones too.
-            // The public endpoint `clubService.getAllOffers()` calls `offerRepository.findActive()`.
-            // I need a `findAll` in repository and service for admin.
-            // For now, let's stick with what we have and maybe I'll miss inactive ones.
-            // Actually, I should probably fix this.
-            // Let's assume for this step I'll use the existing one and if I need to see inactive I'll add it later.
-            // Or better, let's check if I can quickly add findAll.
-            // The plan didn't explicitly say "Add findAll for offers", but it's implied for management.
-            // I'll proceed with this and if I can't see inactive offers I'll know why.
-
+            const response = await api.get('/club/admin/offers');
             if (response.data.success) {
                 setOffers(response.data.data);
             }
@@ -101,6 +106,8 @@ export function OffersTable() {
                             <TableHead>Título</TableHead>
                             <TableHead>Parceiro</TableHead>
                             <TableHead>Custo</TableHead>
+                            <TableHead>Preço</TableHead>
+                            <TableHead>Validade</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead className="text-right">Ações</TableHead>
                         </TableRow>
@@ -108,13 +115,13 @@ export function OffersTable() {
                     <TableBody>
                         {isLoading ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center py-8">
+                                <TableCell colSpan={7} className="text-center py-8">
                                     Carregando...
                                 </TableCell>
                             </TableRow>
                         ) : offers.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                                     Nenhuma oferta encontrada.
                                 </TableCell>
                             </TableRow>
@@ -123,11 +130,20 @@ export function OffersTable() {
                                 <TableRow key={offer.id}>
                                     <TableCell className="font-medium">{offer.title}</TableCell>
                                     <TableCell>{offer.partner}</TableCell>
-                                    <TableCell>{offer.cost}</TableCell>
+                                    <TableCell>{offer.cost} coins</TableCell>
+                                    <TableCell className="whitespace-nowrap">
+                                        {offer.promoPrice != null ? (
+                                            <>
+                                                {offer.originalPrice != null && (
+                                                    <span className="mr-1 text-xs text-muted-foreground line-through">{formatBRL(offer.originalPrice, { cents: true })}</span>
+                                                )}
+                                                {formatBRL(offer.promoPrice, { cents: true })}
+                                            </>
+                                        ) : offer.originalPrice != null ? formatBRL(offer.originalPrice, { cents: true }) : '—'}
+                                    </TableCell>
+                                    <TableCell className="whitespace-nowrap text-sm">{validityLabel(offer)}</TableCell>
                                     <TableCell>
-                                        <Badge variant={offer.isActive ? 'default' : 'secondary'}>
-                                            {offer.isActive ? 'Ativa' : 'Inativa'}
-                                        </Badge>
+                                        <Badge variant={offerStatus(offer).variant}>{offerStatus(offer).label}</Badge>
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex justify-end gap-2">
@@ -147,7 +163,7 @@ export function OffersTable() {
             </div>
 
             <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-                <DialogContent className="sm:max-w-[600px]">
+                <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
                     <DialogHeader>
                         <DialogTitle>{editingOffer ? 'Editar Oferta' : 'Nova Oferta'}</DialogTitle>
                     </DialogHeader>
@@ -164,7 +180,7 @@ export function OffersTable() {
                     <AlertDialogHeader>
                         <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Esta ação não pode ser desfeita. Isso excluirá permanentemente a oferta "{deletingOffer?.title}".
+                            Esta ação não pode ser desfeita. Isso excluirá permanentemente a oferta “{deletingOffer?.title}”.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

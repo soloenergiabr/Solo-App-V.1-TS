@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ThemeToggle } from './theme-toggle'
+import { useOptionalAuthContext } from '@/frontend/auth/contexts/auth-context'
+import { NotificationBell } from '@/frontend/notifications/notification-bell'
 
 interface PageLayoutProps {
     children: ReactNode
@@ -79,7 +81,7 @@ export function PageLayout({ children, header, footer, tabs, className = '' }: P
 
     return (
         <motion.div
-            className={`flex flex-col h-full bg-background ${className} overflow-hidden`}
+            className={`flex flex-col h-full bg-background ${className} overflow-hidden print:h-auto print:overflow-visible`}
             variants={containerVariants as any}
             initial="hidden"
             animate="visible"
@@ -121,7 +123,7 @@ export function PageLayout({ children, header, footer, tabs, className = '' }: P
 
 
             <motion.div
-                className="flex-1 overflow-auto h-full p-4"
+                className="flex-1 overflow-auto h-full p-4 print:h-auto print:overflow-visible"
                 variants={contentVariants as any}
             >
                 {children}
@@ -183,6 +185,10 @@ const actionsVariants = {
 }
 
 export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps) {
+    // Sino so para o cliente (admin nao recebe notificacoes in-app).
+    const roles = useOptionalAuthContext()?.user?.roles ?? []
+    const showBell = roles.includes('user') && !roles.includes('master')
+
     return (
         <motion.div
             initial="hidden"
@@ -196,15 +202,19 @@ export function PageHeader({ title, subtitle, actions, extra }: PageHeaderProps)
                         <p className="text-sm text-muted-foreground">{subtitle}</p>
                     )}
                 </motion.div>
-                {actions && (
-                    <motion.div
-                        className="flex items-center gap-2"
-                        variants={actionsVariants as any}
-                    >
-                        {actions}
-                    </motion.div>
-                )}
-                <ThemeToggle />
+                {/* Acoes e tema juntos a direita (com justify-between soltos, as acoes ficavam no meio). */}
+                <div className="flex items-center gap-2">
+                    {actions && (
+                        <motion.div
+                            className="flex items-center gap-2"
+                            variants={actionsVariants as any}
+                        >
+                            {actions}
+                        </motion.div>
+                    )}
+                    {showBell && <div className="print:hidden"><NotificationBell /></div>}
+                    <div className="print:hidden"><ThemeToggle /></div>
+                </div>
             </div>
             {extra && (
                 <motion.div

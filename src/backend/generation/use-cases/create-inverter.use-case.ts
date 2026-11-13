@@ -6,7 +6,7 @@ import { UserContext } from '@/backend/auth/models/user-context.model';
 // Request Schema
 export const CreateInverterRequestSchema = z.object({
     name: z.string().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
-    provider: z.enum(['solis', 'solplanet', 'growatt', 'deye', 'hoymiles', 'mock', 'other']),
+    provider: z.enum(['solis', 'solplanet', 'growatt', 'deye', 'hoymiles', 'auxsol', 'mock', 'other']),
     providerId: z.string().min(1, 'Provider ID is required'),
     providerApiKey: z.string().optional(),
     providerApiSecret: z.string().optional(),

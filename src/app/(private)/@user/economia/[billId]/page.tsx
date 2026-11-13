@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from 'react'
 import { BillAnalysisScreen } from '@/frontend/economia/analysis/bill-analysis-screen'
 import type { BillDetail } from '@/frontend/economia/analysis/types'
+import { apiErrorMessage, useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi'
 
 export default function BillAnalysisPage({
     params,
@@ -10,11 +11,13 @@ export default function BillAnalysisPage({
     params: Promise<{ billId: string }>
 }) {
     const { billId } = use(params)
+    const api = useAuthenticatedApi()
     const [bill, setBill] = useState<BillDetail | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
+        if (!api.isAuthenticated) return
         let cancelled = false
 
         async function fetchBill() {
@@ -22,20 +25,12 @@ export default function BillAnalysisPage({
             setError(null)
 
             try {
-                const res = await fetch(`/api/economia/bills/${billId}`)
-                const json = await res.json()
-
+                const { data: json } = await api.get(`/economia/bills/${billId}`)
                 if (cancelled) return
-
-                if (!res.ok || !json.success) {
-                    setError(json.message ?? 'Falha ao carregar fatura')
-                    return
-                }
-
                 setBill(json.data as BillDetail)
             } catch (err) {
                 if (!cancelled) {
-                    setError(err instanceof Error ? err.message : 'Erro inesperado')
+                    setError(apiErrorMessage(err, 'Não foi possível carregar a fatura.'))
                 }
             } finally {
                 if (!cancelled) setIsLoading(false)
@@ -47,7 +42,8 @@ export default function BillAnalysisPage({
         return () => {
             cancelled = true
         }
-    }, [billId])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [billId, api.isAuthenticated])
 
     return (
         <BillAnalysisScreen

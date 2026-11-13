@@ -11,7 +11,7 @@ describe('mapFaturapiParsedToBill', () => {
             charges: { energy: 49.25, publicLighting: 12.58, fine: 1.04, interest: null, rateTe: 0.21326, rateTusd: 0.48849, sectorCharges: null },
             tariffFlag: { flag: 'AMARELA', value: 3.41 },
             demand: { contractedKw: null, measuredPeakKw: null },
-            distributedGeneration: { compensatedKwh: 164, creditBalanceKwh: 2190.4 },
+            distributedGeneration: { compensatedKwh: 164, creditBalanceKwh: 2190.4, valueTotal: -442.79 },
         })
 
         expect(fields).toEqual({
@@ -30,6 +30,7 @@ describe('mapFaturapiParsedToBill', () => {
             tariffTusdValue: 0.48849,
             tariffFlag: 'AMARELA',
             tariffFlagCost: 3.41,
+            estimatedSavings: 442.79,
         })
     })
 

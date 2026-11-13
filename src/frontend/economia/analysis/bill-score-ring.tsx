@@ -38,7 +38,7 @@ export function BillScoreRing({
                 viewBox={`0 0 ${dim} ${dim}`}
                 className="shrink-0"
                 role="img"
-                aria-label="Pontuacao indisponivel"
+                aria-label="Pontuação indisponível"
             >
                 {/* Dashed background ring */}
                 <circle

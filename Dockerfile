@@ -25,6 +25,15 @@ RUN npm i -g pnpm@10.33.2
 # Gerar Prisma Client (não precisa de DATABASE_URL)
 RUN pnpm run db:generate
 
+# Variaveis NEXT_PUBLIC_* usadas no navegador sao embutidas no build: o .env nao entra
+# no contexto (.dockerignore), entao chegam como build args do docker-compose.
+ARG NEXT_PUBLIC_BASE_URL
+ARG NEXT_PUBLIC_SUPPORT_WHATSAPP
+ARG NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL \
+    NEXT_PUBLIC_SUPPORT_WHATSAPP=$NEXT_PUBLIC_SUPPORT_WHATSAPP \
+    NEXT_PUBLIC_STRIPE_PUBLIC_KEY=$NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+
 # Build do Next.js
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build

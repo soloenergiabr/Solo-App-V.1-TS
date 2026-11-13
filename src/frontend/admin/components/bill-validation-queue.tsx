@@ -53,7 +53,7 @@ type ApiEnvelope<T> = {
 async function unwrapMutation<T>(request: Promise<{ data: ApiEnvelope<T> }>): Promise<T> {
     const response = await request;
     if (!response.data.success) {
-        throw new Error(response.data.message || 'Operacao nao concluida');
+        throw new Error(response.data.message || 'Operação não concluída');
     }
     return response.data.data;
 }
@@ -146,11 +146,11 @@ function useApproveOrRejectGeneration() {
                 api.patch(`/admin/clients/${params.clientId}/generation/${params.unitId}`, { action: 'approve' }),
             ),
         onSuccess: () => {
-            toast.success('Geracao manual aprovada com sucesso');
+            toast.success('Geração manual aprovada com sucesso');
             invalidate();
         },
         onError: (error: unknown) => {
-            const message = error instanceof Error ? error.message : 'Erro ao aprovar geracao';
+            const message = error instanceof Error ? error.message : 'Erro ao aprovar geração';
             toast.error(message);
         },
     });
@@ -161,11 +161,11 @@ function useApproveOrRejectGeneration() {
                 api.patch(`/admin/clients/${params.clientId}/generation/${params.unitId}`, { action: 'reject' }),
             ),
         onSuccess: () => {
-            toast.success('Geracao manual rejeitada');
+            toast.success('Geração manual rejeitada');
             invalidate();
         },
         onError: (error: unknown) => {
-            const message = error instanceof Error ? error.message : 'Erro ao rejeitar geracao';
+            const message = error instanceof Error ? error.message : 'Erro ao rejeitar geração';
             toast.error(message);
         },
     });
@@ -228,7 +228,7 @@ export function BillValidationQueue() {
                 <CardHeader>
                     <CardTitle>Faturas pendentes de revisao</CardTitle>
                     <CardDescription>
-                        Faturas enviadas por clientes aguardando confirmacao ou rejeicao.
+                        Faturas enviadas por clientes aguardando confirmação ou rejeição.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -243,7 +243,7 @@ export function BillValidationQueue() {
                             <XCircle className="mb-3 h-9 w-9 text-destructive" />
                             <p className="font-medium text-destructive">Erro ao carregar faturas</p>
                             <p className="mt-1 max-w-md text-sm text-muted-foreground">
-                                {error instanceof Error ? error.message : 'Nao foi possivel carregar as faturas pendentes.'}
+                                {error instanceof Error ? error.message : 'Não foi possível carregar as faturas pendentes.'}
                             </p>
                         </div>
                     )}
@@ -264,10 +264,10 @@ export function BillValidationQueue() {
                                 <TableRow>
                                     <TableHead>Cliente</TableHead>
                                     <TableHead>Unidade</TableHead>
-                                    <TableHead>Referencia</TableHead>
+                                    <TableHead>Referência</TableHead>
                                     <TableHead>Valor</TableHead>
                                     <TableHead>Enviada em</TableHead>
-                                    <TableHead className="text-right">Acoes</TableHead>
+                                    <TableHead className="text-right">Ações</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -329,9 +329,9 @@ export function BillValidationQueue() {
 
             <Card className="mt-6">
                 <CardHeader>
-                    <CardTitle>Geracoes manuais pendentes</CardTitle>
+                    <CardTitle>Gerações manuais pendentes</CardTitle>
                     <CardDescription>
-                        Registros de geracao inseridos manualmente aguardando aprovacao ou rejeicao.
+                        Registros de geração inseridos manualmente aguardando aprovação ou rejeição.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -344,11 +344,11 @@ export function BillValidationQueue() {
                     {genError && (
                         <div className="flex h-48 flex-col items-center justify-center text-center">
                             <XCircle className="mb-3 h-9 w-9 text-destructive" />
-                            <p className="font-medium text-destructive">Erro ao carregar geracoes</p>
+                            <p className="font-medium text-destructive">Erro ao carregar gerações</p>
                             <p className="mt-1 max-w-md text-sm text-muted-foreground">
                                 {genErrorObj instanceof Error
                                     ? genErrorObj.message
-                                    : 'Nao foi possivel carregar as geracoes pendentes.'}
+                                    : 'Não foi possível carregar as gerações pendentes.'}
                             </p>
                         </div>
                     )}
@@ -356,9 +356,9 @@ export function BillValidationQueue() {
                     {!genLoading && !genError && !hasGenData && (
                         <div className="flex h-48 flex-col items-center justify-center rounded-md border border-dashed text-center">
                             <FileText className="mb-3 h-9 w-9 text-muted-foreground" />
-                            <p className="font-medium">Nenhuma geracao pendente</p>
+                            <p className="font-medium">Nenhuma geração pendente</p>
                             <p className="mt-1 max-w-md text-sm text-muted-foreground">
-                                Todas as geracoes manuais foram revisadas.
+                                Todas as gerações manuais foram revisadas.
                             </p>
                         </div>
                     )}
@@ -369,10 +369,10 @@ export function BillValidationQueue() {
                                 <TableRow>
                                     <TableHead>Cliente</TableHead>
                                     <TableHead>Plant</TableHead>
-                                    <TableHead>Potencia</TableHead>
+                                    <TableHead>Potência</TableHead>
                                     <TableHead>Energia</TableHead>
                                     <TableHead>Registrada em</TableHead>
-                                    <TableHead className="text-right">Acoes</TableHead>
+                                    <TableHead className="text-right">Ações</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>

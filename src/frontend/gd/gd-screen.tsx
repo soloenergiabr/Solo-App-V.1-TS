@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Loader2, Mail, RefreshCw, Send, UserPlus, Users } from 'lucide-react'
+import { Link2, Loader2, Mail, RefreshCw, Send, UserPlus, Users } from 'lucide-react'
+import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -10,11 +11,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
 import { formatBRL } from '@/frontend/telemetry-kit'
+import { apiErrorMessage } from '@/frontend/auth/hooks/useAuthenticatedApi'
 import { CHARGE_MODE_LABEL } from '@/shared/gd/types'
 import { ChargeStatusBadge } from './charge-status-badge'
 import { ChargeRuleDialog } from './charge-rule-dialog'
 import { InvitePayerDialog } from './invite-payer-dialog'
 import {
+    useChargeCheckout,
     useChargeRules,
     useCharges,
     useConfirmChargePayment,
@@ -53,6 +56,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
     const generate = useGenerateCharges(clientId)
     const send = useSendCharge(clientId)
     const confirm = useConfirmChargePayment(clientId)
+    const checkout = useChargeCheckout(clientId)
 
     const summary = charges.data?.summary
     const list = charges.data?.charges ?? []
@@ -68,7 +72,25 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
         try {
             await action()
         } catch (err) {
-            setActionError(err instanceof Error ? err.message : 'Falha na operacao')
+            setActionError(err instanceof Error ? err.message : 'Falha na operação')
+        }
+    }
+
+    async function copyPaymentLink(chargeId: string) {
+        setActionError(null)
+        try {
+            const { url } = await checkout.mutateAsync(chargeId)
+            try {
+                await navigator.clipboard.writeText(url)
+                toast.success('Link de pagamento copiado', {
+                    description: 'Envie ao responsável. O link vale por 24 horas.',
+                })
+            } catch {
+                // Safari bloqueia a área de transferência depois de uma chamada assíncrona.
+                window.prompt('Copie o link de pagamento (vale por 24 horas):', url)
+            }
+        } catch (err) {
+            setActionError(apiErrorMessage(err, 'Não foi possível gerar o link de pagamento.'))
         }
     }
 
@@ -84,7 +106,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                         {MONTHS[month - 1]} / {year}
                     </span>
                     <Button variant="outline" size="sm" onClick={() => shiftMonth(1)}>
-                        Proximo
+                        Próximo
                     </Button>
                 </div>
                 <Button
@@ -98,13 +120,13 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                     ) : (
                         <RefreshCw className="mr-2 size-4" />
                     )}
-                    Gerar cobrancas do mes
+                    Gerar cobranças do mês
                 </Button>
             </div>
 
             {actionError && (
                 <Alert variant="destructive">
-                    <AlertTitle>Nao foi possivel concluir</AlertTitle>
+                    <AlertTitle>Não foi possível concluir</AlertTitle>
                     <AlertDescription>{actionError}</AlertDescription>
                 </Alert>
             )}
@@ -153,7 +175,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                 <CardHeader>
                     <CardTitle className="text-lg">Cobrancas de {MONTHS[month - 1]}</CardTitle>
                     <CardDescription>
-                        Envie a cobranca ao responsavel e registre o recebimento.
+                        Envie a cobrança ao responsável e registre o recebimento.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -173,7 +195,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                         <PageEmpty
                             icon={<Users className="h-8 w-8 text-muted-foreground" />}
                             title="Nenhuma cobranca nesta competencia"
-                            description="Defina a regra de cobranca de cada unidade abaixo e clique em 'Gerar cobrancas do mes'."
+                            description="Defina a regra de cobrança de cada unidade abaixo e clique em 'Gerar cobranças do mês'."
                         />
                     )}
 
@@ -183,12 +205,12 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Unidade</TableHead>
-                                        <TableHead>Responsavel</TableHead>
+                                        <TableHead>Responsável</TableHead>
                                         <TableHead>Base</TableHead>
                                         <TableHead>Valor</TableHead>
                                         <TableHead>Vencimento</TableHead>
                                         <TableHead>Status</TableHead>
-                                        <TableHead className="text-right">Acoes</TableHead>
+                                        <TableHead className="text-right">Ações</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -200,7 +222,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                             <TableCell className="text-sm">
                                                 {charge.payerName ?? (
                                                     <span className="text-muted-foreground">
-                                                        sem responsavel
+                                                        sem responsável
                                                     </span>
                                                 )}
                                             </TableCell>
@@ -221,6 +243,12 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                             </TableCell>
                                             <TableCell>
                                                 <ChargeStatusBadge status={charge.status} />
+                                                {charge.status === 'paid' &&
+                                                    charge.paymentProvider === 'stripe' && (
+                                                        <div className="mt-1 text-xs text-success">
+                                                            Pago online
+                                                        </div>
+                                                    )}
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex justify-end gap-2">
@@ -233,7 +261,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                                                 title={
                                                                     charge.payerEmail
                                                                         ? 'Enviar por e-mail'
-                                                                        : 'Cadastre o e-mail do responsavel'
+                                                                        : 'Cadastre o e-mail do responsável'
                                                                 }
                                                                 onClick={() =>
                                                                     run(() => send.mutateAsync(charge.id))
@@ -241,6 +269,21 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                                             >
                                                                 <Send className="size-3.5" />
                                                                 <span className="ml-1">Enviar</span>
+                                                            </Button>
+                                                        )}
+                                                    {charges.data?.onlinePaymentEnabled &&
+                                                        charge.status !== 'paid' &&
+                                                        charge.status !== 'canceled' &&
+                                                        charge.amount > 0 && (
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                disabled={checkout.isPending}
+                                                                title="Copiar link de pagamento (cartão ou PIX)"
+                                                                onClick={() => copyPaymentLink(charge.id)}
+                                                            >
+                                                                <Link2 className="size-3.5" />
+                                                                <span className="ml-1">Copiar link de pagamento</span>
                                                             </Button>
                                                         )}
                                                     {charge.status !== 'paid' &&
@@ -272,7 +315,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                 <CardHeader>
                     <CardTitle className="text-lg">Unidades e responsaveis</CardTitle>
                     <CardDescription>
-                        Quem paga cada unidade e como o valor do mes e calculado.
+                        Quem paga cada unidade e como o valor do mês é calculado.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -282,7 +325,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                         <PageEmpty
                             icon={<Users className="h-8 w-8 text-muted-foreground" />}
                             title="Nenhuma unidade consumidora cadastrada"
-                            description="Cadastre as unidades do imovel para comecar a ratear a energia e as contas."
+                            description="Cadastre as unidades do imóvel para começar a ratear a energia e as contas."
                         />
                     )}
 
@@ -292,10 +335,10 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Unidade</TableHead>
-                                        <TableHead>Responsavel</TableHead>
+                                        <TableHead>Responsável</TableHead>
                                         <TableHead>Cobranca</TableHead>
                                         <TableHead>Acesso</TableHead>
-                                        <TableHead className="text-right">Acoes</TableHead>
+                                        <TableHead className="text-right">Ações</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -314,7 +357,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
                                                     </div>
                                                 ) : (
                                                     <span className="text-muted-foreground">
-                                                        nao definido
+                                                        não definido
                                                     </span>
                                                 )}
                                             </TableCell>
@@ -387,8 +430,9 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
 
             <p className="flex items-start gap-2 text-xs text-muted-foreground">
                 <Mail className="mt-0.5 size-3.5 shrink-0" />
-                O Solo App calcula, envia e registra as cobrancas. O pagamento acontece fora do app,
-                direto entre voce e o responsavel.
+                {charges.data?.onlinePaymentEnabled
+                    ? 'O Solo App calcula, envia e registra as cobranças. O responsável pode pagar com cartão ou PIX pelo app, e a baixa é automática.'
+                    : 'O Solo App calcula, envia e registra as cobranças. O pagamento acontece fora do app, direto entre você e o responsável.'}
             </p>
         </div>
     )
@@ -399,7 +443,7 @@ export function GdScreen({ embedded, clientId }: { embedded?: boolean; clientId?
         <PageLayout
             header={
                 <PageHeader
-                    title="Geracao Distribuida"
+                    title="Geração Distribuída"
                     subtitle="Ratear a energia gerada e a conta entre os responsaveis de cada unidade"
                 />
             }

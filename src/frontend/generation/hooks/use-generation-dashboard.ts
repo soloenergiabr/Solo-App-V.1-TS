@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuthenticatedApi } from "@/frontend/auth/hooks/useAuthenticatedApi";
-import { addMonths, addYears, startOfDay, endOfDay, startOfMonth, endOfMonth, startOfYear, endOfYear, format } from "date-fns";
+import { addDays, addMonths, addWeeks, addYears, isSameDay, startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfYear, endOfYear, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export interface DashboardFilters {
-    generationUnitType?: 'real_time' | 'day' | 'month' | 'year';
+    generationUnitType?: 'real_time' | 'day' | 'week' | 'month' | 'year';
     inverterIds?: string[];
     currentDate?: Date; // Data atual para navegação
 }
@@ -82,6 +82,30 @@ export interface DashboardAnalytics {
     };
 }
 
+type TimeSeriesPoint = DashboardAnalytics['timeSeries'][number];
+
+/** Semana de segunda a domingo que contém `date`. */
+export function getWeekRange(date: Date) {
+    return {
+        start: startOfWeek(date, { weekStartsOn: 1 }),
+        end: endOfWeek(date, { weekStartsOn: 1 }),
+    };
+}
+
+/** Soma os registros diários em exatamente 7 barras (seg–dom), com zero nos dias sem leitura. */
+export function buildWeekSeries(points: TimeSeriesPoint[], weekStart: Date): TimeSeriesPoint[] {
+    return Array.from({ length: 7 }, (_, i) => {
+        const day = addDays(weekStart, i);
+        const sameDay = points.filter((p) => isSameDay(new Date(p.timestamp), day));
+        return {
+            timestamp: day.toISOString(),
+            energy: sameDay.reduce((sum, p) => sum + p.energy, 0),
+            power: sameDay.reduce((sum, p) => sum + p.power, 0),
+            inverterCount: Math.max(0, ...sameDay.map((p) => p.inverterCount)),
+        };
+    });
+}
+
 export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     const api = useAuthenticatedApi();
     // useAuthenticatedApi() returns a fresh object (with fresh get/post) every
@@ -103,6 +127,9 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
                 startDate: startOfDay(new Date()).toISOString(),
                 endDate: endOfDay(new Date()).toISOString(),
             };
+        } else if (type === 'week') {
+            const { start, end } = getWeekRange(date);
+            return { startDate: start.toISOString(), endDate: end.toISOString() };
         } else if (type === 'day') {
             return {
                 startDate: startOfMonth(date).toISOString(),
@@ -140,7 +167,8 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         const params = new URLSearchParams();
 
         if (filters.generationUnitType) {
-            params.append('type', filters.generationUnitType);
+            // Semanal reaproveita os registros diários do backend, só muda o intervalo.
+            params.append('type', filters.generationUnitType === 'week' ? 'day' : filters.generationUnitType);
         }
         if (filters.inverterIds && filters.inverterIds.length > 0) {
             params.append('inverterIds', filters.inverterIds.join(','));
@@ -164,7 +192,11 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         const response = await api.get(`/generation/dashboard?${params.toString()}`);
 
         if (response.data.success) {
-            return response.data.data;
+            const data: DashboardAnalytics = response.data.data;
+            if (filters.generationUnitType === 'week' && dateRange.startDate) {
+                return { ...data, timeSeries: buildWeekSeries(data.timeSeries, new Date(dateRange.startDate)) };
+            }
+            return data;
         }
         throw new Error(response.data.message || 'Failed to fetch dashboard analytics');
     }, [filters, getDateRange, clientId, api]);
@@ -183,21 +215,24 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
         staleTime: filters.generationUnitType === 'real_time' ? 0 : 1000 * 60, // 0 for real_time, 1 min otherwise
     });
 
+    // Admin vendo um cliente precisa dizer qual (ele nao tem cliente vinculado).
+    const syncUrl = clientId ? `/generation/sync/client?clientId=${encodeURIComponent(clientId)}` : '/generation/sync/client'
+
     // Sync on mount (once) — guard prevents the 5s poll from re-triggering sync
     const syncedRef = useRef(false)
     useEffect(() => {
         if (!isAuthenticated || syncedRef.current) return
         syncedRef.current = true
-        apiRef.current.post('/generation/sync/client')
+        apiRef.current.post(syncUrl)
             .then((res) => {
                 if (!res.data.success) {
-                    setSyncError(res.data.message || 'Erro ao sincronizar dados de geraÃ§Ã£o')
+                    setSyncError(res.data.message || 'Erro ao sincronizar dados de geração')
                     return
                 }
 
                 const errorCount = res.data.data?.errors?.length ?? 0
                 if (errorCount > 0) {
-                    setSyncError(`${errorCount} inversor(es) falharam na sincronizaÃ§Ã£o.`)
+                    setSyncError(`${errorCount} inversor(es) falharam na sincronização.`)
                     return
                 }
 
@@ -205,24 +240,24 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
             })
             .catch((err) => console.error('[geracao] sync on mount failed', err))
             .finally(() => { refetch() })
-    }, [isAuthenticated, refetch])
+    }, [isAuthenticated, refetch, syncUrl])
 
     // Manual refresh also triggers a fresh sync
     const refetchWithSync = useCallback(async () => {
         try {
-            const res = await apiRef.current.post('/generation/sync/client')
+            const res = await apiRef.current.post(syncUrl)
             if (!res.data.success) {
-                setSyncError(res.data.message || 'Erro ao sincronizar dados de geraÃ§Ã£o')
+                setSyncError(res.data.message || 'Erro ao sincronizar dados de geração')
             } else {
                 const errorCount = res.data.data?.errors?.length ?? 0
-                setSyncError(errorCount > 0 ? `${errorCount} inversor(es) falharam na sincronizaÃ§Ã£o.` : null)
+                setSyncError(errorCount > 0 ? `${errorCount} inversor(es) falharam na sincronização.` : null)
             }
         } catch (e) {
             console.error('[geracao] manual sync failed', e)
-            setSyncError('Erro de rede ao sincronizar dados de geraÃ§Ã£o')
+            setSyncError('Erro de rede ao sincronizar dados de geração')
         }
         return refetch()
-    }, [refetch])
+    }, [refetch, syncUrl])
 
     const updateFilters = useCallback((newFilters: Partial<DashboardFilters>) => {
         setFilters(prev => ({ ...prev, ...newFilters }));
@@ -241,7 +276,9 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
             const currentDate = prev.currentDate || new Date();
             let newDate: Date;
 
-            if (prev.generationUnitType === 'day') {
+            if (prev.generationUnitType === 'week') {
+                newDate = addWeeks(currentDate, -1);
+            } else if (prev.generationUnitType === 'day') {
                 newDate = addMonths(currentDate, -1);
             } else if (prev.generationUnitType === 'month') {
                 newDate = addYears(currentDate, -1);
@@ -258,7 +295,9 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
             const currentDate = prev.currentDate || new Date();
             let newDate: Date;
 
-            if (prev.generationUnitType === 'day') {
+            if (prev.generationUnitType === 'week') {
+                newDate = addWeeks(currentDate, 1);
+            } else if (prev.generationUnitType === 'day') {
                 newDate = addMonths(currentDate, 1);
             } else if (prev.generationUnitType === 'month') {
                 newDate = addYears(currentDate, 1);
@@ -281,6 +320,9 @@ export function useGenerationDashboard({ clientId }: { clientId?: string }) {
 
         if (type === 'real_time') {
             return 'Tempo Real - Hoje';
+        } else if (type === 'week') {
+            const { start, end } = getWeekRange(date);
+            return `Semana de ${format(start, 'dd/MM')} a ${format(end, 'dd/MM/yyyy')}`;
         } else if (type === 'day') {
             return format(date, "MMMM 'de' yyyy", { locale: ptBR });
         } else if (type === 'month') {

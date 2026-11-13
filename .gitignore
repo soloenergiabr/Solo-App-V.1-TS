@@ -50,3 +50,4 @@ dev-server*.log
 
 # Env de produção exportado do Dokploy — contém segredos, nunca versionar
 Planning/assets/
+/backups

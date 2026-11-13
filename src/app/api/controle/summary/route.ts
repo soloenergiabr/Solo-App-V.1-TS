@@ -19,7 +19,8 @@ const getCockpitSummaryRoute = async (request: NextRequest): Promise<NextRespons
     const scope = await resolveAccessibleUnitIds(userContext.userId)
 
     // Resolve the client ID
-    let clientId = userContext.clientId ?? new URL(request.url).searchParams.get('clientId') ?? undefined
+    // Pagador (escopo por UC) nunca escolhe o cliente pela URL: vem das UCs dele.
+    let clientId = userContext.clientId ?? (scope === 'all' ? new URL(request.url).searchParams.get('clientId') : null) ?? undefined
     if (scope !== 'all' && !clientId) {
         const firstUnit = await prisma.consumerUnit.findFirst({
             where: { id: { in: scope } },

@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import { formatPercent } from '@/frontend/telemetry-kit'
 
-export function EfficiencyGauge({ percent, className }: { percent: number; className?: string }) {
+export function EfficiencyGauge({ percent, hint, className }: { percent: number; hint?: string; className?: string }) {
     const value = Math.max(0, Math.min(100, Math.round(percent)))
     return (
         <div
@@ -13,6 +13,7 @@ export function EfficiencyGauge({ percent, className }: { percent: number; class
             <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
                 <div className="h-full rounded-full bg-brand-gradient-90" style={{ width: `${value}%` }} />
             </div>
+            {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
         </div>
     )
 }

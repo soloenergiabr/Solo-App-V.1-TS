@@ -50,7 +50,7 @@ export function CostBreakdown({ bill, className }: { bill: AccountBill; classNam
             )}
             <Link href={`/economia/${bill.id}`}>
                 <Button variant="link" size="sm" className="h-auto p-0 text-xs">
-                    Ver analise completa &rarr;
+                    Ver análise completa &rarr;
                 </Button>
             </Link>
         </div>

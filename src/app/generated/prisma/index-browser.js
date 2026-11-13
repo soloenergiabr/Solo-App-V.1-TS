@@ -298,10 +298,20 @@ exports.Prisma.OfferScalarFieldEnum = {
   imageUrl: 'imageUrl',
   confirmationCode: 'confirmationCode',
   maxRedemptionsPerClient: 'maxRedemptionsPerClient',
+  externalUrl: 'externalUrl',
+  originalPrice: 'originalPrice',
+  promoPrice: 'promoPrice',
   validFrom: 'validFrom',
   validTo: 'validTo',
   isActive: 'isActive',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ClubSettingsScalarFieldEnum = {
+  id: 'id',
+  referralRewardPercent: 'referralRewardPercent',
+  coinsDescription: 'coinsDescription',
   updatedAt: 'updatedAt'
 };
 
@@ -465,6 +475,9 @@ exports.Prisma.ChargeScalarFieldEnum = {
   paidAt: 'paidAt',
   canceledAt: 'canceledAt',
   confirmedByUserId: 'confirmedByUserId',
+  paymentProvider: 'paymentProvider',
+  paymentSessionId: 'paymentSessionId',
+  paymentMethod: 'paymentMethod',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -522,6 +535,20 @@ exports.Prisma.FaturapiConnectionScalarFieldEnum = {
   lastError: 'lastError',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  dedupeKey: 'dedupeKey',
+  channels: 'channels',
+  error: 'error',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -621,6 +648,7 @@ exports.Prisma.ModelName = {
   GenerationUnit: 'GenerationUnit',
   Indication: 'Indication',
   Offer: 'Offer',
+  ClubSettings: 'ClubSettings',
   OfferRedemption: 'OfferRedemption',
   FAQ: 'FAQ',
   Transaction: 'Transaction',
@@ -631,7 +659,8 @@ exports.Prisma.ModelName = {
   PayerInvite: 'PayerInvite',
   Investment: 'Investment',
   FaturapiWebhookEvent: 'FaturapiWebhookEvent',
-  FaturapiConnection: 'FaturapiConnection'
+  FaturapiConnection: 'FaturapiConnection',
+  Notification: 'Notification'
 };
 
 /**

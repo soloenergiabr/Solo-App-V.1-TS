@@ -2,33 +2,38 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { forgotPasswordSchema, type ForgotPasswordValues } from '@/frontend/auth/validation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export function ForgotPasswordPage() {
-    const [email, setEmail] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
+    const form = useForm<ForgotPasswordValues>({
+        resolver: zodResolver(forgotPasswordSchema),
+        mode: 'onTouched',
+        defaultValues: { email: '' },
+    });
+    const { isSubmitting, isValid } = form.formState;
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
+    const onSubmit = async (values: ForgotPasswordValues) => {
         setMessage('');
         setMessageType(null);
         try {
             const response = await fetch('/api/auth/forgot-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email }),
+                body: JSON.stringify(values),
             });
             const data = await response.json();
             if (response.ok) {
                 setMessageType('success');
                 setMessage(data.message || 'Se o email existir, enviamos um link de recuperação.');
-                setEmail('');
+                form.reset();
             } else {
                 setMessageType('error');
                 setMessage(data.message || 'Ocorreu um erro. Tente novamente.');
@@ -36,8 +41,6 @@ export function ForgotPasswordPage() {
         } catch {
             setMessageType('error');
             setMessage('Ocorreu um erro inesperado. Tente novamente.');
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -50,37 +53,40 @@ export function ForgotPasswordPage() {
                 </p>
             </div>
 
-            <form className="space-y-4" onSubmit={handleSubmit}>
-                {message && (
-                    <Alert variant={messageType === 'error' ? 'destructive' : 'default'}>
-                        <AlertDescription>{message}</AlertDescription>
-                    </Alert>
-                )}
+            <Form {...form}>
+                <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)} noValidate>
+                    {message && (
+                        <Alert variant={messageType === 'error' ? 'destructive' : 'default'}>
+                            <AlertDescription>{message}</AlertDescription>
+                        </Alert>
+                    )}
 
-                <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                        id="email"
+                    <FormField
+                        control={form.control}
                         name="email"
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="seu@email.com"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input type="email" autoComplete="email" placeholder="seu@email.com" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
                     />
-                </div>
 
-                <Button type="submit" disabled={isLoading} className="h-11 w-full">
-                    {isLoading ? 'Enviando...' : 'Enviar link'}
-                </Button>
+                    <Button type="submit" disabled={isSubmitting || !isValid} className="h-11 w-full">
+                        {isSubmitting ? 'Enviando...' : 'Enviar link'}
+                    </Button>
 
-                <p className="text-center text-sm text-muted-foreground">
-                    Lembrou sua senha?{' '}
-                    <Link href="/login" className="font-medium text-primary underline-offset-4 hover:underline">
-                        Voltar para login
-                    </Link>
-                </p>
-            </form>
+                    <p className="text-center text-sm text-muted-foreground">
+                        Lembrou sua senha?{' '}
+                        <Link href="/login" className="font-medium text-primary underline-offset-4 hover:underline">
+                            Voltar para login
+                        </Link>
+                    </p>
+                </form>
+            </Form>
         </div>
     );
 }

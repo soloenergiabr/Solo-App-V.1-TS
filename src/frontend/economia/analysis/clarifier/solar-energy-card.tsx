@@ -38,7 +38,7 @@ export function SolarEnergyCard({ generated, injected, compensated, creditsBalan
         </div>
         <div className="text-right">
           <p className="text-2xl font-bold text-foreground leading-none">{fmt(generated)}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">kWh gerados</p>
+          <p className="text-xs text-muted-foreground mt-0.5">gerados</p>
         </div>
       </div>
 
@@ -52,7 +52,7 @@ export function SolarEnergyCard({ generated, injected, compensated, creditsBalan
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-center">
               <span className="text-sm text-foreground">Autoconsumo</span>
-              <span className="text-sm font-semibold text-foreground tabular-nums">{fmt(selfConsumed)} kWh</span>
+              <span className="text-sm font-semibold text-foreground tabular-nums">{fmt(selfConsumed)}</span>
             </div>
             <div className="mt-1 h-1.5 bg-muted rounded-full overflow-hidden">
               <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${selfPct}%` }} />
@@ -68,7 +68,7 @@ export function SolarEnergyCard({ generated, injected, compensated, creditsBalan
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-center">
               <span className="text-sm text-foreground">Injetado na rede</span>
-              <span className="text-sm font-semibold text-foreground tabular-nums">{fmt(injected)} kWh</span>
+              <span className="text-sm font-semibold text-foreground tabular-nums">{fmt(injected)}</span>
             </div>
             <div className="mt-1 h-1.5 bg-muted rounded-full overflow-hidden">
               <div className="h-full bg-yellow-500 rounded-full transition-all" style={{ width: `${injectedPct}%` }} />
@@ -84,11 +84,11 @@ export function SolarEnergyCard({ generated, injected, compensated, creditsBalan
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-center">
               <span className="text-sm text-foreground">Compensado</span>
-              <span className="text-sm font-semibold text-foreground tabular-nums">{fmt(compensated)} kWh</span>
+              <span className="text-sm font-semibold text-foreground tabular-nums">{fmt(compensated)}</span>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
               {creditedElsewhere > 0
-                ? `${fmt(creditedElsewhere)} kWh excedente → créditos`
+                ? `${fmt(creditedElsewhere)} excedente → créditos`
                 : 'Compensação total da energia consumida'}
             </p>
           </div>
@@ -99,7 +99,7 @@ export function SolarEnergyCard({ generated, injected, compensated, creditsBalan
       {creditsBalance > 0 && (
         <div className="flex items-center justify-between px-3 py-2 bg-muted/40 rounded-lg border border-border/50">
           <span className="text-xs text-muted-foreground">Saldo de créditos</span>
-          <span className="text-sm font-semibold text-emerald-500 tabular-nums">{fmt(creditsBalance)} kWh</span>
+          <span className="text-sm font-semibold text-emerald-500 tabular-nums">{fmt(creditsBalance)}</span>
         </div>
       )}
     </motion.div>

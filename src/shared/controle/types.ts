@@ -16,6 +16,8 @@ export interface AccountBill {
     barcode: string | null
     billFileUrl: string | null
     estimatedSavings: number
+    consumptionKwh?: number | null
+    compensatedEnergyKwh?: number | null
     titularName: string | null
     payerName: string | null
     aiAnalysis: string | null

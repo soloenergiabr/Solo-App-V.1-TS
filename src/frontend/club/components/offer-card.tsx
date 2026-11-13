@@ -2,8 +2,11 @@ import { OfferModel } from '@/backend/club/models/offer.model';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, CheckCircle } from 'lucide-react';
+import { Loader2, CheckCircle, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import { formatBRL } from '@/frontend/telemetry-kit';
+
+const brl = (value: number) => formatBRL(value, { cents: true });
 
 interface OfferCardProps {
     offer: OfferModel;
@@ -20,6 +23,10 @@ export function OfferCard({ offer, onRedeem, isRedeeming, userBalance, userRedem
     const hasReachedMax = remaining <= 0;
     const hasSufficientBalance = userBalance >= offer.cost;
     const canRedeem = hasSufficientBalance && !hasReachedMax;
+    const { originalPrice, promoPrice } = offer;
+    const hasPromo = promoPrice != null && originalPrice != null && originalPrice > 0 && promoPrice < originalPrice;
+    const percentOff = hasPromo ? Math.round((1 - promoPrice / originalPrice) * 100) : 0;
+    const validTo = offer.validTo ? new Date(offer.validTo).toLocaleDateString('pt-BR') : null;
 
     const getButtonContent = () => {
         if (isRedeeming) {
@@ -104,13 +111,36 @@ export function OfferCard({ offer, onRedeem, isRedeeming, userBalance, userRedem
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="flex-grow">
+            <CardContent className="flex-grow space-y-3">
+                {offer.description && (
+                    <p className="text-sm text-muted-foreground line-clamp-3">{offer.description}</p>
+                )}
+                {hasPromo ? (
+                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                        <span className="text-sm text-muted-foreground">
+                            De <span className="line-through">{brl(originalPrice)}</span> por
+                        </span>
+                        <span className="text-lg font-semibold text-foreground">{brl(promoPrice)}</span>
+                        <Badge className="bg-emerald-600 text-white hover:bg-emerald-600">-{percentOff}%</Badge>
+                    </div>
+                ) : (promoPrice ?? originalPrice) != null && (
+                    <p className="text-lg font-semibold">{brl((promoPrice ?? originalPrice)!)}</p>
+                )}
                 <div className="flex items-center gap-2">
                     <span className="font-bold text-xl">{offer.cost}</span>
-                    <span className="text-sm text-muted-foreground">SOLO Coins</span>
+                    <span className="text-sm text-muted-foreground">Solo Coins</span>
                 </div>
+                {validTo && <p className="text-xs text-muted-foreground">Válida até {validTo}</p>}
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex flex-col gap-2">
+                {offer.externalUrl && (
+                    <Button asChild variant="outline" className="w-full">
+                        <a href={offer.externalUrl} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="mr-2 h-4 w-4" />
+                            Ver produto
+                        </a>
+                    </Button>
+                )}
                 <Button
                     className="w-full"
                     onClick={() => onRedeem(offer.id)}

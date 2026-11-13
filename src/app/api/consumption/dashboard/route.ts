@@ -4,11 +4,15 @@ import { withHandle } from '@/app/api/api-utils';
 import prisma from '@/lib/prisma';
 
 const getDashboardRoute = async (request: NextRequest): Promise<NextResponse> => {
-    await AuthMiddleware.requireAuth(request);
+    const userContext = await AuthMiddleware.requireAuth(request);
 
     const { searchParams } = new URL(request.url);
 
-    const clientId = searchParams.get('clientId');
+    // So o admin escolhe o cliente; os demais veem apenas o proprio (antes qualquer
+    // usuario logado lia as faturas de outro cliente passando o clientId).
+    const clientId = userContext.hasRole('master')
+        ? searchParams.get('clientId')
+        : userContext.clientId ?? null;
     const startDateParam = searchParams.get('startDate');
     const endDateParam = searchParams.get('endDate');
 

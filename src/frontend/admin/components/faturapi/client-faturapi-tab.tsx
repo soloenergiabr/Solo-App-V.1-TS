@@ -27,6 +27,7 @@ import {
     CredentialsFields, credentialsReady, emptyCredentials, errorText, formatDate, formatDateTime,
     FaturapiStatusBadge, triggerLabel, type CredentialsForm,
 } from './faturapi-shared';
+import { apiErrorMessage } from '@/frontend/auth/hooks/useAuthenticatedApi';
 
 type Actions = ReturnType<typeof useClientFaturapiActions>;
 type ConnectionItem = ClientFaturapiOverview['connections'][number];
@@ -44,7 +45,7 @@ export function ClientFaturapiTab({ clientId }: { clientId: string }) {
         return (
             <Alert variant="destructive">
                 <AlertTitle>Erro ao carregar a Faturapi</AlertTitle>
-                <AlertDescription>{error instanceof Error ? error.message : 'Tente novamente.'}</AlertDescription>
+                <AlertDescription>{apiErrorMessage(error, 'Tente novamente.')}</AlertDescription>
             </Alert>
         );
     }
@@ -56,22 +57,22 @@ export function ClientFaturapiTab({ clientId }: { clientId: string }) {
             <Card>
                 <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
                     <div className="space-y-1.5">
-                        <CardTitle>Conexoes</CardTitle>
+                        <CardTitle>Conexões</CardTitle>
                         <CardDescription>
-                            Um login da Enel lista todas as UCs da conta. Escolha quais monitorar: a Faturapi busca a fatura de cada uma todo mes.
+                            Um login da Enel lista todas as UCs da conta. Escolha quais monitorar: a Faturapi busca a fatura de cada uma todo mês.
                         </CardDescription>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
                             <RefreshCw className={`size-4 ${isFetching ? 'animate-spin' : ''}`} />
                         </Button>
-                        <Button size="sm" onClick={() => setCreating(true)}><Plus className="size-4" /> Nova conexao</Button>
+                        <Button size="sm" onClick={() => setCreating(true)}><Plus className="size-4" /> Nova conexão</Button>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {data.connections.length === 0 && (
                         <p className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
-                            Nenhuma conexao. Crie uma com o login da Enel do cliente, ou ligue uma conexao existente pela pagina Faturapi.
+                            Nenhuma conexão. Crie uma com o login da Enel do cliente, ou ligue uma conexão existente pela página Faturapi.
                         </p>
                     )}
                     {data.connections.map((item) => (
@@ -140,7 +141,7 @@ function ConnectionCard({
                         <FaturapiStatusBadge status={connection?.status ?? item.record.status} />
                     </div>
                     <p className="text-xs text-muted-foreground">
-                        {item.record.source === 'empresa' ? 'Empresa' : 'Pessoa fisica'} · ultima sincronizacao {formatDateTime(connection?.lastSyncAt)}
+                        {item.record.source === 'empresa' ? 'Empresa' : 'Pessoa física'} · última sincronização {formatDateTime(connection?.lastSyncAt)}
                     </p>
                     {(item.error || connection?.lastError) && (
                         <p className="text-xs text-destructive">{item.error ?? errorText(connection?.lastError)}</p>
@@ -174,7 +175,7 @@ function ConnectionCard({
                                 <TableHead className="w-8" />
                                 <TableHead>UC</TableHead>
                                 <TableHead>Titular</TableHead>
-                                <TableHead>Endereco</TableHead>
+                                <TableHead>Endereço</TableHead>
                                 <TableHead>No app</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -199,13 +200,13 @@ function ConnectionCard({
                                             {linked ? (
                                                 <span className="text-success">Monitorada · {app?.consumerUnit.name ?? 'UC'}</span>
                                             ) : linkedElsewhere(unit) ? (
-                                                <span className="text-muted-foreground">Ja monitorada por outra conexao</span>
+                                                <span className="text-muted-foreground">Já monitorada por outra conexão</span>
                                             ) : unit.monitored ? (
                                                 <span className="text-amber-500">Monitorada, sem vinculo{app ? ` (UC ${app.consumerUnit.name ?? unit.uc} existe)` : ''}</span>
                                             ) : app ? (
-                                                <span className="text-muted-foreground">UC existe, nao monitorada</span>
+                                                <span className="text-muted-foreground">UC existe, não monitorada</span>
                                             ) : (
-                                                <span className="text-muted-foreground">Nao monitorada</span>
+                                                <span className="text-muted-foreground">Não monitorada</span>
                                             )}
                                         </TableCell>
                                     </TableRow>
@@ -230,7 +231,7 @@ function ConnectionCard({
                                 </div>
                             )}
                             <div className="space-y-1.5 w-40">
-                                <Label>Meses de historico</Label>
+                                <Label>Meses de histórico</Label>
                                 <Input type="number" min={0} max={24} value={backfill} onChange={(e) => setBackfill(e.target.value)} />
                             </div>
                             <Button
@@ -251,8 +252,8 @@ function ConnectionCard({
 
             <Dialog open={editingCredentials} onOpenChange={setEditingCredentials}>
                 <CredentialsDialogContent
-                    title="Atualizar senha da conexao"
-                    description="Use quando a Enel recusar a senha. A conexao sincroniza de novo e as UCs voltam a ser buscadas."
+                    title="Atualizar senha da conexão"
+                    description="Use quando a Enel recusar a senha. A conexão sincroniza de novo e as UCs voltam a ser buscadas."
                     showSource={false}
                     pending={actions.updateConnectionCredentials.isPending}
                     onSubmit={async (form) => {
@@ -268,8 +269,8 @@ function ConnectionCard({
             <ConfirmDialog
                 open={removing}
                 onOpenChange={setRemoving}
-                title="Remover conexao?"
-                description="A Faturapi apaga o login e para de buscar as faturas das UCs desta conexao. As faturas ja salvas continuam no app."
+                title="Remover conexão?"
+                description="A Faturapi apaga o login e para de buscar as faturas das UCs desta conexão. As faturas já salvas continuam no app."
                 confirmLabel="Remover"
                 onConfirm={() => actions.deleteConnection.mutateAsync(item.id)}
             />
@@ -283,8 +284,8 @@ function CreateConnectionDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <CredentialsDialogContent
-                title="Nova conexao"
-                description="Entre com o login da Enel do cliente. A Faturapi lista as UCs da conta e voce escolhe quais monitorar."
+                title="Nova conexão"
+                description="Entre com o login da Enel do cliente. A Faturapi lista as UCs da conta e você escolhe quais monitorar."
                 pending={actions.createConnection.isPending}
                 onSubmit={async (form) => {
                     await actions.createConnection.mutateAsync({
@@ -341,7 +342,7 @@ function UnitsCard({ units, actions }: { units: UnitItem[]; actions: Actions }) 
         <Card>
             <CardHeader>
                 <CardTitle>Unidades consumidoras</CardTitle>
-                <CardDescription>Estado da busca automatica de cada UC na Faturapi.</CardDescription>
+                <CardDescription>Estado da busca automática de cada UC na Faturapi.</CardDescription>
             </CardHeader>
             <CardContent>
                 {units.length === 0 ? (
@@ -354,11 +355,11 @@ function UnitsCard({ units, actions }: { units: UnitItem[]; actions: Actions }) 
                             <TableRow>
                                 <TableHead>UC</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Ultima fatura</TableHead>
-                                <TableHead>Ultima busca</TableHead>
-                                <TableHead>Proxima busca</TableHead>
+                                <TableHead>Última fatura</TableHead>
+                                <TableHead>Última busca</TableHead>
+                                <TableHead>Próxima busca</TableHead>
                                 <TableHead>Leitura prevista</TableHead>
-                                <TableHead className="text-right">Acoes</TableHead>
+                                <TableHead className="text-right">Ações</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -384,7 +385,7 @@ function UnitsCard({ units, actions }: { units: UnitItem[]; actions: Actions }) 
             <Dialog open={!!credentialsFor} onOpenChange={(open) => !open && setCredentialsFor(null)}>
                 <CredentialsDialogContent
                     title="Atualizar senha da UC"
-                    description="Use quando a Enel recusar a senha. A busca automatica volta a funcionar."
+                    description="Use quando a Enel recusar a senha. A busca automática volta a funcionar."
                     showSource={false}
                     pending={actions.updateUnit.isPending}
                     onSubmit={async (form) => {
@@ -401,7 +402,7 @@ function UnitsCard({ units, actions }: { units: UnitItem[]; actions: Actions }) 
                 open={!!unlinking}
                 onOpenChange={(open) => !open && setUnlinking(null)}
                 title="Desvincular da Faturapi?"
-                description="A Faturapi para de buscar as faturas desta UC e apaga as credenciais dela. As faturas ja salvas continuam no app."
+                description="A Faturapi para de buscar as faturas desta UC e apaga as credenciais dela. As faturas já salvas continuam no app."
                 confirmLabel="Desvincular"
                 onConfirm={() => actions.unlinkUnit.mutateAsync(unlinking!.consumerUnit.id)}
             />
@@ -429,8 +430,8 @@ function UnitRow({
         <TableRow>
             <TableCell>
                 <div className="font-medium">{consumerUnit.name || 'UC'}</div>
-                <div className="font-mono text-xs text-muted-foreground">{consumerUnit.clientNumber ?? 'sem numero'}</div>
-                {consumerUnit.faturapiConnectionId && <div className="text-xs text-muted-foreground">via conexao</div>}
+                <div className="font-mono text-xs text-muted-foreground">{consumerUnit.clientNumber ?? 'sem número'}</div>
+                {consumerUnit.faturapiConnectionId && <div className="text-xs text-muted-foreground">via conexão</div>}
             </TableCell>
             <TableCell>
                 <div className="space-y-1">
@@ -458,7 +459,7 @@ function UnitRow({
             <TableCell className="text-right">
                 {!linked ? (
                     <Button size="sm" variant="outline" disabled={!consumerUnit.clientNumber} onClick={onLink}
-                        title={consumerUnit.clientNumber ? undefined : 'Cadastre o numero do cliente (UC) primeiro'}>
+                        title={consumerUnit.clientNumber ? undefined : 'Cadastre o número do cliente (UC) primeiro'}>
                         <Link2 className="size-4" /> Vincular
                     </Button>
                 ) : (
@@ -470,14 +471,14 @@ function UnitRow({
                             <DropdownMenuItem disabled={!!busy} onClick={() => actions.checkUnit.mutate(consumerUnit.id)}>
                                 Buscar fatura agora
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={onBackfill}>Buscar historico</DropdownMenuItem>
+                            <DropdownMenuItem onClick={onBackfill}>Buscar histórico</DropdownMenuItem>
                             {unit?.status === 'paused' ? (
                                 <DropdownMenuItem onClick={() => actions.updateUnit.mutate({ unitId: consumerUnit.id, status: 'active' })}>
-                                    Retomar busca automatica
+                                    Retomar busca automática
                                 </DropdownMenuItem>
                             ) : (
                                 <DropdownMenuItem onClick={() => actions.updateUnit.mutate({ unitId: consumerUnit.id, status: 'paused' })}>
-                                    Pausar busca automatica
+                                    Pausar busca automática
                                 </DropdownMenuItem>
                             )}
                             {!consumerUnit.faturapiConnectionId && (
@@ -516,7 +517,7 @@ function LinkUnitDialog({ item, onClose, actions }: { item: UnitItem | null; onC
                 <DialogHeader>
                     <DialogTitle>Vincular UC {item?.consumerUnit.clientNumber}</DialogTitle>
                     <DialogDescription>
-                        Para varias UCs do mesmo login, prefira criar uma conexao. Aqui o login vale so para esta UC.
+                        Para várias UCs do mesmo login, prefira criar uma conexão. Aqui o login vale só para esta UC.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-3">
@@ -525,7 +526,7 @@ function LinkUnitDialog({ item, onClose, actions }: { item: UnitItem | null; onC
                         <Select value={source} onValueChange={(value) => setSource(value as typeof source)}>
                             <SelectTrigger><SelectValue /></SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="pessoa">Login Enel - pessoa fisica</SelectItem>
+                                <SelectItem value="pessoa">Login Enel - pessoa física</SelectItem>
                                 <SelectItem value="empresa">Login Enel - empresa</SelectItem>
                                 <SelectItem value="inbox">E-mail (fatura encaminhada para a caixa da Faturapi)</SelectItem>
                             </SelectContent>
@@ -535,7 +536,7 @@ function LinkUnitDialog({ item, onClose, actions }: { item: UnitItem | null; onC
                         <CredentialsFields value={{ ...form, source }} onChange={setForm} showSource={false} />
                     )}
                     <div className="space-y-1.5">
-                        <Label>Meses de historico</Label>
+                        <Label>Meses de histórico</Label>
                         <Input type="number" min={0} max={24} value={backfill} onChange={(e) => setBackfill(e.target.value)} />
                     </div>
                 </div>
@@ -557,7 +558,7 @@ function BackfillDialog({ item, onClose, actions }: { item: UnitItem | null; onC
         <Dialog open={!!item} onOpenChange={(open) => !open && onClose()}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Buscar historico</DialogTitle>
+                    <DialogTitle>Buscar histórico</DialogTitle>
                     <DialogDescription>
                         Busca as faturas dos ultimos meses da UC {item?.consumerUnit.clientNumber}. Cada fatura consome credito da Faturapi.
                     </DialogDescription>

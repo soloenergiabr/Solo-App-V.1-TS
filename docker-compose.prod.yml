@@ -66,6 +66,9 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_ENV=production
+        - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+        - NEXT_PUBLIC_SUPPORT_WHATSAPP=${NEXT_PUBLIC_SUPPORT_WHATSAPP:-}
+        - NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${NEXT_PUBLIC_STRIPE_PUBLIC_KEY:-}
     container_name: solo-energy-app-prod
     ports:
       - "3001:3000"
@@ -173,11 +176,21 @@ services:
 
       # Generation sync (service-token + scheduler)
       - GENERATION_SYNC_TOKEN=${GENERATION_SYNC_TOKEN}
-      - GENERATION_SYNC_INTERVAL_MINUTES=${GENERATION_SYNC_INTERVAL_MINUTES}
+      - GENERATION_SYNC_INTERVAL_MINUTES=${GENERATION_SYNC_INTERVAL_MINUTES:-15}
+      - NOTIFICATIONS_ENABLED=${NOTIFICATIONS_ENABLED:-true}
+      - NOTIFICATIONS_HOUR=${NOTIFICATIONS_HOUR:-9}
+      - ADMIN_ALERT_EMAIL=${ADMIN_ALERT_EMAIL:-}
 
-      # OpenAI Configuration
+      # IA: chat de suporte (OpenAI) e analise da fatura (BILL_ANALYZER_PROVIDER).
+      # Sem BILL_ANALYZER_PROVIDER/ANTHROPIC_API_KEY aqui, a analise da conta nao roda.
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - BILL_ANALYZER_PROVIDER=${BILL_ANALYZER_PROVIDER:-claude}
+      - BILL_ANALYZER_CLAUDE_MODEL=${BILL_ANALYZER_CLAUDE_MODEL:-claude-sonnet-4-6}
+
+      # Criptografia das credenciais dos inversores
+      - APP_ENCRYPTION_KEY=${APP_ENCRYPTION_KEY}
 
     depends_on:
       postgres:
@@ -185,6 +198,31 @@ services:
       redis:
         condition: service_healthy
       minio:
+        condition: service_healthy
+    restart: always
+    networks:
+      - nook-saas-template-network
+
+  # Backup automatico (contrato 8.4): dump diario do Postgres e copia dos PDFs (MinIO)
+  # em ./backups no host, mantendo os ultimos BACKUP_KEEP_DAYS dias.
+  # Copie ./backups para fora do servidor (ex.: rclone/S3) para ter backup externo.
+  backup:
+    image: postgres:16-alpine
+    container_name: solo-energy-backup-prod
+    environment:
+      - PGHOST=postgres
+      - PGUSER=${DATABASE_USER}
+      - PGPASSWORD=${DATABASE_PASSWORD}
+      - PGDATABASE=${DATABASE_NAME}
+      - BACKUP_KEEP_DAYS=${BACKUP_KEEP_DAYS:-14}
+      - BACKUP_HOUR=${BACKUP_HOUR:-3}
+    volumes:
+      - ./backups:/backups
+      - ./scripts/backup.sh:/backup.sh:ro
+      - minio-data:/minio-data:ro
+    entrypoint: ["/bin/sh", "/backup.sh"]
+    depends_on:
+      postgres:
         condition: service_healthy
     restart: always
     networks:

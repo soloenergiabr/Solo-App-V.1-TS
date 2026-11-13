@@ -9,7 +9,7 @@ function BillsValidationPage() {
         <PageLayout
             header={
                 <PageHeader
-                    title="Validacao de Faturas"
+                    title="Validação de Faturas"
                     subtitle="Confira e aprove as faturas enviadas pelos clientes."
                 />
             }

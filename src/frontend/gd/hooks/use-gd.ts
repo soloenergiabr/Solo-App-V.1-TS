@@ -181,3 +181,16 @@ export function useRevokeInvite(clientId?: string) {
         },
     })
 }
+
+/** Abre (ou reaproveita) a sessão de Checkout do Stripe e devolve a URL de pagamento. */
+export function useChargeCheckout(clientId?: string) {
+    const api = useAuthenticatedApi()
+
+    return useMutation({
+        mutationFn: async (chargeId: string) => {
+            const res = await api.post(scopedUrl(`/gd/charges/${chargeId}/checkout`, clientId))
+            if (!res.data.success) throw new Error(res.data.message || 'Falha ao abrir o pagamento')
+            return res.data.data as { url: string }
+        },
+    })
+}

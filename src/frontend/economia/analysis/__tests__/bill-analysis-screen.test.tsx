@@ -47,7 +47,8 @@ vi.mock('@/frontend/telemetry-kit', () => ({
 
 // Mock next/link
 vi.mock('@/frontend/auth/hooks/useAuthenticatedApi', () => ({
-  useAuthenticatedApi: () => ({ get: vi.fn(), isAuthenticated: true }),
+  useAuthenticatedApi: () => ({ get: vi.fn(), post: vi.fn(), isAuthenticated: true }),
+  apiErrorMessage: (_e: unknown, fallback: string) => fallback,
 }))
 
 vi.mock('next/link', () => ({

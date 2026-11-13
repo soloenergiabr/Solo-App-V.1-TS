@@ -58,6 +58,8 @@ export interface ChargeDTO {
     payerEmail: string | null
     sentAt: string | null
     paidAt: string | null
+    /** 'stripe' quando pago (ou iniciado) pelo pagamento online; nulo na baixa manual. */
+    paymentProvider: string | null
     notes: string | null
     /** Fatura da distribuidora que originou a cobranca, quando houver. */
     energyBillId: string | null
@@ -91,4 +93,6 @@ export interface ChargeSummary {
 export interface GdOverview {
     summary: ChargeSummary
     charges: ChargeDTO[]
+    /** Gateway configurado: mostra "Pagar com cartão ou PIX" e "Copiar link de pagamento". */
+    onlinePaymentEnabled: boolean
 }

@@ -45,7 +45,11 @@ export function BillChatDrawer({ billId, distributor, referenceMonth, referenceY
     try {
       const resp = await fetch(`/api/economia/bills/${billId}/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // Streaming: fetch em vez do axios, entao o token vai manualmente.
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken') ?? ''}`,
+        },
         body: JSON.stringify({ messages: allMessages }),
       })
 

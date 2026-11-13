@@ -4,6 +4,7 @@ import { withHandle } from '@/app/api/api-utils'
 import { AuthMiddleware } from '@/backend/auth/middleware/auth.middleware'
 import { assertNotPayer } from '@/backend/controle/scope'
 import { resolveGdClientId, sendCharge } from '@/backend/gd/gd.service'
+import { config } from '@/config'
 
 /** POST /api/gd/charges/[chargeId]/send — envia a cobranca ao responsavel. */
 const send = async (request: NextRequest, context: { params: Promise<{ chargeId: string }> }) => {
@@ -18,7 +19,9 @@ const send = async (request: NextRequest, context: { params: Promise<{ chargeId:
         select: { name: true },
     })
 
-    const charge = await sendCharge(chargeId, clientId, client?.name ?? 'O titular da conta')
+    // Mesma origem do link de convite (ver /api/gd/invites).
+    const appUrl = config.base_url || new URL(request.url).origin
+    const charge = await sendCharge(chargeId, clientId, client?.name ?? 'O titular da conta', appUrl)
 
     return NextResponse.json({
         success: true,

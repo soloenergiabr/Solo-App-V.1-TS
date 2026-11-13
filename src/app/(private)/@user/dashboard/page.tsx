@@ -1,7 +1,7 @@
 'use client';
 
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
-import { useGenerationDashboard, type DashboardAnalytics } from '@/frontend/generation/hooks/use-generation-dashboard';
+import { useGenerationDashboard, type DashboardAnalytics, type DashboardFilters } from '@/frontend/generation/hooks/use-generation-dashboard';
 import { PeriodTabs } from '@/frontend/generation/components/dashboard/period-tabs';
 import { InvertersTable } from '@/frontend/generation/components/dashboard/inverters-table';
 import { InvertersComparisonChart } from '@/frontend/generation/components/dashboard/inverters-comparison-chart';
@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, Filter, Zap, Activity, TrendingUp, Database } from "lucide-react";
 import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 import { EfficiencyGauge } from '@/frontend/generation/components/dashboard/efficiency-gauge';
+import { ExportMenu, downloadCsv } from '@/frontend/lib/export';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
@@ -19,6 +20,7 @@ import {
     LiveBadge,
     StatusRing,
     formatKwh,
+    formatPercent,
     type TelemetryStatus,
 } from '@/frontend/telemetry-kit';
 
@@ -31,6 +33,27 @@ function inverterStatus(inv: DashboardAnalytics['byInverter'][number]): Telemetr
     if (!inv.dataPoints) return 'unknown';
     if (inv.totalPower <= 0 && inv.peakPower <= 0) return 'warning';
     return 'ok';
+}
+
+type PeriodType = NonNullable<DashboardFilters['generationUnitType']>;
+
+const PERIOD_TEXT: Record<PeriodType, { current: string; previous?: string }> = {
+    real_time: { current: 'Hoje', previous: 'ontem' },
+    week: { current: 'Nesta semana', previous: 'na semana anterior' },
+    day: { current: 'Neste mês', previous: 'no mês anterior' },
+    month: { current: 'Neste ano', previous: 'no ano anterior' },
+    year: { current: 'Desde o início' },
+};
+
+// Frase simples que explica o período escolhido, com a comparação que o backend já calcula.
+function periodSummary(type: PeriodType, analytics: DashboardAnalytics): string {
+    const text = PERIOD_TEXT[type];
+    const base = `${text.current}, seu sistema gerou ${formatKwh(analytics.overview.totalEnergy)}`;
+    const previous = analytics.comparison?.previousPeriod?.totalEnergy ?? 0;
+    const change = analytics.comparison?.percentageChange?.energy;
+    if (!text.previous || previous <= 0 || change == null) return `${base}.`;
+    if (Math.abs(change) < 1) return `${base}, praticamente o mesmo que ${text.previous}.`;
+    return `${base}, ${formatPercent(Math.abs(change))} a ${change > 0 ? 'mais' : 'menos'} que ${text.previous}.`;
 }
 
 function GenerationDashboardPage() {
@@ -54,12 +77,33 @@ function GenerationDashboardPage() {
         });
     };
 
-    const isRealTime = filters.generationUnitType === 'real_time';
+    const periodType: PeriodType = filters.generationUnitType ?? 'real_time';
+    const isRealTime = periodType === 'real_time';
+    const isWeek = periodType === 'week';
 
     const chartData = (analytics?.timeSeries ?? []).map((point) => ({
-        label: format(new Date(point.timestamp), isRealTime ? 'HH:mm' : 'dd/MM', { locale: ptBR }),
+        label: format(new Date(point.timestamp), isRealTime ? 'HH:mm' : isWeek ? 'EEE dd/MM' : 'dd/MM', { locale: ptBR }),
         energia: point.energy,
     }));
+
+    // CSV com a mesma série do gráfico (filtrada pelos inversores escolhidos).
+    const exportCsv = () => {
+        if (!analytics) return;
+        const dateFormat = isRealTime ? 'dd/MM/yyyy HH:mm' : periodType === 'month' || periodType === 'year' ? 'MM/yyyy' : 'dd/MM/yyyy';
+        const inverters = filters.inverterIds?.length
+            ? analytics.byInverter.map((inv) => inv.inverterName).join(', ')
+            : null;
+        const columns = [isRealTime ? 'Data e hora' : 'Data', 'Energia (kWh)'];
+        if (isRealTime) columns.push('Potência (W)');
+        if (inverters) columns.push('Inversores');
+        const rows = analytics.timeSeries.map((point) => {
+            const row: (string | number)[] = [format(new Date(point.timestamp), dateFormat), point.energy];
+            if (isRealTime) row.push(point.power);
+            if (inverters) row.push(inverters);
+            return row;
+        });
+        downloadCsv(`geracao-${periodType}-${format(filters.currentDate ?? new Date(), 'yyyy-MM-dd')}`, columns, rows);
+    };
 
     const efficiencyPct = analytics
         ? Math.min(100, Math.round((analytics.overview.averagePower / Math.max(1, analytics.overview.peakPower)) * 100))
@@ -82,7 +126,8 @@ function GenerationDashboardPage() {
             header={
                 <PageHeader
                     title="Dashboard de Geração"
-                    subtitle='Acompanhe em tempo real a geração de energia dos seu sistema'
+                    subtitle='Acompanhe em tempo real a geração de energia do seu sistema'
+                    actions={<ExportMenu onCsv={exportCsv} disabled={!analytics} />}
                 />
             }
         >
@@ -105,7 +150,7 @@ function GenerationDashboardPage() {
                             {syncError && (
                                 <Alert variant="destructive">
                                     <AlertCircle className="h-4 w-4" />
-                                    <AlertTitle>AtenÃ§Ã£o na sincronizaÃ§Ã£o</AlertTitle>
+                                    <AlertTitle>Atenção na sincronização</AlertTitle>
                                     <AlertDescription>{syncError}</AlertDescription>
                                 </Alert>
                             )}
@@ -124,53 +169,53 @@ function GenerationDashboardPage() {
                                         <MetricTile
                                             label="POTÊNCIA ATUAL"
                                             value={formatW(analytics.overview.totalPower)}
-                                            sublabel="agora"
+                                            sublabel="Quanto os painéis produzem neste momento"
                                             icon={<Activity className="size-4 text-primary" />}
                                         />
                                         <MetricTile
                                             label="GERAÇÃO HOJE"
                                             value={formatKwh(analytics.overview.totalEnergy)}
-                                            sublabel="energia"
+                                            sublabel="Energia produzida desde o amanhecer"
                                             icon={<Zap className="size-4 text-primary" />}
                                         />
                                         <MetricTile
                                             label="PICO DE POTÊNCIA"
                                             value={formatW(analytics.overview.peakPower)}
-                                            sublabel="máximo"
+                                            sublabel="Maior potência registrada no período"
                                             icon={<TrendingUp className="size-4 text-primary" />}
                                         />
                                         <MetricTile
                                             label="INVERSORES ATIVOS"
                                             value={`${analytics.overview.activeInverters} / ${analytics.overview.totalInverters}`}
-                                            sublabel="online"
+                                            sublabel="Equipamentos que enviaram dados hoje"
                                             icon={<Database className="size-4 text-primary" />}
                                         />
-                                        <EfficiencyGauge percent={efficiencyPct} />
+                                        <EfficiencyGauge percent={efficiencyPct} hint="Potência média em relação ao pico do dia" />
                                     </>
                                 ) : (
                                     <>
                                         <MetricTile
                                             label="ENERGIA TOTAL"
                                             value={formatKwh(analytics.overview.totalEnergy)}
-                                            sublabel="no período"
+                                            sublabel="Soma de tudo o que foi gerado no período"
                                             icon={<Zap className="size-4 text-primary" />}
                                         />
                                         <MetricTile
                                             label="POTÊNCIA MÉDIA"
                                             value={formatW(analytics.overview.averagePower)}
-                                            sublabel="média"
+                                            sublabel="Média das leituras do período"
                                             icon={<Activity className="size-4 text-primary" />}
                                         />
                                         <MetricTile
                                             label="PICO DE POTÊNCIA"
                                             value={formatW(analytics.overview.peakPower)}
-                                            sublabel="máximo"
+                                            sublabel="Maior potência registrada no período"
                                             icon={<TrendingUp className="size-4 text-primary" />}
                                         />
                                         <MetricTile
                                             label="PONTOS DE DADOS"
                                             value={`${analytics.overview.totalDataPoints}`}
-                                            sublabel="leituras"
+                                            sublabel="Leituras recebidas dos inversores"
                                             icon={<Database className="size-4 text-primary" />}
                                         />
                                     </>
@@ -223,7 +268,11 @@ function GenerationDashboardPage() {
                                     </h2>
                                     {isRealTime && <LiveBadge />}
                                 </div>
+                                <p className="text-sm text-muted-foreground" data-testid="period-summary">
+                                    {periodSummary(periodType, analytics)}
+                                </p>
                                 <GlowChart
+                                    bars={isWeek}
                                     data={chartData}
                                     dataKey="energia"
                                     xKey="label"

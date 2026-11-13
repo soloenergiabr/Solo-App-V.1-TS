@@ -11,7 +11,7 @@ const STATUS: Record<string, { label: string; variant: BadgeVariant }> = {
     // Unidade
     active: { label: 'Ativa', variant: 'default' },
     paused: { label: 'Pausada', variant: 'secondary' },
-    needs_credentials: { label: 'Senha invalida', variant: 'destructive' },
+    needs_credentials: { label: 'Senha inválida', variant: 'destructive' },
     overdue: { label: 'Fatura atrasada', variant: 'destructive' },
     // Conexao
     syncing: { label: 'Sincronizando', variant: 'secondary' },
@@ -27,7 +27,7 @@ const STATUS: Record<string, { label: string; variant: BadgeVariant }> = {
 };
 
 export function FaturapiStatusBadge({ status }: { status: string | null | undefined }) {
-    if (!status) return <Badge variant="outline">Nao vinculada</Badge>;
+    if (!status) return <Badge variant="outline">Não vinculada</Badge>;
     const config = STATUS[status] ?? { label: status, variant: 'outline' as const };
     return <Badge variant={config.variant}>{config.label}</Badge>;
 }
@@ -36,7 +36,7 @@ const TRIGGER: Record<string, string> = {
     schedule: 'Agendada',
     api: 'API',
     dashboard: 'Painel Faturapi',
-    backfill: 'Historico',
+    backfill: 'Histórico',
     retry: 'Nova tentativa',
 };
 
@@ -90,7 +90,7 @@ export function CredentialsFields({
                     <Select value={value.source} onValueChange={(source) => onChange({ ...value, source: source as CredentialsForm['source'] })}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="pessoa">Pessoa fisica</SelectItem>
+                            <SelectItem value="pessoa">Pessoa física</SelectItem>
                             <SelectItem value="empresa">Empresa</SelectItem>
                         </SelectContent>
                     </Select>
@@ -105,7 +105,7 @@ export function CredentialsFields({
                 <Input type="password" value={value.password} autoComplete="new-password" onChange={(e) => onChange({ ...value, password: e.target.value })} />
             </div>
             <p className="text-xs text-muted-foreground">
-                A senha vai direto para a Faturapi, que guarda criptografada. Ela nao fica salva no app.
+                A senha vai direto para a Faturapi, que guarda criptografada. Ela não fica salva no app.
             </p>
         </div>
     );

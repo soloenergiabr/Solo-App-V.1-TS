@@ -68,12 +68,15 @@ export function PeriodTabs({
                 }
                 className="w-full"
             >
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                     <TabsTrigger value="real_time" className="text-xs">
                         Tempo Real
                     </TabsTrigger>
                     <TabsTrigger value="day" className="text-xs">
                         Diário
+                    </TabsTrigger>
+                    <TabsTrigger value="week" className="text-xs">
+                        Semanal
                     </TabsTrigger>
                     <TabsTrigger value="month" className="text-xs">
                         Mensal

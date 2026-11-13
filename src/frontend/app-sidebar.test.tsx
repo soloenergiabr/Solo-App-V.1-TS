@@ -119,7 +119,7 @@ describe('AppSidebar', () => {
         render(<AppSidebar />, { wrapper: Wrapper })
 
         await waitFor(() => {
-            expect(screen.getByRole('link', { name: /Aprovacoes \(2\)/ })).toBeInTheDocument()
+            expect(screen.getByRole('link', { name: /Aprovações \(2\)/ })).toBeInTheDocument()
         })
         expect(mockUseAdminApprovals).toHaveBeenCalledWith(
             expect.objectContaining({

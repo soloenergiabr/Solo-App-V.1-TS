@@ -80,9 +80,9 @@ export function ManualTransactionDialog({ clientId, onSuccess }: ManualTransacti
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button size={"sm"}>
+                <Button size="sm" variant="outline">
                     <PlusCircle className="mr-2 h-4 w-4" />
-                    Nova Transação
+                    Lançar Solo Coins
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

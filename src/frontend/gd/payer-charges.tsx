@@ -1,16 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { CheckCircle2, Loader2, Zap } from 'lucide-react'
+import { CheckCircle2, CreditCard, Loader2, Zap } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageEmpty } from '@/components/ui/page-layout'
 import { formatBRL } from '@/frontend/telemetry-kit'
+import { apiErrorMessage } from '@/frontend/auth/hooks/useAuthenticatedApi'
 import { CHARGE_MODE_LABEL } from '@/shared/gd/types'
 import { ChargeStatusBadge } from './charge-status-badge'
-import { useCharges, useConfirmChargePayment } from './hooks/use-gd'
+import { useChargeCheckout, useCharges, useConfirmChargePayment } from './hooks/use-gd'
 
 /**
  * O que o responsavel (inquilino) ve: apenas a conta da unidade dele, com a
@@ -25,8 +26,19 @@ export function PayerCharges() {
 
     const { data, isLoading } = useCharges(year, month)
     const confirm = useConfirmChargePayment()
+    const checkout = useChargeCheckout()
 
     const charges = data?.charges ?? []
+
+    async function handlePay(chargeId: string) {
+        setError(null)
+        try {
+            const { url } = await checkout.mutateAsync(chargeId)
+            window.location.assign(url)
+        } catch (err) {
+            setError(apiErrorMessage(err, 'Não foi possível abrir o pagamento. Tente novamente.'))
+        }
+    }
 
     async function handleConfirm(chargeId: string) {
         setError(null)
@@ -43,7 +55,7 @@ export function PayerCharges() {
         return (
             <PageEmpty
                 icon={<Zap className="h-8 w-8 text-muted-foreground" />}
-                title="Nenhuma conta neste mes"
+                title="Nenhuma conta neste mês"
                 description="Assim que o titular gerar a conta desta competencia, ela aparece aqui."
             />
         )
@@ -96,22 +108,38 @@ export function PayerCharges() {
                         )}
 
                         {charge.status !== 'paid' && charge.status !== 'canceled' && (
-                            <Button
-                                onClick={() => handleConfirm(charge.id)}
-                                disabled={confirm.isPending}
-                            >
-                                {confirm.isPending ? (
-                                    <Loader2 className="mr-2 size-4 animate-spin" />
-                                ) : (
-                                    <CheckCircle2 className="mr-2 size-4" />
+                            <div className="flex flex-wrap gap-2">
+                                {data?.onlinePaymentEnabled && charge.amount > 0 && (
+                                    <Button
+                                        onClick={() => handlePay(charge.id)}
+                                        disabled={checkout.isPending}
+                                    >
+                                        {checkout.isPending && checkout.variables === charge.id ? (
+                                            <Loader2 className="mr-2 size-4 animate-spin" />
+                                        ) : (
+                                            <CreditCard className="mr-2 size-4" />
+                                        )}
+                                        Pagar com cartão ou PIX
+                                    </Button>
                                 )}
-                                Ja paguei
-                            </Button>
+                                <Button
+                                    variant={data?.onlinePaymentEnabled ? 'outline' : 'default'}
+                                    onClick={() => handleConfirm(charge.id)}
+                                    disabled={confirm.isPending}
+                                >
+                                    {confirm.isPending ? (
+                                        <Loader2 className="mr-2 size-4 animate-spin" />
+                                    ) : (
+                                        <CheckCircle2 className="mr-2 size-4" />
+                                    )}
+                                    Já paguei
+                                </Button>
+                            </div>
                         )}
 
                         {charge.status === 'paid' && charge.paidAt && (
                             <p className="text-sm text-success">
-                                Pagamento registrado em{' '}
+                                {charge.paymentProvider === 'stripe' ? 'Pago online' : 'Pagamento registrado'} em{' '}
                                 {new Date(charge.paidAt).toLocaleDateString('pt-BR')}
                             </p>
                         )}

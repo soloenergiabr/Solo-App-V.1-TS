@@ -135,3 +135,63 @@
     box-shadow: var(--glow-energy);
   }
 }
+
+/* PDF = imprimir do navegador: só o conteúdo da página, fundo claro e cards inteiros. */
+@media print {
+  :root,
+  .dark {
+    --background: #fff;
+    --foreground: #111;
+    --card: #fff;
+    --card-foreground: #111;
+    --popover: #fff;
+    --popover-foreground: #111;
+    --muted: #f1f1f1;
+    --muted-foreground: #555;
+    --secondary: #f1f1f1;
+    --secondary-foreground: #111;
+    --border: #d4d4d4;
+    --card-border: #d4d4d4;
+    --input: #d4d4d4;
+  }
+
+  @page {
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  button,
+  [role="tablist"],
+  [data-sonner-toaster],
+  [data-print-hidden],
+  .print-hidden,
+  .fixed {
+    display: none !important;
+  }
+
+  .sticky {
+    position: static !important;
+  }
+
+  [data-slot="card"],
+  [data-slot="metric-tile"],
+  [data-slot="glow-chart"],
+  [data-slot="efficiency-gauge"],
+  [data-slot="lifetime-strip"],
+  tr {
+    break-inside: avoid;
+  }
+
+  .shadow-glow,
+  .shadow-glow-sm,
+  .shadow-glow-energy {
+    box-shadow: none !important;
+  }
+}

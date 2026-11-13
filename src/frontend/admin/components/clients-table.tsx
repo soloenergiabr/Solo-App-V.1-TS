@@ -13,10 +13,14 @@ import { Button } from '@/components/ui/button';
 import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 import { EditClientDialog } from './edit-client-dialog';
 import { DeleteClientDialog } from './delete-client-dialog';
-import { Loader2, Eye } from 'lucide-react';
+import { Loader2, Eye, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
+import { ExportMenu, downloadCsv } from '@/frontend/lib/export';
+
+const STATUS_LABEL: Record<string, string> = { client: 'Cliente', lead: 'Lead', inactive: 'Inativo' };
 
 interface Client {
     id: string;
@@ -33,6 +37,7 @@ export function ClientsTable() {
     const router = useRouter();
     const [clients, setClients] = useState<Client[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [search, setSearch] = useState('');
 
     const fetchClients = async () => {
         if (!api.isAuthenticated) return;
@@ -78,7 +83,44 @@ export function ClientsTable() {
         );
     }
 
+    const term = search.trim().toLowerCase();
+    const digits = term.replace(/\D/g, '');
+    const visible = term
+        ? clients.filter((c) =>
+            c.name.toLowerCase().includes(term)
+            || c.email.toLowerCase().includes(term)
+            || (digits.length > 0 && c.cpfCnpj.replace(/\D/g, '').includes(digits)))
+        : clients;
+
     return (
+        <div className="space-y-3">
+        <div className="flex items-center justify-between gap-3">
+        <div className="relative w-full max-w-sm">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar por nome, e-mail ou CPF/CNPJ"
+                className="pl-9"
+                aria-label="Buscar clientes"
+            />
+        </div>
+        <ExportMenu
+            disabled={visible.length === 0}
+            onCsv={() => downloadCsv(
+                'clientes',
+                ['Nome', 'E-mail', 'CPF/CNPJ', 'Telefone', 'Status', 'Data de cadastro'],
+                visible.map((c) => [
+                    c.name,
+                    c.email,
+                    c.cpfCnpj,
+                    c.phone ?? '',
+                    STATUS_LABEL[c.status] ?? c.status,
+                    new Date(c.createdAt).toLocaleDateString('pt-BR'),
+                ]),
+            )}
+        />
+        </div>
         <div className="rounded-md border">
             <Table>
                 <TableHeader>
@@ -91,15 +133,19 @@ export function ClientsTable() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {clients.length === 0 ? (
+                    {visible.length === 0 ? (
                         <TableRow>
                             <TableCell colSpan={5} className="h-24 text-center">
-                                Nenhum cliente encontrado.
+                                {term ? 'Nenhum cliente encontrado para essa busca.' : 'Nenhum cliente cadastrado ainda.'}
                             </TableCell>
                         </TableRow>
                     ) : (
-                        clients.map((client) => (
-                            <TableRow key={client.id}>
+                        visible.map((client) => (
+                            <TableRow
+                                key={client.id}
+                                className="cursor-pointer"
+                                onClick={() => router.push(`/clients/${client.id}`)}
+                            >
                                 <TableCell className="font-medium">{client.name}</TableCell>
                                 <TableCell>{client.email}</TableCell>
                                 <TableCell>
@@ -108,7 +154,8 @@ export function ClientsTable() {
                                 <TableCell>
                                     {new Date(client.createdAt).toLocaleDateString('pt-BR')}
                                 </TableCell>
-                                <TableCell className="text-right">
+                                {/* Acoes nao abrem o cliente ao clicar. */}
+                                <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                                     <div className="flex justify-end gap-2">
                                         <Button
                                             variant="ghost"
@@ -136,6 +183,7 @@ export function ClientsTable() {
                     )}
                 </TableBody>
             </Table>
+        </div>
         </div>
     );
 }
