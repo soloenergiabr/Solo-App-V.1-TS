@@ -4,11 +4,9 @@ import { useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { useAuth } from '@/frontend/auth/hooks/useAuth'
-import { useEconomia } from '@/frontend/economia/hooks/use-economia'
 import { EconomiaScreen } from '@/frontend/economia/economia-screen'
 import { RateioScreen } from '@/frontend/rateio/rateio-screen'
 import { ConsumptionDashboard } from '@/frontend/consumption/components/consumption-dashboard'
-import { AnalyzeBillDialog } from '@/frontend/economia/components/analyze-bill-dialog'
 import { BillHistory } from '@/frontend/economia/history/bill-history'
 import { BillCompare } from '@/frontend/economia/history/bill-compare'
 import { EducationalFaq } from '@/frontend/education/educational-faq'
@@ -36,7 +34,6 @@ export function ConsumoScreen() {
     const searchParams = useSearchParams()
     const router = useRouter()
     const { user, isLoading: authLoading } = useAuth()
-    const { refetch } = useEconomia({ year: new Date().getFullYear() })
 
     // Um pagador (responsavel por uma UC) nao gerencia o imovel: ve a propria
     // conta e a analise dela, nunca o rateio nem as demais unidades.
@@ -75,15 +72,6 @@ export function ConsumoScreen() {
                 <PageHeader
                     title="Consumo"
                     subtitle="Suas contas, rateio e consumo em um só lugar"
-                    actions={
-                        <div className="flex flex-col items-end gap-1">
-                            <AnalyzeBillDialog onSuccess={refetch} />
-                            <p className="text-xs text-muted-foreground">
-                                Tem o PDF da conta? Use &ldquo;Analisar conta&rdquo; para a IA
-                                preencher tudo.
-                            </p>
-                        </div>
-                    }
                 />
             }
         >
