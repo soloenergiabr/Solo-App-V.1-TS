@@ -7,6 +7,12 @@ import { ClientRefererLink } from './client-referer-link';
 import { LoadingPage } from '@/components/ui/loading';
 import { Coins, Share2, TrendingUp, Users } from 'lucide-react';
 
+const INDICATION_STATUS_LABEL: Record<string, string> = {
+    pending: 'Em análise',
+    approved: 'Aprovado',
+    rejected: 'Recusado',
+};
+
 export function SoloCoinsDashboard() {
     const {
         indicationsAsReferrer,
@@ -104,14 +110,14 @@ export function SoloCoinsDashboard() {
                                             </span>
                                         )}
                                         <Badge
-                                            variant={indication.status === 'approved' ? 'default' : 'secondary'}
+                                            variant={indication.status === 'approved' ? 'default' : indication.status === 'rejected' ? 'destructive' : 'secondary'}
                                             className={
                                                 indication.status === 'approved'
                                                     ? 'bg-green-500 hover:bg-green-600'
                                                     : ''
                                             }
                                         >
-                                            {indication.status === 'approved' ? 'Aprovado' : 'Em análise'}
+                                            {INDICATION_STATUS_LABEL[indication.status] ?? indication.status}
                                         </Badge>
                                     </div>
                                 </div>
