@@ -33,15 +33,16 @@ function SummaryTile({ icon, label, value, href, accentClass }: SummaryTileProps
     return (
         <Link href={href} className="block">
             <Card className="cursor-pointer transition-colors hover:bg-card/80">
-                <CardContent className="flex items-center gap-4 p-4">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${accentClass}`}>
+                {/* No celular (2 colunas) o ícone fica em cima para o valor ter a largura do card. */}
+                <CardContent className="flex flex-col items-start gap-2 p-4 sm:flex-row sm:items-center sm:gap-4">
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${accentClass}`}>
                         {icon}
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex min-w-0 flex-col">
                         <span className="text-xs font-medium tracking-wide text-muted-foreground">
                             {label}
                         </span>
-                        <span className="font-display text-xl font-semibold text-foreground">
+                        <span className="font-display text-lg font-semibold text-foreground break-words sm:text-xl">
                             {value}
                         </span>
                     </div>
