@@ -9,7 +9,7 @@ vi.mock('@/frontend/auth/hooks/useAuthenticatedApi', () => ({
   useAuthenticatedApi: () => ({ get, post, isAuthenticated: true }),
 }))
 
-import { buildWeekSeries, getWeekRange, useGenerationDashboard } from './use-generation-dashboard'
+import { buildWeekSeries, chartLabel, getWeekRange, useGenerationDashboard } from './use-generation-dashboard'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 
@@ -83,4 +83,12 @@ describe('semana (aba Semanal)', () => {
     expect(series.map((p) => p.energy)).toEqual([15, 0, 0, 0, 0, 0, 7])
     expect(series[6].inverterCount).toBe(2)
   })
+})
+
+describe('chartLabel', () => {
+    it('anual mostra o ano e mensal o mês, não "01/01"', () => {
+        expect(chartLabel('2025-01-01T03:00:00.000Z', 'year')).toBe('2025')
+        expect(chartLabel('2026-01-01T00:00:00.000Z', 'year')).toBe('2026')
+        expect(chartLabel('2026-03-01T03:00:00.000Z', 'month')).toMatch(/^mar/)
+    })
 })

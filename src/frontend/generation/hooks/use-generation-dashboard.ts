@@ -106,6 +106,16 @@ export function buildWeekSeries(points: TimeSeriesPoint[], weekStart: Date): Tim
     });
 }
 
+/** Rótulo do eixo X: hora, dia, mês ou ano conforme o período (mês/ano em UTC, que é como o agregado é salvo). */
+export function chartLabel(timestamp: string, periodType: NonNullable<DashboardFilters['generationUnitType']>): string {
+    const date = new Date(timestamp);
+    if (periodType === 'real_time') return format(date, 'HH:mm', { locale: ptBR });
+    if (periodType === 'week') return format(date, 'EEE dd/MM', { locale: ptBR });
+    if (periodType === 'month') return date.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit', timeZone: 'UTC' });
+    if (periodType === 'year') return String(date.getUTCFullYear());
+    return format(date, 'dd/MM', { locale: ptBR });
+}
+
 export function useGenerationDashboard({ clientId }: { clientId?: string }) {
     const api = useAuthenticatedApi();
     // useAuthenticatedApi() returns a fresh object (with fresh get/post) every
