@@ -103,6 +103,7 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
 
             const response = await fetch('/api/upload', {
                 method: 'POST',
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
                 body: formData,
             });
 

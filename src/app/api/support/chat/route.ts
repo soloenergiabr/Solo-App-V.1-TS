@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AISupportService } from "@/backend/support/services/ai-support.service";
+import { AuthMiddleware } from "@/backend/auth/middleware/auth.middleware";
 
 export async function POST(request: NextRequest) {
+    // Chat consome creditos da OpenAI: so para usuarios logados.
+    try {
+        await AuthMiddleware.requireAuth(request);
+    } catch {
+        return NextResponse.json({ error: "Faça login para usar o chat" }, { status: 401 });
+    }
     try {
 
         const body = await request.json();

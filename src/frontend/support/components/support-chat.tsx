@@ -55,7 +55,10 @@ export function SupportChat() {
         try {
             const response = await fetch('/api/support/chat', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
                 body: JSON.stringify({ question: input }),
             });
 
