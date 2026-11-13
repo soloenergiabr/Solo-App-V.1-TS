@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaIndicationRepository } from '@/backend/club/repositories/implementations/prisma.indication.repository';
 import { PrismaTransactionRepository } from '@/backend/club/repositories/implementations/prisma.transaction.repository';
@@ -5,7 +6,20 @@ import { ProcessJestorWebhookUseCase } from '@/backend/club/use-cases/process-je
 import prisma from '@/lib/prisma';
 import { getReferralRewardPercent } from '@/backend/club/club-settings';
 
+// O Jestor chama com ?token=<JESTOR_WEBHOOK_SECRET> (ou header x-webhook-token).
+// Sem o segredo configurado, recusa: o webhook credita Solo Coins.
+function isAuthorizedJestorCall(request: Pick<NextRequest, 'headers' | 'nextUrl'>, secret = process.env.JESTOR_WEBHOOK_SECRET): boolean {
+    if (!secret) return false;
+    const given = request.headers.get('x-webhook-token') ?? request.nextUrl.searchParams.get('token') ?? '';
+    const a = Buffer.from(given);
+    const b = Buffer.from(secret);
+    return a.length === b.length && timingSafeEqual(a, b);
+}
+
 export async function POST(request: NextRequest) {
+    if (!isAuthorizedJestorCall(request)) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     try {
         const body = await request.json();
 
