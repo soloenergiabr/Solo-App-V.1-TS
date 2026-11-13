@@ -12,8 +12,8 @@ import { OfferForm } from './offer-form';
 import { toast } from 'sonner';
 import { formatBRL } from '@/frontend/telemetry-kit';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { formatOfferDay } from '@/frontend/club/lib/offer-date';
 
-const formatDay = (date: Date | string) => new Date(date).toLocaleDateString('pt-BR');
 
 function offerStatus(offer: OfferModel): { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' } {
     const now = new Date();
@@ -24,9 +24,9 @@ function offerStatus(offer: OfferModel): { label: string; variant: 'default' | '
 }
 
 function validityLabel(offer: OfferModel) {
-    if (offer.validFrom && offer.validTo) return `${formatDay(offer.validFrom)} a ${formatDay(offer.validTo)}`;
-    if (offer.validFrom) return `a partir de ${formatDay(offer.validFrom)}`;
-    if (offer.validTo) return `até ${formatDay(offer.validTo)}`;
+    if (offer.validFrom && offer.validTo) return `${formatOfferDay(offer.validFrom)} a ${formatOfferDay(offer.validTo)}`;
+    if (offer.validFrom) return `a partir de ${formatOfferDay(offer.validFrom)}`;
+    if (offer.validTo) return `até ${formatOfferDay(offer.validTo)}`;
     return 'Sem prazo';
 }
 

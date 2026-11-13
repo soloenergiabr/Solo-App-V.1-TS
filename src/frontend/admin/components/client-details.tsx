@@ -89,6 +89,14 @@ function monthYear(bill: AdminEnergyBill): string {
     return `${String(bill.referenceMonth).padStart(2, '0')}/${bill.referenceYear}`;
 }
 
+const BILL_STATUS_LABEL: Record<string, string> = {
+    draft: 'Rascunho',
+    pending_review: 'Em revisão',
+    confirmed: 'Confirmada',
+    reviewed: 'Revisada',
+    rejected: 'Rejeitada',
+};
+
 function remainingCredits(bill: AdminEnergyBill): number {
     if (bill.currentCreditsKwh !== null && bill.currentCreditsKwh !== undefined) {
         return toNumber(bill.currentCreditsKwh);
@@ -1291,7 +1299,6 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                     <Accordion type="multiple" className="space-y-3">
                         {billsByUnit.filter(group => group.bills.length > 0).map(({ unit, bills: unitBills }) => {
                             const latest = unitBills[0];
-                            const totalRemaining = unitBills.reduce((sum, bill) => sum + remainingCredits(bill), 0);
 
                             return (
                                 <AccordionItem key={unit.id} value={unit.id} className="rounded-md border px-4">
@@ -1303,7 +1310,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                             </div>
                                             <div className="text-sm"><span className="text-muted-foreground">Faturas: </span>{unitBills.length}</div>
                                             <div className="text-sm"><span className="text-muted-foreground">Última: </span>{monthYear(latest)}</div>
-                                            <div className="text-sm"><span className="text-muted-foreground">Crédito restante: </span>{kwh(totalRemaining)}</div>
+                                            <div className="text-sm"><span className="text-muted-foreground">Crédito restante: </span>{/* O saldo SCEE já é acumulado: vale o da fatura mais recente. */}{kwh(remainingCredits(latest))}</div>
                                         </div>
                                     </AccordionTrigger>
                                     <AccordionContent className="pb-5">
@@ -1330,7 +1337,7 @@ function EnergyBillsTab({ clientId }: { clientId: string }) {
                                                         <TableCell>{kwh(bill.compensatedEnergyKwh)}</TableCell>
                                                         <TableCell>{kwh(remainingCredits(bill))}</TableCell>
                                                         <TableCell>{currency(bill.totalBillValue ?? bill.totalAmount)}</TableCell>
-                                                        <TableCell><Badge variant={bill.status === 'reviewed' ? 'default' : 'secondary'}>{bill.status || 'pendente'}</Badge></TableCell>
+                                                        <TableCell><Badge variant={bill.status === 'reviewed' ? 'default' : 'secondary'}>{BILL_STATUS_LABEL[bill.status ?? ''] ?? bill.status ?? 'Pendente'}</Badge></TableCell>
                                                         <TableCell><PaymentBadge bill={bill} /></TableCell>
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-1">

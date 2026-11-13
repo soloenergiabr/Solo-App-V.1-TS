@@ -190,10 +190,13 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
                                             <TableHeader>
                                                 <TableRow>
                                                     <TableHead>De</TableHead>
-                                                    <TableHead>Para</TableHead>
-                                                    <TableHead>Percentual</TableHead>
+                                                    <TableHead className="hidden sm:table-cell">Para</TableHead>
+                                                    <TableHead>
+                                                        <span className="sm:hidden">%</span>
+                                                        <span className="hidden sm:inline">Percentual</span>
+                                                    </TableHead>
                                                     <TableHead>Status</TableHead>
-                                                    <TableHead>Data de solicitação</TableHead>
+                                                    <TableHead className="hidden sm:table-cell">Data de solicitação</TableHead>
                                                     <TableHead className="text-right">
                                                         Ações
                                                     </TableHead>
@@ -202,12 +205,16 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
                                             <TableBody>
                                                 {plant.allocations.map((a) => (
                                                     <TableRow key={a.id}>
-                                                        <TableCell className="font-medium">
+                                                        <TableCell className="font-medium whitespace-normal sm:whitespace-nowrap">
                                                             {a.from?.name ||
                                                                 a.from?.clientNumber ||
                                                                 a.fromId}
+                                                            {/* No celular o destino vai embaixo da origem. */}
+                                                            <span className="block font-normal text-muted-foreground sm:hidden">
+                                                                → {a.to?.name || a.to?.clientNumber || a.toId}
+                                                            </span>
                                                         </TableCell>
-                                                        <TableCell>
+                                                        <TableCell className="hidden sm:table-cell">
                                                             {a.to?.name ||
                                                                 a.to?.clientNumber ||
                                                                 a.toId}
@@ -225,7 +232,7 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
                                                                 status={a.enelSyncStatus}
                                                             />
                                                         </TableCell>
-                                                        <TableCell className="text-sm text-muted-foreground">
+                                                        <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
                                                             {a.requestedAt
                                                                 ? new Date(
                                                                       a.requestedAt
@@ -238,6 +245,7 @@ export function RateioScreen({ embedded }: { embedded?: boolean }) {
                                                             <Button
                                                                 variant="outline"
                                                                 size="sm"
+                                                                className="px-2 sm:px-3"
                                                                 onClick={() =>
                                                                     setSelectedAllocation(
                                                                         selectedAllocation?.id ===

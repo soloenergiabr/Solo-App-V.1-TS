@@ -108,7 +108,7 @@ export function BillHistory() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Mês</TableHead>
-                                <TableHead>UC</TableHead>
+                                <TableHead className="hidden sm:table-cell">UC</TableHead>
                                 <TableHead>Valor</TableHead>
                                 <TableHead>Economia</TableHead>
                                 <TableHead>Status</TableHead>
@@ -129,8 +129,10 @@ export function BillHistory() {
                                                 { locale: ptBR },
                                             ),
                                         )}
+                                        {/* No celular a UC vai embaixo do mês para a tabela caber na tela. */}
+                                        <span className="block text-muted-foreground sm:hidden">{bill.consumerUnitName}</span>
                                     </TableCell>
-                                    <TableCell>{bill.consumerUnitName}</TableCell>
+                                    <TableCell className="hidden sm:table-cell">{bill.consumerUnitName}</TableCell>
                                     <TableCell>{formatBRL(bill.amountDue)}</TableCell>
                                     <TableCell>{formatBRL(bill.estimatedSavings)}</TableCell>
                                     <TableCell>

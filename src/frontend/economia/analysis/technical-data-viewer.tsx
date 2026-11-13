@@ -21,7 +21,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { formatBRL } from '@/frontend/telemetry-kit'
+import { formatBRL, formatKwh } from '@/frontend/telemetry-kit'
 import type { BillDetail } from './types'
 
 /* ───────────── helpers ───────────── */
@@ -35,7 +35,7 @@ function monthName(m: number): string {
   return MONTH_NAMES[m - 1] ?? String(m)
 }
 
-/** Maps camelCase keys to pt-BR labels for creditSummary. */
+/** pt-BR labels for creditSummary keys (camelCase legado e snake_case do analisador). */
 const KNOWN_CREDIT_KEYS: Record<string, string> = {
   totalCredits: 'Total de créditos',
   consumption: 'Consumo',
@@ -44,6 +44,10 @@ const KNOWN_CREDIT_KEYS: Record<string, string> = {
   balance: 'Saldo',
   previousCredits: 'Créditos anteriores',
   currentCredits: 'Créditos atuais',
+  injected_kwh: 'Injetado',
+  used_kwh: 'Compensado',
+  balance_kwh: 'Saldo',
+  expiring_kwh: 'A expirar',
 }
 
 /** Glossary of known billing terms for the line-item table tooltip. */
@@ -129,8 +133,9 @@ function CreditSummarySection({ creditSummary }: { creditSummary: Record<string,
               {KNOWN_CREDIT_KEYS[key] ?? key}
             </dt>
             <dd className="text-foreground font-medium">
+              {/* Créditos SCEE são energia (kWh), não dinheiro. */}
               {typeof value === 'number'
-                ? formatBRL(value, { cents: true })
+                ? formatKwh(value)
                 : String(value ?? '—')}
             </dd>
           </div>
@@ -140,13 +145,18 @@ function CreditSummarySection({ creditSummary }: { creditSummary: Record<string,
   )
 }
 
+/** Aceita o formato legado (camelCase) e o salvo pelo analisador (RawBillLineItem). */
 interface BillingItem {
   description?: string
-  quantity?: number
+  quantity?: number | null
+  quantity_kwh?: number | null
   unit?: string
-  unitPrice?: number
-  total?: number
+  unitPrice?: number | null
+  unit_price?: number | null
+  total?: number | null
+  total_value?: number | null
   type?: string
+  is_credit?: boolean | null
 }
 
 function BillingItemsTable({ billingItems }: { billingItems: unknown[] | null }) {
@@ -175,8 +185,8 @@ function BillingItemsTable({ billingItems }: { billingItems: unknown[] | null })
           <TableRow>
             <TableHead>Descrição</TableHead>
             <TableHead className="text-right">Quantidade</TableHead>
-            <TableHead className="text-right">Unidade</TableHead>
-            <TableHead className="text-right">Preço Unitário</TableHead>
+            <TableHead className="hidden sm:table-cell text-right">Unidade</TableHead>
+            <TableHead className="hidden sm:table-cell text-right">Preço Unitário</TableHead>
             <TableHead className="text-right">Total</TableHead>
           </TableRow>
         </TableHeader>
@@ -184,10 +194,15 @@ function BillingItemsTable({ billingItems }: { billingItems: unknown[] | null })
           {items.map((item, idx) => {
             const desc = item.description ?? ''
             const term = glossaryTerm(desc)
-            const isCredit = item.type === 'credit'
+            const isCredit = item.type === 'credit' || item.is_credit === true
+            const quantity = item.quantity ?? item.quantity_kwh
+            const unit = item.unit ?? (item.quantity_kwh != null ? 'kWh' : undefined)
+            const unitPrice = item.unitPrice ?? item.unit_price
+            const total = item.total ?? item.total_value
             return (
               <TableRow key={idx} className={isCredit ? 'text-success' : ''}>
-                <TableCell>
+                {/* No celular: descrição quebra linha e a unidade vai junto da quantidade. */}
+                <TableCell className="whitespace-normal sm:whitespace-nowrap">
                   <span className="flex items-center gap-1">
                     {desc}
                     {term && (
@@ -204,13 +219,16 @@ function BillingItemsTable({ billingItems }: { billingItems: unknown[] | null })
                     )}
                   </span>
                 </TableCell>
-                <TableCell className="text-right">{item.quantity ?? '—'}</TableCell>
-                <TableCell className="text-right">{item.unit ?? '—'}</TableCell>
                 <TableCell className="text-right">
-                  {item.unitPrice != null ? formatBRL(item.unitPrice, { cents: true }) : '—'}
+                  {quantity ?? '—'}
+                  {quantity != null && unit && <span className="sm:hidden"> {unit}</span>}
+                </TableCell>
+                <TableCell className="hidden sm:table-cell text-right">{unit ?? '—'}</TableCell>
+                <TableCell className="hidden sm:table-cell text-right">
+                  {unitPrice != null ? formatBRL(unitPrice, { cents: true }) : '—'}
                 </TableCell>
                 <TableCell className="text-right font-medium">
-                  {item.total != null ? formatBRL(item.total, { cents: true }) : '—'}
+                  {total != null ? formatBRL(total, { cents: true }) : '—'}
                 </TableCell>
               </TableRow>
             )

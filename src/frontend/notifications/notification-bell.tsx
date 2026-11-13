@@ -80,7 +80,7 @@ export function NotificationBell() {
                     )}
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80 p-0">
+            <DropdownMenuContent align="end" collisionPadding={8} className="w-[min(20rem,calc(100vw-1rem))] p-0">
                 <div className="flex items-center justify-between px-3 py-2">
                     <DropdownMenuLabel className="p-0">Notificações</DropdownMenuLabel>
                     {unread > 0 && (

@@ -14,6 +14,7 @@ import { apiErrorMessage, useAuthenticatedApi } from '@/frontend/auth/hooks/useA
 import { toast } from 'sonner';
 import { Loader2, Upload, X, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
+import { offerDateInput } from '@/frontend/club/lib/offer-date';
 
 const offerSchema = z.object({
     title: z.string().min(1, 'Título é obrigatório'),
@@ -42,8 +43,6 @@ const offerSchema = z.object({
 );
 
 const toPrice = (val?: string) => (val ? Number(val) : null);
-// Data local (AAAA-MM-DD) para o input type="date", sem deslocar o dia pelo fuso.
-const toDateInput = (date?: Date | string | null) => (date ? new Date(date).toLocaleDateString('en-CA') : '');
 
 type OfferFormValues = z.infer<typeof offerSchema>;
 
@@ -74,8 +73,8 @@ export function OfferForm({ offer, onSuccess, onCancel }: OfferFormProps) {
             externalUrl: offer?.externalUrl ?? '',
             originalPrice: offer?.originalPrice != null ? String(offer.originalPrice) : '',
             promoPrice: offer?.promoPrice != null ? String(offer.promoPrice) : '',
-            validFrom: toDateInput(offer?.validFrom),
-            validTo: toDateInput(offer?.validTo),
+            validFrom: offerDateInput(offer?.validFrom),
+            validTo: offerDateInput(offer?.validTo),
             isActive: offer?.isActive ?? true,
         },
     });

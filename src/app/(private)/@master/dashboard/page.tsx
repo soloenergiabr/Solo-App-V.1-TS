@@ -48,7 +48,7 @@ function AdminDashboardPage() {
         { count: d.pending.plants + d.pending.consumerUnits, label: 'usinas/UCs aguardando aprovação', href: '/admin/approvals' },
         { count: d.pending.bills, label: 'faturas enviadas por clientes para validar', href: '/admin/bills/validation' },
         { count: d.pending.generation, label: 'gerações manuais para validar', href: '/admin/bills/validation' },
-        { count: d.bills.overdue, label: 'faturas vencidas sem pagamento', href: '/clients' },
+        { count: d.bills.overdue, label: 'faturas vencidas sem pagamento (12 meses)', href: '/clients' },
     ].filter((item) => item.count > 0) : [];
 
     return (
@@ -105,9 +105,9 @@ function AdminDashboardPage() {
                     </section>
 
                     <section className="space-y-3">
-                        <h2 className="text-sm font-medium text-muted-foreground">Faturas</h2>
+                        <h2 className="text-sm font-medium text-muted-foreground">Faturas (últimos 12 meses)</h2>
                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            <MetricTile label="Faturas (12 meses)" value={d.bills.last12Months} sublabel={`${formatBRL(d.bills.billedLast12Months)} faturados`} />
+                            <MetricTile label="Faturas" value={d.bills.last12Months} sublabel={`${formatBRL(d.bills.billedLast12Months)} faturados`} />
                             <MetricTile label="Pagas" value={d.bills.paid} />
                             <MetricTile label="A pagar" value={d.bills.open} />
                             <MetricTile label="Vencidas" value={d.bills.overdue} className={d.bills.overdue > 0 ? 'border-destructive/40' : undefined} />
@@ -186,9 +186,9 @@ function kpiRows(d: Dashboard): (string | number)[][] {
         ['Consumo médio por fatura, 12 meses (kWh)', d.bills.avgConsumptionKwh],
         ['Faturas, 12 meses', d.bills.last12Months],
         ['Valor faturado, 12 meses (R$)', d.bills.billedLast12Months],
-        ['Faturas pagas', d.bills.paid],
-        ['Faturas a pagar', d.bills.open],
-        ['Faturas vencidas', d.bills.overdue],
+        ['Faturas pagas, 12 meses', d.bills.paid],
+        ['Faturas a pagar, 12 meses', d.bills.open],
+        ['Faturas vencidas, 12 meses', d.bills.overdue],
         ['Economia gerada aos clientes, 12 meses (R$)', d.bills.savingsLast12Months],
         ['Ofertas ativas do clube', d.club.activeOffers],
         ['Resgates do clube', d.club.redemptions],

@@ -296,18 +296,13 @@ export function BillAnalysisScreen({
                 {/* ───────── Clarifier dashboard ───────── */}
                 {clarifier ? (
                     <>
-                        {/* Row 1: Summary tiles + Score gauge (compact) */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="border border-border bg-card p-5 rounded-lg flex items-center justify-center">
-                                <BillScoreRing score={bill.billScore} size="lg" />
-                            </div>
-                            <BillSummaryCard
-                                totalPaid={clarifier.totalPaid}
-                                minimumPossible={clarifier.minimumPossible}
-                                connectionType={bill.connectionType}
-                                extraChargesTotal={clarifier.extraChargesTotal}
-                            />
-                        </div>
+                        {/* Row 1: Summary tiles (o score já aparece no topo) */}
+                        <BillSummaryCard
+                            totalPaid={clarifier.totalPaid}
+                            minimumPossible={clarifier.minimumPossible}
+                            connectionType={bill.connectionType}
+                            extraChargesTotal={clarifier.extraChargesTotal}
+                        />
 
                         {/* Row 2: Pie + Cost composition */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

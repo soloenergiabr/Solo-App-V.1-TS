@@ -81,4 +81,23 @@ describe('Sync Inverter Generation Data Use Case', () => {
         const syncInverterGenerationDataUseCase = new SyncInverterGenerationDataUseCase(inverterRepository, generationUnitRepository)
         await expect(syncInverterGenerationDataUseCase.execute({ inverterId: '2' })).rejects.toThrow()
     })
+
+    it('não sobrescreve agregados mês/ano com zero quando o provedor não retorna dados', async () => {
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date('2025-10-15T15:00:00.000Z'));
+        const spy = vi.spyOn(InverterApiFactory, 'create').mockReturnValue({
+            getRealTimeGeneration: async () => ({ power: 0, energy: 0 }),
+        } as unknown as InverterApiRepository)
+
+        await generationUnitRepository.create({ id: 'm', power: 0, energy: 500, generationUnitType: 'month', inverterId: '1', timestamp: new Date() })
+        await generationUnitRepository.create({ id: 'y', power: 0, energy: 4000, generationUnitType: 'year', inverterId: '1', timestamp: new Date() })
+
+        await new SyncInverterGenerationDataUseCase(inverterRepository, generationUnitRepository).execute({ inverterId: '1' })
+
+        const units = await generationUnitRepository.findByInverterId('1')
+        expect(units.find(u => u.generationUnitType === 'month')?.energy).toBe(500)
+        expect(units.find(u => u.generationUnitType === 'year')?.energy).toBe(4000)
+        spy.mockRestore()
+        vi.useRealTimers()
+    })
 })

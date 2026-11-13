@@ -5,11 +5,10 @@ import { useAuthenticatedApi } from '@/frontend/auth/hooks/useAuthenticatedApi';
 
 export interface Inverter {
     id: string;
+    name: string;
     provider: string;
     providerId: string;
-    clientId: string;
-    createdAt: string;
-    updatedAt: string;
+    lastSuccessfulSyncAt?: string;
 }
 
 export interface CreateInverterRequest {

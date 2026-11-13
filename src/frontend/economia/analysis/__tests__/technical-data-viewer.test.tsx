@@ -12,7 +12,8 @@ vi.mock('lucide-react', () => ({
 
 // Mock telemetry-kit
 vi.mock('@/frontend/telemetry-kit', () => ({
-  formatBRL: (v: number) => String(v),
+  formatBRL: (v: number) => `R$ ${v}`,
+  formatKwh: (v: number) => `${v} kWh`,
 }))
 
 // <dl> children with <> fragments: add data-testid on each dd for querying
@@ -167,6 +168,33 @@ describe('TechnicalDataViewer', () => {
     expect(screen.getByText('TUSD')).toBeDefined()
     expect(screen.getByText('SCEE Créditos')).toBeDefined()
     expect(screen.getByText('ICMS')).toBeDefined()
+  })
+
+  it('renders analyzer-shaped items (quantity_kwh/unit_price/total_value) and SCEE credits in kWh', async () => {
+    const { TechnicalDataViewer } = await import('../technical-data-viewer')
+    render(
+      <TechnicalDataViewer
+        bill={
+          makeBillDetail({
+            billingItems: [
+              { description: 'Consumo TUSD', quantity_kwh: 320, unit_price: 0.51, total_value: 163.2 },
+              { description: 'Energia injetada SCEE', quantity_kwh: 250, unit_price: 0.48, total_value: -120, is_credit: true },
+            ],
+            creditSummary: { balance_kwh: 1778.05 },
+          }) as any
+        }
+      />,
+    )
+
+    fireEvent.click(screen.getByText('Dados Técnicos da Fatura'))
+
+    expect(screen.getByText('320', { exact: false })).toBeDefined()
+    expect(screen.getByText('R$ 0.51')).toBeDefined()
+    expect(screen.getByText('R$ 163.2')).toBeDefined()
+    expect(screen.getByText('R$ -120')).toBeDefined()
+    expect(screen.getByText('Saldo')).toBeDefined()
+    expect(screen.getByText('1778.05 kWh')).toBeDefined()
+    expect(screen.queryByText('R$ 1778.05')).toBeNull()
   })
 
   it('renders taxes section when tax fields are present', async () => {

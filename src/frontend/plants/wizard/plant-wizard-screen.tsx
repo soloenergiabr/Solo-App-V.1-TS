@@ -545,7 +545,8 @@ export function PlantWizardScreen() {
                                 }`}
                             >
                                 {step.icon}
-                                <span>{step.label}</span>
+                                {/* No celular só a etapa atual mostra o nome; as outras ficam só com o ícone. */}
+                                <span className={isActive ? undefined : 'sr-only sm:not-sr-only'}>{step.label}</span>
                             </div>
                             {i < STEPS.length - 1 && (
                                 <div className="h-px w-4 bg-border hidden sm:block" />

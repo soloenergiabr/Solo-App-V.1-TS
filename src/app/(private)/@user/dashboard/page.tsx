@@ -1,7 +1,7 @@
 'use client';
 
 import { withAuth } from '@/frontend/auth/contexts/auth-context';
-import { useGenerationDashboard, type DashboardAnalytics, type DashboardFilters } from '@/frontend/generation/hooks/use-generation-dashboard';
+import { chartLabel, useGenerationDashboard, type DashboardAnalytics, type DashboardFilters } from '@/frontend/generation/hooks/use-generation-dashboard';
 import { PeriodTabs } from '@/frontend/generation/components/dashboard/period-tabs';
 import { InvertersTable } from '@/frontend/generation/components/dashboard/inverters-table';
 import { InvertersComparisonChart } from '@/frontend/generation/components/dashboard/inverters-comparison-chart';
@@ -13,7 +13,6 @@ import { PageHeader, PageLayout } from '@/components/ui/page-layout';
 import { EfficiencyGauge } from '@/frontend/generation/components/dashboard/efficiency-gauge';
 import { ExportMenu, downloadCsv } from '@/frontend/lib/export';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import {
     MetricTile,
     GlowChart,
@@ -82,7 +81,7 @@ function GenerationDashboardPage() {
     const isWeek = periodType === 'week';
 
     const chartData = (analytics?.timeSeries ?? []).map((point) => ({
-        label: format(new Date(point.timestamp), isRealTime ? 'HH:mm' : isWeek ? 'EEE dd/MM' : 'dd/MM', { locale: ptBR }),
+        label: chartLabel(point.timestamp, periodType),
         energia: point.energy,
     }));
 

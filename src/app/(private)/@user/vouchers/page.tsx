@@ -138,7 +138,8 @@ export default function VouchersPage() {
                                     {/* Info */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-start justify-between gap-2">
-                                            <div>
+                                            {/* min-w-0: sem ele o título não trunca e empurra o badge para fora do card. */}
+                                            <div className="min-w-0">
                                                 <h3 className="font-semibold truncate">
                                                     {redemption.offer?.title}
                                                 </h3>

@@ -142,7 +142,7 @@ describe('BillHistory', () => {
 
         // UC names (UC Residencial appears in two years)
         expect(screen.getAllByText('UC Residencial').length).toBeGreaterThanOrEqual(1)
-        expect(screen.getByText('UC Comercial')).toBeInTheDocument()
+        expect(screen.getAllByText('UC Comercial').length).toBeGreaterThanOrEqual(1)
 
         // Monetary values (formatBRL defaults to whole numbers, no cents)
         expect(screen.getByText('R$ 250')).toBeInTheDocument()

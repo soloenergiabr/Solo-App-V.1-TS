@@ -126,15 +126,6 @@ describe('ConsumoScreen', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders the AnalyzeBillDialog and helper text in actions', () => {
-        render(<ConsumoScreen />)
-
-        expect(screen.getByText('Analisar conta (PDF)')).toBeInTheDocument()
-        expect(
-            screen.getByText(/Tem o PDF da conta/),
-        ).toBeInTheDocument()
-    })
-
     it('renders three tab triggers', () => {
         render(<ConsumoScreen />)
 

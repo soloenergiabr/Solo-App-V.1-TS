@@ -9,7 +9,7 @@ import { PageLayout, PageHeader, PageEmpty } from '@/components/ui/page-layout';
 import { Server } from 'lucide-react';
 
 function DashboardPage() {
-    const { user, logout } = useAuthContext();
+    const { user } = useAuthContext();
     const { inverters, isLoading, error, createInverter } = useInverters();
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [newInverter, setNewInverter] = useState({
@@ -46,20 +46,12 @@ function DashboardPage() {
                         </h3>
                         <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
                             <div>
-                                <span className="text-sm font-medium text-muted-foreground">Email:</span>
+                                <span className="text-sm font-medium text-muted-foreground">Nome:</span>
+                                <p className="text-sm text-foreground">{user?.name}</p>
+                            </div>
+                            <div>
+                                <span className="text-sm font-medium text-muted-foreground">E-mail:</span>
                                 <p className="text-sm text-foreground">{user?.email}</p>
-                            </div>
-                            <div>
-                                <span className="text-sm font-medium text-muted-foreground">Roles:</span>
-                                <p className="text-sm text-foreground">{user?.roles.join(', ')}</p>
-                            </div>
-                            <div>
-                                <span className="text-sm font-medium text-muted-foreground">Client ID:</span>
-                                <p className="text-sm text-foreground">{user?.clientId || 'N/A'}</p>
-                            </div>
-                            <div>
-                                <span className="text-sm font-medium text-muted-foreground">Permissões:</span>
-                                <p className="text-sm text-foreground">{user?.permissions.join(', ')}</p>
                             </div>
                         </div>
                     </CardContent>
@@ -167,10 +159,12 @@ function DashboardPage() {
                                             <p className="text-sm text-muted-foreground mb-1">
                                                 <span className="font-medium">ID:</span> {inverter.providerId}
                                             </p>
-                                            <p className="text-sm text-muted-foreground mb-1">
-                                                <span className="font-medium">Criado:</span>{' '}
-                                                {new Date(inverter.createdAt).toLocaleDateString('pt-BR')}
-                                            </p>
+                                            {inverter.lastSuccessfulSyncAt && (
+                                                <p className="text-sm text-muted-foreground mb-1">
+                                                    <span className="font-medium">Última sincronização:</span>{' '}
+                                                    {new Date(inverter.lastSuccessfulSyncAt).toLocaleDateString('pt-BR')}
+                                                </p>
+                                            )}
                                         </div>
                                     ))
                                 )}
