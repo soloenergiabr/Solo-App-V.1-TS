@@ -78,6 +78,8 @@ export class SyncInverterGenerationDataUseCase {
             });
             await this.generationUnitRepository.create(dayUnit);
             unitsCreated++;
+        } else if (this.wouldEraseAggregate(todayGeneration, energy)) {
+            // Provedor sem dado: mantém o agregado que já existe.
         } else {
             const updatedDayUnit = new GenerationUnitModel({
                 id: todayGeneration.id,
@@ -106,6 +108,8 @@ export class SyncInverterGenerationDataUseCase {
             });
             await this.generationUnitRepository.create(monthUnit);
             unitsCreated++;
+        } else if (this.wouldEraseAggregate(thisMonthGeneration, energy)) {
+            // Provedor sem dado: mantém o agregado que já existe.
         } else {
             const updatedMonthUnit = new GenerationUnitModel({
                 id: thisMonthGeneration.id,
@@ -134,6 +138,8 @@ export class SyncInverterGenerationDataUseCase {
             });
             await this.generationUnitRepository.create(yearUnit);
             unitsCreated++;
+        } else if (this.wouldEraseAggregate(thisYearGeneration, energy)) {
+            // Provedor sem dado: mantém o agregado que já existe.
         } else {
             const updatedYearUnit = new GenerationUnitModel({
                 id: thisYearGeneration.id,
@@ -153,6 +159,11 @@ export class SyncInverterGenerationDataUseCase {
             unitsUpdated,
             message: `Successfully synced data for inverter ${inverter.id}. Created ${unitsCreated} units, updated ${unitsUpdated} units.`
         });
+    }
+
+    /** Zero/vazio do provedor não pode apagar um agregado (dia/mês/ano) que já tem energia. */
+    private wouldEraseAggregate(existing: GenerationUnitModel, energy: number): boolean {
+        return !(energy > 0) && existing.energy > 0;
     }
 
     // Métodos auxiliares para comparação de datas
