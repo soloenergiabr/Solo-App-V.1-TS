@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, CheckCircle, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import { formatBRL } from '@/frontend/telemetry-kit';
+import { formatOfferDay } from '@/frontend/club/lib/offer-date';
 
 const brl = (value: number) => formatBRL(value, { cents: true });
 
@@ -26,7 +27,7 @@ export function OfferCard({ offer, onRedeem, isRedeeming, userBalance, userRedem
     const { originalPrice, promoPrice } = offer;
     const hasPromo = promoPrice != null && originalPrice != null && originalPrice > 0 && promoPrice < originalPrice;
     const percentOff = hasPromo ? Math.round((1 - promoPrice / originalPrice) * 100) : 0;
-    const validTo = offer.validTo ? new Date(offer.validTo).toLocaleDateString('pt-BR') : null;
+    const validTo = offer.validTo ? formatOfferDay(offer.validTo) : null;
 
     const getButtonContent = () => {
         if (isRedeeming) {
