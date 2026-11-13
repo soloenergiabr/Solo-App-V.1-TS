@@ -121,7 +121,7 @@ export function BillChatDrawer({ billId, distributor, referenceMonth, referenceY
         <Button
           variant="default"
           size="lg"
-          className="fixed bottom-6 right-6 h-14 px-5 shadow-lg z-50 gap-2 rounded-full"
+          className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 h-14 px-5 shadow-lg z-50 gap-2 rounded-full md:bottom-6 md:right-6"
         >
           <MessageCircle className="h-5 w-5" />
           <span className="hidden sm:inline">Pergunte sobre sua conta</span>
