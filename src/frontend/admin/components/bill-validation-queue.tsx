@@ -71,7 +71,7 @@ function useAdminPendingBills() {
     const api = useAuthenticatedApi();
 
     return useQuery({
-        queryKey: ['admin-energy-bills', 'pending-review'],
+        queryKey: ['admin-energy-bills', 'pending-review', 'bills'],
         queryFn: async () => {
             const response = await api.get<ApiEnvelope<PendingItem[]>>('/admin/energy-bills/pending-review');
             return response.data.data.filter(
@@ -123,7 +123,7 @@ function useAdminPendingGenerations() {
     const api = useAuthenticatedApi();
 
     return useQuery({
-        queryKey: ['admin-energy-bills', 'pending-review'],
+        queryKey: ['admin-energy-bills', 'pending-review', 'generations'],
         queryFn: async () => {
             const response = await api.get<ApiEnvelope<PendingItem[]>>('/admin/energy-bills/pending-review');
             return response.data.data.filter((item): item is PendingGeneration => 'type' in item && item.type === 'generation');
