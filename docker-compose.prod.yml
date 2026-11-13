@@ -177,6 +177,9 @@ services:
       # Generation sync (service-token + scheduler)
       - GENERATION_SYNC_TOKEN=${GENERATION_SYNC_TOKEN}
       - GENERATION_SYNC_INTERVAL_MINUTES=${GENERATION_SYNC_INTERVAL_MINUTES:-15}
+      - NOTIFICATIONS_ENABLED=${NOTIFICATIONS_ENABLED:-true}
+      - NOTIFICATIONS_HOUR=${NOTIFICATIONS_HOUR:-9}
+      - ADMIN_ALERT_EMAIL=${ADMIN_ALERT_EMAIL:-}
 
       # IA: chat de suporte (OpenAI) e analise da fatura (BILL_ANALYZER_PROVIDER).
       # Sem BILL_ANALYZER_PROVIDER/ANTHROPIC_API_KEY aqui, a analise da conta nao roda.
