@@ -12,6 +12,7 @@ const getDashboard = async (request: NextRequest) => {
     const now = new Date();
     const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
     const yearAgo = new Date(now.getFullYear() - 1, now.getMonth(), 1);
+    const last12Months = { competenceDate: { gte: yearAgo } };
 
     const [
         clientsByStatus, plants, consumerUnits, monitoredUnits,
@@ -24,11 +25,12 @@ const getDashboard = async (request: NextRequest) => {
         prisma.plant.count({ where: { deletedAt: null } }),
         prisma.consumerUnit.count({ where: { deletedAt: null } }),
         prisma.consumerUnit.count({ where: { deletedAt: null, faturapiUnitId: { not: null } } }),
-        prisma.energyBill.count({ where: { OR: [{ paymentStatus: 'paga' }, { paidAt: { not: null } }] } }),
-        prisma.energyBill.count({ where: { paymentStatus: { not: 'paga' }, paidAt: null, dueDate: { lt: today } } }),
-        prisma.energyBill.count({ where: { paymentStatus: { not: 'paga' }, paidAt: null, OR: [{ dueDate: { gte: today } }, { dueDate: null }] } }),
+        // Pagas/vencidas/a pagar no mesmo recorte de 12 meses do total, para os números fecharem.
+        prisma.energyBill.count({ where: { ...last12Months, OR: [{ paymentStatus: 'paga' }, { paidAt: { not: null } }] } }),
+        prisma.energyBill.count({ where: { ...last12Months, paymentStatus: { not: 'paga' }, paidAt: null, dueDate: { lt: today } } }),
+        prisma.energyBill.count({ where: { ...last12Months, paymentStatus: { not: 'paga' }, paidAt: null, OR: [{ dueDate: { gte: today } }, { dueDate: null }] } }),
         prisma.energyBill.aggregate({
-            where: { competenceDate: { gte: yearAgo } },
+            where: last12Months,
             _count: true,
             _avg: { consumptionKwh: true },
             _sum: { estimatedSavings: true, totalBillValue: true },
